@@ -20,7 +20,7 @@ internal class CompositeAssemblyContainer : IProjectExpectation
 		Func<AssemblyName, bool> condition, Func<AssemblyName, TestError>? errorGenerator = null)
 	{
 		ArchitectureResultBuilder? builder = new();
-		foreach (IProjectExpectation? project in _projects)
+		foreach (IProjectExpectation project in _projects)
 		{
 			builder.Add(
 				project.ShouldOnlyHaveDependenciesThatSatisfy(condition, errorGenerator));
