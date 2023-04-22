@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<RootNamespace>Testably.Architecture.Testing</RootNamespace>
-		<Description>Enforce architectural rules by writing expectations as unit tests.</Description>
+		<Description>Enforce architectural rules by documenting expectations as tests.</Description>
 		<PackageReadmeFile>Docs/README.md</PackageReadmeFile>
 	</PropertyGroup>
 
