@@ -9,9 +9,9 @@ namespace Testably.Architecture.Testing;
 public interface IProjectExpectation
 {
 	/// <summary>
-	///     The project should only have dependencies on other projects, that satisfy the given <paramref name="condition" />.
+	///     The project should satisfy the given <paramref name="condition" />.
 	/// </summary>
-	ITestResult ShouldOnlyHaveDependenciesThatSatisfy(
+	ITestResult<IProjectExpectation> ShouldSatisfy(
 		Func<AssemblyName, bool> condition,
 		Func<AssemblyName, TestError>? errorGenerator = null);
 }

@@ -16,7 +16,7 @@ internal class AssemblyContainer : IProjectExpectation
 	#region IProjectExpectation Members
 
 	/// <inheritdoc />
-	public ITestResult ShouldOnlyHaveDependenciesThatSatisfy(
+	public ITestResult<IProjectExpectation> ShouldSatisfy(
 		Func<AssemblyName, bool> condition,
 		Func<AssemblyName, TestError>? errorGenerator = null)
 	{
@@ -26,7 +26,7 @@ internal class AssemblyContainer : IProjectExpectation
 			.Where(x => !condition(x))
 			.Select(errorGenerator)
 			.ToArray();
-		return new TestResult(errors);
+		return new TestResult<AssemblyContainer>(this, errors);
 	}
 
 	#endregion

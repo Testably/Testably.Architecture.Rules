@@ -16,14 +16,14 @@ internal class CompositeAssemblyContainer : IProjectExpectation
 	#region IProjectExpectation Members
 
 	/// <inheritdoc />
-	public ITestResult ShouldOnlyHaveDependenciesThatSatisfy(
+	public ITestResult<IProjectExpectation> ShouldSatisfy(
 		Func<AssemblyName, bool> condition, Func<AssemblyName, TestError>? errorGenerator = null)
 	{
-		ArchitectureResultBuilder? builder = new();
+		ArchitectureResultBuilder<CompositeAssemblyContainer>? builder = new(this);
 		foreach (IProjectExpectation project in _projects)
 		{
 			builder.Add(
-				project.ShouldOnlyHaveDependenciesThatSatisfy(condition, errorGenerator));
+				project.ShouldSatisfy(condition, errorGenerator));
 		}
 
 		return builder.Build();

@@ -2,18 +2,24 @@
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class ArchitectureResultBuilder
+internal class ArchitectureResultBuilder<TExpectation>
 {
+	private readonly TExpectation _expectation;
 	private readonly List<TestError> _errors = new();
 
-	public ArchitectureResultBuilder Add(ITestResult result)
+	public ArchitectureResultBuilder(TExpectation expectation)
+	{
+		_expectation = expectation;
+	}
+
+	public ArchitectureResultBuilder<TExpectation> Add(ITestResult result)
 	{
 		_errors.AddRange(result.Errors);
 		return this;
 	}
 
-	public ITestResult Build()
+	public ITestResult<TExpectation> Build()
 	{
-		return new TestResult(_errors.ToArray());
+		return new TestResult<TExpectation>(_expectation, _errors.ToArray());
 	}
 }

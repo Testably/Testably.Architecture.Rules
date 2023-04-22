@@ -1,4 +1,6 @@
-﻿namespace Testably.Architecture.Testing;
+﻿using System.Reflection;
+
+namespace Testably.Architecture.Testing;
 
 /// <summary>
 ///     Definition for expectations on the architectural design.
@@ -6,13 +8,7 @@
 public interface IExpectation
 {
 	/// <summary>
-	///     Defines expectations on all loaded projects from the current <see cref="System.AppDomain.CurrentDomain" />
+	///     Defines expectations on all loaded projects from the provided <paramref name="assemblies" />.
 	/// </summary>
-	/// <returns></returns>
-	IProjectExpectation AllLoadedProjects();
-
-	/// <summary>
-	///     Defines expectations on the project from the assembly that contains the <typeparamref name="TAssembly" />.
-	/// </summary>
-	IProjectExpectation ProjectContaining<TAssembly>();
+	IProjectExpectation FromAssembly(params Assembly[] assemblies);
 }

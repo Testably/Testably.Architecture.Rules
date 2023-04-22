@@ -15,3 +15,8 @@ public interface ITestResult
 	/// </summary>
 	bool IsSatisfied { get; }
 }
+
+public interface ITestResult<out TExpectation> : ITestResult
+{
+	TExpectation And { get; }
+}
