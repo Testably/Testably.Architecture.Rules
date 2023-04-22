@@ -31,6 +31,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7D94B2A0
 		Tests\Directory.Build.props = Tests\Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5F53E3C1-216C-4948-B5D6-1E96170CD083}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{61D8BE6C-D930-4B4F-ABA2-586F73ACC2B8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\ci-stryker.yml = .github\workflows\ci-stryker.yml
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\pr.yml = .github\workflows\pr.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\stryker.yml = .github\workflows\stryker.yml
+		.github\workflows\test-report.yml = .github\workflows\test-report.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stryker", "stryker", "{CC17C3DF-BF07-4C00-A4C1-9C61A66283F8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\stryker\Stryker.Config.json = .github\stryker\Stryker.Config.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +71,9 @@ Global
 		{034885FD-F117-480F-BF94-D019BFB2698A} = {E08785BF-6C98-4CAC-BFC2-BBB79B522DD6}
 		{345ED30C-84EE-42EC-B44A-6115D4508B4D} = {FB8ADCFE-9A76-463C-AECC-62553DECF308}
 		{7D94B2A0-9ED6-4186-9635-64637C55556F} = {FB8ADCFE-9A76-463C-AECC-62553DECF308}
+		{5F53E3C1-216C-4948-B5D6-1E96170CD083} = {FB8ADCFE-9A76-463C-AECC-62553DECF308}
+		{61D8BE6C-D930-4B4F-ABA2-586F73ACC2B8} = {5F53E3C1-216C-4948-B5D6-1E96170CD083}
+		{CC17C3DF-BF07-4C00-A4C1-9C61A66283F8} = {5F53E3C1-216C-4948-B5D6-1E96170CD083}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65C0CC2C-5F10-4F18-9057-176DC70833FA}
