@@ -1,0 +1,33 @@
+name: "Stryker"
+
+on:
+  workflow_dispatch: 
+  push:
+    branches: [main]
+    
+jobs:
+  stryker-ubuntu:
+    name: Stryker mutation testing (Ubuntu)
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            6.0.x
+      - name: Install .NET Stryker
+        shell: bash
+        run: |
+          dotnet tool install dotnet-stryker --tool-path ../tools
+      - name: Analyze Testably.Architecture.Testing
+        env:
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+        shell: bash
+        run: |
+          cd Tests
+          ../../tools/dotnet-stryker -f ../.github/stryker/Stryker.Config.json -v "${GITHUB_REF#refs/heads/}" -r "Dashboard" -r "cleartext"
