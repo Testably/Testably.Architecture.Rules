@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Testably.Architecture.Testing</RootNamespace>
+		<Description>Enforce architectural rules by writing expectations as unit tests.</Description>
+		<PackageReadmeFile>Docs/README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="/Docs/" Link="Docs\README.md" />
+	</ItemGroup>
+
+</Project>
