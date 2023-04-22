@@ -1,0 +1,9 @@
+engines:
+  duplication:
+    exclude_paths:
+      - "Tests/**"
+exclude_paths:
+  - ".github/**"
+  - "**.md"
+  - "Examples/**"
+  - "Tests/Helpers/**"
