@@ -10,13 +10,16 @@ public class ProjectExpectationTests
 {
 	[Theory]
 	[AutoData]
-	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
+	public void ShouldSatisfy_DefaultError_ShouldIncludeAssemblyName()
 	{
-		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
+		Assembly assembly = Assembly.GetExecutingAssembly();
+		string expectedAssemblyName = $"'{assembly.GetName().Name}'";
+		IProjectExpectation sut = Expect.That.FromAssembly(assembly);
 
-		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => true, _ => error);
+		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => false);
 
-		result.Errors.Should().BeEmpty();
+		TestError error = result.Errors.Single();
+		error.ToString().Should().Contain(expectedAssemblyName);
 	}
 
 	[Theory]
@@ -33,15 +36,12 @@ public class ProjectExpectationTests
 
 	[Theory]
 	[AutoData]
-	public void ShouldSatisfy_DefaultError_ShouldIncludeAssemblyName()
+	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		Assembly assembly = Assembly.GetExecutingAssembly();
-		string expectedAssemblyName = $"'{assembly.GetName().Name}'";
-		IProjectExpectation sut = Expect.That.FromAssembly(assembly);
+		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => false);
+		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => true, _ => error);
 
-		TestError error = result.Errors.Single();
-		error.ToString().Should().Contain(expectedAssemblyName);
+		result.Errors.Should().BeEmpty();
 	}
 }

@@ -9,23 +9,6 @@ public class TestResultTests
 {
 	[Theory]
 	[AutoData]
-	public void And_ShouldIncludeMultipleErrors(TestError error1, TestError error2)
-	{
-		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
-
-		ITestResult<IProjectExpectation> result = sut
-			.ShouldSatisfy(_ => false, _ => error1).And
-			.ShouldSatisfy(_ => false, _ => error2);
-
-		result.IsSatisfied.Should().BeFalse();
-		result.Errors.Should().NotBeEmpty();
-		result.Errors.Length.Should().Be(2);
-		result.Errors.Should().Contain(error1);
-		result.Errors.Should().Contain(error2);
-	}
-
-	[Theory]
-	[AutoData]
 	public void And_FirstFailed_ShouldIncludeOnlyFirstError(TestError error1, TestError error2)
 	{
 		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
@@ -38,6 +21,20 @@ public class TestResultTests
 		result.Errors.Should().NotBeEmpty();
 		result.Errors.Length.Should().Be(1);
 		result.Errors.Should().Contain(error1);
+	}
+
+	[Theory]
+	[AutoData]
+	public void And_NoneFailed_ShouldBeEmpty(TestError error1, TestError error2)
+	{
+		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
+
+		ITestResult<IProjectExpectation> result = sut
+			.ShouldSatisfy(_ => true, _ => error1).And
+			.ShouldSatisfy(_ => true, _ => error2);
+
+		result.IsSatisfied.Should().BeTrue();
+		result.Errors.Should().BeEmpty();
 	}
 
 	[Theory]
@@ -58,15 +55,18 @@ public class TestResultTests
 
 	[Theory]
 	[AutoData]
-	public void And_NoneFailed_ShouldBeEmpty(TestError error1, TestError error2)
+	public void And_ShouldIncludeMultipleErrors(TestError error1, TestError error2)
 	{
 		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IProjectExpectation> result = sut
-			.ShouldSatisfy(_ => true, _ => error1).And
-			.ShouldSatisfy(_ => true, _ => error2);
+			.ShouldSatisfy(_ => false, _ => error1).And
+			.ShouldSatisfy(_ => false, _ => error2);
 
-		result.IsSatisfied.Should().BeTrue();
-		result.Errors.Should().BeEmpty();
+		result.IsSatisfied.Should().BeFalse();
+		result.Errors.Should().NotBeEmpty();
+		result.Errors.Length.Should().Be(2);
+		result.Errors.Should().Contain(error1);
+		result.Errors.Should().Contain(error2);
 	}
 }

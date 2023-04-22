@@ -8,12 +8,16 @@ internal class TestResult<TExpectation> : ITestResult<TExpectation>
 		Errors = errors;
 	}
 
+	#region ITestResult<TExpectation> Members
+
+	/// <inheritdoc cref="ITestResult{TExpectation}.And" />
+	public TExpectation And { get; }
+
 	/// <inheritdoc cref="ITestResult.Errors" />
 	public TestError[] Errors { get; }
 
 	/// <inheritdoc cref="ITestResult.IsSatisfied" />
 	public bool IsSatisfied => Errors.Length == 0;
 
-	/// <inheritdoc cref="ITestResult{TExpectation}.And" />
-	public TExpectation And { get; }
+	#endregion
 }

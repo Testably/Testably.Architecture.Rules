@@ -2,7 +2,7 @@
 
 	<Import Project="$(MSBuildThisFileDirectory)/../Directory.Build.props"
 	        Condition="Exists('$(MSBuildThisFileDirectory)/../Directory.Build.props')" />
-	
+
 	<PropertyGroup>
 		<TargetFrameworks Condition="'$(NetCoreOnly)' != 'True'">net6.0;net48</TargetFrameworks>
 		<TargetFrameworks Condition="'$(NetCoreOnly)' == 'True'">net6.0</TargetFrameworks>

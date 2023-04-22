@@ -4,8 +4,8 @@ namespace Testably.Architecture.Testing.Internal;
 
 internal class TestResultBuilder<TExpectation>
 {
-	private readonly TExpectation _expectation;
 	private readonly List<TestError> _errors = new();
+	private readonly TExpectation _expectation;
 
 	public TestResultBuilder(TExpectation expectation)
 	{

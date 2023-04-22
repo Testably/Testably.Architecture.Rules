@@ -8,7 +8,8 @@ namespace Testably.Architecture.Testing;
 public static class ProjectExpectationExtensions
 {
 	/// <summary>
-	///     The project should not have dependencies on any project that starts with the <paramref name="assemblyNamePrefix" />.
+	///     The project should not have dependencies on any project that starts with the <paramref name="assemblyNamePrefix" />
+	///     .
 	/// </summary>
 	public static ITestResult<IProjectExpectation> ShouldNotHaveDependenciesOn(
 		this IProjectExpectation @this, string assemblyNamePrefix, bool ignoreCase = false)

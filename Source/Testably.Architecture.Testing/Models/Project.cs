@@ -7,6 +7,11 @@ namespace Testably.Architecture.Testing.Models;
 /// </summary>
 public class Project
 {
+	/// <summary>
+	///     The name of the project.
+	/// </summary>
+	public string Name => _assembly.GetName().Name ?? _assembly.ToString();
+
 	private readonly Assembly _assembly;
 
 	/// <summary>
@@ -17,9 +22,4 @@ public class Project
 	{
 		_assembly = assembly;
 	}
-
-	/// <summary>
-	///     The name of the project.
-	/// </summary>
-	public string Name => _assembly.GetName().Name ?? _assembly.ToString();
 }
