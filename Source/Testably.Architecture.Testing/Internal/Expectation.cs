@@ -5,14 +5,18 @@ namespace Testably.Architecture.Testing.Internal;
 
 internal class Expectation : IExpectation
 {
-    public IProjectExpectation AllLoadedProjects()
-    {
-        return new CompositeAssemblyContainer(AppDomain.CurrentDomain.GetAssemblies()
-         .Select(x => new AssemblyContainer(x)));
-    }
+	#region IExpectation Members
 
-    public IProjectExpectation ProjectContaining<T>()
-    {
-        return new AssemblyContainer(typeof(T).Assembly);
-    }
+	public IProjectExpectation AllLoadedProjects()
+	{
+		return new CompositeAssemblyContainer(AppDomain.CurrentDomain.GetAssemblies()
+			.Select(x => new AssemblyContainer(x)));
+	}
+
+	public IProjectExpectation ProjectContaining<TAssembly>()
+	{
+		return new AssemblyContainer(typeof(TAssembly).Assembly);
+	}
+
+	#endregion
 }
