@@ -15,3 +15,14 @@ public interface ITestResult
 	/// </summary>
 	bool IsSatisfied { get; }
 }
+
+/// <summary>
+///     The result of an architecture test.
+/// </summary>
+public interface ITestResult<out TExpectation> : ITestResult
+{
+	/// <summary>
+	///     Allows adding additional expectations to the final <see cref="ITestResult" />.
+	/// </summary>
+	TExpectation And { get; }
+}

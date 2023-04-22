@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Reflection;
 
 namespace Testably.Architecture.Testing.Internal;
 
@@ -7,15 +6,10 @@ internal class Expectation : IExpectation
 {
 	#region IExpectation Members
 
-	public IProjectExpectation AllLoadedProjects()
+	/// <inheritdoc cref="IExpectation.FromAssembly(Assembly[])" />
+	public IProjectExpectation FromAssembly(params Assembly[] assemblies)
 	{
-		return new CompositeAssemblyContainer(AppDomain.CurrentDomain.GetAssemblies()
-			.Select(x => new AssemblyContainer(x)));
-	}
-
-	public IProjectExpectation ProjectContaining<TAssembly>()
-	{
-		return new AssemblyContainer(typeof(TAssembly).Assembly);
+		return new AssembliesProjectExpectation(assemblies);
 	}
 
 	#endregion

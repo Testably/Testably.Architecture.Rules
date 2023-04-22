@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using Testably.Architecture.Testing.Models;
 
 namespace Testably.Architecture.Testing;
 
@@ -9,9 +9,9 @@ namespace Testably.Architecture.Testing;
 public interface IProjectExpectation
 {
 	/// <summary>
-	///     The project should only have dependencies on other projects, that satisfy the given <paramref name="condition" />.
+	///     The project should satisfy the given <paramref name="condition" />.
 	/// </summary>
-	ITestResult ShouldOnlyHaveDependenciesThatSatisfy(
-		Func<AssemblyName, bool> condition,
-		Func<AssemblyName, TestError>? errorGenerator = null);
+	ITestResult<IProjectExpectation> ShouldSatisfy(
+		Func<Project, bool> condition,
+		Func<Project, TestError>? errorGenerator = null);
 }

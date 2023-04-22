@@ -1,17 +1,22 @@
 ﻿namespace Testably.Architecture.Testing.Internal;
 
-internal class TestResult : ITestResult
+internal class TestResult<TExpectation> : ITestResult<TExpectation>
 {
-	public TestResult(TestError[] errors)
+	public TestResult(TExpectation expectation, TestError[] errors)
 	{
+		And = expectation;
 		Errors = errors;
 	}
 
-	#region ITestResult Members
+	#region ITestResult<TExpectation> Members
 
-	/// <inheritdoc />
+	/// <inheritdoc cref="ITestResult{TExpectation}.And" />
+	public TExpectation And { get; }
+
+	/// <inheritdoc cref="ITestResult.Errors" />
 	public TestError[] Errors { get; }
 
+	/// <inheritdoc cref="ITestResult.IsSatisfied" />
 	public bool IsSatisfied => Errors.Length == 0;
 
 	#endregion

@@ -2,7 +2,7 @@
 
 	<Import Project="$(MSBuildThisFileDirectory)/../Directory.Build.props"
 	        Condition="Exists('$(MSBuildThisFileDirectory)/../Directory.Build.props')" />
-	
+
 	<PropertyGroup>
 		<Authors>Testably</Authors>
 		<Copyright>Copyright (c) 2023 Testably</Copyright>
