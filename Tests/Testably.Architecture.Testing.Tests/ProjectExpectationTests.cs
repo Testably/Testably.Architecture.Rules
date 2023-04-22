@@ -8,8 +8,7 @@ namespace Testably.Architecture.Testing.Tests;
 
 public class ProjectExpectationTests
 {
-	[Theory]
-	[AutoData]
+	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeAssemblyName()
 	{
 		Assembly assembly = Assembly.GetExecutingAssembly();
