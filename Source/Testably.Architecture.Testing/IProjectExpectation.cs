@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using Testably.Architecture.Testing.Models;
 
 namespace Testably.Architecture.Testing;
 
@@ -12,6 +12,6 @@ public interface IProjectExpectation
 	///     The project should satisfy the given <paramref name="condition" />.
 	/// </summary>
 	ITestResult<IProjectExpectation> ShouldSatisfy(
-		Func<AssemblyName, bool> condition,
-		Func<AssemblyName, TestError>? errorGenerator = null);
+		Func<Project, bool> condition,
+		Func<Project, TestError>? errorGenerator = null);
 }
