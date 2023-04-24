@@ -31,6 +31,10 @@ public class Project
 		_assembly = assembly;
 	}
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> Name;
+
 	private ProjectReference[] GetProjectReferences()
 	{
 		return _assembly.GetReferencedAssemblies()

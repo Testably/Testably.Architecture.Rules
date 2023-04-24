@@ -14,7 +14,7 @@ public class ProjectExpectationTests
 	{
 		Assembly assembly = Assembly.GetExecutingAssembly();
 		string expectedAssemblyName = $"'{assembly.GetName().Name}'";
-		IProjectExpectation sut = Expect.That.FromAssembly(assembly);
+		IFilterableProjectExpectation sut = Expect.That.FromAssembly(assembly);
 
 		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => false);
 
@@ -26,7 +26,8 @@ public class ProjectExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
+		IFilterableProjectExpectation sut =
+			Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => false, _ => error);
 
@@ -38,10 +39,18 @@ public class ProjectExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		IProjectExpectation sut = Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
+		IFilterableProjectExpectation sut =
+			Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => true, _ => error);
 
 		result.Errors.Should().BeEmpty();
+	}
+
+	[Fact]
+	public void Which_ShouldFilter()
+	{
+		IFilterableProjectExpectation sut = Expect.That.AllLoadedProjects()
+			.Which(p => !p.Name.StartsWith("System"));
 	}
 }

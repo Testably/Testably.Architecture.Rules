@@ -1,4 +1,6 @@
 ﻿using FluentAssertions;
+using System.Linq;
+using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
 using Testably.Architecture.Testing.Tests.Helpers;
 using Xunit;
@@ -10,32 +12,39 @@ public class ProjectExpectationExtensionsTests
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_CaseSensitivity_ShouldDefaultToSensitive()
 	{
-		ProjectExpectationMock sut = new();
 		ProjectMock testProject = new("test.project",
 			new ProjectReferenceMock("Incorrect.Dependency"));
+		ProjectExpectation sut = new(new[]
+		{
+			testProject
+		});
 
-		sut.ShouldNotHaveDependenciesOn("iNCORRECT.dEPENDENCY");
+		ITestResult<IProjectExpectation> result =
+			sut.ShouldNotHaveDependenciesOn("iNCORRECT.dEPENDENCY");
 
-		bool result = sut.TestCondition(testProject);
-		result.Should().BeTrue();
+		result.IsSatisfied.Should().BeTrue();
 	}
 
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_ErrorsShouldIncludeNameOfAllFailedReferences()
 	{
-		ProjectExpectationMock sut = new();
 		ProjectMock testProject = new("test.project",
 			new ProjectReferenceMock("Correct.Dependency"),
 			new ProjectReferenceMock("Incorrect.Dependency.1"),
 			new ProjectReferenceMock("Incorrect.Dependency.2"),
 			new ProjectReferenceMock("Another.Correct.Dependency"));
+		ProjectExpectation sut = new(new[]
+		{
+			testProject
+		});
 
-		sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency");
+		ITestResult<IProjectExpectation> result =
+			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency");
 
-		bool result = sut.TestCondition(testProject);
-		result.Should().BeFalse();
+		result.IsSatisfied.Should().BeFalse();
 
-		TestError error = sut.TestErrorGenerator(testProject);
+		result.Errors.Length.Should().Be(1);
+		TestError error = result.Errors.Single();
 		error.Should().BeOfType<DependencyTestError>();
 		DependencyTestError dependencyTestError = (DependencyTestError)error;
 		dependencyTestError.Project.Should().Be(testProject);
@@ -49,14 +58,17 @@ public class ProjectExpectationExtensionsTests
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_WithDependencyStartingWithPrefix_ShouldReturnFalse()
 	{
-		ProjectExpectationMock sut = new();
 		ProjectMock testProject = new("test.project",
 			new ProjectReferenceMock("Incorrect.Dependency.xyz"));
+		ProjectExpectation sut = new(new[]
+		{
+			testProject
+		});
 
-		sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency");
+		ITestResult<IProjectExpectation> result =
+			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency");
 
-		bool result = sut.TestCondition(testProject);
-		result.Should().BeFalse();
+		result.IsSatisfied.Should().BeFalse();
 	}
 
 	[Theory]
@@ -65,26 +77,32 @@ public class ProjectExpectationExtensionsTests
 	public void ShouldNotHaveDependenciesOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
 		bool ignoreCase, bool expectedResult)
 	{
-		ProjectExpectationMock sut = new();
 		ProjectMock testProject = new("test.project",
 			new ProjectReferenceMock("Incorrect.Dependency"));
+		ProjectExpectation sut = new(new[]
+		{
+			testProject
+		});
 
-		sut.ShouldNotHaveDependenciesOn("iNCORRECT.dEPENDENCY", ignoreCase);
+		ITestResult<IProjectExpectation> result =
+			sut.ShouldNotHaveDependenciesOn("iNCORRECT.dEPENDENCY", ignoreCase);
 
-		bool result = sut.TestCondition(testProject);
-		result.Should().Be(expectedResult);
+		result.IsSatisfied.Should().Be(expectedResult);
 	}
 
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_WithoutDependencyStartingWithPrefix_ShouldReturnTrue()
 	{
-		ProjectExpectationMock sut = new();
 		ProjectMock testProject = new("test.project",
 			new ProjectReferenceMock("Incorrect.Dependency"));
+		ProjectExpectation sut = new(new[]
+		{
+			testProject
+		});
 
-		sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency.xyz");
+		ITestResult<IProjectExpectation> result =
+			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency.xyz");
 
-		bool result = sut.TestCondition(testProject);
-		result.Should().BeTrue();
+		result.IsSatisfied.Should().BeTrue();
 	}
 }

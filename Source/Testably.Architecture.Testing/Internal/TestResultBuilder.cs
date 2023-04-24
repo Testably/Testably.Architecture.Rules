@@ -21,6 +21,6 @@ internal class TestResultBuilder<TExpectation>
 
 	public ITestResult<TExpectation> Build()
 	{
-		return new TestResult<TExpectation>(_expectation, _errors.ToArray());
+		return new TestResult<TExpectation>(_expectation, _errors);
 	}
 }

@@ -10,5 +10,5 @@ public interface IExpectation
 	/// <summary>
 	///     Defines expectations on all loaded projects from the provided <paramref name="assemblies" />.
 	/// </summary>
-	IProjectExpectation FromAssembly(params Assembly[] assemblies);
+	IFilterableProjectExpectation FromAssembly(params Assembly[] assemblies);
 }
