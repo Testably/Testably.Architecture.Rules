@@ -2,6 +2,7 @@
 using FluentAssertions;
 using System.Linq;
 using System.Reflection;
+using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;

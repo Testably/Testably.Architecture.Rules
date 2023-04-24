@@ -1,5 +1,6 @@
 ﻿using System;
 using Testably.Architecture.Testing.Models;
+using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
 

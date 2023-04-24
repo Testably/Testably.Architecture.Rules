@@ -1,4 +1,6 @@
-﻿namespace Testably.Architecture.Testing.Internal;
+﻿using Testably.Architecture.Testing.TestErrors;
+
+namespace Testably.Architecture.Testing.Internal;
 
 internal class TestResult<TExpectation> : ITestResult<TExpectation>
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
