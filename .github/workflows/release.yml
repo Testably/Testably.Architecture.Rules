@@ -182,7 +182,7 @@ jobs:
         shell: bash
         run: |
           cd Tests
-          ../../tools/dotnet-stryker -f ../.github/stryker/Stryker.Config.Testing.json -v "${GITHUB_REF#refs/heads/}" -r "Dashboard" -r "cleartext"
+          ../../tools/dotnet-stryker -f ../.github/stryker/Stryker.Config.json -v "${GITHUB_REF#refs/heads/}" -r "Dashboard" -r "cleartext"
 
   deploy:
     name: Deploy
@@ -210,7 +210,7 @@ jobs:
       - name: Prepare README.md
         shell: bash
         run: |
-          for f in "README.md" "Docs/AccessControl.md" "Docs/Compression.md" "Docs/Interface.md" "Docs/Testing.md"
+          for f in "README.md"
           do
             echo "Processing $f" # always double quote "$f" filename
             # do something on $f
