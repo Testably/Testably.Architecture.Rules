@@ -158,31 +158,6 @@ jobs:
       - name: Run tests
         run: vstest.console.exe .\Build\Tests\Testably.Architecture.Testing.Tests\net48\Testably.Architecture.Testing.Tests.dll
 
-  test-examples:
-    name: Test (Examples)
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Tag current commit
-        shell: bash
-        run: |
-          version="${GITHUB_REF#refs/heads/release/}"
-          git tag "${version}"
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: |
-            6.0.x
-      - name: Build solution
-        run: dotnet build /p:NetCoreOnly=True
-      - name: Build example solution
-        run: dotnet build Examples /p:UseFileReferenceToTestablyLibraries=True --configuration "Release"
-      - name: Run example tests
-        run: dotnet test Examples --no-build
-
   stryker-ubuntu:
     name: Analyze quality of unit test coverage with .NET Stryker (Ubuntu)
     runs-on: ubuntu-latest
@@ -207,13 +182,13 @@ jobs:
         shell: bash
         run: |
           cd Tests
-          ../../tools/dotnet-stryker -f ../.github/stryker/Stryker.Config.Testing.json -v "${GITHUB_REF#refs/heads/}" -r "Dashboard" -r "cleartext"
+          ../../tools/dotnet-stryker -f ../.github/stryker/Stryker.Config.json -v "${GITHUB_REF#refs/heads/}" -r "Dashboard" -r "cleartext"
 
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
-    needs: [analyze, test-macos, test-ubuntu, test-windows, test-net-framework, test-examples]
+    needs: [analyze, test-macos, test-ubuntu, test-windows, test-net-framework]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
@@ -235,7 +210,7 @@ jobs:
       - name: Prepare README.md
         shell: bash
         run: |
-          for f in "README.md" "Docs/AccessControl.md" "Docs/Compression.md" "Docs/Interface.md" "Docs/Testing.md"
+          for f in "README.md"
           do
             echo "Processing $f" # always double quote "$f" filename
             # do something on $f
@@ -258,7 +233,7 @@ jobs:
   cleanup:
     name: Cleanup
     runs-on: ubuntu-latest
-    needs: [deploy, stryker-windows, stryker-ubuntu]
+    needs: [deploy, stryker-ubuntu]
     steps:
       - name: Checkout sources
         uses: actions/checkout@v3
