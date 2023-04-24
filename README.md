@@ -1,4 +1,5 @@
 ![Testably.Architecture.Testing](https://raw.githubusercontent.com/Testably/Testably.Architecture.Testing/main/Docs/Images/social-preview.png)  
+[![Nuget](https://img.shields.io/nuget/v/Testably.Architecture.Testing)](https://www.nuget.org/packages/Testably.Architecture.Testing)
 [![Build](https://github.com/Testably/Testably.Architecture.Testing/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/Testably.Architecture.Testing/actions/workflows/build.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5b9b2f79950447a69d69037b43acd590)](https://www.codacy.com/gh/Testably/Testably.Architecture.Testing/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Testably/Testably.Architecture.Testing&amp;utm_campaign=Badge_Grade)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_Testably.Architecture.Testing&branch=main&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_Testably.Architecture.Testing&branch=main)
