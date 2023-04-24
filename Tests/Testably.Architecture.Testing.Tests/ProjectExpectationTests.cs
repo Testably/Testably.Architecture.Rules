@@ -48,9 +48,16 @@ public class ProjectExpectationTests
 	}
 
 	[Fact]
-	public void Which_ShouldFilter()
+	public void Which_ShouldFilterOutProjects()
 	{
-		IFilterableProjectExpectation sut = Expect.That.AllLoadedProjects()
-			.Which(p => !p.Name.StartsWith("System"));
+		int allProjectCount =
+			Expect.That.AllLoadedProjects().ShouldSatisfy(_ => false).Errors.Length;
+		IFilterableProjectExpectation sut = Expect.That.AllLoadedProjects();
+
+		ITestResult<IProjectExpectation> errors = sut
+			.Which(p => !p.Name.StartsWith("System"))
+			.ShouldSatisfy(_ => false);
+
+		errors.Errors.Length.Should().BeLessThan(allProjectCount);
 	}
 }
