@@ -7,7 +7,7 @@
 /// </summary>
 public class TestError
 {
-	private readonly string _errorMessage;
+	private string _errorMessage;
 
 	/// <summary>
 	///     Creates an instance of <see cref="TestError" /> with the given <paramref name="errorMessage" />.
@@ -29,5 +29,14 @@ public class TestError
 	public override string ToString()
 	{
 		return _errorMessage;
+	}
+
+	/// <summary>
+	///     Updates the error message from derived <see cref="TestError" />s.
+	/// </summary>
+	/// <param name="errorMessage"></param>
+	protected void UpdateMessage(string errorMessage)
+	{
+		_errorMessage = errorMessage;
 	}
 }

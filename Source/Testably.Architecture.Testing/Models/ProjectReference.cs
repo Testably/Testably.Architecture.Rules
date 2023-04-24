@@ -22,4 +22,8 @@ public class ProjectReference
 	{
 		_assemblyName = assemblyName;
 	}
+
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> Name;
 }

@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Testing.TestErrors;
+﻿using System;
+using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
 
@@ -27,4 +28,10 @@ public interface ITestResult<out TExpectation> : ITestResult
 	///     Allows adding additional expectations to the final <see cref="ITestResult" />.
 	/// </summary>
 	TExpectation And { get; }
+
+	/// <summary>
+	///     Allows defining exceptions to expectations, by removing specific errors.
+	/// </summary>
+	/// <param name="predicate">Errors that match <paramref name="predicate" /> are allowed.</param>
+	ITestResult<TExpectation> Except(Func<TestError, bool> predicate);
 }

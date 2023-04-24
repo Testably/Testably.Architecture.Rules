@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.Models;
 using Testably.Architecture.Testing.TestErrors;
 
@@ -8,6 +10,12 @@ internal class ProjectExpectationMock : IProjectExpectation
 {
 	private Func<Project, bool>? _condition;
 	private Func<Project, TestError>? _errorGenerator;
+	private readonly Project[] _projects;
+
+	public ProjectExpectationMock(params Project[] projects)
+	{
+		_projects = projects;
+	}
 
 	#region IProjectExpectation Members
 
@@ -18,7 +26,7 @@ internal class ProjectExpectationMock : IProjectExpectation
 	{
 		_condition = condition;
 		_errorGenerator = errorGenerator;
-		return new DummyTestResult(this);
+		return new TestResult<ProjectExpectationMock>(this, new List<TestError>());
 	}
 
 	#endregion
@@ -38,28 +46,5 @@ internal class ProjectExpectationMock : IProjectExpectation
 		_errorGenerator ??= p =>
 			new TestError($"Mocked project '{p.Name}' does not satisfy the required condition");
 		return _errorGenerator.Invoke(project);
-	}
-
-	private class DummyTestResult : ITestResult<IProjectExpectation>
-	{
-		public DummyTestResult(IProjectExpectation projectExpectation)
-		{
-			And = projectExpectation;
-		}
-
-		#region ITestResult<IProjectExpectation> Members
-
-		/// <inheritdoc />
-		public IProjectExpectation And { get; }
-
-		/// <inheritdoc />
-		public TestError[] Errors
-			=> throw new NotSupportedException("Dummy test result should not be evaluated!");
-
-		/// <inheritdoc />
-		public bool IsSatisfied
-			=> throw new NotSupportedException("Dummy test result should not be evaluated!");
-
-		#endregion
 	}
 }
