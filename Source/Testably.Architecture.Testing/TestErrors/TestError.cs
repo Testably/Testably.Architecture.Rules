@@ -1,4 +1,4 @@
-﻿namespace Testably.Architecture.Testing;
+﻿namespace Testably.Architecture.Testing.TestErrors;
 
 /// <summary>
 ///     Basic error for architectural tests.

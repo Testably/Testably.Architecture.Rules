@@ -1,4 +1,7 @@
 ﻿using System.Globalization;
+using System.Linq;
+using Testably.Architecture.Testing.Models;
+using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
 
@@ -14,9 +17,13 @@ public static class ProjectExpectationExtensions
 	public static ITestResult<IProjectExpectation> ShouldNotHaveDependenciesOn(
 		this IProjectExpectation @this, string assemblyNamePrefix, bool ignoreCase = false)
 	{
-		return @this.ShouldSatisfy(a =>
-			a.Name?.StartsWith(assemblyNamePrefix,
-				ignoreCase,
-				CultureInfo.InvariantCulture) != true);
+		bool FailCondition(ProjectReference projectReference)
+			=> projectReference.Name.StartsWith(assemblyNamePrefix, ignoreCase,
+				CultureInfo.InvariantCulture);
+
+		return @this.ShouldSatisfy(
+			p => !p.ProjectReferences.Any(FailCondition),
+			p => new DependencyTestError(p,
+				p.ProjectReferences.Where(FailCondition).ToArray()));
 	}
 }

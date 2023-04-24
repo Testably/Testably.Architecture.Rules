@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Testably.Architecture.Testing.Models;
+using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
@@ -21,7 +22,8 @@ internal class AssembliesProjectExpectation : IProjectExpectation
 
 	/// <inheritdoc />
 	public ITestResult<IProjectExpectation> ShouldSatisfy(
-		Func<Project, bool> condition, Func<Project, TestError>? errorGenerator = null)
+		Func<Project, bool> condition,
+		Func<Project, TestError>? errorGenerator = null)
 	{
 		errorGenerator ??= p =>
 			new TestError($"Project '{p.Name}' does not satisfy the required condition");
