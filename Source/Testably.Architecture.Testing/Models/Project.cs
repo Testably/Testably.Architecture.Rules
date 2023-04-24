@@ -13,6 +13,9 @@ public class Project
 	/// </summary>
 	public virtual string Name => _assembly.GetName().Name ?? _assembly.ToString();
 
+	/// <summary>
+	///     The referenced projects that this project depends upon.
+	/// </summary>
 	public virtual ProjectReference[] ProjectReferences
 		=> _projectReferences ??= GetProjectReferences();
 
