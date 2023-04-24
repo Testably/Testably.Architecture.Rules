@@ -8,6 +8,9 @@ namespace Testably.Architecture.Testing;
 /// </summary>
 public static class ProjectTestResultExtensions
 {
+	/// <summary>
+	/// Defines an exception to rules by allowing the provided <paramref name="assemblyName"/>.
+	/// </summary>
 	public static ITestResult<IProjectExpectation> ExceptDependencyOn(
 		this ITestResult<IProjectExpectation> @this, string assemblyName, bool ignoreCase = false)
 	{
