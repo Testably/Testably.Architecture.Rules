@@ -19,7 +19,7 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 
 	#region IFilterableAssemblyExpectation Members
 
-	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy" />
+	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError}?)" />
 	public ITestResult<IAssemblyExpectation> ShouldSatisfy(
 		Func<Assembly, bool> condition,
 		Func<Assembly, TestError>? errorGenerator = null)
