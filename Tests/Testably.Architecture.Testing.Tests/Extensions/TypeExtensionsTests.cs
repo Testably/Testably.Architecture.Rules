@@ -88,11 +88,13 @@ public sealed class TypeExtensionsTests
 		// ReSharper disable once UnusedMember.Local
 		public void Method1()
 		{
+			throw new NotImplementedException();
 		}
 
 		// ReSharper disable once UnusedMember.Local
 		public void Method2()
 		{
+			throw new NotImplementedException();
 		}
 	}
 
