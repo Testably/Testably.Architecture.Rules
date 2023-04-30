@@ -39,7 +39,7 @@ public class ProjectExpectationExtensionsTests
 		});
 
 		ITestResult<IProjectExpectation> result =
-			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency");
+			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency*");
 
 		result.IsSatisfied.Should().BeFalse();
 
@@ -66,7 +66,7 @@ public class ProjectExpectationExtensionsTests
 		});
 
 		ITestResult<IProjectExpectation> result =
-			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency");
+			sut.ShouldNotHaveDependenciesOn("Incorrect.Dependency*");
 
 		result.IsSatisfied.Should().BeFalse();
 	}

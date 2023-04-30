@@ -38,9 +38,9 @@ public class DependencyTestError : TestError
 		Project = project;
 	}
 
-	internal bool Except(Func<ProjectReference, bool> predicate)
+	internal bool Except(Func<Project, ProjectReference, bool> predicate)
 	{
-		_projectReferences.RemoveAll(r => predicate(r));
+		_projectReferences.RemoveAll(r => predicate(Project, r));
 		UpdateMessage(CreateMessage(Project, ProjectReferences));
 		return _projectReferences.Count == 0;
 	}
