@@ -2,7 +2,7 @@
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class WildcardHelpers
+internal static class WildcardHelpers
 {
 	/// <remarks>
 	///     <see href="https://stackoverflow.com/a/30300521" />
