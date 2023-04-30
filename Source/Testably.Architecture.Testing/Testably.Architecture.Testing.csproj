@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="$(SolutionDir)README.md" Pack="true" PackagePath="/Docs/" Link="Docs\README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Update="Extensions.*.cs">
 			<DependentUpon>Extensions.cs</DependentUpon>
 		</Compile>
