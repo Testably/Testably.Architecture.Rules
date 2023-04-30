@@ -13,6 +13,11 @@ public static partial class Extensions
 		this IExpectation @this)
 		=> @this.Assemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+	/// <summary>
+	///     Defines expectations on all types from all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
+	/// </summary>
+	/// <param name="this"></param>
+	/// <returns></returns>
 	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this) =>
 		@this.Types(AppDomain.CurrentDomain.GetAssemblies()
 		   .SelectMany(a => a.GetTypes())

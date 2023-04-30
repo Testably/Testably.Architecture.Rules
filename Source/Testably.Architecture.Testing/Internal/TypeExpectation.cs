@@ -18,7 +18,7 @@ internal class TypeExpectation : IFilterableTypeExpectation
 
 	#region IFilterableTypeExpectation Members
 
-	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
+	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy" />
 	public ITestResult<ITypeExpectation> ShouldSatisfy(
 		Func<Type, bool> condition,
 		Func<Type, TestError>? errorGenerator = null)
