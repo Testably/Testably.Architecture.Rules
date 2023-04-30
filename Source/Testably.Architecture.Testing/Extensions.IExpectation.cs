@@ -7,9 +7,9 @@ namespace Testably.Architecture.Testing;
 public static partial class Extensions
 {
 	/// <summary>
-	///     Defines expectations on all loaded projects from the current <see cref="System.AppDomain.CurrentDomain" />
+	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
 	/// </summary>
-	public static IFilterableAssemblyExpectation AllLoadedProjects(
+	public static IFilterableAssemblyExpectation AllLoadedAssemblies(
 		this IExpectation @this)
 		=> @this.Assemblies(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -19,14 +19,14 @@ public static partial class Extensions
 		   .ToArray());
 
 	/// <summary>
-	///     Defines expectations on the project from the assembly that contains the <typeparamref name="TAssembly" />.
+	///     Defines expectations on the assembly that contains the <typeparamref name="TAssembly" />.
 	/// </summary>
-	public static IFilterableAssemblyExpectation ProjectContaining<TAssembly>(
+	public static IFilterableAssemblyExpectation AssemblyContaining<TAssembly>(
 		this IExpectation @this)
 		=> @this.Assemblies(typeof(TAssembly).Assembly);
 
 	/// <summary>
-	///     Defines expectations on all loaded projects that match the <paramref name="wildcardCondition" />.
+	///     Defines expectations on all loaded assemblies that match the <paramref name="wildcardCondition" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectation" />.</param>
 	/// <param name="wildcardCondition">
@@ -35,7 +35,7 @@ public static partial class Extensions
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
-	public static IFilterableAssemblyExpectation ProjectsMatching(
+	public static IFilterableAssemblyExpectation AssembliesMatching(
 		this IExpectation @this,
 		string wildcardCondition,
 		bool ignoreCase = false)

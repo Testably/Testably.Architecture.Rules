@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public class ProjectExpectationTests
+public class AssemblyExpectationTests
 {
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeAssemblyName()
@@ -50,16 +50,16 @@ public class ProjectExpectationTests
 	}
 
 	[Fact]
-	public void Which_ShouldFilterOutProjects()
+	public void Which_ShouldFilterOutAssemblies()
 	{
-		int allProjectCount =
-			Expect.That.AllLoadedProjects().ShouldSatisfy(_ => false).Errors.Length;
-		IFilterableAssemblyExpectation sut = Expect.That.AllLoadedProjects();
+		int allAssembliesCount =
+			Expect.That.AllLoadedAssemblies().ShouldSatisfy(_ => false).Errors.Length;
+		IFilterableAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
 		ITestResult<IAssemblyExpectation> errors = sut
 		   .Which(p => p.GetName().Name?.StartsWith("System") != true)
 		   .ShouldSatisfy(_ => false);
 
-		errors.Errors.Length.Should().BeLessThan(allProjectCount);
+		errors.Errors.Length.Should().BeLessThan(allAssembliesCount);
 	}
 }

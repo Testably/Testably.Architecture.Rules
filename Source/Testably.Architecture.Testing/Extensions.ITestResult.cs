@@ -25,7 +25,7 @@ public static partial class Extensions
 		return @this.ExceptDependencyOn((assembly, assemblyName) =>
 			assemblyName.Name != null &&
 			Regex.IsMatch(assemblyName.Name,
-				regex.Replace("{Project}", assembly.GetName().Name)));
+				regex.Replace("{Assembly}", assembly.GetName().Name)));
 	}
 
 	/// <summary>

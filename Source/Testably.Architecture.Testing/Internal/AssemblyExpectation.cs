@@ -24,14 +24,14 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 		Func<Assembly, bool> condition,
 		Func<Assembly, TestError>? errorGenerator = null)
 	{
-		errorGenerator ??= p =>
+		errorGenerator ??= assembly =>
 			new TestError(
-				$"Project '{p.GetName().Name}' does not satisfy the required condition");
-		foreach (Assembly project in _assemblies)
+				$"Assembly '{assembly.GetName().Name}' does not satisfy the required condition");
+		foreach (Assembly assembly in _assemblies)
 		{
-			if (!condition(project))
+			if (!condition(assembly))
 			{
-				TestError error = errorGenerator(project);
+				TestError error = errorGenerator(assembly);
 				_testResultBuilder.Add(error);
 			}
 		}

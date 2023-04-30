@@ -8,7 +8,7 @@ namespace Testably.Architecture.Testing;
 public static partial class Extensions
 {
 	/// <summary>
-	///     The project should not have dependencies on any project that matches
+	///     The assembly should not have dependencies on any assembly that matches
 	///     the <paramref name="wildcardCondition" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IAssemblyExpectation" />.</param>
@@ -24,10 +24,10 @@ public static partial class Extensions
 	{
 		string regex = WildcardToRegular(wildcardCondition, ignoreCase);
 
-		bool FailCondition(AssemblyName projectReference)
+		bool FailCondition(AssemblyName referencedAssembly)
 		{
-			return projectReference.Name != null &&
-			       Regex.IsMatch(projectReference.Name, regex);
+			return referencedAssembly.Name != null &&
+			       Regex.IsMatch(referencedAssembly.Name, regex);
 		}
 
 		return @this.ShouldSatisfy(
