@@ -19,8 +19,6 @@ internal class TestResultBuilder<TExpectation>
 		return this;
 	}
 
-	public ITestResult<TExpectation> Build()
-	{
-		return new TestResult<TExpectation>(_expectation, _errors);
-	}
+	public ITestResult<TExpectation> Build() =>
+		new TestResult<TExpectation>(_expectation, _errors);
 }

@@ -20,23 +20,14 @@ public class TestError
 	/// <summary>
 	///     Implicitly converts a <see cref="TestError" /> to string by returning the error message.
 	/// </summary>
-	public static implicit operator string(TestError error)
-	{
-		return error._errorMessage;
-	}
+	public static implicit operator string(TestError error) => error._errorMessage;
 
 	/// <inheritdoc cref="object.ToString()" />
-	public override string ToString()
-	{
-		return _errorMessage;
-	}
+	public override string ToString() => _errorMessage;
 
 	/// <summary>
 	///     Updates the error message from derived <see cref="TestError" />s.
 	/// </summary>
 	/// <param name="errorMessage"></param>
-	protected void UpdateMessage(string errorMessage)
-	{
-		_errorMessage = errorMessage;
-	}
+	protected void UpdateMessage(string errorMessage) => _errorMessage = errorMessage;
 }

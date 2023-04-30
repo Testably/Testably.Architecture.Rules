@@ -14,9 +14,9 @@ public class ProjectExpectationTests
 	{
 		Assembly assembly = Assembly.GetExecutingAssembly();
 		string expectedAssemblyName = $"'{assembly.GetName().Name}'";
-		IFilterableProjectExpectation sut = Expect.That.FromAssembly(assembly);
+		IFilterableAssemblyExpectation sut = Expect.That.Assemblies(assembly);
 
-		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => false);
+		ITestResult<IAssemblyExpectation> result = sut.ShouldSatisfy(_ => false);
 
 		TestError error = result.Errors.Single();
 		error.ToString().Should().Contain(expectedAssemblyName);
@@ -26,10 +26,11 @@ public class ProjectExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		IFilterableProjectExpectation sut =
-			Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
+		IFilterableAssemblyExpectation sut =
+			Expect.That.Assemblies(Assembly.GetExecutingAssembly());
 
-		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => false, _ => error);
+		ITestResult<IAssemblyExpectation> result =
+			sut.ShouldSatisfy(_ => false, _ => error);
 
 		result.Errors.Should().NotBeEmpty();
 		result.Errors.Single().Should().Be(error);
@@ -39,10 +40,11 @@ public class ProjectExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		IFilterableProjectExpectation sut =
-			Expect.That.FromAssembly(Assembly.GetExecutingAssembly());
+		IFilterableAssemblyExpectation sut =
+			Expect.That.Assemblies(Assembly.GetExecutingAssembly());
 
-		ITestResult<IProjectExpectation> result = sut.ShouldSatisfy(_ => true, _ => error);
+		ITestResult<IAssemblyExpectation>
+			result = sut.ShouldSatisfy(_ => true, _ => error);
 
 		result.Errors.Should().BeEmpty();
 	}
@@ -52,11 +54,11 @@ public class ProjectExpectationTests
 	{
 		int allProjectCount =
 			Expect.That.AllLoadedProjects().ShouldSatisfy(_ => false).Errors.Length;
-		IFilterableProjectExpectation sut = Expect.That.AllLoadedProjects();
+		IFilterableAssemblyExpectation sut = Expect.That.AllLoadedProjects();
 
-		ITestResult<IProjectExpectation> errors = sut
-			.Which(p => !p.Name.StartsWith("System"))
-			.ShouldSatisfy(_ => false);
+		ITestResult<IAssemblyExpectation> errors = sut
+		   .Which(p => p.GetName().Name?.StartsWith("System") != true)
+		   .ShouldSatisfy(_ => false);
 
 		errors.Errors.Length.Should().BeLessThan(allProjectCount);
 	}

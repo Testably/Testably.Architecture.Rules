@@ -11,6 +11,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Extensions.*.cs">
+			<DependentUpon>Extensions.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 		<AssemblyAttribute Include="System.CLSCompliant">
 			<_Parameter1>true</_Parameter1>
 			<_Parameter1_TypeName>System.Boolean</_Parameter1_TypeName>

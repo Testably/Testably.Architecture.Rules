@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace Testably.Architecture.Testing;
 
@@ -8,7 +9,12 @@ namespace Testably.Architecture.Testing;
 public interface IExpectation
 {
 	/// <summary>
-	///     Defines expectations on all loaded projects from the provided <paramref name="assemblies" />.
+	///     Defines expectations on all given <paramref name="assemblies" />.
 	/// </summary>
-	IFilterableProjectExpectation FromAssembly(params Assembly[] assemblies);
+	IFilterableAssemblyExpectation Assemblies(params Assembly[] assemblies);
+
+	/// <summary>
+	///     Defines expectations on all given <paramref name="types" />.
+	/// </summary>
+	IFilterableTypeExpectation Types(params Type[] types);
 }
