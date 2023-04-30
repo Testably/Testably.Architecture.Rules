@@ -4,6 +4,9 @@ namespace Testably.Architecture.Testing.Internal;
 
 internal class WildcardHelpers
 {
+	/// <remarks>
+	///     <see href="https://stackoverflow.com/a/30300521" />
+	/// </remarks>
 	internal static string WildcardToRegular(string value, bool ignoreCase)
 	{
 		string regex = "^" +
