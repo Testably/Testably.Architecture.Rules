@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Testably.Architecture.Testing.Models;
+using System.Reflection;
 
 namespace Testably.Architecture.Testing.TestErrors;
 
@@ -11,60 +11,61 @@ namespace Testably.Architecture.Testing.TestErrors;
 public class DependencyTestError : TestError
 {
 	/// <summary>
-	///     The <see cref="Models.Project" /> which has the incorrect dependency.
+	///     The <see cref="System.Reflection.Assembly" /> which has the incorrect dependency.
 	/// </summary>
-	public Project Project { get; }
+	public Assembly Assembly { get; }
 
 	/// <summary>
-	///     The <see cref="ProjectReference" />s that are incorrect in the <see cref="Project" />.
+	///     The <see cref="Assembly.GetReferencedAssemblies()" /> that are incorrect.
 	/// </summary>
-	public ProjectReference[] ProjectReferences
-		=> _projectReferences.ToArray();
+	public AssemblyName[] AssemblyReferences
+		=> _referencedAssemblies.ToArray();
 
-	private readonly List<ProjectReference> _projectReferences;
+	private readonly List<AssemblyName> _referencedAssemblies;
 
 	/// <summary>
 	///     Initializes a new instance of <see cref="DependencyTestError" />.
 	/// </summary>
-	/// <param name="project">The <see cref="Models.Project" /> which has the incorrect dependency.</param>
-	/// <param name="projectReferences">
-	///     The <see cref="ProjectReference" />s that are incorrect in the
-	///     <paramref name="project" />.
+	/// <param name="assembly">The <see cref="System.Reflection.Assembly" /> which has the incorrect dependency.</param>
+	/// <param name="assemblyReferences">
+	///     The <see cref="Assembly.GetReferencedAssemblies()" /> that are incorrect in the <paramref name="assembly" />.
 	/// </param>
-	public DependencyTestError(Project project, ProjectReference[] projectReferences)
-		: base(CreateMessage(project, projectReferences))
+	public DependencyTestError(Assembly assembly, AssemblyName[] assemblyReferences)
+		: base(CreateMessage(assembly, assemblyReferences))
 	{
-		_projectReferences = projectReferences.ToList();
-		Project = project;
+		_referencedAssemblies = assemblyReferences.ToList();
+		Assembly = assembly;
 	}
 
-	internal bool Except(Func<Project, ProjectReference, bool> predicate)
+	internal bool Except(Func<Assembly, AssemblyName, bool> predicate)
 	{
-		_projectReferences.RemoveAll(r => predicate(Project, r));
-		UpdateMessage(CreateMessage(Project, ProjectReferences));
-		return _projectReferences.Count == 0;
+		_referencedAssemblies.RemoveAll(r => predicate(Assembly, r));
+		UpdateMessage(CreateMessage(Assembly, AssemblyReferences));
+		return _referencedAssemblies.Count == 0;
 	}
 
 	/// <summary>
 	///     Creates the message for the underlying <see cref="TestError" />.
 	/// </summary>
-	private static string CreateMessage(Project project, ProjectReference[] projectReferences)
+	private static string CreateMessage(Assembly assembly,
+		AssemblyName[] assemblyReferences)
 	{
-		if (projectReferences.Length == 0)
+		if (assemblyReferences.Length == 0)
 		{
-			return $"Project '{project.Name}' has no incorrect references.";
+			return $"Assembly '{assembly.GetName().Name}' has no incorrect references.";
 		}
 
-		if (projectReferences.Length == 1)
+		if (assemblyReferences.Length == 1)
 		{
 			return
-				$"Project '{project.Name}' has an incorrect reference on '{projectReferences.Select(x => x.Name).Single()}'.";
+				$"Assembly '{assembly.GetName().Name}' has an incorrect reference on '{assemblyReferences.Select(x => x.Name).Single()}'.";
 		}
 
-		List<string> references = projectReferences.Select(x => x.Name).OrderBy(x => x).ToList();
+		List<string> references = assemblyReferences.Select(x => x.Name)
+			.Where(x => x != null).OrderBy(x => x).ToList()!;
 		string lastReference = references.Last();
 		references.Remove(lastReference);
 		return
-			$"Project '{project.Name}' has incorrect references on '{string.Join("', '", references)}' and '{lastReference}'.";
+			$"Assembly '{assembly.GetName().Name}' has incorrect references on '{string.Join("', '", references)}' and '{lastReference}'.";
 	}
 }

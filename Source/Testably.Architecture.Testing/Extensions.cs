@@ -1,8 +1,11 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Testably.Architecture.Testing.Internal;
+namespace Testably.Architecture.Testing;
 
-internal static class WildcardHelpers
+/// <summary>
+///     Extension methods for architecture testing
+/// </summary>
+public static partial class Extensions
 {
 	/// <remarks>
 	///     <see href="https://stackoverflow.com/a/30300521" />
