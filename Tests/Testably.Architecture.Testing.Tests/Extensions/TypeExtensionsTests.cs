@@ -74,10 +74,15 @@ public sealed class TypeExtensionsTests
 
 	private class DummyAttribute : Attribute
 	{
-		public int Value { get; set; }
+		public int Value { get; }
+
+		public DummyAttribute(int value)
+		{
+			Value = value;
+		}
 	}
 
-	[Dummy(Value = 1)]
+	[Dummy(1)]
 	private class TestClass1
 	{
 		// ReSharper disable once UnusedMember.Local
@@ -93,16 +98,18 @@ public sealed class TypeExtensionsTests
 
 	private class TestClass2
 	{
-		[Dummy(Value = 1)]
+		[Dummy(1)]
 		// ReSharper disable once UnusedMember.Local
 		public void Method1()
 		{
+			throw new NotImplementedException();
 		}
 
-		[Dummy(Value = 2)]
+		[Dummy(2)]
 		// ReSharper disable once UnusedMember.Local
 		public void Method2()
 		{
+			throw new NotImplementedException();
 		}
 	}
 }

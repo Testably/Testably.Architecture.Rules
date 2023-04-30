@@ -41,20 +41,27 @@ public sealed class MethodInfoTests
 
 	private class DummyAttribute : Attribute
 	{
-		public int Value { get; set; }
+		public int Value { get; }
+
+		public DummyAttribute(int value)
+		{
+			Value = value;
+		}
 	}
 
 	private class TestClass
 	{
-		[Dummy(Value = 1)]
+		[Dummy(1)]
 		// ReSharper disable once UnusedMember.Local
 		public void Method1()
 		{
+			throw new NotImplementedException();
 		}
 
 		// ReSharper disable once UnusedMember.Local
 		public void Method2()
 		{
+			throw new NotImplementedException();
 		}
 	}
 }
