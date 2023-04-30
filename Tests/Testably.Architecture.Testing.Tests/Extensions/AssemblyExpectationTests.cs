@@ -28,7 +28,7 @@ public class AssemblyExpectationTests
 		string[] expectedReferences = testAssembly.GetReferencedAssemblies()
 			.Select(x => x.FullName)
 			.ToArray();
-		IFilterableAssemblyExpectation sut = Expect.That.Assemblies(testAssembly);
+		IFilterableAssemblyExpectation sut = Expect.That.Assembly(testAssembly);
 
 		ITestResult<IAssemblyExpectation> result =
 			sut.ShouldNotHaveDependenciesOn("*");

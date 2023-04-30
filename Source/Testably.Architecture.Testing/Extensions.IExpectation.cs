@@ -11,7 +11,7 @@ public static partial class Extensions
 	/// </summary>
 	public static IFilterableAssemblyExpectation AllLoadedAssemblies(
 		this IExpectation @this)
-		=> @this.Assemblies(AppDomain.CurrentDomain.GetAssemblies());
+		=> @this.Assembly(AppDomain.CurrentDomain.GetAssemblies());
 
 	/// <summary>
 	///     Defines expectations on all types from all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
@@ -19,7 +19,7 @@ public static partial class Extensions
 	/// <param name="this"></param>
 	/// <returns></returns>
 	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this) =>
-		@this.Types(AppDomain.CurrentDomain.GetAssemblies()
+		@this.Type(AppDomain.CurrentDomain.GetAssemblies()
 		   .SelectMany(a => a.GetTypes())
 		   .ToArray());
 
@@ -28,7 +28,7 @@ public static partial class Extensions
 	/// </summary>
 	public static IFilterableAssemblyExpectation AssemblyContaining<TAssembly>(
 		this IExpectation @this)
-		=> @this.Assemblies(typeof(TAssembly).Assembly);
+		=> @this.Assembly(typeof(TAssembly).Assembly);
 
 	/// <summary>
 	///     Defines expectations on all loaded assemblies that match the <paramref name="wildcardCondition" />.
@@ -47,7 +47,7 @@ public static partial class Extensions
 	{
 		string regex = WildcardToRegular(wildcardCondition, ignoreCase);
 
-		return @this.Assemblies(AppDomain.CurrentDomain.GetAssemblies()
+		return @this.Assembly(AppDomain.CurrentDomain.GetAssemblies()
 		   .Where(a => Regex.IsMatch(a.GetName().Name ?? a.ToString(), regex))
 		   .ToArray());
 	}

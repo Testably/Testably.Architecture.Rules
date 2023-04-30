@@ -7,12 +7,12 @@ internal class Expectation : IExpectation
 {
 	#region IExpectation Members
 
-	/// <inheritdoc cref="IExpectation.Assemblies" />
-	public IFilterableAssemblyExpectation Assemblies(params Assembly[] assemblies) =>
+	/// <inheritdoc cref="IExpectation.Assembly" />
+	public IFilterableAssemblyExpectation Assembly(params Assembly[] assemblies) =>
 		new AssemblyExpectation(assemblies);
 
-	/// <inheritdoc cref="IExpectation.Types" />
-	public IFilterableTypeExpectation Types(params Type[] types) =>
+	/// <inheritdoc cref="IExpectation.Type" />
+	public IFilterableTypeExpectation Type(params Type[] types) =>
 		new TypeExpectation(types);
 
 	#endregion

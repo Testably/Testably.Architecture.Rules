@@ -13,7 +13,7 @@ public class TestResultTests
 	public void And_FirstFailed_ShouldIncludeOnlyFirstError(
 		TestError error1, TestError error2)
 	{
-		IAssemblyExpectation sut = Expect.That.Assemblies(Assembly.GetExecutingAssembly());
+		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
 		   .ShouldSatisfy(_ => false, _ => error1).And
@@ -29,7 +29,7 @@ public class TestResultTests
 	[AutoData]
 	public void And_NoneFailed_ShouldBeEmpty(TestError error1, TestError error2)
 	{
-		IAssemblyExpectation sut = Expect.That.Assemblies(Assembly.GetExecutingAssembly());
+		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
 		   .ShouldSatisfy(_ => true, _ => error1).And
@@ -44,7 +44,7 @@ public class TestResultTests
 	public void And_SecondFailed_ShouldIncludeOnlySecondError(
 		TestError error1, TestError error2)
 	{
-		IAssemblyExpectation sut = Expect.That.Assemblies(Assembly.GetExecutingAssembly());
+		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
 		   .ShouldSatisfy(_ => true, _ => error1).And
@@ -60,7 +60,7 @@ public class TestResultTests
 	[AutoData]
 	public void And_ShouldIncludeMultipleErrors(TestError error1, TestError error2)
 	{
-		IAssemblyExpectation sut = Expect.That.Assemblies(Assembly.GetExecutingAssembly());
+		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
 		   .ShouldSatisfy(_ => false, _ => error1).And

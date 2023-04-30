@@ -14,7 +14,7 @@ public class AssemblyExpectationTests
 	{
 		Assembly assembly = Assembly.GetExecutingAssembly();
 		string expectedAssemblyName = $"'{assembly.GetName().Name}'";
-		IFilterableAssemblyExpectation sut = Expect.That.Assemblies(assembly);
+		IFilterableAssemblyExpectation sut = Expect.That.Assembly(assembly);
 
 		ITestResult<IAssemblyExpectation> result = sut.ShouldSatisfy(_ => false);
 
@@ -27,7 +27,7 @@ public class AssemblyExpectationTests
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
 		IFilterableAssemblyExpectation sut =
-			Expect.That.Assemblies(Assembly.GetExecutingAssembly());
+			Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result =
 			sut.ShouldSatisfy(_ => false, _ => error);
@@ -41,7 +41,7 @@ public class AssemblyExpectationTests
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
 		IFilterableAssemblyExpectation sut =
-			Expect.That.Assemblies(Assembly.GetExecutingAssembly());
+			Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation>
 			result = sut.ShouldSatisfy(_ => true, _ => error);
