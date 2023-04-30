@@ -19,7 +19,9 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 
 	#region IFilterableAssemblyExpectation Members
 
+#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError}?)" />
+#pragma warning restore CS1574
 	public ITestResult<IAssemblyExpectation> ShouldSatisfy(
 		Func<Assembly, bool> condition,
 		Func<Assembly, TestError>? errorGenerator = null)

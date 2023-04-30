@@ -18,7 +18,9 @@ internal class TypeExpectation : IFilterableTypeExpectation
 
 	#region IFilterableTypeExpectation Members
 
+	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError}?)" />
+	#pragma warning restore CS1574
 	public ITestResult<ITypeExpectation> ShouldSatisfy(
 		Func<Type, bool> condition,
 		Func<Type, TestError>? errorGenerator = null)
