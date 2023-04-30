@@ -1,5 +1,6 @@
-﻿using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
+using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.Models;
 using Testably.Architecture.Testing.TestErrors;
 
@@ -11,15 +12,26 @@ namespace Testably.Architecture.Testing;
 public static class ProjectExpectationExtensions
 {
 	/// <summary>
-	///     The project should not have dependencies on any project that starts
-	///     with the <paramref name="assemblyNamePrefix" />.
+	///     The project should not have dependencies on any project that matches
+	///     the <paramref name="wildcardCondition" />.
 	/// </summary>
+	/// <param name="this">The <see cref="IProjectExpectation" />.</param>
+	/// <param name="wildcardCondition">
+	///     The wildcard condition.
+	///     <para />
+	///     Supports * to match zero or more characters and ? to match exactly one character.
+	/// </param>
+	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
 	public static ITestResult<IProjectExpectation> ShouldNotHaveDependenciesOn(
-		this IProjectExpectation @this, string assemblyNamePrefix, bool ignoreCase = false)
+		this IProjectExpectation @this, string wildcardCondition,
+		bool ignoreCase = false)
 	{
+		string regex = WildcardHelpers.WildcardToRegular(wildcardCondition, ignoreCase);
+
 		bool FailCondition(ProjectReference projectReference)
-			=> projectReference.Name.StartsWith(assemblyNamePrefix, ignoreCase,
-				CultureInfo.InvariantCulture);
+		{
+			return Regex.IsMatch(projectReference.Name, regex);
+		}
 
 		return @this.ShouldSatisfy(
 			p => !p.ProjectReferences.Any(FailCondition),

@@ -23,7 +23,7 @@ public class ProjectTestResultExtensionsTests
 		});
 
 		ITestResult<IProjectExpectation> result = sut
-			.ShouldNotHaveDependenciesOn("Incorrect.Dependency")
+			.ShouldNotHaveDependenciesOn("Incorrect.Dependency*")
 			.ExceptDependencyOn("Incorrect.Dependency.1");
 
 		result.IsSatisfied.Should().BeFalse();

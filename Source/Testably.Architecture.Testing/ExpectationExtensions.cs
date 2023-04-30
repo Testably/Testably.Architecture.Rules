@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Testably.Architecture.Testing.Internal;
 
 namespace Testably.Architecture.Testing;
 
@@ -19,4 +22,26 @@ public static class ExpectationExtensions
 	public static IFilterableProjectExpectation ProjectContaining<TAssembly>(
 		this IExpectation @this)
 		=> @this.FromAssembly(typeof(TAssembly).Assembly);
+
+	/// <summary>
+	///     Defines expectations on all loaded projects that match the <paramref name="wildcardCondition" />.
+	/// </summary>
+	/// <param name="this">The <see cref="IExpectation" />.</param>
+	/// <param name="wildcardCondition">
+	///     The wildcard condition.
+	///     <para />
+	///     Supports * to match zero or more characters and ? to match exactly one character.
+	/// </param>
+	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
+	public static IFilterableProjectExpectation Projects(
+		this IExpectation @this,
+		string wildcardCondition,
+		bool ignoreCase = false)
+	{
+		string regex = WildcardHelpers.WildcardToRegular(wildcardCondition, ignoreCase);
+
+		return @this.FromAssembly(AppDomain.CurrentDomain.GetAssemblies()
+		   .Where(a => Regex.IsMatch(a.GetName().Name ?? a.ToString(), regex))
+		   .ToArray());
+	}
 }
