@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.Extensions;
 
-public class TestResultTests
+public sealed class TestResultExtensionsTests
 {
 	[Fact]
 	public void ExceptDependencyOn_WhenFilteringAllErrors_ShouldReturnSuccess()
