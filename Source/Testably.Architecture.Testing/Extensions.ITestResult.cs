@@ -21,11 +21,15 @@ public static partial class Extensions
 		this ITestResult<IAssemblyExpectation> @this, string wildcardCondition,
 		bool ignoreCase = false)
 	{
-		string regex = WildcardToRegular(wildcardCondition, ignoreCase);
+		RegexOptions options = ignoreCase
+			? RegexOptions.IgnoreCase
+			: RegexOptions.None;
+		string regex = WildcardToRegular(wildcardCondition);
 		return @this.ExceptDependencyOn((assembly, assemblyName) =>
 			assemblyName.Name != null &&
 			Regex.IsMatch(assemblyName.Name,
-				regex.Replace("{Assembly}", assembly.GetName().Name)));
+				regex.Replace("{Assembly}", assembly.GetName().Name),
+				options));
 	}
 
 	/// <summary>

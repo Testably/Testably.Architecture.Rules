@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public class TestErrorTests
+public sealed class TestErrorTests
 {
 	[Theory]
 	[AutoData]

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public class AssemblyExpectationTests
+public sealed class AssemblyExpectationTests
 {
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeAssemblyName()

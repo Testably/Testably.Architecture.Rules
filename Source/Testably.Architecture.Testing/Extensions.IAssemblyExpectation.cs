@@ -22,12 +22,15 @@ public static partial class Extensions
 		this IAssemblyExpectation @this, string wildcardCondition,
 		bool ignoreCase = false)
 	{
-		string regex = WildcardToRegular(wildcardCondition, ignoreCase);
+		RegexOptions options = ignoreCase
+			? RegexOptions.IgnoreCase
+			: RegexOptions.None;
+		string regex = WildcardToRegular(wildcardCondition);
 
 		bool FailCondition(AssemblyName referencedAssembly)
 		{
 			return referencedAssembly.Name != null &&
-			       Regex.IsMatch(referencedAssembly.Name, regex);
+			       Regex.IsMatch(referencedAssembly.Name, regex, options);
 		}
 
 		return @this.ShouldSatisfy(

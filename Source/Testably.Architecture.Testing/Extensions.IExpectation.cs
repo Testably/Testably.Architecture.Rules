@@ -45,10 +45,13 @@ public static partial class Extensions
 		string wildcardCondition,
 		bool ignoreCase = false)
 	{
-		string regex = WildcardToRegular(wildcardCondition, ignoreCase);
+		RegexOptions options = ignoreCase
+			? RegexOptions.IgnoreCase
+			: RegexOptions.None;
+		string regex = WildcardToRegular(wildcardCondition);
 
 		return @this.Assembly(AppDomain.CurrentDomain.GetAssemblies()
-		   .Where(a => Regex.IsMatch(a.GetName().Name ?? a.ToString(), regex))
+		   .Where(a => Regex.IsMatch(a.GetName().Name ?? a.ToString(), regex, options))
 		   .ToArray());
 	}
 }

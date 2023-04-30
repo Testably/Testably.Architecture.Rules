@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.Extensions;
 
-public class AssemblyExpectationTests
+public sealed class AssemblyExpectationExtensionsTests
 {
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_CaseSensitivity_ShouldDefaultToSensitive()
