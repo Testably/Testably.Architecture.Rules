@@ -11,19 +11,84 @@ namespace Testably.Architecture.Testing;
 public static class ExtensionsForITypeExpectation
 {
 	/// <summary>
+	///     Expect the types to be abstract.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBeAbstract(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsAbstract,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be abstract."));
+
+	/// <summary>
+	///     Expect the types to be a class.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBeAClass(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsClass,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be a class."));
+
+	/// <summary>
+	///     Expect the types to be an interface.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBeAnInterface(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsInterface,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be an interface."));
+
+	/// <summary>
+	///     Expect the types to be generic.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBeGeneric(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsGenericType,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be generic."));
+
+	/// <summary>
+	///     Expect the types to be nested.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBeNested(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsNested,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be nested."));
+
+	/// <summary>
+	///     Expect the types to be public.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBePublic(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsPublic,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be public."));
+
+	/// <summary>
 	///     Expect the types to be sealed.
 	/// </summary>
 	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
-	/// <param name="isSealed">
-	///     The expected value.<br />
-	///     Defaults to <see langword="true" />.
-	/// </param>
 	public static ITestResult<ITypeExpectation> ShouldBeSealed(
-		this ITypeExpectation @this,
-		bool isSealed = true)
-		=> @this.ShouldSatisfy(type => type.IsSealed == isSealed,
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsSealed,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should{(isSealed ? "" : " not")} be sealed."));
+				$"Type '{type.Name}' should be sealed."));
+
+	/// <summary>
+	///     Expect the types to be static.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldBeStatic(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => type.IsStatic(),
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should be static."));
 
 	/// <summary>
 	///     Expect the types to have an attribute of type <typeparamref name="TAttribute" />.
@@ -97,6 +162,86 @@ public static class ExtensionsForITypeExpectation
 		=> @this.ShouldSatisfy(type => pattern.Matches(type.Name, ignoreCase),
 			type => new TypeTestError(type,
 				$"Type '{type.Name}' should match pattern '{pattern}'."));
+
+	/// <summary>
+	///     Expect the types to not be abstract.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeAbstract(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsAbstract,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be abstract."));
+
+	/// <summary>
+	///     Expect the types to not be a class.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeAClass(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsClass,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be a class."));
+
+	/// <summary>
+	///     Expect the types to not be an interface.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeAnInterface(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsInterface,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be an interface."));
+
+	/// <summary>
+	///     Expect the types to not be generic.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeGeneric(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsGenericType,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be generic."));
+
+	/// <summary>
+	///     Expect the types to not be nested.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeNested(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsNested,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be nested."));
+
+	/// <summary>
+	///     Expect the types to not be public.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBePublic(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsPublic,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be public."));
+
+	/// <summary>
+	///     Expect the types to not be sealed.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeSealed(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsSealed,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be sealed."));
+
+	/// <summary>
+	///     Expect the types to not be static.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	public static ITestResult<ITypeExpectation> ShouldNotBeStatic(
+		this ITypeExpectation @this)
+		=> @this.ShouldSatisfy(type => !type.IsStatic(),
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not be static."));
 
 	/// <summary>
 	///     Expect the types to not have an attribute of type <typeparamref name="TAttribute" />.

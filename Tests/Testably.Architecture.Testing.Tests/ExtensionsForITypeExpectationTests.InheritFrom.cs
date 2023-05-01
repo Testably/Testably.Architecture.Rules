@@ -7,8 +7,185 @@ namespace Testably.Architecture.Testing.Tests;
 
 public sealed partial class ExtensionsForITypeExpectationTests
 {
-	public sealed class ShouldNotInheritFrom
+	public sealed class InheritFrom
 	{
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ForceDirect_WithClass_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(FooImplementor2);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<FooBase>(
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ForceDirect_WithGenericClass_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(
+				typeof(IGenericFooInterface<>),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void
+			ShouldInheritFrom_ForceDirect_WithGenericClassAndInterface_ShouldConsiderParameter(
+				bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(typeof(IFooInterface),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ForceDirect_WithGenericInterface_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(typeof(GenericFooClass<>),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ForceDirect_WithInterface_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(FooImplementor2);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<IFooInterface>(
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithClass_ShouldBeSatisfied()
+		{
+			Type type = typeof(FooImplementor3);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<FooBase>();
+
+			result.IsSatisfied.Should().BeTrue();
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithGenericClass_ShouldBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldInheritFrom(typeof(GenericFooClass<>));
+
+			result.IsSatisfied.Should().BeTrue();
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithGenericInterface_ShouldBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldInheritFrom(typeof(IGenericFooInterface<>));
+
+			result.IsSatisfied.Should().BeTrue();
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithInterface_ShouldBeSatisfied()
+		{
+			Type type = typeof(FooImplementor3);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<IFooInterface>();
+
+			result.IsSatisfied.Should().BeTrue();
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithoutClass_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<BarClass>();
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithoutGenericClass_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldInheritFrom(typeof(GenericBarClass<>));
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithoutGenericInterface_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldInheritFrom(typeof(IOtherGenericFooInterface<>));
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithoutInterface_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<IOtherFooInterface>();
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
@@ -187,6 +364,10 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().BeTrue();
 		}
 
+		private abstract class BarClass
+		{
+		}
+
 		private abstract class FooBase
 		{
 		}
@@ -200,6 +381,11 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		}
 
 		private class FooImplementor3 : FooImplementor2
+		{
+		}
+
+		// ReSharper disable once UnusedTypeParameter
+		private class GenericBarClass<T>
 		{
 		}
 
@@ -236,15 +422,6 @@ public sealed partial class ExtensionsForITypeExpectationTests
 
 		// ReSharper disable once UnusedTypeParameter
 		private interface IOtherGenericFooInterface<T>
-		{
-		}
-
-		private abstract class BarClass
-		{
-		}
-
-		// ReSharper disable once UnusedTypeParameter
-		private class GenericBarClass<T>
 		{
 		}
 	}

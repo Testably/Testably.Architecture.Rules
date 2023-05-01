@@ -7,7 +7,7 @@ namespace Testably.Architecture.Testing.Tests;
 
 public sealed partial class ExtensionsForITypeExpectationTests
 {
-	public sealed class ShouldBeSealed
+	public sealed class BeSealed
 	{
 		[Fact]
 		public void ShouldBeSealed_SealedType_ShouldBeSatisfied()
@@ -31,15 +31,30 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain("should be sealed");
 		}
 
 		[Fact]
-		public void ShouldBeSealed_WithParameterSetToFalse_ShouldReverseExpectedValue()
+		public void ShouldNotBeSealed_SealedType_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(SealedType);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldNotBeSealed();
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain("should not be sealed");
+		}
+
+		[Fact]
+		public void ShouldNotBeSealed_UnsealedType_ShouldBeSatisfied()
 		{
 			Type type = typeof(UnsealedType);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeSealed(false);
+			ITestResult<ITypeExpectation> result = sut.ShouldNotBeSealed();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

@@ -82,6 +82,18 @@ public sealed class ExtensionsForTypeTests
 		result3.Should().BeFalse();
 	}
 
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void ImplementsInterface_Object_ShouldReturnFalse(bool forceDirect)
+	{
+		Type sut = typeof(object);
+
+		bool result = sut.ImplementsInterface(typeof(IFooInterface), forceDirect);
+
+		result.Should().BeFalse();
+	}
+
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
@@ -91,6 +103,10 @@ public sealed class ExtensionsForTypeTests
 		{
 			Value = value;
 		}
+	}
+
+	private interface IFooInterface
+	{
 	}
 
 	[Dummy(1)]
