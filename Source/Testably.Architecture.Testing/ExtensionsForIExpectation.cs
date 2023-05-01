@@ -12,8 +12,20 @@ namespace Testably.Architecture.Testing;
 public static class ExtensionsForIExpectation
 {
 	/// <summary>
-	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
+	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />.
 	/// </summary>
+	/// <param name="this">The <see cref="IExpectation" />.</param>
+	/// <param name="predicate">(optional) A predicate to filter the assemblies.</param>
+	/// <param name="excludeSystemAssemblies">
+	///     Flag, indicating if system assemblies should be filtered out.
+	///     <para />
+	///     If set to <see langword="true" /> (default value), no assemblies starting with<br />
+	///     - <c>System</c><br />
+	///     - <c>mscorlib</c><br />
+	///     - <c>xunit</c><br />
+	///     are loaded.<br />
+	///     Otherwise all assemblies matching the <paramref name="predicate" /> are loaded.
+	/// </param>
 	public static IFilterableAssemblyExpectation AllLoadedAssemblies(
 		this IExpectation @this,
 		Func<Assembly, bool>? predicate = null,
@@ -29,11 +41,9 @@ public static class ExtensionsForIExpectation
 	}
 
 	/// <summary>
-	///     Defines expectations on all types from all loaded assemblies from the current
-	///     <see cref="System.AppDomain.CurrentDomain" />
+	///     Defines expectations on all types from
+	///     <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />.
 	/// </summary>
-	/// <param name="this"></param>
-	/// <returns></returns>
 	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
 	{
 		return @this.AllLoadedAssemblies().Types;
@@ -47,7 +57,8 @@ public static class ExtensionsForIExpectation
 		=> @this.Assembly(typeof(TAssembly).Assembly);
 
 	/// <summary>
-	///     Defines expectations on all loaded assemblies that match the <paramref name="wildcardCondition" />.
+	///     Defines expectations on <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />
+	///     that match the <paramref name="wildcardCondition" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectation" />.</param>
 	/// <param name="wildcardCondition">
