@@ -67,7 +67,7 @@ public static class ExtensionsForITypeExpectation
 				$"Type '{type.Name}' should match pattern '{pattern}'."));
 
 	/// <summary>
-	///     Expect the types to have an attribute of type <typeparamref name="TAttribute" />.
+	///     Expect the types to not have an attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
 	/// <param name="predicate">
