@@ -52,15 +52,20 @@ public class DependencyTestError : TestError
 	{
 		if (assemblyReferences.Length > 1)
 		{
-			List<string> references = assemblyReferences.Select(x => x.Name)
-				.Where(x => x != null).OrderBy(x => x).ToList()!;
+			List<string> references = assemblyReferences
+				.Select(x => x.Name)
+				.Where(x => x != null)
+				.OrderBy(x => x)
+				.ToList()!;
 			string lastReference = references.Last();
 			references.Remove(lastReference);
 			return
 				$"Assembly '{assembly.GetName().Name}' has {assemblyReferences.Length} incorrect references on '{string.Join("', '", references)}' and '{lastReference}'.";
 		}
 
-		string? assemblyReference = assemblyReferences.Select(x => x.Name).SingleOrDefault();
+		string? assemblyReference = assemblyReferences
+			.Select(x => x.Name)
+			.SingleOrDefault();
 		if (assemblyReference != null)
 		{
 			return

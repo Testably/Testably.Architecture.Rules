@@ -5,6 +5,16 @@ namespace Testably.Architecture.Testing.Tests;
 
 public sealed class MatchTests
 {
+	[Fact]
+	public void Wildcard_MatchesNull_ShouldReturnFalse()
+	{
+		Match match = Match.Wildcard("*");
+
+		bool matches = match.Matches(null, false);
+
+		matches.Should().BeFalse();
+	}
+
 	[Theory]
 	[InlineData("*", "Foo.Bar", true)]
 	[InlineData("Foo", "Foo", true)]
@@ -23,15 +33,5 @@ public sealed class MatchTests
 
 		matches.Should().Be(expectedResult,
 			$"wildcard '{wildcard.Replace("$", "$$")}' should match '{testInput}'");
-	}
-
-	[Fact]
-	public void Wildcard_MatchesNull_ShouldReturnFalse()
-	{
-		Match match = Match.Wildcard("*");
-
-		bool matches = match.Matches(null, false);
-
-		matches.Should().BeFalse();
 	}
 }

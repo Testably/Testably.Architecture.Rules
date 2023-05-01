@@ -20,7 +20,8 @@ public static class ExtensionsForITestResultAssemblyExpectation
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
 	public static ITestResult<IAssemblyExpectation> ExceptDependencyOn(
-		this ITestResult<IAssemblyExpectation> @this, Match pattern,
+		this ITestResult<IAssemblyExpectation> @this,
+		Match pattern,
 		bool ignoreCase = false)
 	{
 		return @this.ExceptDependencyOn((_, assemblyName) =>
