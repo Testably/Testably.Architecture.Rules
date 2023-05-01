@@ -23,10 +23,8 @@ public static class ExtensionsForITestResultAssemblyExpectation
 		this ITestResult<IAssemblyExpectation> @this,
 		Match pattern,
 		bool ignoreCase = false)
-	{
-		return @this.ExceptDependencyOn((_, assemblyName) =>
+		=> @this.ExceptDependencyOn((_, assemblyName) =>
 			pattern.Matches(assemblyName.Name, ignoreCase));
-	}
 
 	/// <summary>
 	///     Defines an exception to rules by allowing dependencies that match the <paramref name="predicate" />.
