@@ -9,6 +9,20 @@ public sealed partial class ExtensionsForITypeExpectationTests
 {
 	public sealed class InheritFrom
 	{
+		[Fact]
+		public void ShouldInheritFrom_ForceDirect_ShouldHaveCorrectMessage()
+		{
+			Type type = typeof(FooImplementor2);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom<FooBase>(
+				forceDirect: true);
+
+			result.IsSatisfied.Should().Be(false);
+			result.Errors[0].ToString().Should().Contain("should directly inherit from")
+				.And.Contain(nameof(FooBase));
+		}
+
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
@@ -30,11 +44,11 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_ForceDirect_WithGenericClass_ShouldConsiderParameter(
 			bool forceDirect)
 		{
-			Type type = typeof(GenericFooImplementor2<>);
+			Type type = typeof(GenericFooImplementor2<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(
-				typeof(IGenericFooInterface<>),
+				typeof(IGenericFooInterface<TestError>),
 				forceDirect: forceDirect);
 
 			result.IsSatisfied.Should().Be(!forceDirect);
@@ -47,7 +61,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			ShouldInheritFrom_ForceDirect_WithGenericClassAndInterface_ShouldConsiderParameter(
 				bool forceDirect)
 		{
-			Type type = typeof(GenericFooImplementor2<>);
+			Type type = typeof(GenericFooImplementor2<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(typeof(IFooInterface),
@@ -62,10 +76,11 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_ForceDirect_WithGenericInterface_ShouldConsiderParameter(
 			bool forceDirect)
 		{
-			Type type = typeof(GenericFooImplementor2<>);
+			Type type = typeof(GenericFooImplementor2<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(typeof(GenericFooClass<>),
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(
+				typeof(GenericFooClass<TestError>),
 				forceDirect: forceDirect);
 
 			result.IsSatisfied.Should().Be(!forceDirect);
@@ -86,6 +101,53 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().Be(!forceDirect);
 		}
 
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ForceDirect_WithOpenGenericClass_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(
+				typeof(IGenericFooInterface<>),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void
+			ShouldInheritFrom_ForceDirect_WithOpenGenericClassAndInterface_ShouldConsiderParameter(
+				bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(typeof(IFooInterface),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ForceDirect_WithOpenGenericInterface_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldInheritFrom(typeof(GenericFooClass<>),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(!forceDirect);
+		}
+
 		[Fact]
 		public void ShouldInheritFrom_WithClass_ShouldBeSatisfied()
 		{
@@ -100,11 +162,11 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[Fact]
 		public void ShouldInheritFrom_WithGenericClass_ShouldBeSatisfied()
 		{
-			Type type = typeof(GenericFooImplementor3<>);
+			Type type = typeof(GenericFooImplementor3<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation>
-				result = sut.ShouldInheritFrom(typeof(GenericFooClass<>));
+				result = sut.ShouldInheritFrom(typeof(GenericFooClass<TestError>));
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -112,11 +174,11 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[Fact]
 		public void ShouldInheritFrom_WithGenericInterface_ShouldBeSatisfied()
 		{
-			Type type = typeof(GenericFooImplementor3<>);
+			Type type = typeof(GenericFooImplementor3<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation>
-				result = sut.ShouldInheritFrom(typeof(IGenericFooInterface<>));
+				result = sut.ShouldInheritFrom(typeof(IGenericFooInterface<TestError>));
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -133,6 +195,30 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		}
 
 		[Fact]
+		public void ShouldInheritFrom_WithOpenGenericClass_ShouldBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldInheritFrom(typeof(GenericFooClass<>));
+
+			result.IsSatisfied.Should().BeTrue();
+		}
+
+		[Fact]
+		public void ShouldInheritFrom_WithOpenGenericInterface_ShouldBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldInheritFrom(typeof(IGenericFooInterface<>));
+
+			result.IsSatisfied.Should().BeTrue();
+		}
+
+		[Fact]
 		public void ShouldInheritFrom_WithoutClass_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
@@ -143,6 +229,8 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain("should inherit from")
+				.And.Contain(nameof(BarClass));
 		}
 
 		[Fact]
@@ -186,6 +274,20 @@ public sealed partial class ExtensionsForITypeExpectationTests
 				.Which.Type.Should().Be(type);
 		}
 
+		[Fact]
+		public void ShouldNotInheritFrom_ForceDirect_ShouldHaveCorrectMessage()
+		{
+			Type type = typeof(FooImplementor1);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom<FooBase>(
+				forceDirect: true);
+
+			result.IsSatisfied.Should().Be(false);
+			result.Errors[0].ToString().Should().Contain("should not directly inherit from")
+				.And.Contain(nameof(FooBase));
+		}
+
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
@@ -207,12 +309,12 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_ForceDirect_WithGenericClass_ShouldConsiderParameter(
 			bool forceDirect)
 		{
-			Type type = typeof(GenericFooImplementor2<>);
+			Type type = typeof(GenericFooImplementor2<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom(
-				typeof(IGenericFooInterface<>),
-				forceDirect: forceDirect);
+			ITestResult<ITypeExpectation> result =
+				sut.ShouldNotInheritFrom<IGenericFooInterface<TestError>>(
+					forceDirect: forceDirect);
 
 			result.IsSatisfied.Should().Be(forceDirect);
 		}
@@ -224,7 +326,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			ShouldNotInheritFrom_ForceDirect_WithGenericClassAndInterface_ShouldConsiderParameter(
 				bool forceDirect)
 		{
-			Type type = typeof(GenericFooImplementor2<>);
+			Type type = typeof(GenericFooImplementor2<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom(typeof(IFooInterface),
@@ -236,15 +338,16 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void ShouldNotInheritFrom_ForceDirect_WithGenericInterface_ShouldConsiderParameter(
-			bool forceDirect)
+		public void
+			ShouldNotInheritFrom_ForceDirect_WithGenericInterface_ShouldConsiderParameter(
+				bool forceDirect)
 		{
-			Type type = typeof(GenericFooImplementor2<>);
+			Type type = typeof(GenericFooImplementor2<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom(
-				typeof(GenericFooClass<>),
-				forceDirect: forceDirect);
+			ITestResult<ITypeExpectation> result =
+				sut.ShouldNotInheritFrom<GenericFooClass<TestError>>(
+					forceDirect: forceDirect);
 
 			result.IsSatisfied.Should().Be(forceDirect);
 		}
@@ -264,6 +367,55 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().Be(forceDirect);
 		}
 
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldNotInheritFrom_ForceDirect_WithOpenGenericClass_ShouldConsiderParameter(
+			bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom(
+				typeof(IGenericFooInterface<>),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void
+			ShouldNotInheritFrom_ForceDirect_WithOpenGenericClassAndInterface_ShouldConsiderParameter(
+				bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom(typeof(IFooInterface),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void
+			ShouldNotInheritFrom_ForceDirect_WithOpenGenericInterface_ShouldConsiderParameter(
+				bool forceDirect)
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom(
+				typeof(GenericFooClass<>),
+				forceDirect: forceDirect);
+
+			result.IsSatisfied.Should().Be(forceDirect);
+		}
+
 		[Fact]
 		public void ShouldNotInheritFrom_WithClass_ShouldNotBeSatisfied()
 		{
@@ -275,16 +427,18 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain("should not inherit from")
+				.And.Contain(nameof(FooBase));
 		}
 
 		[Fact]
 		public void ShouldNotInheritFrom_WithGenericClass_ShouldNotBeSatisfied()
 		{
-			Type type = typeof(GenericFooImplementor3<>);
+			Type type = typeof(GenericFooImplementor3<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation>
-				result = sut.ShouldNotInheritFrom(typeof(GenericFooClass<>));
+				result = sut.ShouldNotInheritFrom<GenericFooClass<TestError>>();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -294,11 +448,11 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[Fact]
 		public void ShouldNotInheritFrom_WithGenericInterface_ShouldNotBeSatisfied()
 		{
-			Type type = typeof(GenericFooImplementor3<>);
+			Type type = typeof(GenericFooImplementor3<TestError>);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation>
-				result = sut.ShouldNotInheritFrom(typeof(IGenericFooInterface<>));
+				result = sut.ShouldNotInheritFrom<IGenericFooInterface<TestError>>();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -312,6 +466,34 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldNotInheritFrom<IFooInterface>();
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
+		[Fact]
+		public void ShouldNotInheritFrom_WithOpenGenericClass_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldNotInheritFrom(typeof(GenericFooClass<>));
+
+			result.IsSatisfied.Should().BeFalse();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
+		[Fact]
+		public void ShouldNotInheritFrom_WithOpenGenericInterface_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor3<>);
+			IFilterableTypeExpectation sut = Expect.That.Type(type);
+
+			ITestResult<ITypeExpectation>
+				result = sut.ShouldNotInheritFrom(typeof(IGenericFooInterface<>));
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
