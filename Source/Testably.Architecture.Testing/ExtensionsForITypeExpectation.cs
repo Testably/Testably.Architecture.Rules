@@ -49,6 +49,38 @@ public static class ExtensionsForITypeExpectation
 				$"Type '{type.Name}' should have correct attribute '{typeof(TAttribute).Name}'."));
 
 	/// <summary>
+	///     Expect the types to inherit from <typeparamref name="TBase" />.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	/// <param name="forceDirect">
+	///     If set to <see langword="false" /> (default value), the <typeparamref name="TBase" />
+	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
+	///     <typeparamref name="TBase" /> to be the direct parent.
+	/// </param>
+	public static ITestResult<ITypeExpectation> ShouldInheritFrom<TBase>(
+		this ITypeExpectation @this,
+		bool forceDirect = false)
+		=> @this.ShouldInheritFrom(typeof(TBase), forceDirect);
+
+	/// <summary>
+	///     Expect the types to inherit from <paramref name="baseType" />.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	/// <param name="baseType">The base type which should be inherited from.</param>
+	/// <param name="forceDirect">
+	///     If set to <see langword="false" /> (default value), the <paramref name="baseType" />
+	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
+	///     <paramref name="baseType" /> to be the direct parent.
+	/// </param>
+	public static ITestResult<ITypeExpectation> ShouldInheritFrom(
+		this ITypeExpectation @this,
+		Type baseType,
+		bool forceDirect = false)
+		=> @this.ShouldSatisfy(type => type.Inherits(baseType, forceDirect),
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'."));
+
+	/// <summary>
 	///     Expect the <see cref="MemberInfo.Name" /> of the types to match the given <paramref name="pattern" />.
 	/// </summary>
 	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
@@ -88,6 +120,38 @@ public static class ExtensionsForITypeExpectation
 		=> @this.ShouldSatisfy(type => !type.HasAttribute(predicate, inherit),
 			type => new TypeTestError(type,
 				$"Type '{type.Name}' should not have correct attribute '{typeof(TAttribute).Name}'."));
+
+	/// <summary>
+	///     Expect the types to inherit from <typeparamref name="TBase" />.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	/// <param name="forceDirect">
+	///     If set to <see langword="false" /> (default value), the <typeparamref name="TBase" />
+	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
+	///     <typeparamref name="TBase" /> to be the direct parent.
+	/// </param>
+	public static ITestResult<ITypeExpectation> ShouldNotInheritFrom<TBase>(
+		this ITypeExpectation @this,
+		bool forceDirect = false)
+		=> @this.ShouldNotInheritFrom(typeof(TBase), forceDirect);
+
+	/// <summary>
+	///     Expect the types to inherit from <paramref name="baseType" />.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	/// <param name="baseType">The base type which should be inherited from.</param>
+	/// <param name="forceDirect">
+	///     If set to <see langword="false" /> (default value), the <paramref name="baseType" />
+	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
+	///     <paramref name="baseType" /> to be the direct parent.
+	/// </param>
+	public static ITestResult<ITypeExpectation> ShouldNotInheritFrom(
+		this ITypeExpectation @this,
+		Type baseType,
+		bool forceDirect = false)
+		=> @this.ShouldSatisfy(type => !type.Inherits(baseType, forceDirect),
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'."));
 
 	/// <summary>
 	///     Expect the <see cref="MemberInfo.Name" /> of the types to not match the given <paramref name="pattern" />.
