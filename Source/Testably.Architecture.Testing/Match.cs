@@ -31,7 +31,7 @@ public abstract class Match
 	public static Match Wildcard(string pattern)
 		=> new WildcardMatch(pattern);
 
-	private class WildcardMatch : Match
+	private sealed class WildcardMatch : Match
 	{
 		private readonly string _pattern;
 
