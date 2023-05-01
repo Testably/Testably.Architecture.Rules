@@ -13,5 +13,5 @@ public interface ITypeExpectation
 	/// </summary>
 	ITestResult<ITypeExpectation> ShouldSatisfy(
 		Func<Type, bool> condition,
-		Func<Type, TestError>? errorGenerator = null);
+		Func<Type, TestError> errorGenerator);
 }

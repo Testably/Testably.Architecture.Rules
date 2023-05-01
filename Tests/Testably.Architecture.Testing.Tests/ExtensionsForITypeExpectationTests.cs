@@ -1,48 +1,24 @@
 ﻿using FluentAssertions;
+using System;
+using System.Linq.Expressions;
+using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public sealed class ExtensionsForITypeExpectationTests
+public sealed partial class ExtensionsForITypeExpectationTests
 {
 	[Fact]
-	public void ShouldBeSealed_SealedType_ShouldBeSatisfied()
+	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
 	{
-		IFilterableTypeExpectation sut = Expect.That
-			.Type(typeof(SealedType));
+		Type type = typeof(ExtensionsForITypeExpectationTests);
+		IFilterableTypeExpectation sut = Expect.That.Type(type);
+		Expression<Func<Type, bool>> expression = _ => false;
 
-		ITestResult<ITypeExpectation> result = sut.ShouldBeSealed();
-
-		result.IsSatisfied.Should().BeTrue();
-	}
-
-	[Fact]
-	public void ShouldBeSealed_UnsealedType_ShouldNotBeSatisfied()
-	{
-		IFilterableTypeExpectation sut = Expect.That
-			.Type(typeof(UnsealedType));
-
-		ITestResult<ITypeExpectation> result = sut.ShouldBeSealed();
+		ITestResult<ITypeExpectation> result = sut.ShouldSatisfy(expression);
 
 		result.IsSatisfied.Should().BeFalse();
-	}
-
-	[Fact]
-	public void ShouldBeSealed_WithParameterSetToFalse_ShouldReverseExpectedValue()
-	{
-		IFilterableTypeExpectation sut = Expect.That
-			.Type(typeof(UnsealedType));
-
-		ITestResult<ITypeExpectation> result = sut.ShouldBeSealed(false);
-
-		result.IsSatisfied.Should().BeTrue();
-	}
-
-	private sealed class SealedType
-	{
-	}
-
-	private class UnsealedType
-	{
+		result.Errors[0].Should().BeOfType<TypeTestError>()
+			.Which.ToString().Should().Contain(expression.ToString());
 	}
 }

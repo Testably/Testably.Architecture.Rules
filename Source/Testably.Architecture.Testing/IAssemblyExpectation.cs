@@ -14,5 +14,5 @@ public interface IAssemblyExpectation
 	/// </summary>
 	ITestResult<IAssemblyExpectation> ShouldSatisfy(
 		Func<Assembly, bool> condition,
-		Func<Assembly, TestError>? errorGenerator = null);
+		Func<Assembly, TestError> errorGenerator);
 }

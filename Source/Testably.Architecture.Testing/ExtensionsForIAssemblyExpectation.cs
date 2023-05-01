@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Testably.Architecture.Testing.TestErrors;
 
@@ -34,5 +36,18 @@ public static class ExtensionsForIAssemblyExpectation
 			p => !p.GetReferencedAssemblies().Any(FailCondition),
 			p => new DependencyTestError(p,
 				p.GetReferencedAssemblies().Where(FailCondition).ToArray()));
+	}
+
+	/// <summary>
+	///     The <see cref="Assembly" /> should satisfy the given <paramref name="condition" />.
+	/// </summary>
+	public static ITestResult<IAssemblyExpectation> ShouldSatisfy(
+		this IAssemblyExpectation @this,
+		Expression<Func<Assembly, bool>> condition)
+	{
+		Func<Assembly, bool> compiledCondition = condition.Compile();
+		return @this.ShouldSatisfy(compiledCondition,
+			assembly => new TestError(
+				$"Assembly '{assembly.GetName().Name}' should satisfy the required condition {condition}."));
 	}
 }

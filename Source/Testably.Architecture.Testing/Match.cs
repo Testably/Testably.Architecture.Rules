@@ -34,9 +34,11 @@ public abstract class Match
 	private sealed class WildcardMatch : Match
 	{
 		private readonly string _pattern;
+		private readonly string _originalPattern;
 
 		internal WildcardMatch(string pattern)
 		{
+			_originalPattern = pattern;
 			_pattern = WildcardToRegular(pattern);
 		}
 
@@ -62,5 +64,9 @@ public abstract class Match
 			string regex = Regex.Escape(value).Replace("\\?", ".").Replace("\\*", ".*");
 			return $"^{regex}$";
 		}
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> _originalPattern;
 	}
 }
