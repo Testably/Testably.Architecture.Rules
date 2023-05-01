@@ -4,3 +4,21 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5b9b2f79950447a69d69037b43acd590)](https://www.codacy.com/gh/Testably/Testably.Architecture.Testing/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Testably/Testably.Architecture.Testing&amp;utm_campaign=Badge_Grade)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_Testably.Architecture.Testing&branch=main&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_Testably.Architecture.Testing&branch=main)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FTestably.Architecture.Testing%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/Testably.Architecture.Testing/main)
+
+This library is used to define architecture rules as expectations that can be run and checked as part of the unit test execution.
+
+## Example
+
+- Test classes should have `Tests` as suffix:
+  ```csharp
+  [Fact]
+  public void ExpectTestClassesToBeSuffixedWithTests()
+  {
+    var result = Expect.That.AllLoadedTypes()
+     .Which(x => x.HasMethodWithAttribute<FactAttribute>() ||
+                 x.HasMethodWithAttribute<TheoryAttribute>())
+     .ShouldMatchName("*Tests");
+  
+    Assert.Empty(result.Errors);
+  }
+  ```
