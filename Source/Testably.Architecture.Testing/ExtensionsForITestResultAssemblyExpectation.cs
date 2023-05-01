@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
 
-public static partial class Extensions
+/// <summary>
+///     Extension methods for <see cref="ITestResult{IAssemblyExpectation}" />.
+/// </summary>
+public static class ExtensionsForITestResultAssemblyExpectation
 {
 	/// <summary>
 	///     Defines an exception to rules by allowing dependencies that match the <paramref name="wildcardCondition" />.
@@ -24,7 +28,7 @@ public static partial class Extensions
 		RegexOptions options = ignoreCase
 			? RegexOptions.IgnoreCase
 			: RegexOptions.None;
-		string regex = WildcardToRegular(wildcardCondition);
+		string regex = Helpers.WildcardToRegular(wildcardCondition);
 		return @this.ExceptDependencyOn((assembly, assemblyName) =>
 			assemblyName.Name != null &&
 			Regex.IsMatch(assemblyName.Name,

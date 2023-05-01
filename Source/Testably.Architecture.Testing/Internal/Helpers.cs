@@ -1,11 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Testably.Architecture.Testing;
+namespace Testably.Architecture.Testing.Internal;
 
-/// <summary>
-///     Extension methods for architecture testing
-/// </summary>
-public static partial class Extensions
+internal static class Helpers
 {
 	/// <remarks>
 	///     <see href="https://stackoverflow.com/a/30300521" />

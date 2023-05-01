@@ -7,7 +7,7 @@ namespace Testably.Architecture.Testing;
 /// <summary>
 ///     Extension methods for <see cref="Type" />.
 /// </summary>
-public static partial class Extensions
+public static class ExtensionsForType
 {
 	/// <summary>
 	///     Checks if the <paramref name="type" /> has an attribute which satisfies the <paramref name="predicate" />.

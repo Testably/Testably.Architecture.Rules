@@ -7,7 +7,7 @@ namespace Testably.Architecture.Testing;
 /// <summary>
 ///     Extension methods for <see cref="MethodInfo" />.
 /// </summary>
-public static partial class Extensions
+public static class ExtensionsForMethodInfo
 {
 	/// <summary>
 	///     Checks if the <paramref name="methodInfo" /> has an attribute which satisfies the <paramref name="predicate" />.

@@ -48,5 +48,9 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 		return this;
 	}
 
+	/// <inheritdoc cref="IFilterableAssemblyExpectation.Types" />
+	public IFilterableTypeExpectation Types
+		=> new TypeExpectation(_assemblies.SelectMany(x => x.GetTypes()));
+
 	#endregion
 }
