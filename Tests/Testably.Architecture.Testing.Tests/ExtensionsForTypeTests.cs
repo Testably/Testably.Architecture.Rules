@@ -6,6 +6,18 @@ namespace Testably.Architecture.Testing.Tests;
 
 public sealed class ExtensionsForTypeTests
 {
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void ImplementsInterface_Object_ShouldReturnFalse(bool forceDirect)
+	{
+		Type sut = typeof(object);
+
+		bool result = sut.ImplementsInterface(typeof(IFooInterface), forceDirect);
+
+		result.Should().BeFalse();
+	}
+
 	[Fact]
 	public void HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
@@ -120,5 +132,9 @@ public sealed class ExtensionsForTypeTests
 		// ReSharper disable once UnusedMember.Local
 		public void Method2WithAttribute()
 			=> throw new NotSupportedException();
+	}
+
+	private interface IFooInterface
+	{
 	}
 }

@@ -56,11 +56,7 @@ public static class ExtensionsForType
 		Type parentType,
 		bool forceDirect = false)
 	{
-		bool shouldUseGenericType =
-			!(parentType.IsGenericType &&
-			  parentType.GetGenericTypeDefinition() != parentType);
-
-		if (parentType.IsGenericType && shouldUseGenericType)
+		if (parentType.IsGenericType)
 		{
 			parentType = parentType.GetGenericTypeDefinition();
 		}
