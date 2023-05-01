@@ -64,8 +64,8 @@ public sealed class ExtensionsForIAssemblyExpectationTests
 	}
 
 	[Theory]
-	[InlineData(true, false)]
 	[InlineData(false, true)]
+	[InlineData(true, false)]
 	public void ShouldNotHaveDependenciesOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
 		bool ignoreCase, bool expectedResult)
 	{

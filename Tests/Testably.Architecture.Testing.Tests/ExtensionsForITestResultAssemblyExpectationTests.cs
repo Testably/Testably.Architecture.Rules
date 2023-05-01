@@ -19,4 +19,20 @@ public sealed class ExtensionsForITestResultAssemblyExpectationTests
 		result.IsSatisfied.Should().BeTrue();
 		result.Errors.Length.Should().Be(0);
 	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void ExceptDependencyOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
+		bool ignoreCase)
+	{
+		IFilterableAssemblyExpectation sut = Expect.That
+			.AssemblyContaining<MockFileSystem>();
+
+		ITestResult<IAssemblyExpectation> result =
+			sut.ShouldNotHaveDependenciesOn("Testably.*")
+				.ExceptDependencyOn("testably.Abstractions.Interface", ignoreCase);
+
+		result.IsSatisfied.Should().Be(ignoreCase);
+	}
 }
