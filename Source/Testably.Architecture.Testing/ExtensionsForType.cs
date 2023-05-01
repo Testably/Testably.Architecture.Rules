@@ -50,6 +50,7 @@ public static class ExtensionsForType
 	{
 		predicate ??= (_, _) => true;
 		return type.GetMethods().Any(
-			method => method.HasAttribute<TAttribute>(a => predicate(a, method)));
+			method => method.HasAttribute<TAttribute>(
+				a => predicate(a, method)));
 	}
 }

@@ -20,7 +20,8 @@ public sealed class ExtensionsForMethodInfoTests
 	[Fact]
 	public void HasAttribute_WithInheritedAttribute_ShouldReturnTrue()
 	{
-		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithAttributeInBaseClass))!;
+		MethodInfo type =
+			typeof(TestClass).GetMethod(nameof(TestClass.MethodWithAttributeInBaseClass))!;
 
 		bool result = type.HasAttribute<DummyAttribute>();
 

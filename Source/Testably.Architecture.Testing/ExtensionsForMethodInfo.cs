@@ -24,7 +24,7 @@ public static class ExtensionsForMethodInfo
 		Func<TAttribute, bool>? predicate = null)
 	{
 		object? attribute = methodInfo.GetCustomAttributes(typeof(TAttribute), true)
-		   .FirstOrDefault();
+			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
 			return predicate?.Invoke(castedAttribute) ?? true;

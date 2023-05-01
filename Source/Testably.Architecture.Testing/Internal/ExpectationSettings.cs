@@ -8,7 +8,7 @@ namespace Testably.Architecture.Testing.Internal;
 internal static class ExpectationSettings
 {
 	/// <summary>
-	///     The list of <see cref="Assembly"/>s to exclude from the current domain.
+	///     The list of <see cref="Assembly" />s to exclude from the current domain.
 	/// </summary>
 	public static readonly List<string> ExcludedSystemAssemblies = new()
 	{
@@ -20,8 +20,8 @@ internal static class ExpectationSettings
 	public static bool IsExcluded(Assembly assembly)
 	{
 		return ExcludedSystemAssemblies.Any(
-			       excludedName => assembly.FullName?.StartsWith(
-				       excludedName,
-				       StringComparison.InvariantCulture) == true);
+			excludedName => assembly.FullName?.StartsWith(
+				excludedName,
+				StringComparison.InvariantCulture) == true);
 	}
 }

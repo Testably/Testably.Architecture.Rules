@@ -109,6 +109,10 @@ public sealed class ExtensionsForType
 		}
 	}
 
+	private class TestClassWithInheritedAttribute : TestClassWithAttribute
+	{
+	}
+
 	private class TestClassWithoutAttribute
 	{
 		[Dummy(1)]
@@ -124,9 +128,5 @@ public sealed class ExtensionsForType
 		{
 			throw new NotImplementedException();
 		}
-	}
-
-	private class TestClassWithInheritedAttribute : TestClassWithAttribute
-	{
 	}
 }
