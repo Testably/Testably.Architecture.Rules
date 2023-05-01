@@ -86,6 +86,7 @@ public sealed class DependencyTestErrorTests
 				.Skip(1)
 				.Take(assemblyReferences.Length - 2)
 				.Select(x => x.Name))}'");
+		result.Should().NotContain($", '{assemblyReferences.Last().Name}'");
 		result.Should().Contain($"and '{assemblyReferences.Last().Name}'");
 	}
 

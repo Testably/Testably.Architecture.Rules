@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -16,19 +15,28 @@ public static class ExtensionsForIExpectation
 	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
 	/// </summary>
 	public static IFilterableAssemblyExpectation AllLoadedAssemblies(
-		this IExpectation @this)
-		=> @this.Assembly(AppDomain.CurrentDomain.GetAssemblies());
+		this IExpectation @this,
+		Func<Assembly, bool>? predicate = null,
+		bool excludeSystemAssemblies = true)
+	{
+		predicate ??= _ => true;
+		return @this.Assembly(AppDomain.CurrentDomain.GetAssemblies()
+			.Where(assembly =>
+				!excludeSystemAssemblies ||
+				!ExpectationSettings.IsExcluded(assembly))
+			.Where(predicate)
+			.ToArray());
+	}
 
 	/// <summary>
-	///     Defines expectations on all types from all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
+	///     Defines expectations on all types from all loaded assemblies from the current
+	///     <see cref="System.AppDomain.CurrentDomain" />
 	/// </summary>
 	/// <param name="this"></param>
 	/// <returns></returns>
 	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
 	{
-		return @this.Type(AppDomain.CurrentDomain.GetAssemblies()
-			.SelectMany(a => a.GetTypes())
-			.ToArray());
+		return @this.AllLoadedAssemblies().Types;
 	}
 
 	/// <summary>
@@ -58,8 +66,10 @@ public static class ExtensionsForIExpectation
 			: RegexOptions.None;
 		string regex = Helpers.WildcardToRegular(wildcardCondition);
 
-		return @this.Assembly(AppDomain.CurrentDomain.GetAssemblies()
-		   .Where(a => Regex.IsMatch(a.GetName().Name ?? a.ToString(), regex, options))
-		   .ToArray());
+		return @this.AllLoadedAssemblies(
+			assembly => Regex.IsMatch(
+				assembly.GetName().Name ?? assembly.ToString(),
+				regex,
+				options));
 	}
 }

@@ -57,10 +57,10 @@ public sealed class AssemblyExpectationTests
 		IFilterableAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
 		ITestResult<IAssemblyExpectation> result = sut
-			.Which(p => p.GetName().Name?.StartsWith("System") != true)
+			.Which(p => p.GetName().Name?.StartsWith("Testably") != true)
 			.ShouldSatisfy(_ => false);
 
 		result.Errors.Length.Should().BeLessThan(allAssembliesCount);
-		result.Errors.Should().OnlyContain(e => !e.ToString().Contains("'System"));
+		result.Errors.Should().OnlyContain(e => !e.ToString().Contains("'Testably"));
 	}
 }
