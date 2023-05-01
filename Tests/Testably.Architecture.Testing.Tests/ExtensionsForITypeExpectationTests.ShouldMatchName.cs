@@ -25,32 +25,32 @@ public sealed partial class ExtensionsForITypeExpectationTests
 
 		[Theory]
 		[InlineData("Should*Foo")]
-		[InlineData("Should????Name")]
+		[InlineData("Should??Name")]
 		[InlineData("shouldmatchname")]
-		public void ShouldMatchName_InvalidPattern_ShouldNotBeSatisfied(string invalidPattern)
+		public void ShouldMatchName_NotMatchingPattern_ShouldNotBeSatisfied(string notMatchingPattern)
 		{
 			Type type = typeof(ShouldMatchName);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(invalidPattern);
+			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(notMatchingPattern);
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
 			result.Errors[0].Should().BeOfType<TypeTestError>()
-				.Which.ToString().Should().Contain($"'{invalidPattern}'");
+				.Which.ToString().Should().Contain($"'{notMatchingPattern}'");
 		}
 
 		[Theory]
 		[InlineData("Should*")]
 		[InlineData("Should?????Name")]
 		[InlineData("ShouldMatchName")]
-		public void ShouldMatchName_ValidPattern_ShouldBeSatisfied(string validPattern)
+		public void ShouldMatchName_MatchingPattern_ShouldBeSatisfied(string matchingPattern)
 		{
 			Type type = typeof(ShouldMatchName);
 			IFilterableTypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(validPattern);
+			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(matchingPattern);
 
 			result.IsSatisfied.Should().BeTrue();
 		}
