@@ -112,7 +112,7 @@ public static class ExtensionsForType
 			}
 
 			currentType = currentType.BaseType != null
-			               && currentType.BaseType.IsGenericType
+			              && currentType.BaseType.IsGenericType
 				? currentType.BaseType.GetGenericTypeDefinition()
 				: currentType.BaseType!;
 		}
@@ -124,11 +124,11 @@ public static class ExtensionsForType
 	///     Gets a value indicating whether the <see cref="Type" /> is static.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
+	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
 	public static bool IsStatic(this Type type)
 		=> type.IsAbstract &&
 		   type.IsSealed &&
-		   !type.IsInterface &&
-		   !type.GetConstructors().Any(m => m.IsPublic);
+		   !type.IsInterface && !type.GetConstructors().Any(m => m.IsPublic);
 
 	internal static bool ImplementsInterface(this Type type, Type interfaceType, bool forceDirect)
 	{
