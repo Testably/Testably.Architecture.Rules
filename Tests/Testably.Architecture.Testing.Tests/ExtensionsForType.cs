@@ -82,6 +82,7 @@ public sealed class ExtensionsForType
 		result3.Should().BeFalse();
 	}
 
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
 		public int Value { get; }

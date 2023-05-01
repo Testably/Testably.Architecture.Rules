@@ -49,6 +49,7 @@ public sealed class ExtensionsForMethodInfoTests
 		result2.Should().BeFalse();
 	}
 
+	[AttributeUsage(AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
 		public int Value { get; }

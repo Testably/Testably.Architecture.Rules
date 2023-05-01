@@ -24,7 +24,7 @@ public static class ExtensionsForType
 		Func<TAttribute, bool>? predicate = null)
 	{
 		object? attribute = type.GetCustomAttributes(typeof(TAttribute), true)
-		   .FirstOrDefault();
+			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
 			return predicate?.Invoke(castedAttribute) ?? true;
@@ -49,14 +49,7 @@ public static class ExtensionsForType
 		Func<TAttribute, MethodInfo, bool>? predicate = null)
 	{
 		predicate ??= (_, _) => true;
-		foreach (MethodInfo method in type.GetMethods())
-		{
-			if (method.HasAttribute<TAttribute>(a => predicate(a, method)))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return type.GetMethods().Any(
+			method => method.HasAttribute<TAttribute>(a => predicate(a, method)));
 	}
 }
