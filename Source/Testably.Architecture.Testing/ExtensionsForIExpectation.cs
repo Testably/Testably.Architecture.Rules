@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Testably.Architecture.Testing.Internal;
 
 namespace Testably.Architecture.Testing;
 
-public static partial class Extensions
+/// <summary>
+///     Extension methods for <see cref="IExpectation" />.
+/// </summary>
+public static class ExtensionsForIExpectation
 {
 	/// <summary>
 	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />
@@ -22,23 +26,9 @@ public static partial class Extensions
 	/// <returns></returns>
 	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
 	{
-		var types = new List<Type>();
-		foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-		{
-			try
-			{
-				types.AddRange(assembly.GetTypes());
-			}
-			catch (ReflectionTypeLoadException e)
-			{
-				_ = e.LoaderExceptions;
-			}
-		}
-
-		return @this.Type(types.ToArray());
-		//return @this.Type(AppDomain.CurrentDomain.GetAssemblies()
-		//	.SelectMany(a => a.GetTypes())
-		//	.ToArray());
+		return @this.Type(AppDomain.CurrentDomain.GetAssemblies()
+			.SelectMany(a => a.GetTypes())
+			.ToArray());
 	}
 
 	/// <summary>
@@ -66,7 +56,7 @@ public static partial class Extensions
 		RegexOptions options = ignoreCase
 			? RegexOptions.IgnoreCase
 			: RegexOptions.None;
-		string regex = WildcardToRegular(wildcardCondition);
+		string regex = Helpers.WildcardToRegular(wildcardCondition);
 
 		return @this.Assembly(AppDomain.CurrentDomain.GetAssemblies()
 		   .Where(a => Regex.IsMatch(a.GetName().Name ?? a.ToString(), regex, options))

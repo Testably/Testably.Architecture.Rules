@@ -1,11 +1,15 @@
 ﻿using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
 
-public static partial class Extensions
+/// <summary>
+///     Extension methods for <see cref="IAssemblyExpectation" />.
+/// </summary>
+public static class ExtensionsForIAssemblyExpectation
 {
 	/// <summary>
 	///     The assembly should not have dependencies on any assembly that matches
@@ -25,7 +29,7 @@ public static partial class Extensions
 		RegexOptions options = ignoreCase
 			? RegexOptions.IgnoreCase
 			: RegexOptions.None;
-		string regex = WildcardToRegular(wildcardCondition);
+		string regex = Helpers.WildcardToRegular(wildcardCondition);
 
 		bool FailCondition(AssemblyName referencedAssembly)
 		{

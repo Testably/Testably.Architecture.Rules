@@ -5,9 +5,9 @@ using Testably.Abstractions.Testing;
 using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests.Extensions;
+namespace Testably.Architecture.Testing.Tests;
 
-public sealed class AssemblyExpectationExtensionsTests
+public sealed class ExtensionsForIAssemblyExpectationTests
 {
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_CaseSensitivity_ShouldDefaultToSensitive()

@@ -5,7 +5,7 @@ using System.Reflection;
 using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests;
+namespace Testably.Architecture.Testing.Tests.Internal;
 
 public sealed class AssemblyExpectationTests
 {

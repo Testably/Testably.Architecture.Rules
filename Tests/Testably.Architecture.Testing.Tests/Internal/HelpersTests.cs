@@ -1,8 +1,9 @@
 ﻿using FluentAssertions;
 using System.Text.RegularExpressions;
+using Testably.Architecture.Testing.Internal;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests;
+namespace Testably.Architecture.Testing.Tests.Internal;
 
 public sealed class ExtensionsTests
 {
@@ -17,7 +18,7 @@ public sealed class ExtensionsTests
 	public void WildcardToRegular_ShouldReturnValidRegexMatchingExpectedResult(
 		string wildcard, string testInput, bool expectedResult)
 	{
-		string regexPattern = Testing.Extensions.WildcardToRegular(wildcard);
+		string regexPattern = Helpers.WildcardToRegular(wildcard);
 
 		bool matches = Regex.IsMatch(testInput, regexPattern);
 

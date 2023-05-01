@@ -2,9 +2,9 @@
 using Testably.Abstractions.Testing;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests.Extensions;
+namespace Testably.Architecture.Testing.Tests;
 
-public sealed class TestResultExtensionsTests
+public sealed class ExtensionsForITestResultAssemblyExpectationTests
 {
 	[Fact]
 	public void ExceptDependencyOn_WhenFilteringAllErrors_ShouldReturnSuccess()

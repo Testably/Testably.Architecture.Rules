@@ -6,7 +6,7 @@ using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests;
+namespace Testably.Architecture.Testing.Tests.Internal;
 
 public sealed class TypeExpectationTests
 {

@@ -2,9 +2,9 @@
 using System;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests.Extensions;
+namespace Testably.Architecture.Testing.Tests;
 
-public sealed class TypeExtensionsTests
+public sealed class ExtensionsForType
 {
 	[Fact]
 	public void HasAttribute_WithAttribute_ShouldReturnTrue()

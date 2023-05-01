@@ -1,6 +1,9 @@
 ﻿namespace Testably.Architecture.Testing;
 
-public static partial class Extensions
+/// <summary>
+///     Extension methods for <see cref="ITypeExpectation" />.
+/// </summary>
+public static class ExtensionsForITypeExpectation
 {
 	/// <summary>
 	///     Expect the type to be sealed.
