@@ -66,21 +66,15 @@ public sealed class ExtensionsForMethodInfoTests
 		[Dummy(1)]
 		// ReSharper disable once UnusedMember.Local
 		public void Method1WithAttribute()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 
 		// ReSharper disable once UnusedMember.Local
 		public void Method2WithoutAttribute()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 
 		// ReSharper disable once UnusedMember.Local
 		public override void MethodWithAttributeInBaseClass()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 	}
 
 	private class TestClassBase
@@ -88,8 +82,6 @@ public sealed class ExtensionsForMethodInfoTests
 		[Dummy(1)]
 		// ReSharper disable once UnusedMember.Local
 		public virtual void MethodWithAttributeInBaseClass()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 	}
 }

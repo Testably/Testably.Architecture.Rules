@@ -11,7 +11,5 @@ public static class ExtensionsForITypeExpectation
 	public static ITestResult<ITypeExpectation> ShouldBeSealed(
 		this ITypeExpectation @this,
 		bool isSealed = true)
-	{
-		return @this.ShouldSatisfy(t => t.IsSealed == isSealed);
-	}
+		=> @this.ShouldSatisfy(t => t.IsSealed == isSealed);
 }

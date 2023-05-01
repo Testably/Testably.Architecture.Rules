@@ -98,15 +98,11 @@ public sealed class ExtensionsForType
 	{
 		// ReSharper disable once UnusedMember.Local
 		public void Method1WithoutAttribute()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 
 		// ReSharper disable once UnusedMember.Local
 		public void Method2WithoutAttribute()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 	}
 
 	private class TestClassWithInheritedAttribute : TestClassWithAttribute
@@ -118,15 +114,11 @@ public sealed class ExtensionsForType
 		[Dummy(1)]
 		// ReSharper disable once UnusedMember.Local
 		public void Method1WithAttribute()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 
 		[Dummy(2)]
 		// ReSharper disable once UnusedMember.Local
 		public void Method2WithAttribute()
-		{
-			throw new NotImplementedException();
-		}
+			=> throw new NotImplementedException();
 	}
 }

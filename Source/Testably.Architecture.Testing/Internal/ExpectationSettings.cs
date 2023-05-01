@@ -18,10 +18,8 @@ internal static class ExpectationSettings
 	};
 
 	public static bool IsExcluded(Assembly assembly)
-	{
-		return ExcludedSystemAssemblies.Any(
+		=> ExcludedSystemAssemblies.Any(
 			excludedName => assembly.FullName?.StartsWith(
 				excludedName,
 				StringComparison.InvariantCulture) == true);
-	}
 }
