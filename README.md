@@ -9,15 +9,16 @@ This library is used to define architecture rules as expectations that can be ru
 
 ## Example
 
-- Test classes should be sealed:
+- Test classes should have `Tests` as suffix:
   ```csharp
   [Fact]
-  public void ExpectTestsToBeSealed()
+  public void ExpectTestClassesToBeSuffixedWithTests()
   {
-      var result = Expect.That
-	      .AssembliesMatching("*.Test")
-          .Types.ShouldBeSealed();
+    var result = Expect.That.AllLoadedTypes()
+     .Which(x => x.HasMethodWithAttribute<FactAttribute>() ||
+                 x.HasMethodWithAttribute<TheoryAttribute>())
+     .ShouldMatchName("*Tests");
   
-      Assert.Empty(result.Errors);
+    Assert.Empty(result.Errors);
   }
   ```
