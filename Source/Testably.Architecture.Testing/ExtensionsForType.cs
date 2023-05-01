@@ -41,6 +41,34 @@ public static class ExtensionsForType
 	}
 
 	/// <summary>
+	///     Checks if any method of the <paramref name="type" /> has an attribute which satisfies the
+	///     <paramref name="predicate" />.
+	/// </summary>
+	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
+	/// <param name="type">The <see cref="Type" /> which is checked to have a member with the attribute.</param>
+	/// <param name="predicate">
+	///     (optional) A predicate to check the attribute values.
+	///     <para />
+	///     If not set (<see langword="null" />), will only check if the attribute is present on any member.
+	/// </param>
+	/// <param name="inherit">
+	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
+	///     <see langword="false" />.<br />
+	///     Defaults to <see langword="true" />
+	/// </param>
+	public static bool HasMethodWithAttribute<TAttribute>(
+		this Type type,
+		Func<TAttribute, MethodInfo, bool>? predicate = null,
+		bool inherit = true)
+		where TAttribute : Attribute
+	{
+		predicate ??= (_, _) => true;
+		return type.GetMethods().Any(
+			method => method.HasAttribute<TAttribute>(
+				a => predicate(a, method), inherit));
+	}
+
+	/// <summary>
 	///     Determines whether the current <see cref="Type" /> inherits from the <paramref name="parentType" />.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
@@ -92,34 +120,6 @@ public static class ExtensionsForType
 		return false;
 	}
 
-	/// <summary>
-	///     Checks if any method of the <paramref name="type" /> has an attribute which satisfies the
-	///     <paramref name="predicate" />.
-	/// </summary>
-	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
-	/// <param name="type">The <see cref="Type" /> which is checked to have a member with the attribute.</param>
-	/// <param name="predicate">
-	///     (optional) A predicate to check the attribute values.
-	///     <para />
-	///     If not set (<see langword="null" />), will only check if the attribute is present on any member.
-	/// </param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
-	public static bool HasMethodWithAttribute<TAttribute>(
-		this Type type,
-		Func<TAttribute, MethodInfo, bool>? predicate = null,
-		bool inherit = true)
-		where TAttribute : Attribute
-	{
-		predicate ??= (_, _) => true;
-		return type.GetMethods().Any(
-			method => method.HasAttribute<TAttribute>(
-				a => predicate(a, method), inherit));
-	}
-
 	internal static bool ImplementsInterface(this Type type, Type interfaceType, bool forceDirect)
 	{
 		Type[] interfaces = type.GetInterfaces();
@@ -139,5 +139,13 @@ public static class ExtensionsForType
 
 				return currentInterface == interfaceType;
 			});
+	}
+
+	internal static bool IsStatic(this Type type)
+	{
+		return type.IsAbstract &&
+		       type.IsSealed &&
+		       !type.IsInterface &&
+		       !type.GetConstructors().Any(m => m.IsPublic);
 	}
 }
