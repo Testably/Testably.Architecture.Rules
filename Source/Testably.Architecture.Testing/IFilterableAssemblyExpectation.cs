@@ -9,13 +9,13 @@ namespace Testably.Architecture.Testing;
 public interface IFilterableAssemblyExpectation : IAssemblyExpectation
 {
 	/// <summary>
+	///     Get all types from the filtered assemblies.
+	/// </summary>
+	IFilterableTypeExpectation Types { get; }
+
+	/// <summary>
 	///     Filters the applicable <see cref="Assembly" /> on which the expectations should be applied.
 	/// </summary>
 	/// <param name="predicate">The predicate which the <see cref="Assembly" /> must fulfill.</param>
 	IFilterableAssemblyExpectation Which(Func<Assembly, bool> predicate);
-
-	/// <summary>
-	///     Get all types from the filtered assemblies.
-	/// </summary>
-	IFilterableTypeExpectation Types { get; }
 }

@@ -50,13 +50,6 @@ public static class ExtensionsForIExpectation
 	}
 
 	/// <summary>
-	///     Defines expectations on the assembly that contains the <typeparamref name="TAssembly" />.
-	/// </summary>
-	public static IFilterableAssemblyExpectation AssemblyContaining<TAssembly>(
-		this IExpectation @this)
-		=> @this.Assembly(typeof(TAssembly).Assembly);
-
-	/// <summary>
 	///     Defines expectations on <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />
 	///     that match the <paramref name="wildcardCondition" />.
 	/// </summary>
@@ -83,4 +76,11 @@ public static class ExtensionsForIExpectation
 				regex,
 				options));
 	}
+
+	/// <summary>
+	///     Defines expectations on the assembly that contains the <typeparamref name="TAssembly" />.
+	/// </summary>
+	public static IFilterableAssemblyExpectation AssemblyContaining<TAssembly>(
+		this IExpectation @this)
+		=> @this.Assembly(typeof(TAssembly).Assembly);
 }

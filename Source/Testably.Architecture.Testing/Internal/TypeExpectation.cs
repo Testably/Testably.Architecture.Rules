@@ -7,8 +7,8 @@ namespace Testably.Architecture.Testing.Internal;
 
 internal class TypeExpectation : IFilterableTypeExpectation
 {
-	private readonly List<Type> _types;
 	private readonly TestResultBuilder<TypeExpectation> _testResultBuilder;
+	private readonly List<Type> _types;
 
 	public TypeExpectation(IEnumerable<Type> types)
 	{
@@ -17,6 +17,13 @@ internal class TypeExpectation : IFilterableTypeExpectation
 	}
 
 	#region IFilterableTypeExpectation Members
+
+	/// <inheritdoc cref="IFilterableTypeExpectation.Which(Func{Type, bool})" />
+	public IFilterableTypeExpectation Which(Func<Type, bool> predicate)
+	{
+		_types.RemoveAll(p => !predicate(p));
+		return this;
+	}
 
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError}?)" />
@@ -37,13 +44,6 @@ internal class TypeExpectation : IFilterableTypeExpectation
 		}
 
 		return _testResultBuilder.Build();
-	}
-
-	/// <inheritdoc cref="IFilterableTypeExpectation.Which(Func{Type, bool})" />
-	public IFilterableTypeExpectation Which(Func<Type, bool> predicate)
-	{
-		_types.RemoveAll(p => !predicate(p));
-		return this;
 	}
 
 	#endregion

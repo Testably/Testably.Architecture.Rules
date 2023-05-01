@@ -82,6 +82,7 @@ public sealed class ExtensionsForType
 		result3.Should().BeFalse();
 	}
 
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{
 		public int Value { get; }
@@ -108,6 +109,10 @@ public sealed class ExtensionsForType
 		}
 	}
 
+	private class TestClassWithInheritedAttribute : TestClassWithAttribute
+	{
+	}
+
 	private class TestClassWithoutAttribute
 	{
 		[Dummy(1)]
@@ -123,9 +128,5 @@ public sealed class ExtensionsForType
 		{
 			throw new NotImplementedException();
 		}
-	}
-
-	private class TestClassWithInheritedAttribute : TestClassWithAttribute
-	{
 	}
 }

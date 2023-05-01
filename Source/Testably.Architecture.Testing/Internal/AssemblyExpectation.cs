@@ -19,6 +19,10 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 
 	#region IFilterableAssemblyExpectation Members
 
+	/// <inheritdoc cref="IFilterableAssemblyExpectation.Types" />
+	public IFilterableTypeExpectation Types
+		=> new TypeExpectation(_assemblies.SelectMany(x => x.GetTypes()));
+
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError}?)" />
 	#pragma warning restore CS1574
@@ -47,10 +51,6 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 		_assemblies.RemoveAll(p => !predicate(p));
 		return this;
 	}
-
-	/// <inheritdoc cref="IFilterableAssemblyExpectation.Types" />
-	public IFilterableTypeExpectation Types
-		=> new TypeExpectation(_assemblies.SelectMany(x => x.GetTypes()));
 
 	#endregion
 }
