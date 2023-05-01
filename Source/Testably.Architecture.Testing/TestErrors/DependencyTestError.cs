@@ -50,22 +50,28 @@ public class DependencyTestError : TestError
 	private static string CreateMessage(Assembly assembly,
 		AssemblyName[] assemblyReferences)
 	{
-		if (assemblyReferences.Length == 0)
+		if (assemblyReferences.Length > 1)
 		{
-			return $"Assembly '{assembly.GetName().Name}' has no incorrect references.";
+			List<string> references = assemblyReferences
+				.Select(x => x.Name)
+				.Where(x => x != null)
+				.OrderBy(x => x)
+				.ToList()!;
+			string lastReference = references.Last();
+			references.Remove(lastReference);
+			return
+				$"Assembly '{assembly.GetName().Name}' has {assemblyReferences.Length} incorrect references on '{string.Join("', '", references)}' and '{lastReference}'.";
 		}
 
-		if (assemblyReferences.Length == 1)
+		string? assemblyReference = assemblyReferences
+			.Select(x => x.Name)
+			.SingleOrDefault();
+		if (assemblyReference != null)
 		{
 			return
-				$"Assembly '{assembly.GetName().Name}' has an incorrect reference on '{assemblyReferences.Select(x => x.Name).Single()}'.";
+				$"Assembly '{assembly.GetName().Name}' has an incorrect reference on '{assemblyReference}'.";
 		}
 
-		List<string> references = assemblyReferences.Select(x => x.Name)
-			.Where(x => x != null).OrderBy(x => x).ToList()!;
-		string lastReference = references.Last();
-		references.Remove(lastReference);
-		return
-			$"Assembly '{assembly.GetName().Name}' has incorrect references on '{string.Join("', '", references)}' and '{lastReference}'.";
+		return $"Assembly '{assembly.GetName().Name}' has no incorrect references.";
 	}
 }

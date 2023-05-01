@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
@@ -12,28 +10,22 @@ namespace Testably.Architecture.Testing;
 public static class ExtensionsForITestResultAssemblyExpectation
 {
 	/// <summary>
-	///     Defines an exception to rules by allowing dependencies that match the <paramref name="wildcardCondition" />.
+	///     Defines an exception to rules by allowing dependencies that match the <paramref name="pattern" />.
 	/// </summary>
 	/// <param name="this">The <see cref="ITestResult{IAssemblyExpectation}" />.</param>
-	/// <param name="wildcardCondition">
+	/// <param name="pattern">
 	///     The wildcard condition.
 	///     <para />
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
 	public static ITestResult<IAssemblyExpectation> ExceptDependencyOn(
-		this ITestResult<IAssemblyExpectation> @this, string wildcardCondition,
+		this ITestResult<IAssemblyExpectation> @this,
+		Match pattern,
 		bool ignoreCase = false)
 	{
-		RegexOptions options = ignoreCase
-			? RegexOptions.IgnoreCase
-			: RegexOptions.None;
-		string regex = Helpers.WildcardToRegular(wildcardCondition);
-		return @this.ExceptDependencyOn((assembly, assemblyName) =>
-			assemblyName.Name != null &&
-			Regex.IsMatch(assemblyName.Name,
-				regex.Replace("{Assembly}", assembly.GetName().Name),
-				options));
+		return @this.ExceptDependencyOn((_, assemblyName) =>
+			pattern.Matches(assemblyName.Name, ignoreCase));
 	}
 
 	/// <summary>
