@@ -44,9 +44,7 @@ public static class ExtensionsForIExpectation
 	///     <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />.
 	/// </summary>
 	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
-	{
-		return @this.AllLoadedAssemblies().Types;
-	}
+		=> @this.AllLoadedAssemblies().Types;
 
 	/// <summary>
 	///     Defines expectations on <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />
@@ -61,10 +59,8 @@ public static class ExtensionsForIExpectation
 		this IExpectation @this,
 		Match pattern,
 		bool ignoreCase = false)
-	{
-		return @this.AllLoadedAssemblies(
+		=> @this.AllLoadedAssemblies(
 			assembly => pattern.Matches(assembly.GetName().Name, ignoreCase));
-	}
 
 	/// <summary>
 	///     Defines expectations on the assembly that contains the <typeparamref name="TAssembly" />.

@@ -29,11 +29,9 @@ public abstract class Match
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
 	public static Match Wildcard(string pattern)
-	{
-		return new WildcardMatch(pattern);
-	}
+		=> new WildcardMatch(pattern);
 
-	private class WildcardMatch : Match
+	private sealed class WildcardMatch : Match
 	{
 		private readonly string _pattern;
 
