@@ -22,7 +22,8 @@ public static class ExtensionsForITypeExpectation
 		this ITypeExpectation @this,
 		bool isSealed = true)
 		=> @this.ShouldSatisfy(type => type.IsSealed == isSealed,
-			type => new TypeTestError(type, $"Type '{type.Name}' is not sealed."));
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should{(isSealed ? "" : " not")} be sealed."));
 
 	/// <summary>
 	///     Expect the types to have an attribute of type <typeparamref name="TAttribute" />.
@@ -45,7 +46,7 @@ public static class ExtensionsForITypeExpectation
 		where TAttribute : Attribute
 		=> @this.ShouldSatisfy(type => type.HasAttribute(predicate, inherit),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' does not have correct attribute '{typeof(TAttribute).Name}'."));
+				$"Type '{type.Name}' should have correct attribute '{typeof(TAttribute).Name}'."));
 
 	/// <summary>
 	///     Expect the <see cref="MemberInfo.Name" /> of the types to match the given <paramref name="pattern" />.
@@ -63,7 +64,30 @@ public static class ExtensionsForITypeExpectation
 		bool ignoreCase = false)
 		=> @this.ShouldSatisfy(type => pattern.Matches(type.Name, ignoreCase),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' does not match pattern '{pattern}'."));
+				$"Type '{type.Name}' should match pattern '{pattern}'."));
+
+	/// <summary>
+	///     Expect the types to have an attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	/// <param name="predicate">
+	///     (optional) A predicate to check the attribute values.
+	///     <para />
+	///     If not set (<see langword="null" />), will only check if the attribute is present.
+	/// </param>
+	/// <param name="inherit">
+	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
+	///     <see langword="false" />.<br />
+	///     Defaults to <see langword="true" />
+	/// </param>
+	public static ITestResult<ITypeExpectation> ShouldNotHaveAttribute<TAttribute>(
+		this ITypeExpectation @this,
+		Func<TAttribute, bool>? predicate = null,
+		bool inherit = true)
+		where TAttribute : Attribute
+		=> @this.ShouldSatisfy(type => !type.HasAttribute(predicate, inherit),
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should not have correct attribute '{typeof(TAttribute).Name}'."));
 
 	/// <summary>
 	///     Expect the <see cref="MemberInfo.Name" /> of the types to not match the given <paramref name="pattern" />.
@@ -81,7 +105,7 @@ public static class ExtensionsForITypeExpectation
 		bool ignoreCase = false)
 		=> @this.ShouldSatisfy(type => !pattern.Matches(type.Name, ignoreCase),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' matches pattern '{pattern}'."));
+				$"Type '{type.Name}' not match pattern '{pattern}'."));
 
 	/// <summary>
 	///     The <see cref="Type" /> should satisfy the given <paramref name="condition" />.
@@ -93,6 +117,6 @@ public static class ExtensionsForITypeExpectation
 		Func<Type, bool> compiledCondition = condition.Compile();
 		return @this.ShouldSatisfy(compiledCondition,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' does not satisfy the required condition {condition}."));
+				$"Type '{type.Name}' should satisfy the required condition {condition}."));
 	}
 }
