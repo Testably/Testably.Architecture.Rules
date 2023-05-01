@@ -29,5 +29,6 @@ public class TestError
 	///     Updates the error message from derived <see cref="TestError" />s.
 	/// </summary>
 	/// <param name="errorMessage"></param>
-	protected void UpdateMessage(string errorMessage) => _errorMessage = errorMessage;
+	protected void UpdateMessage(string errorMessage)
+		=> _errorMessage = errorMessage;
 }

@@ -16,8 +16,8 @@ public sealed class TestResultTests
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
-		   .ShouldSatisfy(_ => false, _ => error1).And
-		   .ShouldSatisfy(_ => true, _ => error2);
+			.ShouldSatisfy(_ => false, _ => error1).And
+			.ShouldSatisfy(_ => true, _ => error2);
 
 		result.IsSatisfied.Should().BeFalse();
 		result.Errors.Should().NotBeEmpty();
@@ -32,8 +32,8 @@ public sealed class TestResultTests
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
-		   .ShouldSatisfy(_ => true, _ => error1).And
-		   .ShouldSatisfy(_ => true, _ => error2);
+			.ShouldSatisfy(_ => true, _ => error1).And
+			.ShouldSatisfy(_ => true, _ => error2);
 
 		result.IsSatisfied.Should().BeTrue();
 		result.Errors.Should().BeEmpty();
@@ -47,8 +47,8 @@ public sealed class TestResultTests
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
-		   .ShouldSatisfy(_ => true, _ => error1).And
-		   .ShouldSatisfy(_ => false, _ => error2);
+			.ShouldSatisfy(_ => true, _ => error1).And
+			.ShouldSatisfy(_ => false, _ => error2);
 
 		result.IsSatisfied.Should().BeFalse();
 		result.Errors.Should().NotBeEmpty();
@@ -63,8 +63,8 @@ public sealed class TestResultTests
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
 		ITestResult<IAssemblyExpectation> result = sut
-		   .ShouldSatisfy(_ => false, _ => error1).And
-		   .ShouldSatisfy(_ => false, _ => error2);
+			.ShouldSatisfy(_ => false, _ => error1).And
+			.ShouldSatisfy(_ => false, _ => error2);
 
 		result.IsSatisfied.Should().BeFalse();
 		result.Errors.Should().NotBeEmpty();

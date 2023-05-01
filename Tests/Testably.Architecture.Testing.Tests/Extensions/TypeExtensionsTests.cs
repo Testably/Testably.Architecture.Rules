@@ -17,6 +17,16 @@ public sealed class TypeExtensionsTests
 	}
 
 	[Fact]
+	public void HasAttribute_WithoutAttribute_ShouldReturnFalse()
+	{
+		Type type = typeof(TestClass2);
+
+		bool result = type.HasAttribute<DummyAttribute>();
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
 	public void HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		Type type = typeof(TestClass1);
@@ -26,16 +36,6 @@ public sealed class TypeExtensionsTests
 
 		result1.Should().BeTrue();
 		result2.Should().BeFalse();
-	}
-
-	[Fact]
-	public void HasAttribute_WithoutAttribute_ShouldReturnFalse()
-	{
-		Type type = typeof(TestClass2);
-
-		bool result = type.HasAttribute<DummyAttribute>();
-
-		result.Should().BeFalse();
 	}
 
 	[Fact]

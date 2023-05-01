@@ -18,6 +18,16 @@ public sealed class MethodInfoTests
 	}
 
 	[Fact]
+	public void HasAttribute_WithoutAttribute_ShouldReturnFalse()
+	{
+		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method2))!;
+
+		bool result = type.HasAttribute<DummyAttribute>();
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
 	public void HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
 		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method1))!;
@@ -27,16 +37,6 @@ public sealed class MethodInfoTests
 
 		result1.Should().BeTrue();
 		result2.Should().BeFalse();
-	}
-
-	[Fact]
-	public void HasAttribute_WithoutAttribute_ShouldReturnFalse()
-	{
-		MethodInfo type = typeof(TestClass).GetMethod(nameof(TestClass.Method2))!;
-
-		bool result = type.HasAttribute<DummyAttribute>();
-
-		result.Should().BeFalse();
 	}
 
 	private class DummyAttribute : Attribute
