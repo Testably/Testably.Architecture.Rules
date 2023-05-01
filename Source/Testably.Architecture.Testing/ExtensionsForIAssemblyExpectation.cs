@@ -48,6 +48,6 @@ public static class ExtensionsForIAssemblyExpectation
 		Func<Assembly, bool> compiledCondition = condition.Compile();
 		return @this.ShouldSatisfy(compiledCondition,
 			assembly => new TestError(
-				$"Assembly '{assembly.GetName().Name}' does not satisfy the required condition {condition}."));
+				$"Assembly '{assembly.GetName().Name}' should satisfy the required condition {condition}."));
 	}
 }
