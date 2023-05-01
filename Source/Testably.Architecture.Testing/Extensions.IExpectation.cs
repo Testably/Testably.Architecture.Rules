@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Testably.Architecture.Testing;
@@ -18,10 +20,26 @@ public static partial class Extensions
 	/// </summary>
 	/// <param name="this"></param>
 	/// <returns></returns>
-	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this) =>
-		@this.Type(AppDomain.CurrentDomain.GetAssemblies()
-		   .SelectMany(a => a.GetTypes())
-		   .ToArray());
+	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
+	{
+		var types = new List<Type>();
+		foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+		{
+			try
+			{
+				types.AddRange(assembly.GetTypes());
+			}
+			catch (ReflectionTypeLoadException e)
+			{
+				_ = e.LoaderExceptions;
+			}
+		}
+
+		return @this.Type(types.ToArray());
+		//return @this.Type(AppDomain.CurrentDomain.GetAssemblies()
+		//	.SelectMany(a => a.GetTypes())
+		//	.ToArray());
+	}
 
 	/// <summary>
 	///     Defines expectations on the assembly that contains the <typeparamref name="TAssembly" />.
