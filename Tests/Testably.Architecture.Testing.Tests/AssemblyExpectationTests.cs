@@ -56,10 +56,11 @@ public sealed class AssemblyExpectationTests
 			Expect.That.AllLoadedAssemblies().ShouldSatisfy(_ => false).Errors.Length;
 		IFilterableAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
-		ITestResult<IAssemblyExpectation> errors = sut
-		   .Which(p => p.GetName().Name?.StartsWith("System") != true)
-		   .ShouldSatisfy(_ => false);
+		ITestResult<IAssemblyExpectation> result = sut
+			.Which(p => p.GetName().Name?.StartsWith("System") != true)
+			.ShouldSatisfy(_ => false);
 
-		errors.Errors.Length.Should().BeLessThan(allAssembliesCount);
+		result.Errors.Length.Should().BeLessThan(allAssembliesCount);
+		result.Errors.Should().OnlyContain(e => !e.ToString().Contains("'System"));
 	}
 }
