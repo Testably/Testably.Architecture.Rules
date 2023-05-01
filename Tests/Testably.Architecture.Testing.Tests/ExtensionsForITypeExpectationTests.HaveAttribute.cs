@@ -60,6 +60,8 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain("should have correct attribute")
+				.And.Contain(nameof(DummyAttribute));
 		}
 
 		[Theory]
@@ -103,6 +105,8 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain("should not have correct attribute")
+				.And.Contain(nameof(DummyAttribute));
 		}
 
 		[Fact]
