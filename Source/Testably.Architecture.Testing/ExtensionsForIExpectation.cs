@@ -52,7 +52,9 @@ public static class ExtensionsForIExpectation
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectation" />.</param>
 	/// <param name="pattern">
-	///     The match pattern.
+	///     The wildcard condition.
+	///     <para />
+	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
 	public static IFilterableAssemblyExpectation AssembliesMatching(

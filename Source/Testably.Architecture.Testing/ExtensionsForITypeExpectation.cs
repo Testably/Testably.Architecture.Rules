@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
@@ -45,6 +46,24 @@ public static class ExtensionsForITypeExpectation
 		=> @this.ShouldSatisfy(type => type.HasAttribute(predicate, inherit),
 			type => new TypeTestError(type,
 				$"Type '{type.Name}' does not have correct attribute '{typeof(TAttribute).Name}'."));
+
+	/// <summary>
+	///     Expect the <see cref="MemberInfo.Name" /> of the types to match the given <paramref name="pattern" />.
+	/// </summary>
+	/// <param name="this">The <see cref="ITypeExpectation" />.</param>
+	/// <param name="pattern">
+	///     The wildcard condition.
+	///     <para />
+	///     Supports * to match zero or more characters and ? to match exactly one character.
+	/// </param>
+	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
+	public static ITestResult<ITypeExpectation> ShouldMatchName(
+		this ITypeExpectation @this,
+		Match pattern,
+		bool ignoreCase = false)
+		=> @this.ShouldSatisfy(type => pattern.Matches(type.Name, ignoreCase),
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' does not match pattern '{pattern}'."));
 
 	/// <summary>
 	///     The <see cref="Type" /> should satisfy the given <paramref name="condition" />.
