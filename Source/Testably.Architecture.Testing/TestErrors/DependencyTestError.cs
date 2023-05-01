@@ -6,15 +6,10 @@ using System.Reflection;
 namespace Testably.Architecture.Testing.TestErrors;
 
 /// <summary>
-///     A <see cref="TestError" /> due to an incorrect dependency.
+///     A <see cref="AssemblyTestError" /> due to an incorrect dependency.
 /// </summary>
-public class DependencyTestError : TestError
+public class DependencyTestError : AssemblyTestError
 {
-	/// <summary>
-	///     The <see cref="System.Reflection.Assembly" /> which has the incorrect dependency.
-	/// </summary>
-	public Assembly Assembly { get; }
-
 	/// <summary>
 	///     The <see cref="Assembly.GetReferencedAssemblies()" /> that are incorrect.
 	/// </summary>
@@ -31,10 +26,9 @@ public class DependencyTestError : TestError
 	///     The <see cref="Assembly.GetReferencedAssemblies()" /> that are incorrect in the <paramref name="assembly" />.
 	/// </param>
 	public DependencyTestError(Assembly assembly, AssemblyName[] assemblyReferences)
-		: base(CreateMessage(assembly, assemblyReferences))
+		: base(assembly, CreateMessage(assembly, assemblyReferences))
 	{
 		_referencedAssemblies = assemblyReferences.ToList();
-		Assembly = assembly;
 	}
 
 	internal bool Except(Func<Assembly, AssemblyName, bool> predicate)

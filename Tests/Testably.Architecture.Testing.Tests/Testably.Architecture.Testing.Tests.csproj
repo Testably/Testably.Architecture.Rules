@@ -12,4 +12,10 @@
 		<ProjectReference Include="..\..\Source\Testably.Architecture.Testing\Testably.Architecture.Testing.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Compile Update="ExtensionsForITypeExpectationTests*.cs">
+			<DependentUpon>ExtensionsForITypeExpectationTests.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
 </Project>

@@ -26,14 +26,12 @@ internal class TypeExpectation : IFilterableTypeExpectation
 	}
 
 	#pragma warning disable CS1574
-	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError}?)" />
+	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
 	#pragma warning restore CS1574
 	public ITestResult<ITypeExpectation> ShouldSatisfy(
 		Func<Type, bool> condition,
-		Func<Type, TestError>? errorGenerator = null)
+		Func<Type, TestError> errorGenerator)
 	{
-		errorGenerator ??= p =>
-			new TestError($"Type '{p.Name}' does not satisfy the required condition");
 		foreach (Type type in _types)
 		{
 			if (!condition(type))
