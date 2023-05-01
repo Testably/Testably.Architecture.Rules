@@ -24,15 +24,12 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 		=> new TypeExpectation(_assemblies.SelectMany(x => x.GetTypes()));
 
 	#pragma warning disable CS1574
-	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError}?)" />
+	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />
 	#pragma warning restore CS1574
 	public ITestResult<IAssemblyExpectation> ShouldSatisfy(
 		Func<Assembly, bool> condition,
-		Func<Assembly, TestError>? errorGenerator = null)
+		Func<Assembly, TestError> errorGenerator)
 	{
-		errorGenerator ??= assembly =>
-			new TestError(
-				$"Assembly '{assembly.GetName().Name}' does not satisfy the required condition");
 		foreach (Assembly assembly in _assemblies)
 		{
 			if (!condition(assembly))
