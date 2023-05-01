@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public sealed class ExtensionsForType
+public sealed class ExtensionsForTypeTests
 {
 	[Fact]
 	public void HasAttribute_WithAttribute_ShouldReturnTrue()
