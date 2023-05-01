@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
@@ -13,28 +11,23 @@ public static class ExtensionsForIAssemblyExpectation
 {
 	/// <summary>
 	///     The assembly should not have dependencies on any assembly that matches
-	///     the <paramref name="wildcardCondition" />.
+	///     the <paramref name="pattern" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IAssemblyExpectation" />.</param>
-	/// <param name="wildcardCondition">
+	/// <param name="pattern">
 	///     The wildcard condition.
 	///     <para />
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
 	public static ITestResult<IAssemblyExpectation> ShouldNotHaveDependenciesOn(
-		this IAssemblyExpectation @this, string wildcardCondition,
+		this IAssemblyExpectation @this,
+		Match pattern,
 		bool ignoreCase = false)
 	{
-		RegexOptions options = ignoreCase
-			? RegexOptions.IgnoreCase
-			: RegexOptions.None;
-		string regex = Helpers.WildcardToRegular(wildcardCondition);
-
 		bool FailCondition(AssemblyName referencedAssembly)
 		{
-			return referencedAssembly.Name != null &&
-			       Regex.IsMatch(referencedAssembly.Name, regex, options);
+			return pattern.Matches(referencedAssembly.Name, ignoreCase);
 		}
 
 		return @this.ShouldSatisfy(

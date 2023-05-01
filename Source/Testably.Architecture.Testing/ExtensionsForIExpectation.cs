@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using Testably.Architecture.Testing.Internal;
 
 namespace Testably.Architecture.Testing;
@@ -51,30 +50,20 @@ public static class ExtensionsForIExpectation
 
 	/// <summary>
 	///     Defines expectations on <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />
-	///     that match the <paramref name="wildcardCondition" />.
+	///     that match the <paramref name="pattern" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectation" />.</param>
-	/// <param name="wildcardCondition">
-	///     The wildcard condition.
-	///     <para />
-	///     Supports * to match zero or more characters and ? to match exactly one character.
+	/// <param name="pattern">
+	///     The match pattern.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
 	public static IFilterableAssemblyExpectation AssembliesMatching(
 		this IExpectation @this,
-		string wildcardCondition,
+		Match pattern,
 		bool ignoreCase = false)
 	{
-		RegexOptions options = ignoreCase
-			? RegexOptions.IgnoreCase
-			: RegexOptions.None;
-		string regex = Helpers.WildcardToRegular(wildcardCondition);
-
 		return @this.AllLoadedAssemblies(
-			assembly => Regex.IsMatch(
-				assembly.GetName().Name ?? assembly.ToString(),
-				regex,
-				options));
+			assembly => pattern.Matches(assembly.GetName().Name, ignoreCase));
 	}
 
 	/// <summary>
