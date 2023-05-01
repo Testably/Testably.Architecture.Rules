@@ -20,8 +20,8 @@ public static class ExtensionsForIExpectation
 	///     Flag, indicating if system assemblies should be filtered out.
 	///     <para />
 	///     If set to <see langword="true" /> (default value), no assemblies starting with<br />
-	///     - <c>System</c><br />
 	///     - <c>mscorlib</c><br />
+	///     - <c>System</c><br />
 	///     - <c>xunit</c><br />
 	///     are loaded.<br />
 	///     Otherwise all assemblies matching the <paramref name="predicate" /> are loaded.
