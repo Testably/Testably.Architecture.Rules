@@ -5,10 +5,11 @@ using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class TypeExpectation : IFilterableTypeExpectation
+internal class TypeExpectation : IFilterableTypeExpectation, IFilteredTypeExpectation
 {
 	private readonly TestResultBuilder<TypeExpectation> _testResultBuilder;
 	private readonly List<Type> _types;
+	private readonly List<TypeFilter> _filters = new();
 
 	public TypeExpectation(IEnumerable<Type> types)
 	{
@@ -18,13 +19,6 @@ internal class TypeExpectation : IFilterableTypeExpectation
 
 	#region IFilterableTypeExpectation Members
 
-	/// <inheritdoc cref="IFilterableTypeExpectation.Which(Func{Type, bool})" />
-	public IFilterableTypeExpectation Which(Func<Type, bool> predicate)
-	{
-		_types.RemoveAll(p => !predicate(p));
-		return this;
-	}
-
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
 	#pragma warning restore CS1574
@@ -32,7 +26,7 @@ internal class TypeExpectation : IFilterableTypeExpectation
 		Func<Type, bool> condition,
 		Func<Type, TestError> errorGenerator)
 	{
-		foreach (Type type in _types)
+		foreach (Type type in _types.Where(x => _filters.All(f => f.Applies(x))))
 		{
 			if (!condition(type))
 			{
@@ -44,5 +38,15 @@ internal class TypeExpectation : IFilterableTypeExpectation
 		return _testResultBuilder.Build();
 	}
 
+	/// <inheritdoc cref="IFilterableTypeExpectation.Which(TypeFilter)" />
+	public IFilteredTypeExpectation Which(TypeFilter filter)
+	{
+		_filters.Add(filter);
+		return this;
+	}
+
 	#endregion
+
+	/// <inheritdoc cref="IFilteredTypeExpectation.And" />
+	public IFilterableTypeExpectation And => this;
 }

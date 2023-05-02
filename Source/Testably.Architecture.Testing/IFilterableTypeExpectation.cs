@@ -10,6 +10,6 @@ public interface IFilterableTypeExpectation : ITypeExpectation
 	/// <summary>
 	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
 	/// </summary>
-	/// <param name="predicate">The predicate which the <see cref="Type" /> must fulfill.</param>
-	IFilterableTypeExpectation Which(Func<Type, bool> predicate);
+	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
+	IFilteredTypeExpectation Which(TypeFilter filter);
 }
