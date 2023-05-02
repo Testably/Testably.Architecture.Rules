@@ -12,7 +12,7 @@ internal class Expectation : IExpectation
 		new AssemblyExpectation(assemblies);
 
 	/// <inheritdoc cref="IExpectation.Type" />
-	public IFilterableTypeExpectation Type(params Type[] types) =>
+	public IOptionallyFilterableTypeExpectation Type(params Type[] types) =>
 		new TypeExpectation(types);
 
 	#endregion

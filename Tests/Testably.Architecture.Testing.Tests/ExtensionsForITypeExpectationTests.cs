@@ -12,7 +12,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
 	{
 		Type type = typeof(ExtensionsForITypeExpectationTests);
-		IFilterableTypeExpectation sut = Expect.That.Type(type);
+		var sut = Expect.That.Type(type);
 		Expression<Func<Type, bool>> expression = _ => false;
 
 		ITestResult<ITypeExpectation> result = sut.ShouldSatisfy(expression);

@@ -43,7 +43,7 @@ public static class ExtensionsForIExpectation
 	///     Defines expectations on all types from
 	///     <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />.
 	/// </summary>
-	public static IFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
+	public static IOptionallyFilterableTypeExpectation AllLoadedTypes(this IExpectation @this)
 		=> @this.AllLoadedAssemblies().Types;
 
 	/// <summary>

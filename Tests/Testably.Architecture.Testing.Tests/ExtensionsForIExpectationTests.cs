@@ -61,7 +61,7 @@ public sealed class ExtensionsForIExpectationTests
 	[Fact]
 	public void AllLoadedTypes_ShouldNotBeEmpty()
 	{
-		IFilterableTypeExpectation sut = Expect.That.AllLoadedTypes();
+		var sut = Expect.That.AllLoadedTypes();
 
 		ITestResult<ITypeExpectation> result = sut.ShouldSatisfy(_ => false);
 

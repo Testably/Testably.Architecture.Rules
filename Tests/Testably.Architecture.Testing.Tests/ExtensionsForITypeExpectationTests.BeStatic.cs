@@ -13,7 +13,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeStatic_InstanceType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(InstanceType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			var sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldBeStatic();
 
@@ -27,7 +27,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeStatic_StaticType_ShouldBeSatisfied()
 		{
 			Type type = typeof(StaticType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			var sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldBeStatic();
 
@@ -38,7 +38,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeStatic_InstanceType_ShouldBeSatisfied()
 		{
 			Type type = typeof(InstanceType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			var sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldNotBeStatic();
 
@@ -49,7 +49,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeStatic_StaticType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(StaticType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			var sut = Expect.That.Type(type);
 
 			ITestResult<ITypeExpectation> result = sut.ShouldNotBeStatic();
 

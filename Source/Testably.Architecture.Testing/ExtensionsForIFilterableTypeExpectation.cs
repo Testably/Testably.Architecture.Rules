@@ -30,9 +30,7 @@ public static class ExtensionsForIFilterableTypeExpectation
 		where TAttribute : Attribute
 	{
 		FilteredTypeWithAttributeExpectationOr filter =
-			new FilteredTypeWithAttributeExpectationOr(@this,
-				type => type.HasAttribute(predicate, inherit));
-		@this.Which(filter);
+			new(@this, type => type.HasAttribute(predicate, inherit));
 		return filter;
 	}
 
@@ -58,7 +56,7 @@ public static class ExtensionsForIFilterableTypeExpectation
 		where TAttribute : Attribute
 	{
 		FilteredTypeWithMethodAttributeExpectation filter =
-			new FilteredTypeWithMethodAttributeExpectation(@this,
+			new(@this,
 				type => type.HasMethodWithAttribute(predicate, inherit));
 		@this.Which(filter);
 		return filter;

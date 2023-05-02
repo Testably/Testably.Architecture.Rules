@@ -6,8 +6,8 @@ namespace Testably.Architecture.Testing.Filters;
 public class FilteredTypeWithMethodAttributeExpectation : FilteredTypeExpectationOrBase
 {
 	public FilteredTypeWithMethodAttributeExpectation(
-		IFilterableTypeExpectation @this,
-		Func<Type, bool> predicate) : base(@this, predicate)
+		IFilterableTypeExpectation filterableTypeExpectation,
+		Func<Type, bool> predicate) : base(filterableTypeExpectation, predicate)
 	{
 	}
 

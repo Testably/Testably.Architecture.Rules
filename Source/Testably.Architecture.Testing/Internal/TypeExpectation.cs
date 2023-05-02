@@ -5,7 +5,7 @@ using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class TypeExpectation : IFilterableTypeExpectation, IFilteredTypeExpectation
+internal class TypeExpectation : IOptionallyFilterableTypeExpectation, IFilteredTypeExpectation
 {
 	private readonly TestResultBuilder<TypeExpectation> _testResultBuilder;
 	private readonly List<Type> _types;

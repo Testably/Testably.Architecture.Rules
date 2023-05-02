@@ -10,7 +10,6 @@ public sealed class ExtensionsForIFilterableTypeExpectationTests
 	{
 		ITestResult result = Expect.That.AllLoadedTypes()
 			.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
-			.And.WhichArePublic()
 			.ShouldBeSealed();
 
 		result.Errors.Should().BeEmpty();
