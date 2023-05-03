@@ -11,7 +11,7 @@ public sealed class ExtensionsForExpectationConditionOnTypeTests
 	[Fact]
 	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
 	{
-		Type type = typeof(ExtensionsForITypeExpectationTests);
+		Type type = typeof(ExtensionsForExpectationConditionOnTypeTests);
 		ITypeExpectation sut = Expect.That.Type(type);
 		Expression<Func<Type, bool>> expression = _ => false;
 
