@@ -71,6 +71,14 @@ public static class ExtensionsForExpectationFilterOnType
 	}
 
 	/// <summary>
+	///     Filter for not public types.
+	/// </summary>
+	public static IExpectationFilterResult<Type> WhichAreNotPublic(this IExpectationFilter<Type> @this)
+	{
+		return @this.Which(type => !type.IsPublic);
+	}
+
+	/// <summary>
 	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationFilter{Type}" />.</param>

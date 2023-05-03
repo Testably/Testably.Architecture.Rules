@@ -89,36 +89,44 @@ public static class ExtensionsForType
 			parentType = parentType.GetGenericTypeDefinition();
 		}
 
-		Type? currentChild = type.IsGenericType
+		Type currentType = type.IsGenericType
 			? type.GetGenericTypeDefinition()
 			: type;
 
-		while (currentChild != typeof(object))
+		int level = 0;
+		while (currentType != typeof(object))
 		{
-			if (parentType == currentChild ||
-			    currentChild.ImplementsInterface(parentType, forceDirect))
+			if (parentType == currentType)
 			{
 				return true;
 			}
 
-			if (forceDirect)
+			if (forceDirect && level++ > 0)
 			{
 				return false;
 			}
 
-			currentChild = currentChild.BaseType != null
-			               && currentChild.BaseType.IsGenericType
-				? currentChild.BaseType.GetGenericTypeDefinition()
-				: currentChild.BaseType;
-
-			if (currentChild == null)
+			if (currentType.ImplementsInterface(parentType, forceDirect))
 			{
-				return false;
+				return true;
 			}
+
+			currentType = currentType.BaseType != null
+			              && currentType.BaseType.IsGenericType
+				? currentType.BaseType.GetGenericTypeDefinition()
+				: currentType.BaseType!;
 		}
 
 		return false;
 	}
+
+	/// <summary>
+	///     Gets a value indicating whether the <see cref="Type" /> is static.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
+	public static bool IsStatic(this Type type)
+		=> type.IsAbstract && type.IsSealed && !type.IsInterface && !type.GetConstructors().Any(m => m.IsPublic);
 
 	internal static bool ImplementsInterface(this Type type, Type interfaceType, bool forceDirect)
 	{
@@ -139,13 +147,5 @@ public static class ExtensionsForType
 
 				return currentInterface == interfaceType;
 			});
-	}
-
-	internal static bool IsStatic(this Type type)
-	{
-		return type.IsAbstract &&
-		       type.IsSealed &&
-		       !type.IsInterface &&
-		       !type.GetConstructors().Any(m => m.IsPublic);
 	}
 }

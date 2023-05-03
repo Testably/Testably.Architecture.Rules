@@ -10,7 +10,7 @@ public sealed partial class ExtensionsForExpectationFilterOnTypeTests
 	public sealed class ArePublic
 	{
 		[Fact]
-		public void WhichArePublic_()
+		public void WhichArePublic_ShouldFilterForPublicTypes()
 		{
 			ITypeExpectation sut = Expect.That.Type(
 				typeof(PrivateClass), typeof(ExtensionsForExpectationFilterOnTypeTests));
