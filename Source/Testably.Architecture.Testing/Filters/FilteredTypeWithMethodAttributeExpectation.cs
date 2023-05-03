@@ -3,10 +3,18 @@ using System.Reflection;
 
 namespace Testably.Architecture.Testing.Filters;
 
+/// <summary>
+/// TODO VB
+/// </summary>
 public class FilteredTypeWithMethodAttributeExpectation : FilteredTypeExpectationOrBase
 {
+	/// <summary>
+	/// TODO VB
+	/// </summary>
+	/// <param name="filterableTypeExpectation"></param>
+	/// <param name="predicate"></param>
 	public FilteredTypeWithMethodAttributeExpectation(
-		IFilterableTypeExpectation filterableTypeExpectation,
+		IExpectationFilter<Type> filterableTypeExpectation,
 		Func<Type, bool> predicate) : base(filterableTypeExpectation, predicate)
 	{
 	}

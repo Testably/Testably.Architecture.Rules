@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(AbstractType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAbstract();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeAbstract();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -26,7 +26,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ConcreteType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAbstract();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeAbstract();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -40,7 +40,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(AbstractType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAbstract();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeAbstract();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -54,7 +54,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ConcreteType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAbstract();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeAbstract();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

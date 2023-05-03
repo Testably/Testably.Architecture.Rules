@@ -11,7 +11,7 @@ public interface IFilterableAssemblyExpectation : IAssemblyExpectation
 	/// <summary>
 	///     Get all types from the filtered assemblies.
 	/// </summary>
-	IOptionallyFilterableTypeExpectation Types { get; }
+	IExpectationStart<Type> Types { get; }
 
 	/// <summary>
 	///     Filters the applicable <see cref="Assembly" /> on which the expectations should be applied.

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using Testably.Architecture.Testing.Internal;
 using Testably.Architecture.Testing.TestErrors;
@@ -63,7 +64,7 @@ public sealed class ExtensionsForIExpectationTests
 	{
 		var sut = Expect.That.AllLoadedTypes();
 
-		ITestResult<ITypeExpectation> result = sut.ShouldSatisfy(_ => false);
+		ITestResult<IExpectationCondition<Type>> result = sut.ShouldSatisfy(_ => false);
 
 		result.Errors.Should().NotBeEmpty();
 	}

@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(SealedType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeSealed();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeSealed();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -26,7 +26,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(UnsealedType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeSealed();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeSealed();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -40,7 +40,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(SealedType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeSealed();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeSealed();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -54,7 +54,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(UnsealedType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeSealed();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeSealed();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

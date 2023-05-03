@@ -5,10 +5,10 @@ namespace Testably.Architecture.Testing;
 /// <summary>
 /// Add additional filters on the <see cref="Type"/>s.
 /// </summary>
-public interface IFilteredTypeExpectation : ITypeExpectation
+public interface IFilteredTypeExpectation : IExpectationCondition<Type>
 {
 	/// <summary>
 	/// Add additional filters on the <see cref="Type"/>s.
 	/// </summary>
-	IFilterableTypeExpectation And { get; }
+	IExpectationFilter<Type> And { get; }
 }

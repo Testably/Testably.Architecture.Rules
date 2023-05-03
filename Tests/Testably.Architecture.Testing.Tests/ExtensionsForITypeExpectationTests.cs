@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		var sut = Expect.That.Type(type);
 		Expression<Func<Type, bool>> expression = _ => false;
 
-		ITestResult<ITypeExpectation> result = sut.ShouldSatisfy(expression);
+		ITestResult<IExpectationCondition<Type>> result = sut.ShouldSatisfy(expression);
 
 		result.IsSatisfied.Should().BeFalse();
 		result.Errors[0].Should().BeOfType<TypeTestError>()

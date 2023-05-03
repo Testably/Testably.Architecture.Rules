@@ -17,7 +17,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithInheritedAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldHaveAttribute<DummyAttribute>(
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldHaveAttribute<DummyAttribute>(
 				inherit: inherit);
 
 			result.IsSatisfied.Should().Be(inherit);
@@ -32,7 +32,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithInheritedAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldHaveAttribute<DummyAttribute>(
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldHaveAttribute<DummyAttribute>(
 				predicate: d => d.Value == value);
 
 			result.IsSatisfied.Should().Be(expectIsSatisfied);
@@ -44,7 +44,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldHaveAttribute<DummyAttribute>();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldHaveAttribute<DummyAttribute>();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -55,7 +55,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithoutAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldHaveAttribute<DummyAttribute>();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldHaveAttribute<DummyAttribute>();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -70,7 +70,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithInheritedAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotHaveAttribute<DummyAttribute>(
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotHaveAttribute<DummyAttribute>(
 				inherit: inherit);
 
 			result.IsSatisfied.Should().Be(!inherit);
@@ -86,7 +86,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithInheritedAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotHaveAttribute<DummyAttribute>(
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotHaveAttribute<DummyAttribute>(
 				predicate: d => d.Value == value);
 
 			result.IsSatisfied.Should().Be(expectIsSatisfied);
@@ -98,7 +98,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotHaveAttribute<DummyAttribute>();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotHaveAttribute<DummyAttribute>();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -111,7 +111,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(TestClassWithoutAttribute);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotHaveAttribute<DummyAttribute>();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotHaveAttribute<DummyAttribute>();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

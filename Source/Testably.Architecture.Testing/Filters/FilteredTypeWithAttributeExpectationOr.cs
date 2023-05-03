@@ -2,10 +2,18 @@
 
 namespace Testably.Architecture.Testing.Filters;
 
+/// <summary>
+/// TODO VB
+/// </summary>
 public class FilteredTypeWithAttributeExpectationOr : FilteredTypeExpectationOrBase
 {
+	/// <summary>
+	/// TODO VB
+	/// </summary>
+	/// <param name="filterableTypeExpectation"></param>
+	/// <param name="predicate"></param>
 	public FilteredTypeWithAttributeExpectationOr(
-		IFilterableTypeExpectation filterableTypeExpectation,
+		IExpectationFilter<Type> filterableTypeExpectation,
 		Func<Type, bool> predicate) : base(filterableTypeExpectation, predicate)
 	{
 	}

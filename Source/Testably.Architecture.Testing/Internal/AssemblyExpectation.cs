@@ -20,8 +20,8 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 	#region IFilterableAssemblyExpectation Members
 
 	/// <inheritdoc cref="IFilterableAssemblyExpectation.Types" />
-	public IOptionallyFilterableTypeExpectation Types
-		=> new TypeExpectation(_assemblies.SelectMany(x => x.GetTypes()));
+	public IExpectationStart<Type> Types
+		=> new TypeExpectationStart(_assemblies.SelectMany(x => x.GetTypes()));
 
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />

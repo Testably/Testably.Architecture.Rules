@@ -5,24 +5,24 @@ using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class TypeExpectation : IOptionallyFilterableTypeExpectation, IFilteredTypeExpectation
+internal class TypeExpectationStart : IExpectationStart<Type>, IFilteredTypeExpectation
 {
-	private readonly TestResultBuilder<TypeExpectation> _testResultBuilder;
+	private readonly TestResultBuilder<TypeExpectationStart> _testResultBuilder;
 	private readonly List<Type> _types;
-	private readonly List<TypeFilter> _filters = new();
+	private readonly List<Filter<Type>> _filters = new();
 
-	public TypeExpectation(IEnumerable<Type> types)
+	public TypeExpectationStart(IEnumerable<Type> types)
 	{
 		_types = types.ToList();
-		_testResultBuilder = new TestResultBuilder<TypeExpectation>(this);
+		_testResultBuilder = new TestResultBuilder<TypeExpectationStart>(this);
 	}
 
 	#region IFilterableTypeExpectation Members
 
 	#pragma warning disable CS1574
-	/// <inheritdoc cref="IFilterableTypeExpectation.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
+	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
 	#pragma warning restore CS1574
-	public ITestResult<ITypeExpectation> ShouldSatisfy(
+	public ITestResult<IExpectationCondition<Type>> ShouldSatisfy(
 		Func<Type, bool> condition,
 		Func<Type, TestError> errorGenerator)
 	{
@@ -38,8 +38,8 @@ internal class TypeExpectation : IOptionallyFilterableTypeExpectation, IFiltered
 		return _testResultBuilder.Build();
 	}
 
-	/// <inheritdoc cref="IFilterableTypeExpectation.Which(TypeFilter)" />
-	public IFilteredTypeExpectation Which(TypeFilter filter)
+	/// <inheritdoc cref="IExpectationFilter{Type}.Which(Filter{Type})" />
+	public IFilteredTypeExpectation Which(Filter<Type> filter)
 	{
 		_filters.Add(filter);
 		return this;
@@ -48,5 +48,5 @@ internal class TypeExpectation : IOptionallyFilterableTypeExpectation, IFiltered
 	#endregion
 
 	/// <inheritdoc cref="IFilteredTypeExpectation.And" />
-	public IFilterableTypeExpectation And => this;
+	public IExpectationFilter<Type> And => this;
 }

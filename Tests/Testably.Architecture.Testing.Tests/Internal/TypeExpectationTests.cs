@@ -17,7 +17,7 @@ public sealed class TypeExpectationTests
 		string expectedTypeName = $"'{type.Name}'";
 		var sut = Expect.That.Type(type);
 
-		ITestResult<ITypeExpectation> result = sut.ShouldSatisfy(_ => false);
+		ITestResult<IExpectationCondition<Type>> result = sut.ShouldSatisfy(_ => false);
 
 		TestError error = result.Errors.Single();
 		error.ToString().Should().Contain(expectedTypeName);
@@ -30,7 +30,7 @@ public sealed class TypeExpectationTests
 		var sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
-		ITestResult<ITypeExpectation> result =
+		ITestResult<IExpectationCondition<Type>> result =
 			sut.ShouldSatisfy(_ => false, _ => error);
 
 		result.Errors.Should().NotBeEmpty();
@@ -44,7 +44,7 @@ public sealed class TypeExpectationTests
 		var sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
-		ITestResult<ITypeExpectation>
+		ITestResult<IExpectationCondition<Type>>
 			result = sut.ShouldSatisfy(_ => true, _ => error);
 
 		result.Errors.Should().BeEmpty();
@@ -54,13 +54,13 @@ public sealed class TypeExpectationTests
 	public void Which_ShouldFilterOutTypes()
 	{
 		int allTypesCount =
-			Expect.That.AssemblyContaining<TypeExpectation>()
+			Expect.That.AssemblyContaining<TypeExpectationStart>()
 				.Types.ShouldSatisfy(_ => false).Errors.Length;
 		var sut = Expect.That
-			.AssemblyContaining<TypeExpectation>().Types;
+			.AssemblyContaining<TypeExpectationStart>().Types;
 
-		ITestResult<ITypeExpectation> result = sut
-			.Which(p => p.Name != nameof(TypeExpectation))
+		ITestResult<IExpectationCondition<Type>> result = sut
+			.Which(p => p.Name != nameof(TypeExpectationStart))
 			.ShouldSatisfy(_ => false);
 
 		result.Errors.Length.Should().Be(allTypesCount - 1);

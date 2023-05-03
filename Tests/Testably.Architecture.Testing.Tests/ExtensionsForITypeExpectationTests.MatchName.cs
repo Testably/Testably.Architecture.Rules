@@ -17,7 +17,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(MatchName);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result =
+			ITestResult<IExpectationCondition<Type>> result =
 				sut.ShouldMatchName("MATCHname", ignoreCase);
 
 			result.IsSatisfied.Should().Be(ignoreCase);
@@ -32,7 +32,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(MatchName);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(matchingPattern);
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldMatchName(matchingPattern);
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -47,7 +47,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(MatchName);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(notMatchingPattern);
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldMatchName(notMatchingPattern);
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -64,7 +64,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(MatchName);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result =
+			ITestResult<IExpectationCondition<Type>> result =
 				sut.ShouldNotMatchName("matchNAME", ignoreCase);
 
 			result.IsSatisfied.Should().Be(!ignoreCase);
@@ -79,7 +79,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(MatchName);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotMatchName(matchingPattern);
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotMatchName(matchingPattern);
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -98,7 +98,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(MatchName);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotMatchName(notMatchingPattern);
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotMatchName(notMatchingPattern);
 
 			result.IsSatisfied.Should().BeTrue();
 		}

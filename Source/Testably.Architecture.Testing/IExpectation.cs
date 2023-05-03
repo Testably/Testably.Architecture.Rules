@@ -16,5 +16,5 @@ public interface IExpectation
 	/// <summary>
 	///     Defines expectations on all given <paramref name="types" />.
 	/// </summary>
-	IOptionallyFilterableTypeExpectation Type(params Type[] types);
+	IExpectationStart<Type> Type(params Type[] types);
 }

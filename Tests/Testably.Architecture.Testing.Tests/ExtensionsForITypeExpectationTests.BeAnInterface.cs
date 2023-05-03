@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(EnumType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAnInterface();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeAnInterface();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -29,7 +29,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(InterfaceType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAnInterface();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeAnInterface();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -40,7 +40,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(EnumType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAnInterface();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeAnInterface();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -51,7 +51,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(InterfaceType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAnInterface();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeAnInterface();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()

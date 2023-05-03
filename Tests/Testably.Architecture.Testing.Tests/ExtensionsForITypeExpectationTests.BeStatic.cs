@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(InstanceType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeStatic();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeStatic();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -29,7 +29,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(StaticType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeStatic();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeStatic();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -40,7 +40,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(InstanceType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeStatic();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeStatic();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -51,7 +51,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(StaticType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeStatic();
+			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeStatic();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
