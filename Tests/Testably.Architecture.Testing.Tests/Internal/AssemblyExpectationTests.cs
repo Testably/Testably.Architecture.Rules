@@ -14,9 +14,9 @@ public sealed class AssemblyExpectationTests
 	{
 		Assembly assembly = Assembly.GetExecutingAssembly();
 		string expectedAssemblyName = $"'{assembly.GetName().Name}'";
-		IFilterableAssemblyExpectation sut = Expect.That.Assembly(assembly);
+		IAssemblyExpectation sut = Expect.That.Assembly(assembly);
 
-		ITestResult<IAssemblyExpectation> result = sut.ShouldSatisfy(_ => false);
+		ITestResult result = sut.ShouldSatisfy(_ => false);
 
 		TestError error = result.Errors.Single();
 		error.ToString().Should().Contain(expectedAssemblyName);
@@ -26,10 +26,10 @@ public sealed class AssemblyExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		IFilterableAssemblyExpectation sut =
+		IAssemblyExpectation sut =
 			Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldSatisfy(_ => false, _ => error);
 
 		result.Errors.Should().NotBeEmpty();
@@ -40,23 +40,23 @@ public sealed class AssemblyExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		IFilterableAssemblyExpectation sut =
+		IAssemblyExpectation sut =
 			Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IAssemblyExpectation>
+		ITestResult
 			result = sut.ShouldSatisfy(_ => true, _ => error);
 
 		result.Errors.Should().BeEmpty();
 	}
-
+	
 	[Fact]
 	public void Which_ShouldFilterOutAssemblies()
 	{
 		int allAssembliesCount =
 			Expect.That.AllLoadedAssemblies().ShouldSatisfy(_ => false).Errors.Length;
-		IFilterableAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
+		IAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
-		ITestResult<IAssemblyExpectation> result = sut
+		var result = sut
 			.Which(p => p.GetName().Name?.StartsWith("Testably") != true)
 			.ShouldSatisfy(_ => false);
 

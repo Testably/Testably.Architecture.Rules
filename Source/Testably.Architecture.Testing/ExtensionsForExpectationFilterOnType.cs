@@ -7,7 +7,7 @@ namespace Testably.Architecture.Testing;
 /// <summary>
 ///     Extension methods for <see cref="IExpectationFilter{Type}" />.
 /// </summary>
-public static class ExtensionsForIFilterableTypeExpectation
+public static class ExtensionsForExpectationFilterOnType
 {
 	/// <summary>
 	///     Filter <see cref="Type" />s that have an attribute of type <typeparamref name="TAttribute" />.
@@ -23,13 +23,13 @@ public static class ExtensionsForIFilterableTypeExpectation
 	///     <see langword="false" />.<br />
 	///     Defaults to <see langword="true" />
 	/// </param>
-	public static FilteredTypeWithAttributeExpectationOr WhichHaveAttribute<TAttribute>(
+	public static FilterOnType.WithAttribute WhichHaveAttribute<TAttribute>(
 		this IExpectationFilter<Type> @this,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		FilteredTypeWithAttributeExpectationOr filter =
+		FilterOnType.WithAttribute filter =
 			new(@this, type => type.HasAttribute(predicate, inherit));
 		return filter;
 	}
@@ -48,14 +48,14 @@ public static class ExtensionsForIFilterableTypeExpectation
 	///     <see langword="false" />.<br />
 	///     Defaults to <see langword="true" />
 	/// </param>
-	public static FilteredTypeWithMethodAttributeExpectation WhichHaveMethodWithAttribute<
+	public static FilterOnType.WithMethodAttribute WhichHaveMethodWithAttribute<
 		TAttribute>(
 		this IExpectationFilter<Type> @this,
 		Func<TAttribute, MethodInfo, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		FilteredTypeWithMethodAttributeExpectation filter =
+		FilterOnType.WithMethodAttribute filter =
 			new(@this,
 				type => type.HasMethodWithAttribute(predicate, inherit));
 		@this.Which(filter);
@@ -65,7 +65,7 @@ public static class ExtensionsForIFilterableTypeExpectation
 	/// <summary>
 	///     Filter for public types.
 	/// </summary>
-	public static IFilteredTypeExpectation WhichArePublic(this IExpectationFilter<Type> @this)
+	public static IExpectationFilterResult<Type> WhichArePublic(this IExpectationFilter<Type> @this)
 	{
 		return @this.Which(type => type.IsPublic);
 	}
@@ -75,7 +75,7 @@ public static class ExtensionsForIFilterableTypeExpectation
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationFilter{Type}" />.</param>
 	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
-	public static IFilteredTypeExpectation Which(this IExpectationFilter<Type> @this,
+	public static IExpectationFilterResult<Type> Which(this IExpectationFilter<Type> @this,
 		Func<Type, bool> filter)
 	{
 		return @this.Which(filter);

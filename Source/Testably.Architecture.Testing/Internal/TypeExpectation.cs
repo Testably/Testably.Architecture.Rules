@@ -5,16 +5,17 @@ using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class TypeExpectationStart : IExpectationStart<Type>, IFilteredTypeExpectation
+internal class TypeExpectationStart : ITypeExpectation, IExpectationFilterResult<Type>
 {
-	private readonly TestResultBuilder<TypeExpectationStart> _testResultBuilder;
+	private readonly TestResultBuilder<Type> _testResultBuilder;
 	private readonly List<Type> _types;
 	private readonly List<Filter<Type>> _filters = new();
+	private bool _allowEmpty;
 
 	public TypeExpectationStart(IEnumerable<Type> types)
 	{
 		_types = types.ToList();
-		_testResultBuilder = new TestResultBuilder<TypeExpectationStart>(this);
+		_testResultBuilder = new TestResultBuilder<Type>(this);
 	}
 
 	#region IFilterableTypeExpectation Members
@@ -22,11 +23,17 @@ internal class TypeExpectationStart : IExpectationStart<Type>, IFilteredTypeExpe
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
 	#pragma warning restore CS1574
-	public ITestResult<IExpectationCondition<Type>> ShouldSatisfy(
+	public IExpectationResult<Type> ShouldSatisfy(
 		Func<Type, bool> condition,
 		Func<Type, TestError> errorGenerator)
 	{
-		foreach (Type type in _types.Where(x => _filters.All(f => f.Applies(x))))
+		List<Type>? types = _types.Where(x => _filters.All(f => f.Applies(x))).ToList();
+		if (types.Count == 0 && !_allowEmpty)
+		{
+			throw new Exception("No count found!");
+		}
+
+		foreach (Type type in types)
 		{
 			if (!condition(type))
 			{
@@ -39,7 +46,7 @@ internal class TypeExpectationStart : IExpectationStart<Type>, IFilteredTypeExpe
 	}
 
 	/// <inheritdoc cref="IExpectationFilter{Type}.Which(Filter{Type})" />
-	public IFilteredTypeExpectation Which(Filter<Type> filter)
+	public IExpectationFilterResult<Type> Which(Filter<Type> filter)
 	{
 		_filters.Add(filter);
 		return this;
@@ -47,6 +54,13 @@ internal class TypeExpectationStart : IExpectationStart<Type>, IFilteredTypeExpe
 
 	#endregion
 
-	/// <inheritdoc cref="IFilteredTypeExpectation.And" />
+	/// <inheritdoc cref="IExpectationFilterResult{Type}.And" />
 	public IExpectationFilter<Type> And => this;
+
+	/// <inheritdoc />
+	public IExpectationStart<Type> OrNone()
+	{
+		_allowEmpty = true;
+		return this;
+	}
 }

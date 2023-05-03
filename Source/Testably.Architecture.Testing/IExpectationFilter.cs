@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace Testably.Architecture.Testing;
+﻿namespace Testably.Architecture.Testing;
 
 /// <summary>
-///     Defines expectations on <see cref="Type" />s that can be filtered.
+///     Defines expectations on <typeparamref name="TType" /> that can be filtered.
 /// </summary>
-public interface IExpectationFilter<T>
+public interface IExpectationFilter<TType>
 {
 	/// <summary>
-	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
+	///     Filters the applicable <typeparamref name="TType" /> on which the expectations should be applied.
 	/// </summary>
-	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
-	IFilteredTypeExpectation Which(Filter<T> filter);
+	/// <param name="filter">The filter to apply on the <typeparamref name="TType" />.</param>
+	IExpectationFilterResult<TType> Which(Filter<TType> filter);
 }

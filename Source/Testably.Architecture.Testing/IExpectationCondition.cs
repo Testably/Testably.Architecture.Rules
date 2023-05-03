@@ -4,14 +4,14 @@ using Testably.Architecture.Testing.TestErrors;
 namespace Testably.Architecture.Testing;
 
 /// <summary>
-///     Defines expectations on <see cref="Type" />s.
+///     Defines expectations on <typeparamref name="TType"/>.
 /// </summary>
-public interface IExpectationCondition<T>
+public interface IExpectationCondition<TType>
 {
 	/// <summary>
-	///     The <see cref="Type" /> should satisfy the given <paramref name="condition" />.
+	///     The <typeparamref name="TType"/> should satisfy the given <paramref name="condition" />.
 	/// </summary>
-	ITestResult<IExpectationCondition<T>> ShouldSatisfy(
-		Func<T, bool> condition,
-		Func<T, TestError> errorGenerator);
+	IExpectationResult<TType> ShouldSatisfy(
+		Func<TType, bool> condition,
+		Func<TType, TestError> errorGenerator);
 }

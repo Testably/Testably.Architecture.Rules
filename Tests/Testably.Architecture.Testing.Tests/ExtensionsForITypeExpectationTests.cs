@@ -1,7 +1,4 @@
 ﻿using FluentAssertions;
-using System;
-using System.Linq.Expressions;
-using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
@@ -9,16 +6,12 @@ namespace Testably.Architecture.Testing.Tests;
 public sealed partial class ExtensionsForITypeExpectationTests
 {
 	[Fact]
-	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
+	public void X()
 	{
-		Type type = typeof(ExtensionsForITypeExpectationTests);
-		var sut = Expect.That.Type(type);
-		Expression<Func<Type, bool>> expression = _ => false;
+		ITestResult result = Expect.That.AllLoadedTypes()
+			.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+			.ShouldBeSealed();
 
-		ITestResult<IExpectationCondition<Type>> result = sut.ShouldSatisfy(expression);
-
-		result.IsSatisfied.Should().BeFalse();
-		result.Errors[0].Should().BeOfType<TypeTestError>()
-			.Which.ToString().Should().Contain(expression.ToString());
+		result.Errors.Should().BeEmpty();
 	}
 }

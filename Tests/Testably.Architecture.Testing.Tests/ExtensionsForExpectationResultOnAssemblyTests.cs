@@ -4,15 +4,15 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public sealed class ExtensionsForITestResultAssemblyExpectationTests
+public sealed class ExtensionsForExpectationResultOnAssemblyTests
 {
 	[Fact]
 	public void ExceptDependencyOn_WhenFilteringAllErrors_ShouldReturnSuccess()
 	{
-		IFilterableAssemblyExpectation sut = Expect.That
+		IAssemblyExpectation sut = Expect.That
 			.AssemblyContaining<MockFileSystem>();
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldNotHaveDependenciesOn("Testably.*")
 				.ExceptDependencyOn("Testably.Abstractions.Interface");
 
@@ -26,10 +26,10 @@ public sealed class ExtensionsForITestResultAssemblyExpectationTests
 	public void ExceptDependencyOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
 		bool ignoreCase)
 	{
-		IFilterableAssemblyExpectation sut = Expect.That
+		IAssemblyExpectation sut = Expect.That
 			.AssemblyContaining<MockFileSystem>();
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldNotHaveDependenciesOn("Testably.*")
 				.ExceptDependencyOn("testably.Abstractions.Interface", ignoreCase);
 

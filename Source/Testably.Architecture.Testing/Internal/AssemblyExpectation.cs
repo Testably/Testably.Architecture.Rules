@@ -6,35 +6,39 @@ using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class AssemblyExpectation : IFilterableAssemblyExpectation
+internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilterResult<Assembly>
 {
-	private readonly List<Assembly> _assemblies;
-	private readonly TestResultBuilder<AssemblyExpectation> _testResultBuilder;
+	private readonly TestResultBuilder<Assembly> _testResultBuilder;
+	private readonly List<Assembly> _types;
+	private readonly List<Filter<Assembly>> _filters = new();
+	private bool _allowEmpty;
 
-	public AssemblyExpectation(IEnumerable<Assembly> assemblies)
+	public AssemblyExpectationStart(IEnumerable<Assembly> types)
 	{
-		_assemblies = assemblies.ToList();
-		_testResultBuilder = new TestResultBuilder<AssemblyExpectation>(this);
+		_types = types.ToList();
+		_testResultBuilder = new TestResultBuilder<Assembly>(this);
 	}
 
 	#region IFilterableAssemblyExpectation Members
 
-	/// <inheritdoc cref="IFilterableAssemblyExpectation.Types" />
-	public IExpectationStart<Type> Types
-		=> new TypeExpectationStart(_assemblies.SelectMany(x => x.GetTypes()));
-
 	#pragma warning disable CS1574
-	/// <inheritdoc cref="IFilterableAssemblyExpectation.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />
+	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />
 	#pragma warning restore CS1574
-	public ITestResult<IAssemblyExpectation> ShouldSatisfy(
+	public IExpectationResult<Assembly> ShouldSatisfy(
 		Func<Assembly, bool> condition,
 		Func<Assembly, TestError> errorGenerator)
 	{
-		foreach (Assembly assembly in _assemblies)
+		List<Assembly>? types = _types.Where(x => _filters.All(f => f.Applies(x))).ToList();
+		if (types.Count == 0 && !_allowEmpty)
 		{
-			if (!condition(assembly))
+			throw new Exception("No count found!");
+		}
+
+		foreach (Assembly type in types)
+		{
+			if (!condition(type))
 			{
-				TestError error = errorGenerator(assembly);
+				TestError error = errorGenerator(type);
 				_testResultBuilder.Add(error);
 			}
 		}
@@ -42,12 +46,31 @@ internal class AssemblyExpectation : IFilterableAssemblyExpectation
 		return _testResultBuilder.Build();
 	}
 
-	/// <inheritdoc cref="IFilterableAssemblyExpectation.Which(Func{Assembly, bool})" />
-	public IFilterableAssemblyExpectation Which(Func<Assembly, bool> predicate)
+	/// <inheritdoc cref="IExpectationFilter{Assembly}.Which(Filter{Assembly})" />
+	public IExpectationFilterResult<Assembly> Which(Filter<Assembly> filter)
 	{
-		_assemblies.RemoveAll(p => !predicate(p));
+		_filters.Add(filter);
 		return this;
 	}
 
 	#endregion
+
+	/// <inheritdoc cref="IExpectationFilterResult{Assembly}.And" />
+	public IExpectationFilter<Assembly> And => this;
+
+	/// <inheritdoc />
+	public IExpectationStart<Assembly> OrNone()
+	{
+		_allowEmpty = true;
+		return this;
+	}
+
+	/// <inheritdoc />
+	public ITypeExpectation Types
+	{
+		get
+		{
+			return new TypeExpectationStart(_types.SelectMany(x => x.GetTypes()));
+		}
+	}
 }

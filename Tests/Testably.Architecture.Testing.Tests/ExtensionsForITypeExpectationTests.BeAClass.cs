@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ClassType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeAClass();
+			IExpectationResult<Type> result = sut.ShouldBeAClass();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -26,7 +26,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(EnumType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBeAClass();
+			IExpectationResult<Type> result = sut.ShouldBeAClass();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -40,7 +40,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ClassType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeAClass();
+			IExpectationResult<Type> result = sut.ShouldNotBeAClass();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -54,7 +54,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(EnumType);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBeAClass();
+			IExpectationResult<Type> result = sut.ShouldNotBeAClass();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

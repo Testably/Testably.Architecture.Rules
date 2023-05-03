@@ -3,32 +3,32 @@
 namespace Testably.Architecture.Testing;
 
 /// <summary>
-///     Filter for <typeparamref name="T"/>.
+///     Filter for <typeparamref name="TType" />.
 /// </summary>
-public abstract class Filter<T>
+public abstract class Filter<TType>
 {
 	/// <summary>
-	///     Specifies if the filter applies to the given <see cref="Type" />.
+	///     Specifies if the filter applies to the given <typeparamref name="TType" />.
 	/// </summary>
-	public abstract bool Applies(T type);
+	public abstract bool Applies(TType type);
 
 	/// <summary>
-	///     Implicitly converts the <paramref name="filter" /> to a <see cref="Filter{T}" />.
+	///     Implicitly converts the <paramref name="filter" /> to a <see cref="Filter{TType}" />.
 	/// </summary>
-	public static implicit operator Filter<T>(Func<T, bool> filter)
+	public static implicit operator Filter<TType>(Func<TType, bool> filter)
 		=> new GenericFilter(filter);
 
-	private sealed class GenericFilter : Filter<T>
+	private sealed class GenericFilter : Filter<TType>
 	{
-		private readonly Func<T, bool> _filter;
+		private readonly Func<TType, bool> _filter;
 
-		public GenericFilter(Func<T, bool> filter)
+		public GenericFilter(Func<TType, bool> filter)
 		{
 			_filter = filter;
 		}
 
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
-		public override bool Applies(T type)
+		/// <inheritdoc cref="Filter{TType}.Applies(TType)" />
+		public override bool Applies(TType type)
 			=> _filter(type);
 	}
 }

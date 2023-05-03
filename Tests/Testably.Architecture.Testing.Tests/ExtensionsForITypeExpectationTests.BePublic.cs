@@ -39,7 +39,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ExtensionsForITypeExpectationTests);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBePublic();
+			IExpectationResult<Type> result = sut.ShouldBePublic();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -50,7 +50,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		{
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldBePublic();
+			IExpectationResult<Type> result = sut.ShouldBePublic();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -64,7 +64,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ExtensionsForITypeExpectationTests);
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBePublic();
+			IExpectationResult<Type> result = sut.ShouldNotBePublic();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -78,7 +78,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		{
 			var sut = Expect.That.Type(type);
 
-			ITestResult<IExpectationCondition<Type>> result = sut.ShouldNotBePublic();
+			IExpectationResult<Type> result = sut.ShouldNotBePublic();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

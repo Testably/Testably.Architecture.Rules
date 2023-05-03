@@ -8,7 +8,7 @@ namespace Testably.Architecture.Testing;
 /// <summary>
 ///     Extension methods for <see cref="IExpectation" />.
 /// </summary>
-public static class ExtensionsForIExpectation
+public static class ExtensionsForExpectation
 {
 	/// <summary>
 	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />.
@@ -25,7 +25,7 @@ public static class ExtensionsForIExpectation
 	///     are loaded.<br />
 	///     Otherwise all assemblies matching the <paramref name="predicate" /> are loaded.
 	/// </param>
-	public static IFilterableAssemblyExpectation AllLoadedAssemblies(
+	public static IAssemblyExpectation AllLoadedAssemblies(
 		this IExpectation @this,
 		Func<Assembly, bool>? predicate = null,
 		bool excludeSystemAssemblies = true)
@@ -43,7 +43,7 @@ public static class ExtensionsForIExpectation
 	///     Defines expectations on all types from
 	///     <see cref="AllLoadedAssemblies(IExpectation, Func{Assembly,bool},bool)" />.
 	/// </summary>
-	public static IExpectationStart<Type> AllLoadedTypes(this IExpectation @this)
+	public static ITypeExpectation AllLoadedTypes(this IExpectation @this)
 		=> @this.AllLoadedAssemblies().Types;
 
 	/// <summary>
@@ -57,7 +57,7 @@ public static class ExtensionsForIExpectation
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
-	public static IFilterableAssemblyExpectation AssembliesMatching(
+	public static IAssemblyExpectation AssembliesMatching(
 		this IExpectation @this,
 		Match pattern,
 		bool ignoreCase = false)
@@ -67,7 +67,7 @@ public static class ExtensionsForIExpectation
 	/// <summary>
 	///     Defines expectations on the assembly that contains the <typeparamref name="TAssembly" />.
 	/// </summary>
-	public static IFilterableAssemblyExpectation AssemblyContaining<TAssembly>(
+	public static IAssemblyExpectation AssemblyContaining<TAssembly>(
 		this IExpectation @this)
 		=> @this.Assembly(typeof(TAssembly).Assembly);
 }

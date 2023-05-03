@@ -7,15 +7,15 @@ using Xunit;
 
 namespace Testably.Architecture.Testing.Tests;
 
-public sealed class ExtensionsForIAssemblyExpectationTests
+public sealed class ExtensionsForExpectationConditionOnAssemblyTests
 {
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_CaseSensitivity_ShouldDefaultToSensitive()
 	{
-		IFilterableAssemblyExpectation sut = Expect.That
+		IAssemblyExpectation sut = Expect.That
 			.AssemblyContaining<MockFileSystem>();
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldNotHaveDependenciesOn("testably.*");
 
 		result.IsSatisfied.Should().BeTrue();
@@ -28,9 +28,9 @@ public sealed class ExtensionsForIAssemblyExpectationTests
 		string[] expectedReferences = testAssembly.GetReferencedAssemblies()
 			.Select(x => x.FullName)
 			.ToArray();
-		IFilterableAssemblyExpectation sut = Expect.That.Assembly(testAssembly);
+		IAssemblyExpectation sut = Expect.That.Assembly(testAssembly);
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldNotHaveDependenciesOn("*");
 
 		result.IsSatisfied.Should().BeFalse();
@@ -54,10 +54,10 @@ public sealed class ExtensionsForIAssemblyExpectationTests
 	[Fact]
 	public void ShouldNotHaveDependenciesOn_WithDependencyStartingWithPrefix_ShouldReturnFalse()
 	{
-		IFilterableAssemblyExpectation sut = Expect.That
+		IAssemblyExpectation sut = Expect.That
 			.AssemblyContaining<MockFileSystem>();
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldNotHaveDependenciesOn("Testably.*");
 
 		result.IsSatisfied.Should().BeFalse();
@@ -69,10 +69,10 @@ public sealed class ExtensionsForIAssemblyExpectationTests
 	public void ShouldNotHaveDependenciesOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
 		bool ignoreCase, bool expectedResult)
 	{
-		IFilterableAssemblyExpectation sut = Expect.That
+		IAssemblyExpectation sut = Expect.That
 			.AssemblyContaining<MockFileSystem>();
 
-		ITestResult<IAssemblyExpectation> result =
+		ITestResult result =
 			sut.ShouldNotHaveDependenciesOn("testably.*", ignoreCase);
 
 		result.IsSatisfied.Should().Be(expectedResult);

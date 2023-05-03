@@ -1,10 +1,12 @@
 ﻿namespace Testably.Architecture.Testing;
 
 /// <summary>
-/// TODO VB
+///     The start of the definition of an architecture rule.
 /// </summary>
-/// <typeparam name="T"></typeparam>
-public interface IExpectationStart<T> : IExpectationFilter<T>, IExpectationCondition<T>
+public interface IExpectationStart<TType> : IExpectationFilter<TType>, IExpectationCondition<TType>
 {
-
+	/// <summary>
+	///     If set allows the filters to return an empty set of matching <typeparamref name="TType" />s.
+	/// </summary>
+	IExpectationStart<TType> OrNone();
 }

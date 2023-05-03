@@ -6,9 +6,9 @@ namespace Testably.Architecture.Testing.Internal;
 internal class TestResultBuilder<TExpectation>
 {
 	private readonly List<TestError> _errors = new();
-	private readonly TExpectation _expectation;
+	private readonly IExpectationCondition<TExpectation> _expectation;
 
-	public TestResultBuilder(TExpectation expectation)
+	public TestResultBuilder(IExpectationCondition<TExpectation> expectation)
 	{
 		_expectation = expectation;
 	}
@@ -19,6 +19,6 @@ internal class TestResultBuilder<TExpectation>
 		return this;
 	}
 
-	public ITestResult<TExpectation> Build() =>
+	public IExpectationResult<TExpectation> Build() =>
 		new TestResult<TExpectation>(_expectation, _errors);
 }
