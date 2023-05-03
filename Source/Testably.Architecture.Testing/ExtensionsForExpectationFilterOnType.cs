@@ -10,6 +10,34 @@ namespace Testably.Architecture.Testing;
 public static class ExtensionsForExpectationFilterOnType
 {
 	/// <summary>
+	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
+	/// </summary>
+	/// <param name="this">The <see cref="IExpectationFilter{Type}" />.</param>
+	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
+	public static IExpectationFilterResult<Type> Which(this IExpectationFilter<Type> @this,
+		Func<Type, bool> filter)
+	{
+		return @this.Which(filter);
+	}
+
+	/// <summary>
+	///     Filter for not public types.
+	/// </summary>
+	public static IExpectationFilterResult<Type> WhichAreNotPublic(
+		this IExpectationFilter<Type> @this)
+	{
+		return @this.Which(type => !type.IsPublic);
+	}
+
+	/// <summary>
+	///     Filter for public types.
+	/// </summary>
+	public static IExpectationFilterResult<Type> WhichArePublic(this IExpectationFilter<Type> @this)
+	{
+		return @this.Which(type => type.IsPublic);
+	}
+
+	/// <summary>
 	///     Filter <see cref="Type" />s that have an attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationFilter{Type}" />.</param>
@@ -60,32 +88,5 @@ public static class ExtensionsForExpectationFilterOnType
 				type => type.HasMethodWithAttribute(predicate, inherit));
 		@this.Which(filter);
 		return filter;
-	}
-
-	/// <summary>
-	///     Filter for public types.
-	/// </summary>
-	public static IExpectationFilterResult<Type> WhichArePublic(this IExpectationFilter<Type> @this)
-	{
-		return @this.Which(type => type.IsPublic);
-	}
-
-	/// <summary>
-	///     Filter for not public types.
-	/// </summary>
-	public static IExpectationFilterResult<Type> WhichAreNotPublic(this IExpectationFilter<Type> @this)
-	{
-		return @this.Which(type => !type.IsPublic);
-	}
-
-	/// <summary>
-	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
-	/// </summary>
-	/// <param name="this">The <see cref="IExpectationFilter{Type}" />.</param>
-	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
-	public static IExpectationFilterResult<Type> Which(this IExpectationFilter<Type> @this,
-		Func<Type, bool> filter)
-	{
-		return @this.Which(filter);
 	}
 }

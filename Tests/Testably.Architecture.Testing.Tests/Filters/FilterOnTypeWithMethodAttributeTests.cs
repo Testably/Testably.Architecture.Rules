@@ -19,12 +19,22 @@ public class FilterOnTypeWithMethodAttributeTests
 	}
 
 	[AttributeUsage(AttributeTargets.Method)]
-	private class FooAttribute : Attribute
+	private class BarAttribute : Attribute
 	{
 	}
 
+	// ReSharper disable once UnusedType.Local
+	private class BarClass
+	{
+		[Bar]
+		// ReSharper disable once UnusedMember.Local
+		public void Bar()
+		{
+		}
+	}
+
 	[AttributeUsage(AttributeTargets.Method)]
-	private class BarAttribute : Attribute
+	private class FooAttribute : Attribute
 	{
 	}
 
@@ -34,16 +44,6 @@ public class FilterOnTypeWithMethodAttributeTests
 		[Foo]
 		// ReSharper disable once UnusedMember.Local
 		public void Foo()
-		{
-		}
-	}
-
-	// ReSharper disable once UnusedType.Local
-	private class BarClass
-	{
-		[Bar]
-		// ReSharper disable once UnusedMember.Local
-		public void Bar()
 		{
 		}
 	}

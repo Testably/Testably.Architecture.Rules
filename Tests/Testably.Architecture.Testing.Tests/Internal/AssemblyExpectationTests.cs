@@ -48,7 +48,7 @@ public sealed class AssemblyExpectationTests
 
 		result.Errors.Should().BeEmpty();
 	}
-	
+
 	[Fact]
 	public void Which_ShouldFilterOutAssemblies()
 	{
@@ -56,7 +56,7 @@ public sealed class AssemblyExpectationTests
 			Expect.That.AllLoadedAssemblies().ShouldSatisfy(_ => false).Errors.Length;
 		IAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
-		var result = sut
+		IExpectationResult<Assembly> result = sut
 			.Which(p => p.GetName().Name?.StartsWith("Testably") != true)
 			.ShouldSatisfy(_ => false);
 

@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldMatchName_IgnoreCase_ShouldConsiderParameter(bool ignoreCase)
 		{
 			Type type = typeof(MatchName);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result =
 				sut.ShouldMatchName("MATCHname", ignoreCase);
@@ -30,7 +30,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldMatchName_MatchingPattern_ShouldBeSatisfied(string matchingPattern)
 		{
 			Type type = typeof(MatchName);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldMatchName(matchingPattern);
 
@@ -45,7 +45,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			string notMatchingPattern)
 		{
 			Type type = typeof(MatchName);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldMatchName(notMatchingPattern);
 
@@ -62,7 +62,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotMatchName_IgnoreCase_ShouldConsiderParameter(bool ignoreCase)
 		{
 			Type type = typeof(MatchName);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result =
 				sut.ShouldNotMatchName("matchNAME", ignoreCase);
@@ -77,7 +77,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotMatchName_MatchingPattern_ShouldNotBeSatisfied(string matchingPattern)
 		{
 			Type type = typeof(MatchName);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotMatchName(matchingPattern);
 
@@ -96,7 +96,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			string notMatchingPattern)
 		{
 			Type type = typeof(MatchName);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotMatchName(notMatchingPattern);
 

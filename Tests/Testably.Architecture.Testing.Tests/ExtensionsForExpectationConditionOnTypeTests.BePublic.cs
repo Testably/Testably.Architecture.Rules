@@ -37,7 +37,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBePublic_PublicType_ShouldBeSatisfied()
 		{
 			Type type = typeof(ExtensionsForITypeExpectationTests);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldBePublic();
 
@@ -48,7 +48,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[MemberData(nameof(GetUnpublicTypes))]
 		public void ShouldBePublic_UnpublicType_ShouldNotBeSatisfied(Type type)
 		{
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldBePublic();
 
@@ -62,7 +62,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBePublic_PublicType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(ExtensionsForITypeExpectationTests);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotBePublic();
 
@@ -76,7 +76,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[MemberData(nameof(GetUnpublicTypes))]
 		public void ShouldNotBePublic_UnpublicType_ShouldBeSatisfied(Type type)
 		{
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotBePublic();
 

@@ -15,7 +15,7 @@ public sealed class TypeExpectationTests
 	{
 		Type type = typeof(TypeExpectationTests);
 		string expectedTypeName = $"'{type.Name}'";
-		var sut = Expect.That.Type(type);
+		ITypeExpectation sut = Expect.That.Type(type);
 
 		IExpectationResult<Type> result = sut.ShouldSatisfy(_ => false);
 
@@ -27,7 +27,7 @@ public sealed class TypeExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		var sut =
+		ITypeExpectation sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
 		IExpectationResult<Type> result =
@@ -41,7 +41,7 @@ public sealed class TypeExpectationTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		var sut =
+		ITypeExpectation sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
 		IExpectationResult<Type>
@@ -56,7 +56,7 @@ public sealed class TypeExpectationTests
 		int allTypesCount =
 			Expect.That.AssemblyContaining<TypeExpectationStart>()
 				.Types.ShouldSatisfy(_ => false).Errors.Length;
-		var sut = Expect.That
+		ITypeExpectation sut = Expect.That
 			.AssemblyContaining<TypeExpectationStart>().Types;
 
 		IExpectationResult<Type> result = sut

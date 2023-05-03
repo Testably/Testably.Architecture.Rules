@@ -13,7 +13,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAClass_ClassType_ShouldBeSatisfied()
 		{
 			Type type = typeof(ClassType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldBeAClass();
 
@@ -24,7 +24,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAClass_EnumType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldBeAClass();
 
@@ -38,7 +38,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAClass_ClassType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(ClassType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotBeAClass();
 
@@ -52,7 +52,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAClass_EnumType_ShouldBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotBeAClass();
 

@@ -126,7 +126,8 @@ public static class ExtensionsForType
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
 	public static bool IsStatic(this Type type)
-		=> type.IsAbstract && type.IsSealed && !type.IsInterface && !type.GetConstructors().Any(m => m.IsPublic);
+		=> type.IsAbstract && type.IsSealed && !type.IsInterface &&
+		   !type.GetConstructors().Any(m => m.IsPublic);
 
 	internal static bool ImplementsInterface(this Type type, Type interfaceType, bool forceDirect)
 	{

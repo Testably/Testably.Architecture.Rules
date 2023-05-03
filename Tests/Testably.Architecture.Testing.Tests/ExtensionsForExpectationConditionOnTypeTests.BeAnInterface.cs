@@ -13,7 +13,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAnInterface_EnumType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldBeAnInterface();
 
@@ -27,7 +27,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAnInterface_InterfaceType_ShouldBeSatisfied()
 		{
 			Type type = typeof(InterfaceType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldBeAnInterface();
 
@@ -38,7 +38,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAnInterface_EnumType_ShouldBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotBeAnInterface();
 
@@ -49,7 +49,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAnInterface_InterfaceType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(InterfaceType);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotBeAnInterface();
 

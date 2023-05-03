@@ -7,10 +7,10 @@ namespace Testably.Architecture.Testing.Internal;
 
 internal class TypeExpectationStart : ITypeExpectation, IExpectationFilterResult<Type>
 {
+	private bool _allowEmpty;
+	private readonly List<Filter<Type>> _filters = new();
 	private readonly TestResultBuilder<Type> _testResultBuilder;
 	private readonly List<Type> _types;
-	private readonly List<Filter<Type>> _filters = new();
-	private bool _allowEmpty;
 
 	public TypeExpectationStart(IEnumerable<Type> types)
 	{
@@ -18,7 +18,14 @@ internal class TypeExpectationStart : ITypeExpectation, IExpectationFilterResult
 		_testResultBuilder = new TestResultBuilder<Type>(this);
 	}
 
-	#region IFilterableTypeExpectation Members
+	#region IExpectationFilterResult<Type> Members
+
+	/// <inheritdoc cref="IExpectationFilterResult{Type}.And" />
+	public IExpectationFilter<Type> And => this;
+
+	#endregion
+
+	#region ITypeExpectation Members
 
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
@@ -52,15 +59,12 @@ internal class TypeExpectationStart : ITypeExpectation, IExpectationFilterResult
 		return this;
 	}
 
-	#endregion
-
-	/// <inheritdoc cref="IExpectationFilterResult{Type}.And" />
-	public IExpectationFilter<Type> And => this;
-
 	/// <inheritdoc />
 	public IExpectationStart<Type> OrNone()
 	{
 		_allowEmpty = true;
 		return this;
 	}
+
+	#endregion
 }

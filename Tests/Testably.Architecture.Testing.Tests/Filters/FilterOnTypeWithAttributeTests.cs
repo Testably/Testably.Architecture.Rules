@@ -19,22 +19,22 @@ public class FilterOnTypeWithAttributeTests
 	}
 
 	[AttributeUsage(AttributeTargets.Class)]
-	private class FooAttribute : Attribute
-	{
-	}
-
-	[AttributeUsage(AttributeTargets.Class)]
 	private class BarAttribute : Attribute
-	{
-	}
-
-	[Foo]
-	private class FooClass
 	{
 	}
 
 	[Bar]
 	private class BarClass
+	{
+	}
+
+	[AttributeUsage(AttributeTargets.Class)]
+	private class FooAttribute : Attribute
+	{
+	}
+
+	[Foo]
+	private class FooClass
 	{
 	}
 }

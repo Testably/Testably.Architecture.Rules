@@ -16,7 +16,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(FooImplementor2);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom<FooBase>(
 				forceDirect: forceDirect);
@@ -31,7 +31,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom(
 				typeof(IGenericFooInterface<>),
@@ -48,7 +48,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 				bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom(typeof(IFooInterface),
 				forceDirect: forceDirect);
@@ -63,7 +63,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom(typeof(GenericFooClass<>),
 				forceDirect: forceDirect);
@@ -78,7 +78,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(FooImplementor2);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom<IFooInterface>(
 				forceDirect: forceDirect);
@@ -90,7 +90,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithClass_ShouldBeSatisfied()
 		{
 			Type type = typeof(FooImplementor3);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom<FooBase>();
 
@@ -101,7 +101,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithGenericClass_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldInheritFrom(typeof(GenericFooClass<>));
@@ -113,7 +113,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithGenericInterface_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldInheritFrom(typeof(IGenericFooInterface<>));
@@ -125,7 +125,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithInterface_ShouldBeSatisfied()
 		{
 			Type type = typeof(FooImplementor3);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom<IFooInterface>();
 
@@ -136,7 +136,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithoutClass_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom<BarClass>();
 
@@ -149,7 +149,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithoutGenericClass_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldInheritFrom(typeof(GenericBarClass<>));
@@ -163,7 +163,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithoutGenericInterface_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldInheritFrom(typeof(IOtherGenericFooInterface<>));
@@ -177,7 +177,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldInheritFrom_WithoutInterface_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldInheritFrom<IOtherFooInterface>();
 
@@ -193,7 +193,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(FooImplementor2);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom<FooBase>(
 				forceDirect: forceDirect);
@@ -208,7 +208,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom(
 				typeof(IGenericFooInterface<>),
@@ -225,7 +225,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 				bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom(typeof(IFooInterface),
 				forceDirect: forceDirect);
@@ -240,7 +240,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom(
 				typeof(GenericFooClass<>),
@@ -256,7 +256,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			bool forceDirect)
 		{
 			Type type = typeof(FooImplementor2);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom<IFooInterface>(
 				forceDirect: forceDirect);
@@ -268,7 +268,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithClass_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(FooImplementor3);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom<FooBase>();
 
@@ -281,7 +281,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithGenericClass_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldNotInheritFrom(typeof(GenericFooClass<>));
@@ -295,7 +295,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithGenericInterface_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldNotInheritFrom(typeof(IGenericFooInterface<>));
@@ -309,7 +309,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithInterface_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(FooImplementor3);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom<IFooInterface>();
 
@@ -322,7 +322,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithoutClass_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom<BarClass>();
 
@@ -333,7 +333,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithoutGenericClass_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldNotInheritFrom(typeof(GenericBarClass<>));
@@ -345,7 +345,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithoutGenericInterface_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type>
 				result = sut.ShouldNotInheritFrom(typeof(IOtherGenericFooInterface<>));
@@ -357,7 +357,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotInheritFrom_WithoutInterface_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
-			var sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
 			IExpectationResult<Type> result = sut.ShouldNotInheritFrom<IOtherFooInterface>();
 

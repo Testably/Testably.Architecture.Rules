@@ -8,10 +8,10 @@ namespace Testably.Architecture.Testing.Internal;
 
 internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilterResult<Assembly>
 {
+	private bool _allowEmpty;
+	private readonly List<Filter<Assembly>> _filters = new();
 	private readonly TestResultBuilder<Assembly> _testResultBuilder;
 	private readonly List<Assembly> _types;
-	private readonly List<Filter<Assembly>> _filters = new();
-	private bool _allowEmpty;
 
 	public AssemblyExpectationStart(IEnumerable<Assembly> types)
 	{
@@ -19,7 +19,16 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilt
 		_testResultBuilder = new TestResultBuilder<Assembly>(this);
 	}
 
-	#region IFilterableAssemblyExpectation Members
+	#region IAssemblyExpectation Members
+
+	/// <inheritdoc />
+	public ITypeExpectation Types
+	{
+		get
+		{
+			return new TypeExpectationStart(_types.SelectMany(x => x.GetTypes()));
+		}
+	}
 
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />
@@ -53,11 +62,6 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilt
 		return this;
 	}
 
-	#endregion
-
-	/// <inheritdoc cref="IExpectationFilterResult{Assembly}.And" />
-	public IExpectationFilter<Assembly> And => this;
-
 	/// <inheritdoc />
 	public IExpectationStart<Assembly> OrNone()
 	{
@@ -65,12 +69,12 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilt
 		return this;
 	}
 
-	/// <inheritdoc />
-	public ITypeExpectation Types
-	{
-		get
-		{
-			return new TypeExpectationStart(_types.SelectMany(x => x.GetTypes()));
-		}
-	}
+	#endregion
+
+	#region IExpectationFilterResult<Assembly> Members
+
+	/// <inheritdoc cref="IExpectationFilterResult{Assembly}.And" />
+	public IExpectationFilter<Assembly> And => this;
+
+	#endregion
 }
