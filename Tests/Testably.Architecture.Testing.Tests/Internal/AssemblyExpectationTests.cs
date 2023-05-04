@@ -58,7 +58,7 @@ public sealed class AssemblyExpectationTests
 			Expect.That.AllLoadedAssemblies().ShouldSatisfy(_ => false).Errors.Length;
 		IAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
-		IExpectationResult<Assembly> result = sut
+		ITestResult result = sut
 			.Which(p => p.GetName().Name?.StartsWith("Testably") != true)
 			.ShouldSatisfy(_ => false);
 

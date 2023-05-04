@@ -65,7 +65,7 @@ public sealed class ExtensionsForExpectationTests
 	{
 		ITypeExpectation sut = Expect.That.AllLoadedTypes();
 
-		IExpectationResult<Type> result = sut.ShouldSatisfy(_ => false);
+		IExpectationConditionResult<Type> result = sut.ShouldSatisfy(_ => false);
 
 		result.Errors.Should().NotBeEmpty();
 	}

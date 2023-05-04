@@ -31,7 +31,7 @@ internal class TypeExpectationStart : ITypeExpectation, IExpectationFilterResult
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
 	#pragma warning restore CS1574
-	public IExpectationResult<Type> ShouldSatisfy(
+	public IExpectationConditionResult<Type> ShouldSatisfy(
 		Func<Type, bool> condition,
 		Func<Type, TestError> errorGenerator)
 	{

@@ -14,7 +14,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be abstract.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeAbstract(
+	public static IExpectationConditionResult<Type> ShouldBeAbstract(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsAbstract,
 			type => new TypeTestError(type,
@@ -24,7 +24,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be a class.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeAClass(
+	public static IExpectationConditionResult<Type> ShouldBeAClass(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsClass,
 			type => new TypeTestError(type,
@@ -34,7 +34,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be an interface.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeAnInterface(
+	public static IExpectationConditionResult<Type> ShouldBeAnInterface(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsInterface,
 			type => new TypeTestError(type,
@@ -44,7 +44,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be generic.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeGeneric(
+	public static IExpectationConditionResult<Type> ShouldBeGeneric(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsGenericType,
 			type => new TypeTestError(type,
@@ -54,7 +54,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be nested.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeNested(
+	public static IExpectationConditionResult<Type> ShouldBeNested(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsNested,
 			type => new TypeTestError(type,
@@ -64,7 +64,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be public.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBePublic(
+	public static IExpectationConditionResult<Type> ShouldBePublic(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsPublic,
 			type => new TypeTestError(type,
@@ -74,7 +74,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be sealed.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeSealed(
+	public static IExpectationConditionResult<Type> ShouldBeSealed(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsSealed,
 			type => new TypeTestError(type,
@@ -84,7 +84,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to be static.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldBeStatic(
+	public static IExpectationConditionResult<Type> ShouldBeStatic(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => type.IsStatic(),
 			type => new TypeTestError(type,
@@ -104,7 +104,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     <see langword="false" />.<br />
 	///     Defaults to <see langword="true" />
 	/// </param>
-	public static IExpectationResult<Type> ShouldHaveAttribute<TAttribute>(
+	public static IExpectationConditionResult<Type> ShouldHaveAttribute<TAttribute>(
 		this IExpectationCondition<Type> @this,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
@@ -122,7 +122,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <typeparamref name="TBase" /> to be the direct parent.
 	/// </param>
-	public static IExpectationResult<Type> ShouldInheritFrom<TBase>(
+	public static IExpectationConditionResult<Type> ShouldInheritFrom<TBase>(
 		this IExpectationCondition<Type> @this,
 		bool forceDirect = false)
 		=> @this.ShouldInheritFrom(typeof(TBase), forceDirect);
@@ -137,7 +137,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
-	public static IExpectationResult<Type> ShouldInheritFrom(
+	public static IExpectationConditionResult<Type> ShouldInheritFrom(
 		this IExpectationCondition<Type> @this,
 		Type baseType,
 		bool forceDirect = false)
@@ -155,7 +155,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
-	public static IExpectationResult<Type> ShouldMatchName(
+	public static IExpectationConditionResult<Type> ShouldMatchName(
 		this IExpectationCondition<Type> @this,
 		Match pattern,
 		bool ignoreCase = false)
@@ -167,7 +167,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be abstract.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeAbstract(
+	public static IExpectationConditionResult<Type> ShouldNotBeAbstract(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsAbstract,
 			type => new TypeTestError(type,
@@ -177,7 +177,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be a class.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeAClass(
+	public static IExpectationConditionResult<Type> ShouldNotBeAClass(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsClass,
 			type => new TypeTestError(type,
@@ -187,7 +187,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be an interface.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeAnInterface(
+	public static IExpectationConditionResult<Type> ShouldNotBeAnInterface(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsInterface,
 			type => new TypeTestError(type,
@@ -197,7 +197,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be generic.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeGeneric(
+	public static IExpectationConditionResult<Type> ShouldNotBeGeneric(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsGenericType,
 			type => new TypeTestError(type,
@@ -207,7 +207,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be nested.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeNested(
+	public static IExpectationConditionResult<Type> ShouldNotBeNested(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsNested,
 			type => new TypeTestError(type,
@@ -217,7 +217,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be public.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBePublic(
+	public static IExpectationConditionResult<Type> ShouldNotBePublic(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsPublic,
 			type => new TypeTestError(type,
@@ -227,7 +227,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be sealed.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeSealed(
+	public static IExpectationConditionResult<Type> ShouldNotBeSealed(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsSealed,
 			type => new TypeTestError(type,
@@ -237,7 +237,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Expect the types to not be static.
 	/// </summary>
 	/// <param name="this">The <see cref="IExpectationCondition{Type}" />.</param>
-	public static IExpectationResult<Type> ShouldNotBeStatic(
+	public static IExpectationConditionResult<Type> ShouldNotBeStatic(
 		this IExpectationCondition<Type> @this)
 		=> @this.ShouldSatisfy(type => !type.IsStatic(),
 			type => new TypeTestError(type,
@@ -257,7 +257,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     <see langword="false" />.<br />
 	///     Defaults to <see langword="true" />
 	/// </param>
-	public static IExpectationResult<Type> ShouldNotHaveAttribute<TAttribute>(
+	public static IExpectationConditionResult<Type> ShouldNotHaveAttribute<TAttribute>(
 		this IExpectationCondition<Type> @this,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
@@ -275,7 +275,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <typeparamref name="TBase" /> to be the direct parent.
 	/// </param>
-	public static IExpectationResult<Type> ShouldNotInheritFrom<TBase>(
+	public static IExpectationConditionResult<Type> ShouldNotInheritFrom<TBase>(
 		this IExpectationCondition<Type> @this,
 		bool forceDirect = false)
 		=> @this.ShouldNotInheritFrom(typeof(TBase), forceDirect);
@@ -290,7 +290,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
-	public static IExpectationResult<Type> ShouldNotInheritFrom(
+	public static IExpectationConditionResult<Type> ShouldNotInheritFrom(
 		this IExpectationCondition<Type> @this,
 		Type baseType,
 		bool forceDirect = false)
@@ -308,7 +308,7 @@ public static class ExtensionsForExpectationConditionOnType
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
-	public static IExpectationResult<Type> ShouldNotMatchName(
+	public static IExpectationConditionResult<Type> ShouldNotMatchName(
 		this IExpectationCondition<Type> @this,
 		Match pattern,
 		bool ignoreCase = false)
@@ -319,7 +319,7 @@ public static class ExtensionsForExpectationConditionOnType
 	/// <summary>
 	///     The <see cref="Type" /> should satisfy the given <paramref name="condition" />.
 	/// </summary>
-	public static IExpectationResult<Type> ShouldSatisfy(
+	public static IExpectationConditionResult<Type> ShouldSatisfy(
 		this IExpectationCondition<Type> @this,
 		Expression<Func<Type, bool>> condition)
 	{

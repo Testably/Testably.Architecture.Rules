@@ -3,10 +3,10 @@
 /// <summary>
 ///     The result of a condition on <typeparamref name="TType" />.
 /// </summary>
-public interface IExpectationExceptionResult<TType> : ITestResult
+public interface IExpectationExemptionResult<TType> : ITestResult
 {
 	/// <summary>
 	///     Add additional exception for <typeparamref name="TType" />.
 	/// </summary>
-	IExpectationResult<TType> And { get; }
+	IExpectationExemption<TType> And { get; }
 }

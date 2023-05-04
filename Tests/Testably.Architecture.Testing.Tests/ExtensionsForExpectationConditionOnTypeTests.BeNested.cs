@@ -15,7 +15,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(NestedType);
 			ITypeExpectation sut = Expect.That.Type(type);
 
-			IExpectationResult<Type> result = sut.ShouldBeNested();
+			IExpectationConditionResult<Type> result = sut.ShouldBeNested();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -26,7 +26,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ExtensionsForITypeExpectationTests);
 			ITypeExpectation sut = Expect.That.Type(type);
 
-			IExpectationResult<Type> result = sut.ShouldBeNested();
+			IExpectationConditionResult<Type> result = sut.ShouldBeNested();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -40,7 +40,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(NestedType);
 			ITypeExpectation sut = Expect.That.Type(type);
 
-			IExpectationResult<Type> result = sut.ShouldNotBeNested();
+			IExpectationConditionResult<Type> result = sut.ShouldNotBeNested();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -54,7 +54,7 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			Type type = typeof(ExtensionsForITypeExpectationTests);
 			ITypeExpectation sut = Expect.That.Type(type);
 
-			IExpectationResult<Type> result = sut.ShouldNotBeNested();
+			IExpectationConditionResult<Type> result = sut.ShouldNotBeNested();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

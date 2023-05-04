@@ -18,7 +18,7 @@ public sealed class TypeExpectationTests
 		string expectedTypeName = $"'{type.Name}'";
 		ITypeExpectation sut = Expect.That.Type(type);
 
-		IExpectationResult<Type> result = sut.ShouldSatisfy(_ => false);
+		ITestResult result = sut.ShouldSatisfy(_ => false);
 
 		TestError error = result.Errors.Single();
 		error.ToString().Should().Contain(expectedTypeName);
@@ -31,8 +31,7 @@ public sealed class TypeExpectationTests
 		ITypeExpectation sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
-		IExpectationResult<Type> result =
-			sut.ShouldSatisfy(_ => false, _ => error);
+		ITestResult result = sut.ShouldSatisfy(_ => false, _ => error);
 
 		result.Errors.Should().NotBeEmpty();
 		result.Errors.Single().Should().Be(error);
@@ -45,8 +44,7 @@ public sealed class TypeExpectationTests
 		ITypeExpectation sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
-		IExpectationResult<Type>
-			result = sut.ShouldSatisfy(_ => true, _ => error);
+		ITestResult result = sut.ShouldSatisfy(_ => true, _ => error);
 
 		result.Errors.Should().BeEmpty();
 	}
@@ -60,7 +58,7 @@ public sealed class TypeExpectationTests
 		ITypeExpectation sut = Expect.That
 			.AssemblyContaining<TypeExpectationStart>().Types;
 
-		IExpectationResult<Type> result = sut
+		ITestResult result = sut
 			.Which(p => p.Name != nameof(TypeExpectationStart))
 			.ShouldSatisfy(_ => false);
 

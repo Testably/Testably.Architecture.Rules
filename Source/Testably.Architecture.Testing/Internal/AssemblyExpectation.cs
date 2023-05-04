@@ -34,7 +34,7 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilt
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IExpectationFilter.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />
 	#pragma warning restore CS1574
-	public IExpectationResult<Assembly> ShouldSatisfy(
+	public IExpectationConditionResult<Assembly> ShouldSatisfy(
 		Func<Assembly, bool> condition,
 		Func<Assembly, TestError> errorGenerator)
 	{

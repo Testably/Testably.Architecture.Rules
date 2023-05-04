@@ -22,7 +22,7 @@ public static class ExtensionsForExpectationConditionOnAssembly
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
-	public static IExpectationResult<Assembly> ShouldNotHaveDependenciesOn(
+	public static IExpectationConditionResult<Assembly> ShouldNotHaveDependenciesOn(
 		this IExpectationCondition<Assembly> @this,
 		Match pattern,
 		bool ignoreCase = false)
@@ -41,7 +41,7 @@ public static class ExtensionsForExpectationConditionOnAssembly
 	/// <summary>
 	///     The <see cref="Assembly" /> should satisfy the given <paramref name="condition" />.
 	/// </summary>
-	public static IExpectationResult<Assembly> ShouldSatisfy(
+	public static IExpectationConditionResult<Assembly> ShouldSatisfy(
 		this IExpectationCondition<Assembly> @this,
 		Expression<Func<Assembly, bool>> condition)
 	{

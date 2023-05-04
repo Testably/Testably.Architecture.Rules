@@ -37,7 +37,7 @@ public abstract partial class FilterOnType : Filter<Type>, IExpectationFilterRes
 	public IExpectationFilter<Type> And => _expectationFilter;
 
 	/// <inheritdoc cref="IExpectationCondition{Type}.ShouldSatisfy(Func{Type,bool}, Func{Type, TestError})" />
-	public IExpectationResult<Type> ShouldSatisfy(Func<Type, bool> condition,
+	public IExpectationConditionResult<Type> ShouldSatisfy(Func<Type, bool> condition,
 		Func<Type, TestError> errorGenerator)
 		=> _filtered.ShouldSatisfy(condition, errorGenerator);
 
