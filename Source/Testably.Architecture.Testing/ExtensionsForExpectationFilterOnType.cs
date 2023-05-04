@@ -17,7 +17,7 @@ public static class ExtensionsForExpectationFilterOnType
 	public static IExpectationFilterResult<Type> Which(this IExpectationFilter<Type> @this,
 		Func<Type, bool> filter)
 	{
-		return @this.Which(filter);
+		return @this.Which(Filter<Type>.FromPredicate(filter));
 	}
 
 	/// <summary>

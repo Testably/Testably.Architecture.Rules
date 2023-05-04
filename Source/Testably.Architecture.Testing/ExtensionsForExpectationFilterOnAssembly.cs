@@ -16,6 +16,6 @@ public static class ExtensionsForExpectationFilterOnAssembly
 	public static IExpectationFilterResult<Assembly> Which(this IExpectationFilter<Assembly> @this,
 		Func<Assembly, bool> filter)
 	{
-		return @this.Which(filter);
+		return @this.Which(Filter<Assembly>.FromPredicate(filter));
 	}
 }
