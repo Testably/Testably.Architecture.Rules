@@ -11,17 +11,6 @@ public class EmptyDataExceptionTests
 {
 	[Theory]
 	[AutoData]
-	public void Constructor_WithMessageParameter_ShouldForwardToException(
-		string message)
-	{
-		Exception sut = new EmptyDataException(message);
-
-		sut.Message.Should().Be(message);
-		sut.InnerException.Should().BeNull();
-	}
-
-	[Theory]
-	[AutoData]
 	public void Constructor_WithInnerException_ShouldForwardToException(
 		string message, Exception innerException)
 	{
@@ -29,6 +18,17 @@ public class EmptyDataExceptionTests
 
 		sut.Message.Should().Be(message);
 		sut.InnerException.Should().Be(innerException);
+	}
+
+	[Theory]
+	[AutoData]
+	public void Constructor_WithMessageParameter_ShouldForwardToException(
+		string message)
+	{
+		Exception sut = new EmptyDataException(message);
+
+		sut.Message.Should().Be(message);
+		sut.InnerException.Should().BeNull();
 	}
 
 	[Theory]

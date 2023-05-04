@@ -13,16 +13,16 @@ public abstract class Filter<TType>
 	public abstract bool Applies(TType type);
 
 	/// <summary>
-	///     Implicitly converts the <paramref name="filter" /> to a <see cref="Filter{TType}" />.
-	/// </summary>
-	public static implicit operator Filter<TType>(Func<TType, bool> filter)
-		=> FromPredicate(filter);
-
-	/// <summary>
 	///     Creates a new <see cref="Filter{TType}" /> from the given <paramref name="predicate" />.
 	/// </summary>
 	public static Filter<TType> FromPredicate(Func<TType, bool> predicate)
 		=> new GenericFilter(predicate);
+
+	/// <summary>
+	///     Implicitly converts the <paramref name="filter" /> to a <see cref="Filter{TType}" />.
+	/// </summary>
+	public static implicit operator Filter<TType>(Func<TType, bool> filter)
+		=> FromPredicate(filter);
 
 	private sealed class GenericFilter : Filter<TType>
 	{

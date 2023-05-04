@@ -7,7 +7,7 @@ public abstract partial class FilterOnType
 	/// <summary>
 	///     Add additional filters on a <see cref="Type" /> which has an attribute.
 	/// </summary>
-	public class WithAttribute : Testing.FilterOnType
+	public class WithAttribute : FilterOnType
 	{
 		internal WithAttribute(
 			IFilter<Type> expectationFilter,

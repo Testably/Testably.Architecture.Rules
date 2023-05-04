@@ -26,6 +26,20 @@ internal class TypeExpectationStart : ITypeExpectation, IFilterResult<Type>
 
 	#region ITypeExpectation Members
 
+	/// <inheritdoc />
+	public IExpectationStart<Type> OrNone()
+	{
+		_allowEmpty = true;
+		return this;
+	}
+
+	/// <inheritdoc cref="IFilter{Type}.Which(Filter{Type})" />
+	public IFilterResult<Type> Which(Filter<Type> filter)
+	{
+		_filters.Add(filter);
+		return this;
+	}
+
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilter.ShouldSatisfy(Func{Type, bool}, Func{Type, TestError})" />
 	#pragma warning restore CS1574
@@ -50,20 +64,6 @@ internal class TypeExpectationStart : ITypeExpectation, IFilterResult<Type>
 		}
 
 		return _testResultBuilder.Build();
-	}
-
-	/// <inheritdoc cref="IFilter{Type}.Which(Filter{Type})" />
-	public IFilterResult<Type> Which(Filter<Type> filter)
-	{
-		_filters.Add(filter);
-		return this;
-	}
-
-	/// <inheritdoc />
-	public IExpectationStart<Type> OrNone()
-	{
-		_allowEmpty = true;
-		return this;
 	}
 
 	#endregion

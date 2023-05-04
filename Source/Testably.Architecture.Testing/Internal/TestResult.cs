@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 
 namespace Testably.Architecture.Testing.Internal;
 
@@ -15,15 +14,15 @@ internal class TestResult<TType> : IRequirementResult<TType>,
 		And = expectation;
 	}
 
+	#region IExemptionResult<TType> Members
 
-	#region IExemptionResult<TExpectation> Members
 	/// <inheritdoc />
 	IExemption<TType> IExemptionResult<TType>.And
 		=> this;
 
 	#endregion
 
-	#region IExpectationResult<TExpectation> Members
+	#region IRequirementResult<TType> Members
 
 	/// <inheritdoc cref="IExemptionResult{TExpectation}.And" />
 	public IRequirement<TType> And { get; }

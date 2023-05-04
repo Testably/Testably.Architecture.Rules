@@ -29,6 +29,20 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IFilterResult<As
 		}
 	}
 
+	/// <inheritdoc />
+	public IExpectationStart<Assembly> OrNone()
+	{
+		_allowEmpty = true;
+		return this;
+	}
+
+	/// <inheritdoc cref="IFilter{Assembly}.Which(Filter{Assembly})" />
+	public IFilterResult<Assembly> Which(Filter<Assembly> filter)
+	{
+		_filters.Add(filter);
+		return this;
+	}
+
 	#pragma warning disable CS1574
 	/// <inheritdoc cref="IFilter.ShouldSatisfy(Func{Assembly, bool}, Func{Assembly, TestError})" />
 	#pragma warning restore CS1574
@@ -39,7 +53,8 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IFilterResult<As
 		List<Assembly>? types = _types.Where(x => _filters.All(f => f.Applies(x))).ToList();
 		if (types.Count == 0 && !_allowEmpty)
 		{
-			throw new EmptyDataException($"No assemblies found, that match all {_filters.Count} filters.");
+			throw new EmptyDataException(
+				$"No assemblies found, that match all {_filters.Count} filters.");
 		}
 
 		foreach (Assembly type in types)
@@ -52,20 +67,6 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IFilterResult<As
 		}
 
 		return _testResultBuilder.Build();
-	}
-
-	/// <inheritdoc cref="IFilter{Assembly}.Which(Filter{Assembly})" />
-	public IFilterResult<Assembly> Which(Filter<Assembly> filter)
-	{
-		_filters.Add(filter);
-		return this;
-	}
-
-	/// <inheritdoc />
-	public IExpectationStart<Assembly> OrNone()
-	{
-		_allowEmpty = true;
-		return this;
 	}
 
 	#endregion
