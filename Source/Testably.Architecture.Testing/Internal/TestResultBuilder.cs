@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
 internal class TestResultBuilder<TExpectation>
 {
 	private readonly List<TestError> _errors = new();
-	private readonly IExpectationCondition<TExpectation> _expectation;
+	private readonly IRequirement<TExpectation> _expectation;
 
-	public TestResultBuilder(IExpectationCondition<TExpectation> expectation)
+	public TestResultBuilder(IRequirement<TExpectation> expectation)
 	{
 		_expectation = expectation;
 	}
@@ -19,6 +18,6 @@ internal class TestResultBuilder<TExpectation>
 		return this;
 	}
 
-	public IExpectationResult<TExpectation> Build() =>
+	public IRequirementResult<TExpectation> Build() =>
 		new TestResult<TExpectation>(_expectation, _errors);
 }

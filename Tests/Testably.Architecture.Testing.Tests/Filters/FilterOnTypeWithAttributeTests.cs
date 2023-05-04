@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using System;
-using Testably.Architecture.Testing.Filters;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.Filters;

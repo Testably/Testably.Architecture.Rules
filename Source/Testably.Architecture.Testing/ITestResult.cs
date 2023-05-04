@@ -1,6 +1,4 @@
-﻿using Testably.Architecture.Testing.TestErrors;
-
-namespace Testably.Architecture.Testing;
+﻿namespace Testably.Architecture.Testing;
 
 /// <summary>
 ///     The result of an architecture test.

@@ -1,6 +1,5 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
-using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.TestErrors;

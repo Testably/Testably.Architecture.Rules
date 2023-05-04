@@ -1,8 +1,8 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
+using System;
 using System.Linq;
 using System.Reflection;
-using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.Internal;
@@ -56,11 +56,39 @@ public sealed class AssemblyExpectationTests
 			Expect.That.AllLoadedAssemblies().ShouldSatisfy(_ => false).Errors.Length;
 		IAssemblyExpectation sut = Expect.That.AllLoadedAssemblies();
 
-		IExpectationResult<Assembly> result = sut
+		ITestResult result = sut
 			.Which(p => p.GetName().Name?.StartsWith("Testably") != true)
 			.ShouldSatisfy(_ => false);
 
 		result.Errors.Length.Should().BeLessThan(allAssembliesCount);
 		result.Errors.Should().OnlyContain(e => !e.ToString().Contains("'Testably"));
+	}
+
+	[Fact]
+	public void Which_WithOrNoneSet_WithoutMatch_ShouldNotThrowException()
+	{
+		IFilterResult<Assembly> sut = Expect.That
+			.AllLoadedAssemblies()
+			.OrNone()
+			.Which(_ => false);
+
+		ITestResult result = sut.ShouldSatisfy(_ => false);
+
+		result.IsSatisfied.Should().BeTrue();
+	}
+
+	[Fact]
+	public void Which_WithoutMatch_ShouldThrowEmptyDataException()
+	{
+		IFilterResult<Assembly> sut = Expect.That
+			.AllLoadedAssemblies()
+			.Which(_ => false);
+
+		Exception? exception = Record.Exception(() =>
+		{
+			sut.ShouldSatisfy(_ => true);
+		});
+
+		exception.Should().BeOfType<EmptyDataException>();
 	}
 }

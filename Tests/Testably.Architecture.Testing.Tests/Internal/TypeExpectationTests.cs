@@ -3,7 +3,6 @@ using FluentAssertions;
 using System;
 using System.Linq;
 using Testably.Architecture.Testing.Internal;
-using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.Internal;
@@ -17,7 +16,7 @@ public sealed class TypeExpectationTests
 		string expectedTypeName = $"'{type.Name}'";
 		ITypeExpectation sut = Expect.That.Type(type);
 
-		IExpectationResult<Type> result = sut.ShouldSatisfy(_ => false);
+		ITestResult result = sut.ShouldSatisfy(_ => false);
 
 		TestError error = result.Errors.Single();
 		error.ToString().Should().Contain(expectedTypeName);
@@ -30,8 +29,7 @@ public sealed class TypeExpectationTests
 		ITypeExpectation sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
-		IExpectationResult<Type> result =
-			sut.ShouldSatisfy(_ => false, _ => error);
+		ITestResult result = sut.ShouldSatisfy(_ => false, _ => error);
 
 		result.Errors.Should().NotBeEmpty();
 		result.Errors.Single().Should().Be(error);
@@ -44,8 +42,7 @@ public sealed class TypeExpectationTests
 		ITypeExpectation sut =
 			Expect.That.Type(typeof(TypeExpectationTests));
 
-		IExpectationResult<Type>
-			result = sut.ShouldSatisfy(_ => true, _ => error);
+		ITestResult result = sut.ShouldSatisfy(_ => true, _ => error);
 
 		result.Errors.Should().BeEmpty();
 	}
@@ -59,10 +56,38 @@ public sealed class TypeExpectationTests
 		ITypeExpectation sut = Expect.That
 			.AssemblyContaining<TypeExpectationStart>().Types;
 
-		IExpectationResult<Type> result = sut
+		ITestResult result = sut
 			.Which(p => p.Name != nameof(TypeExpectationStart))
 			.ShouldSatisfy(_ => false);
 
 		result.Errors.Length.Should().Be(allTypesCount - 1);
+	}
+
+	[Fact]
+	public void Which_WithOrNoneSet_WithoutMatch_ShouldNotThrowException()
+	{
+		IFilterResult<Type> sut = Expect.That
+			.AllLoadedTypes()
+			.OrNone()
+			.Which(_ => false);
+
+		ITestResult result = sut.ShouldSatisfy(_ => false);
+
+		result.IsSatisfied.Should().BeTrue();
+	}
+
+	[Fact]
+	public void Which_WithoutMatch_ShouldThrowEmptyDataException()
+	{
+		IFilterResult<Type> sut = Expect.That
+			.AllLoadedTypes()
+			.Which(_ => false);
+
+		Exception? exception = Record.Exception(() =>
+		{
+			sut.ShouldSatisfy(_ => false);
+		});
+
+		exception.Should().BeOfType<EmptyDataException>();
 	}
 }

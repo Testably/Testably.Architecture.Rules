@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Testably.Architecture.Testing.Filters;
+namespace Testably.Architecture.Testing;
 
 public abstract partial class FilterOnType
 {
@@ -10,7 +10,7 @@ public abstract partial class FilterOnType
 	public class WithAttribute : FilterOnType
 	{
 		internal WithAttribute(
-			IExpectationFilter<Type> expectationFilter,
+			IFilter<Type> expectationFilter,
 			Func<Type, bool> predicate) : base(expectationFilter, predicate)
 		{
 		}
