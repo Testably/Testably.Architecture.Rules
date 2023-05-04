@@ -30,6 +30,7 @@ public class FilterOnTypeWithMethodAttributeTests
 		// ReSharper disable once UnusedMember.Local
 		public void Bar()
 		{
+			throw new NotSupportedException();
 		}
 	}
 
@@ -45,6 +46,7 @@ public class FilterOnTypeWithMethodAttributeTests
 		// ReSharper disable once UnusedMember.Local
 		public void Foo()
 		{
+			throw new NotSupportedException();
 		}
 	}
 }
