@@ -45,7 +45,7 @@ public class EmptyDataException : Exception
 	///     The <see cref="StreamingContext"></see> that contains contextual information
 	///     about the source or destination.
 	/// </param>
-	public EmptyDataException(SerializationInfo info, StreamingContext context)
+	protected EmptyDataException(SerializationInfo info, StreamingContext context)
 		: base(info, context)
 	{
 	}
