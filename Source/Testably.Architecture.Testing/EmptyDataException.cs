@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
-/* Unmerged change from project 'Testably.Architecture.Testing (net6.0)'
-Before:
-using System.Runtime.Serialization;
-After:
-using System.Runtime.Serialization;
 using Testably;
 using Testably.Architecture;
 using Testably.Architecture.Testing;
 using Testably.Architecture.Testing;
 using Testably.Architecture.Testing.Exceptions;
-*/
+
 
 namespace Testably.Architecture.Testing;
 
