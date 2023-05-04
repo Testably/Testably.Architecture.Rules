@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Testably.Architecture.Testing.Exceptions;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
@@ -40,7 +41,7 @@ internal class AssemblyExpectationStart : IAssemblyExpectation, IExpectationFilt
 		List<Assembly>? types = _types.Where(x => _filters.All(f => f.Applies(x))).ToList();
 		if (types.Count == 0 && !_allowEmpty)
 		{
-			throw new Exception("No count found!");
+			throw new EmptyDataException($"No assemblies found, that match all {_filters.Count} filters.");
 		}
 
 		foreach (Assembly type in types)

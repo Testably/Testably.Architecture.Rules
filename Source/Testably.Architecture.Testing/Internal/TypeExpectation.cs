@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Testably.Architecture.Testing.Exceptions;
 using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
@@ -37,7 +38,7 @@ internal class TypeExpectationStart : ITypeExpectation, IExpectationFilterResult
 		List<Type>? types = _types.Where(x => _filters.All(f => f.Applies(x))).ToList();
 		if (types.Count == 0 && !_allowEmpty)
 		{
-			throw new Exception("No count found!");
+			throw new EmptyDataException($"No types found, that match all {_filters.Count} filters.");
 		}
 
 		foreach (Type type in types)
