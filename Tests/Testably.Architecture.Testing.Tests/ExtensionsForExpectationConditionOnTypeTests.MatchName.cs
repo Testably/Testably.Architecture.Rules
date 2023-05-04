@@ -15,9 +15,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldMatchName_IgnoreCase_ShouldConsiderParameter(bool ignoreCase)
 		{
 			Type type = typeof(MatchName);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result =
+			IExpectationResult<Type> result =
 				sut.ShouldMatchName("MATCHname", ignoreCase);
 
 			result.IsSatisfied.Should().Be(ignoreCase);
@@ -30,9 +30,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldMatchName_MatchingPattern_ShouldBeSatisfied(string matchingPattern)
 		{
 			Type type = typeof(MatchName);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(matchingPattern);
+			IExpectationResult<Type> result = sut.ShouldMatchName(matchingPattern);
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -45,9 +45,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			string notMatchingPattern)
 		{
 			Type type = typeof(MatchName);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldMatchName(notMatchingPattern);
+			IExpectationResult<Type> result = sut.ShouldMatchName(notMatchingPattern);
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -62,9 +62,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotMatchName_IgnoreCase_ShouldConsiderParameter(bool ignoreCase)
 		{
 			Type type = typeof(MatchName);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result =
+			IExpectationResult<Type> result =
 				sut.ShouldNotMatchName("matchNAME", ignoreCase);
 
 			result.IsSatisfied.Should().Be(!ignoreCase);
@@ -77,9 +77,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotMatchName_MatchingPattern_ShouldNotBeSatisfied(string matchingPattern)
 		{
 			Type type = typeof(MatchName);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotMatchName(matchingPattern);
+			IExpectationResult<Type> result = sut.ShouldNotMatchName(matchingPattern);
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -96,9 +96,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 			string notMatchingPattern)
 		{
 			Type type = typeof(MatchName);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotMatchName(notMatchingPattern);
+			IExpectationResult<Type> result = sut.ShouldNotMatchName(notMatchingPattern);
 
 			result.IsSatisfied.Should().BeTrue();
 		}

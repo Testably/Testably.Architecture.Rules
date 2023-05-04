@@ -1,18 +1,14 @@
-﻿using System;
-using System.Reflection;
-using Testably.Architecture.Testing.TestErrors;
+﻿using System.Reflection;
 
 namespace Testably.Architecture.Testing;
 
 /// <summary>
-///     Defines expectations on <see cref="Assembly" />s.
+///     Defines expectations on <see cref="Assembly" />s that can be filtered.
 /// </summary>
-public interface IAssemblyExpectation
+public interface IAssemblyExpectation : IExpectationStart<Assembly>
 {
 	/// <summary>
-	///     The <see cref="Assembly" /> should satisfy the given <paramref name="condition" />.
+	///     Get all types from the filtered assemblies.
 	/// </summary>
-	ITestResult<IAssemblyExpectation> ShouldSatisfy(
-		Func<Assembly, bool> condition,
-		Func<Assembly, TestError> errorGenerator);
+	ITypeExpectation Types { get; }
 }

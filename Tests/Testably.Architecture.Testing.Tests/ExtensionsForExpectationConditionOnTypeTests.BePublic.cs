@@ -37,9 +37,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBePublic_PublicType_ShouldBeSatisfied()
 		{
 			Type type = typeof(ExtensionsForITypeExpectationTests);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBePublic();
+			IExpectationResult<Type> result = sut.ShouldBePublic();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -48,9 +48,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[MemberData(nameof(GetUnpublicTypes))]
 		public void ShouldBePublic_UnpublicType_ShouldNotBeSatisfied(Type type)
 		{
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBePublic();
+			IExpectationResult<Type> result = sut.ShouldBePublic();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -62,9 +62,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBePublic_PublicType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(ExtensionsForITypeExpectationTests);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBePublic();
+			IExpectationResult<Type> result = sut.ShouldNotBePublic();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -76,9 +76,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		[MemberData(nameof(GetUnpublicTypes))]
 		public void ShouldNotBePublic_UnpublicType_ShouldBeSatisfied(Type type)
 		{
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBePublic();
+			IExpectationResult<Type> result = sut.ShouldNotBePublic();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

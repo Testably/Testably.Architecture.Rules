@@ -15,7 +15,7 @@ public sealed class TestResultTests
 	{
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IAssemblyExpectation> result = sut
+		ITestResult result = sut
 			.ShouldSatisfy(_ => false, _ => error1).And
 			.ShouldSatisfy(_ => true, _ => error2);
 
@@ -31,7 +31,7 @@ public sealed class TestResultTests
 	{
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IAssemblyExpectation> result = sut
+		ITestResult result = sut
 			.ShouldSatisfy(_ => true, _ => error1).And
 			.ShouldSatisfy(_ => true, _ => error2);
 
@@ -46,7 +46,7 @@ public sealed class TestResultTests
 	{
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IAssemblyExpectation> result = sut
+		ITestResult result = sut
 			.ShouldSatisfy(_ => true, _ => error1).And
 			.ShouldSatisfy(_ => false, _ => error2);
 
@@ -62,7 +62,7 @@ public sealed class TestResultTests
 	{
 		IAssemblyExpectation sut = Expect.That.Assembly(Assembly.GetExecutingAssembly());
 
-		ITestResult<IAssemblyExpectation> result = sut
+		ITestResult result = sut
 			.ShouldSatisfy(_ => false, _ => error1).And
 			.ShouldSatisfy(_ => false, _ => error2);
 

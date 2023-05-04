@@ -4,20 +4,29 @@ using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class TestResult<TExpectation> : ITestResult<TExpectation>
+internal class TestResult<TExpectation> : IExpectationResult<TExpectation>,
+	IExpectationExceptionResult<TExpectation>
 {
 	private readonly List<TestError> _errors;
 
-	public TestResult(TExpectation expectation, List<TestError> errors)
+	public TestResult(IExpectationCondition<TExpectation> expectation, List<TestError> errors)
 	{
 		_errors = errors;
 		And = expectation;
 	}
 
-	#region ITestResult<TExpectation> Members
+	#region IExpectationExceptionResult<TExpectation> Members
 
-	/// <inheritdoc cref="ITestResult{TExpectation}.And" />
-	public TExpectation And { get; }
+	/// <inheritdoc />
+	IExpectationResult<TExpectation> IExpectationExceptionResult<TExpectation>.And
+		=> this;
+
+	#endregion
+
+	#region IExpectationResult<TExpectation> Members
+
+	/// <inheritdoc cref="IExpectationExceptionResult{TExpectation}.And" />
+	public IExpectationCondition<TExpectation> And { get; }
 
 	/// <inheritdoc cref="ITestResult.Errors" />
 	public TestError[] Errors
@@ -27,8 +36,8 @@ internal class TestResult<TExpectation> : ITestResult<TExpectation>
 	public bool IsSatisfied
 		=> _errors.Count == 0;
 
-	/// <inheritdoc cref="ITestResult{TExpectation}.Except(Func{TestError, bool})" />
-	public ITestResult<TExpectation> Except(Func<TestError, bool> predicate)
+	/// <inheritdoc />
+	public IExpectationExceptionResult<TExpectation> Except(Func<TestError, bool> predicate)
 	{
 		_errors.RemoveAll(e => predicate(e));
 		return this;

@@ -1,17 +1,10 @@
 ﻿using System;
-using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing;
 
 /// <summary>
-///     Defines expectations on <see cref="Type" />s.
+///     Defines expectations on <see cref="Type" />s that can be filtered.
 /// </summary>
-public interface ITypeExpectation
+public interface ITypeExpectation : IExpectationStart<Type>
 {
-	/// <summary>
-	///     The <see cref="Type" /> should satisfy the given <paramref name="condition" />.
-	/// </summary>
-	ITestResult<ITypeExpectation> ShouldSatisfy(
-		Func<Type, bool> condition,
-		Func<Type, TestError> errorGenerator);
 }

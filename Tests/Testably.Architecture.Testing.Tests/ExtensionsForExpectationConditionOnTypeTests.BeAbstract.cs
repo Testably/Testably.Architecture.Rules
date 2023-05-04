@@ -13,9 +13,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAbstract_AbstractType_ShouldBeSatisfied()
 		{
 			Type type = typeof(AbstractType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAbstract();
+			IExpectationResult<Type> result = sut.ShouldBeAbstract();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -24,9 +24,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAbstract_ConcreteType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(ConcreteType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAbstract();
+			IExpectationResult<Type> result = sut.ShouldBeAbstract();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -38,9 +38,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAbstract_AbstractType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(AbstractType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAbstract();
+			IExpectationResult<Type> result = sut.ShouldNotBeAbstract();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -52,9 +52,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAbstract_ConcreteType_ShouldBeSatisfied()
 		{
 			Type type = typeof(ConcreteType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAbstract();
+			IExpectationResult<Type> result = sut.ShouldNotBeAbstract();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

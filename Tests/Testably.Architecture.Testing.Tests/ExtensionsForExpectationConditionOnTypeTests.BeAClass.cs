@@ -13,9 +13,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAClass_ClassType_ShouldBeSatisfied()
 		{
 			Type type = typeof(ClassType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAClass();
+			IExpectationResult<Type> result = sut.ShouldBeAClass();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -24,9 +24,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAClass_EnumType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAClass();
+			IExpectationResult<Type> result = sut.ShouldBeAClass();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -38,9 +38,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAClass_ClassType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(ClassType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAClass();
+			IExpectationResult<Type> result = sut.ShouldNotBeAClass();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -52,9 +52,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAClass_EnumType_ShouldBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAClass();
+			IExpectationResult<Type> result = sut.ShouldNotBeAClass();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

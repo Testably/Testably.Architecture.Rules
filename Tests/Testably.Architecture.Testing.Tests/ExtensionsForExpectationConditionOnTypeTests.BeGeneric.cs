@@ -13,9 +13,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeGeneric_GenericType_ShouldBeSatisfied()
 		{
 			Type type = typeof(GenericType<>);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeGeneric();
+			IExpectationResult<Type> result = sut.ShouldBeGeneric();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -24,9 +24,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeGeneric_SpecificType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(SpecificType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeGeneric();
+			IExpectationResult<Type> result = sut.ShouldBeGeneric();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -38,9 +38,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeGeneric_GenericType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(GenericType<>);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeGeneric();
+			IExpectationResult<Type> result = sut.ShouldNotBeGeneric();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -52,9 +52,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeGeneric_SpecificType_ShouldBeSatisfied()
 		{
 			Type type = typeof(SpecificType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeGeneric();
+			IExpectationResult<Type> result = sut.ShouldNotBeGeneric();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

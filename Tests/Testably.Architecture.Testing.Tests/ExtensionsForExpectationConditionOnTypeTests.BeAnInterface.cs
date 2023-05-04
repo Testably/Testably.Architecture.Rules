@@ -13,9 +13,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAnInterface_EnumType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAnInterface();
+			IExpectationResult<Type> result = sut.ShouldBeAnInterface();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -27,9 +27,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeAnInterface_InterfaceType_ShouldBeSatisfied()
 		{
 			Type type = typeof(InterfaceType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeAnInterface();
+			IExpectationResult<Type> result = sut.ShouldBeAnInterface();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -38,9 +38,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAnInterface_EnumType_ShouldBeSatisfied()
 		{
 			Type type = typeof(EnumType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAnInterface();
+			IExpectationResult<Type> result = sut.ShouldNotBeAnInterface();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -49,9 +49,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeAnInterface_InterfaceType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(InterfaceType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeAnInterface();
+			IExpectationResult<Type> result = sut.ShouldNotBeAnInterface();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()

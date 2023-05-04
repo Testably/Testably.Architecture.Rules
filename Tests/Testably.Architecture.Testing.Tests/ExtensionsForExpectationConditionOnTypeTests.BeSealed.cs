@@ -13,9 +13,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeSealed_SealedType_ShouldBeSatisfied()
 		{
 			Type type = typeof(SealedType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeSealed();
+			IExpectationResult<Type> result = sut.ShouldBeSealed();
 
 			result.IsSatisfied.Should().BeTrue();
 		}
@@ -24,9 +24,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldBeSealed_UnsealedType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(UnsealedType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldBeSealed();
+			IExpectationResult<Type> result = sut.ShouldBeSealed();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -38,9 +38,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeSealed_SealedType_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(SealedType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeSealed();
+			IExpectationResult<Type> result = sut.ShouldNotBeSealed();
 
 			result.IsSatisfied.Should().BeFalse();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
@@ -52,9 +52,9 @@ public sealed partial class ExtensionsForITypeExpectationTests
 		public void ShouldNotBeSealed_UnsealedType_ShouldBeSatisfied()
 		{
 			Type type = typeof(UnsealedType);
-			IFilterableTypeExpectation sut = Expect.That.Type(type);
+			ITypeExpectation sut = Expect.That.Type(type);
 
-			ITestResult<ITypeExpectation> result = sut.ShouldNotBeSealed();
+			IExpectationResult<Type> result = sut.ShouldNotBeSealed();
 
 			result.IsSatisfied.Should().BeTrue();
 		}

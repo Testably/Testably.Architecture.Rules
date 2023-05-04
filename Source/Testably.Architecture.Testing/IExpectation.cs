@@ -11,10 +11,10 @@ public interface IExpectation
 	/// <summary>
 	///     Defines expectations on all given <paramref name="assemblies" />.
 	/// </summary>
-	IFilterableAssemblyExpectation Assembly(params Assembly[] assemblies);
+	IAssemblyExpectation Assembly(params Assembly[] assemblies);
 
 	/// <summary>
 	///     Defines expectations on all given <paramref name="types" />.
 	/// </summary>
-	IFilterableTypeExpectation Type(params Type[] types);
+	ITypeExpectation Type(params Type[] types);
 }
