@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Testably.Architecture.Testing.Filters;
+namespace Testably.Architecture.Testing;
 
 public abstract partial class FilterOnType
 {
 	/// <summary>
 	///     Add additional filters on a <see cref="Type" /> which has a method with an attribute.
 	/// </summary>
-	public class WithMethodAttribute : FilterOnType
+	public class WithMethodAttribute : Testing.FilterOnType
 	{
 		internal WithMethodAttribute(
-			IExpectationFilter<Type> expectationFilter,
+			IFilter<Type> expectationFilter,
 			Func<Type, bool> predicate) : base(expectationFilter, predicate)
 		{
 		}

@@ -3,8 +3,6 @@ using FluentAssertions;
 using System;
 using System.Linq;
 using System.Reflection;
-using Testably.Architecture.Testing.Exceptions;
-using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
 namespace Testably.Architecture.Testing.Tests.Internal;
@@ -69,7 +67,7 @@ public sealed class AssemblyExpectationTests
 	[Fact]
 	public void Which_WithOrNoneSet_WithoutMatch_ShouldNotThrowException()
 	{
-		IExpectationFilterResult<Assembly> sut = Expect.That
+		IFilterResult<Assembly> sut = Expect.That
 			.AllLoadedAssemblies()
 			.OrNone()
 			.Which(_ => false);
@@ -82,7 +80,7 @@ public sealed class AssemblyExpectationTests
 	[Fact]
 	public void Which_WithoutMatch_ShouldThrowEmptyDataException()
 	{
-		IExpectationFilterResult<Assembly> sut = Expect.That
+		IFilterResult<Assembly> sut = Expect.That
 			.AllLoadedAssemblies()
 			.Which(_ => false);
 

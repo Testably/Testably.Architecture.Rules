@@ -1,33 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Testably.Architecture.Testing.TestErrors;
 
 namespace Testably.Architecture.Testing.Internal;
 
-internal class TestResult<TType> : IExpectationConditionResult<TType>,
-	IExpectationExemptionResult<TType>
+internal class TestResult<TType> : IRequirementResult<TType>,
+	IExemptionResult<TType>
 {
 	private readonly List<TestError> _errors;
 
-	public TestResult(IExpectationCondition<TType> expectation, List<TestError> errors)
+	public TestResult(IRequirement<TType> expectation, List<TestError> errors)
 	{
 		_errors = errors;
 		And = expectation;
 	}
 
 
-	#region IExpectationExemptionResult<TExpectation> Members
+	#region IExemptionResult<TExpectation> Members
 	/// <inheritdoc />
-	IExpectationExemption<TType> IExpectationExemptionResult<TType>.And
+	IExemption<TType> IExemptionResult<TType>.And
 		=> this;
 
 	#endregion
 
 	#region IExpectationResult<TExpectation> Members
 
-	/// <inheritdoc cref="IExpectationExemptionResult{TExpectation}.And" />
-	public IExpectationCondition<TType> And { get; }
+	/// <inheritdoc cref="IExemptionResult{TExpectation}.And" />
+	public IRequirement<TType> And { get; }
 
 	/// <inheritdoc cref="ITestResult.Errors" />
 	public TestError[] Errors
@@ -38,7 +37,7 @@ internal class TestResult<TType> : IExpectationConditionResult<TType>,
 		=> _errors.Count == 0;
 
 	/// <inheritdoc />
-	public IExpectationExemptionResult<TType> Unless(Func<TestError, bool> predicate)
+	public IExemptionResult<TType> Unless(Func<TestError, bool> predicate)
 	{
 		_errors.RemoveAll(e => predicate(e));
 		return this;

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Testably.Architecture.Testing.TestErrors;
+namespace Testably.Architecture.Testing;
 
 /// <summary>
 ///     A <see cref="TestError" /> for an expectation on an <see cref="Assembly" />.

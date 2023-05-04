@@ -1,29 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Testably.Architecture.Testing.TestErrors;
 
-namespace Testably.Architecture.Testing.Filters;
+namespace Testably.Architecture.Testing;
 
 /// <summary>
 ///     Base class for filters on <see cref="Type" />.
 /// </summary>
-public abstract partial class FilterOnType : Filter<Type>, IExpectationFilterResult<Type>
+public abstract partial class FilterOnType : Filter<Type>, IFilterResult<Type>
 {
 	/// <summary>
 	///     The list of predicates.
 	/// </summary>
 	protected readonly List<Func<Type, bool>> Predicates = new();
 
-	private readonly IExpectationFilter<Type> _expectationFilter;
+	private readonly IFilter<Type> _expectationFilter;
 
-	private readonly IExpectationFilterResult<Type> _filtered;
+	private readonly IFilterResult<Type> _filtered;
 
 	/// <summary>
 	///     Initializes a new instance of <see cref="FilterOnType" />.
 	/// </summary>
 	protected FilterOnType(
-		IExpectationFilter<Type> expectationFilter,
+		IFilter<Type> expectationFilter,
 		Func<Type, bool> predicate)
 	{
 		_expectationFilter = expectationFilter;
@@ -31,13 +30,13 @@ public abstract partial class FilterOnType : Filter<Type>, IExpectationFilterRes
 		_filtered = _expectationFilter.Which(this);
 	}
 
-	#region IExpectationFilterResult<Type> Members
+	#region IFilterResult<Type> Members
 
-	/// <inheritdoc cref="IExpectationFilterResult{Type}.And" />
-	public IExpectationFilter<Type> And => _expectationFilter;
+	/// <inheritdoc cref="IFilterResult{Type}.And" />
+	public IFilter<Type> And => _expectationFilter;
 
-	/// <inheritdoc cref="IExpectationCondition{Type}.ShouldSatisfy(Func{Type,bool}, Func{Type, TestError})" />
-	public IExpectationConditionResult<Type> ShouldSatisfy(Func<Type, bool> condition,
+	/// <inheritdoc cref="IRequirement{Type}.ShouldSatisfy(Func{Type,bool}, Func{Type, TestError})" />
+	public IRequirementResult<Type> ShouldSatisfy(Func<Type, bool> condition,
 		Func<Type, TestError> errorGenerator)
 		=> _filtered.ShouldSatisfy(condition, errorGenerator);
 
