@@ -14,13 +14,6 @@ public class EmptyDataException : Exception
 	/// <summary>
 	///     Initializes a new instance of <see cref="EmptyDataException" />.
 	/// </summary>
-	public EmptyDataException()
-	{
-	}
-
-	/// <summary>
-	///     Initializes a new instance of <see cref="EmptyDataException" />.
-	/// </summary>
 	public EmptyDataException(string message)
 		: base(message)
 	{
