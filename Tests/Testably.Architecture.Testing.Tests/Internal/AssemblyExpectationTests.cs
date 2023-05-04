@@ -1,7 +1,9 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
+using System;
 using System.Linq;
 using System.Reflection;
+using Testably.Architecture.Testing.Exceptions;
 using Testably.Architecture.Testing.TestErrors;
 using Xunit;
 
@@ -62,5 +64,33 @@ public sealed class AssemblyExpectationTests
 
 		result.Errors.Length.Should().BeLessThan(allAssembliesCount);
 		result.Errors.Should().OnlyContain(e => !e.ToString().Contains("'Testably"));
+	}
+
+	[Fact]
+	public void Which_WithOrNoneSet_WithoutMatch_ShouldNotThrowException()
+	{
+		IExpectationFilterResult<Assembly> sut = Expect.That
+			.AllLoadedAssemblies()
+			.OrNone()
+			.Which(_ => false);
+
+		ITestResult result = sut.ShouldSatisfy(_ => false);
+
+		result.IsSatisfied.Should().BeTrue();
+	}
+
+	[Fact]
+	public void Which_WithoutMatch_ShouldThrowEmptyDataException()
+	{
+		IExpectationFilterResult<Assembly> sut = Expect.That
+			.AllLoadedAssemblies()
+			.Which(_ => false);
+
+		Exception? exception = Record.Exception(() =>
+		{
+			sut.ShouldSatisfy(_ => true);
+		});
+
+		exception.Should().BeOfType<EmptyDataException>();
 	}
 }
