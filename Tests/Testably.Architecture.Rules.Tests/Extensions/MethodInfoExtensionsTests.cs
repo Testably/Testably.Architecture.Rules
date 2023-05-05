@@ -3,9 +3,9 @@ using System;
 using System.Reflection;
 using Xunit;
 
-namespace Testably.Architecture.Testing.Tests.Extensions;
+namespace Testably.Architecture.Rules.Tests.Extensions;
 
-public sealed class ExtensionsForMethodInfoTests
+public sealed class MethodInfoExtensionsTests
 {
 	[Fact]
 	public void HasAttribute_WithAttribute_ShouldReturnTrue()

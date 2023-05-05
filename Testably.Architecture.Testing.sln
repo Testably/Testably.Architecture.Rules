@@ -49,6 +49,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stryker", "stryker", "{CC17
 		.github\stryker\Stryker.Config.json = .github\stryker\Stryker.Config.json
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testably.Architecture.Rules", "Source\Testably.Architecture.Rules\Testably.Architecture.Rules.csproj", "{401EAFD1-B29B-4C3A-BC5F-F44C654C3D06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testably.Architecture.Rules.Tests", "Tests\Testably.Architecture.Rules.Tests\Testably.Architecture.Rules.Tests.csproj", "{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{034885FD-F117-480F-BF94-D019BFB2698A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{034885FD-F117-480F-BF94-D019BFB2698A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{034885FD-F117-480F-BF94-D019BFB2698A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{401EAFD1-B29B-4C3A-BC5F-F44C654C3D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{401EAFD1-B29B-4C3A-BC5F-F44C654C3D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{401EAFD1-B29B-4C3A-BC5F-F44C654C3D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{401EAFD1-B29B-4C3A-BC5F-F44C654C3D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +86,7 @@ Global
 		{5F53E3C1-216C-4948-B5D6-1E96170CD083} = {FB8ADCFE-9A76-463C-AECC-62553DECF308}
 		{61D8BE6C-D930-4B4F-ABA2-586F73ACC2B8} = {5F53E3C1-216C-4948-B5D6-1E96170CD083}
 		{CC17C3DF-BF07-4C00-A4C1-9C61A66283F8} = {5F53E3C1-216C-4948-B5D6-1E96170CD083}
+		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98} = {E08785BF-6C98-4CAC-BFC2-BBB79B522DD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65C0CC2C-5F10-4F18-9057-176DC70833FA}
