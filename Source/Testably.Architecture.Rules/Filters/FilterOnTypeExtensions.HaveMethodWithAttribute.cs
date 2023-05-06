@@ -42,8 +42,8 @@ public static partial class FilterOnTypeExtensions
 	public class WithMethodAttributeFilterResult : Filter.OnType
 	{
 		internal WithMethodAttributeFilterResult(
-			ITypeFilter expectationFilter,
-			Func<Type, bool> predicate) : base(expectationFilter, predicate)
+			ITypeFilter typeFilter,
+			Func<Type, bool> predicate) : base(typeFilter, predicate)
 		{
 		}
 

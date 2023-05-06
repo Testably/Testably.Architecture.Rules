@@ -55,7 +55,7 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Func<Type, bool>> Predicates = new();
 
-		private readonly ITypeFilter _expectationFilter;
+		private readonly ITypeFilter _typeFilter;
 
 		private readonly ITypeFilterResult _filtered;
 
@@ -63,18 +63,18 @@ public static class Filter
 		///     Initializes a new instance of <see cref="OnType" />.
 		/// </summary>
 		protected OnType(
-			ITypeFilter expectationFilter,
+			ITypeFilter typeFilter,
 			Func<Type, bool> predicate)
 		{
-			_expectationFilter = expectationFilter;
+			_typeFilter = typeFilter;
 			Predicates.Add(predicate);
-			_filtered = _expectationFilter.Which(this);
+			_filtered = _typeFilter.Which(this);
 		}
 
 		#region ITypeFilterResult Members
 
 		/// <inheritdoc cref="ITypeFilterResult.And" />
-		public ITypeFilter And => _expectationFilter;
+		public ITypeFilter And => _typeFilter;
 
 		/// <inheritdoc cref="ITypeFilterResult.Assemblies" />
 		public IAssemblyExpectation Assemblies
