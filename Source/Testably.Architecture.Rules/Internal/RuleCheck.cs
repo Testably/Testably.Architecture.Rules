@@ -64,7 +64,7 @@ internal class RuleCheck<TType> : IRuleCheck
 
 	#endregion
 
-	private IEnumerable<Assembly> FilterOutSystemAssemblies(IEnumerable<Assembly> assemblies,
+	private static IEnumerable<Assembly> FilterOutSystemAssemblies(IEnumerable<Assembly> assemblies,
 		bool excludeSystemAssemblies)
 	{
 		if (!excludeSystemAssemblies)

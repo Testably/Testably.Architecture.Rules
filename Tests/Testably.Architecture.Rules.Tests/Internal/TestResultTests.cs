@@ -67,6 +67,24 @@ public sealed class TestResultTests
 
 	[Theory]
 	[AutoData]
+	public void ToString_WithMultipleErrors_ShouldIncludeErrorCount(TestError error1,
+		TestError error2)
+	{
+		ITestResult testResult = Expect.That.Assemblies
+			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error1)).And
+			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error2))
+			.Check.InExecutingAssembly();
+
+		string? result = testResult.ToString();
+
+		result.Should().NotBeNull();
+		result!.Should().Contain("2 errors");
+		result!.Should().Contain(error1);
+		result!.Should().Contain(error2);
+	}
+
+	[Theory]
+	[AutoData]
 	public void ToString_WithRuleNameAndWithError_ShouldIncludeRuleNameAndIsViolated(
 		string ruleName)
 	{
@@ -93,22 +111,5 @@ public sealed class TestResultTests
 
 		result.Should().Contain($"'{ruleName}'");
 		result.Should().Contain("is not violated");
-	}
-
-	[Theory]
-	[AutoData]
-	public void ToString_WithMultipleErrors_ShouldIncludeErrorCount(TestError error1, TestError error2)
-	{
-		ITestResult testResult = Expect.That.Assemblies
-			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error1)).And
-			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error2))
-			.Check.InExecutingAssembly();
-
-		string? result = testResult.ToString();
-
-		result.Should().NotBeNull();
-		result!.Should().Contain("2 errors");
-		result!.Should().Contain(error1);
-		result!.Should().Contain(error2);
 	}
 }

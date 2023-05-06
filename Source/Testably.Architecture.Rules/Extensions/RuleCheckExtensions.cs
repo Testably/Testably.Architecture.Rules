@@ -56,7 +56,7 @@ public static class RuleCheckExtensions
 	///     are loaded.<br />
 	///     Otherwise all assemblies matching the <paramref name="pattern" /> are loaded.
 	/// </param>
-	public static ITestResult InAssembliesMatching<TAssembly>(this IRuleCheck @this,
+	public static ITestResult InAssembliesMatching(this IRuleCheck @this,
 		Match pattern,
 		bool ignoreCase = false,
 		bool excludeSystemAssemblies = true)
