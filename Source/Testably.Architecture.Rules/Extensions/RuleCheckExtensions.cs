@@ -84,7 +84,15 @@ public static class RuleCheckExtensions
 	{
 		return @this.In(new[]
 		{
-			Assembly.GetExecutingAssembly()
+			Assembly.GetExecutingAssembly()!
 		});
+	}
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="assemblies" />.
+	/// </summary>
+	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
+	{
+		return @this.In(assemblies);
 	}
 }
