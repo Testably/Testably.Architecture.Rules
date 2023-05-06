@@ -17,9 +17,10 @@ internal class RuleCheck<TType> : IRuleCheck
 		"xunit"
 	};
 
+	private readonly List<Exemption> _exemptions;
+
 	private readonly List<Filter<TType>> _filters;
 	private readonly List<Requirement<TType>> _requirements;
-	private readonly List<Exemption> _exemptions;
 	private readonly Func<IEnumerable<Assembly>, IEnumerable<TType>> _transformer;
 
 	public RuleCheck(List<Filter<TType>> filters,
@@ -32,6 +33,8 @@ internal class RuleCheck<TType> : IRuleCheck
 		_exemptions = exemptions;
 		_transformer = transformer;
 	}
+
+	#region IRuleCheck Members
 
 	/// <inheritdoc cref="IRuleCheck.In(IEnumerable{Assembly},bool)" />
 	public ITestResult In(IEnumerable<Assembly> assemblies, bool excludeSystemAssemblies = true)
@@ -69,6 +72,8 @@ internal class RuleCheck<TType> : IRuleCheck
 
 		return new TestResult(errors);
 	}
+
+	#endregion
 
 	private IEnumerable<Assembly> FilterOutSystemAssemblies(IEnumerable<Assembly> assemblies,
 		bool excludeSystemAssemblies)

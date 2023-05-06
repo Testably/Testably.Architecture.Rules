@@ -33,9 +33,9 @@ public static class RequirementOnAssemblyExtensions
 
 		return @this.ShouldSatisfy(
 			Requirement.ForAssembly(
-			p => !p.GetReferencedAssemblies().Any(FailCondition),
-			p => new DependencyTestError(p,
-				p.GetReferencedAssemblies().Where(FailCondition).ToArray())));
+				p => !p.GetReferencedAssemblies().Any(FailCondition),
+				p => new DependencyTestError(p,
+					p.GetReferencedAssemblies().Where(FailCondition).ToArray())));
 	}
 
 	/// <summary>
@@ -48,7 +48,7 @@ public static class RequirementOnAssemblyExtensions
 		Func<Assembly, bool> compiledCondition = condition.Compile();
 		return @this.ShouldSatisfy(
 			Requirement.ForAssembly(compiledCondition,
-			assembly => new TestError(
-				$"Assembly '{assembly.GetName().Name}' should satisfy the required condition {condition}.")));
+				assembly => new TestError(
+					$"Assembly '{assembly.GetName().Name}' should satisfy the required condition {condition}.")));
 	}
 }

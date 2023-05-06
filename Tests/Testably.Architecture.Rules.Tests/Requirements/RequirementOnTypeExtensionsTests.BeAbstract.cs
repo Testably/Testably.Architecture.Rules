@@ -64,7 +64,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotBeAbstract();
-			
+
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 

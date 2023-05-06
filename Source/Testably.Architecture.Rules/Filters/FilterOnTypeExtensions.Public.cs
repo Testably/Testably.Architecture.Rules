@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
-
-namespace Testably.Architecture.Rules;
+﻿namespace Testably.Architecture.Rules;
 
 /// <summary>
 ///     Extension methods for <see cref="ITypeFilter" />.

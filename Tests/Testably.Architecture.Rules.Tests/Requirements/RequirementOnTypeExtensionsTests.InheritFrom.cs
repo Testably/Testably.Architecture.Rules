@@ -19,7 +19,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldInheritFrom<FooBase>(
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -36,9 +36,9 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			Type type = typeof(GenericFooImplementor2<>);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-			.ShouldInheritFrom(
-				typeof(IGenericFooInterface<>),
-				forceDirect: forceDirect);
+				.ShouldInheritFrom(
+					typeof(IGenericFooInterface<>),
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -57,7 +57,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldInheritFrom(typeof(IFooInterface),
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -75,7 +75,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldInheritFrom(typeof(GenericFooClass<>),
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -93,7 +93,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldInheritFrom<IFooInterface>(
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -231,7 +231,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotInheritFrom<FooBase>(
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -249,8 +249,8 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotInheritFrom(
-				typeof(IGenericFooInterface<>),
-				forceDirect: forceDirect);
+					typeof(IGenericFooInterface<>),
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -269,7 +269,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotInheritFrom(typeof(IFooInterface),
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -287,8 +287,8 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotInheritFrom(
-				typeof(GenericFooClass<>),
-				forceDirect: forceDirect);
+					typeof(GenericFooClass<>),
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -306,7 +306,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotInheritFrom<IFooInterface>(
-				forceDirect: forceDirect);
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();

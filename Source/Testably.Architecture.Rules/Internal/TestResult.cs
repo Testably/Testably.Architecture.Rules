@@ -10,6 +10,8 @@ internal class TestResult : ITestResult
 		Errors = errors.ToArray();
 	}
 
+	#region ITestResult Members
+
 	/// <inheritdoc cref="ITestResult.Errors" />
 	public TestError[] Errors { get; }
 
@@ -45,6 +47,7 @@ internal class TestResult : ITestResult
 			sb.Append(Errors.Length);
 			sb.Append(" errors:");
 		}
+
 		sb.AppendLine();
 		foreach (TestError error in Errors)
 		{
@@ -54,6 +57,8 @@ internal class TestResult : ITestResult
 
 		return sb.ToString();
 	}
+
+	#endregion
 
 	/// <inheritdoc />
 	public override string ToString()

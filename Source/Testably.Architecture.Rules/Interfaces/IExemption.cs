@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Testably.Architecture.Rules;
+﻿namespace Testably.Architecture.Rules;
 
 /// <summary>
 ///     Allows defining exceptions to expectations, by removing specific errors.

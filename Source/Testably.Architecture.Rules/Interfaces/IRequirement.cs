@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Testably.Architecture.Rules;
+﻿namespace Testably.Architecture.Rules;
 
 /// <summary>
 ///     Defines requirements on <typeparamref name="TType" />.

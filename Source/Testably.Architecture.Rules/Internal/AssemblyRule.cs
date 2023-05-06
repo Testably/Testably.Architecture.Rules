@@ -7,14 +7,16 @@ namespace Testably.Architecture.Rules.Internal;
 
 internal class AssemblyRule : Rule<Assembly>, IAssemblyExpectation, IAssemblyFilterResult
 {
+	/// <inheritdoc cref="IRule.Check" />
+	public override IRuleCheck Check
+		=> new RuleCheck<Assembly>(Filters, Requirements, Exemptions, _ => _);
+
 	public AssemblyRule(params Filter<Assembly>[] filters)
 	{
 		Filters.AddRange(filters);
 	}
 
-	/// <inheritdoc cref="IRule.Check" />
-	public override IRuleCheck Check
-		=> new RuleCheck<Assembly>(Filters, Requirements, Exemptions, _ => _);
+	#region IAssemblyExpectation Members
 
 	/// <inheritdoc cref="IAssemblyFilter.Which(Filter{Assembly})" />
 	public IAssemblyFilterResult Which(Filter<Assembly> filter)
@@ -23,12 +25,18 @@ internal class AssemblyRule : Rule<Assembly>, IAssemblyExpectation, IAssemblyFil
 		return this;
 	}
 
+	#endregion
+
+	#region IAssemblyFilterResult Members
+
 	/// <inheritdoc cref="IAssemblyFilterResult.And" />
 	public IAssemblyFilter And => this;
 
 	/// <inheritdoc cref="IAssemblyFilterResult.Types" />
 	public ITypeExpectation Types
 		=> new TypeRule(new TypeAssemblyFilter(Filters));
+
+	#endregion
 
 	private sealed class TypeAssemblyFilter : Filter<Type>
 	{

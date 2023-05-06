@@ -11,23 +11,12 @@ namespace Testably.Architecture.Rules;
 public static class Requirement
 {
 	/// <summary>
-	///     Creates a new <see cref="Requirement{Type}" /> from the given <paramref name="predicate" />.
-	/// </summary>
-	public static Requirement<Type> ForType(Expression<Func<Type, bool>> predicate)
-	{
-		Func<Type, bool> compiledPredicate = predicate.Compile();
-		return new GenericRequirement<Type>(compiledPredicate,
-			type => new TypeTestError(type,
-				$"Type '{type.Name}' should satisfy the required condition {predicate}."));
-	}
-
-	/// <summary>
-	///     Creates a new <see cref="Requirement{Type}" /> from the given <paramref name="predicate" />
+	///     Creates a new <see cref="Requirement{TType}" /> from the given <paramref name="predicate" />
 	///     and <paramref name="errorGenerator" />.
 	/// </summary>
-	public static Requirement<Type> ForType(Func<Type, bool> predicate,
-		Func<Type, TestError> errorGenerator)
-		=> new GenericRequirement<Type>(predicate, errorGenerator);
+	public static Requirement<TType> Create<TType>(Func<TType, bool> predicate,
+		Func<TType, TestError> errorGenerator)
+		=> new GenericRequirement<TType>(predicate, errorGenerator);
 
 	/// <summary>
 	///     Creates a new <see cref="Requirement{Assembly}" /> from the given <paramref name="predicate" />.
@@ -49,17 +38,28 @@ public static class Requirement
 		=> new GenericRequirement<Assembly>(predicate, errorGenerator);
 
 	/// <summary>
-	///     Creates a new <see cref="Requirement{TType}" /> from the given <paramref name="predicate" />
+	///     Creates a new <see cref="Requirement{Type}" /> from the given <paramref name="predicate" />.
+	/// </summary>
+	public static Requirement<Type> ForType(Expression<Func<Type, bool>> predicate)
+	{
+		Func<Type, bool> compiledPredicate = predicate.Compile();
+		return new GenericRequirement<Type>(compiledPredicate,
+			type => new TypeTestError(type,
+				$"Type '{type.Name}' should satisfy the required condition {predicate}."));
+	}
+
+	/// <summary>
+	///     Creates a new <see cref="Requirement{Type}" /> from the given <paramref name="predicate" />
 	///     and <paramref name="errorGenerator" />.
 	/// </summary>
-	public static Requirement<TType> Create<TType>(Func<TType, bool> predicate,
-		Func<TType, TestError> errorGenerator)
-		=> new GenericRequirement<TType>(predicate, errorGenerator);
+	public static Requirement<Type> ForType(Func<Type, bool> predicate,
+		Func<Type, TestError> errorGenerator)
+		=> new GenericRequirement<Type>(predicate, errorGenerator);
 
 	private sealed class GenericRequirement<TType> : Requirement<TType>
 	{
-		private readonly Func<TType, bool> _predicate;
 		private readonly Func<TType, TestError> _errorGenerator;
+		private readonly Func<TType, bool> _predicate;
 
 		public GenericRequirement(
 			Func<TType, bool> predicate,

@@ -16,7 +16,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldBeAClass();
-			
+
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 
@@ -30,7 +30,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldBeAClass();
-			
+
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 

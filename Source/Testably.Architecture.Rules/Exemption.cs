@@ -16,6 +16,18 @@ public abstract class Exemption
 	/// <summary>
 	///     Creates a new <see cref="Exemption" /> from the given <paramref name="predicate" />.
 	/// </summary>
+	public static Exemption For<TTestError>(Func<TTestError, bool>? predicate, string? name = null)
+		where TTestError : TestError
+	{
+		predicate ??= _ => true;
+		return new GenericExemption(
+			testError => testError is TTestError value && predicate(value),
+			name ?? $"Unless {typeof(TTestError).Name} matches predicate");
+	}
+
+	/// <summary>
+	///     Creates a new <see cref="Exemption" /> from the given <paramref name="predicate" />.
+	/// </summary>
 	public static Exemption FromPredicate(Expression<Func<TestError, bool>> predicate)
 
 	{
@@ -28,18 +40,6 @@ public abstract class Exemption
 	/// </summary>
 	public static Exemption FromPredicate(Func<TestError, bool> predicate, string name)
 		=> new GenericExemption(predicate, name);
-
-	/// <summary>
-	///     Creates a new <see cref="Exemption" /> from the given <paramref name="predicate" />.
-	/// </summary>
-	public static Exemption For<TTestError>(Func<TTestError, bool>? predicate, string? name = null)
-		where TTestError : TestError
-	{
-		predicate ??= _ => true;
-		return new GenericExemption(
-			testError => testError is TTestError value && predicate(value),
-			name ?? $"Unless {typeof(TTestError).Name} matches predicate");
-	}
 
 	private sealed class GenericExemption : Exemption
 	{

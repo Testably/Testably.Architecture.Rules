@@ -14,7 +14,7 @@ public sealed class RequirementOnAssemblyExtensionsTests
 	{
 		IRule rule = Expect.That.Assemblies
 			.ShouldNotHaveDependenciesOn("testably.*");
-		
+
 		ITestResult result = rule.Check
 			.InAssemblyContaining<MockFileSystem>();
 

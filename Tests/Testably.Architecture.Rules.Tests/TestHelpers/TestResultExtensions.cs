@@ -6,6 +6,20 @@ namespace Testably.Architecture.Rules.Tests.TestHelpers;
 
 internal static class TestResultExtensions
 {
+	public static ITestResult GetMatchingTypesAsErrorInAllLoadedAssemblies<TType>(
+		this IRequirement<TType> @this)
+	{
+		return @this.ShouldAlwaysFail().Check.InAllLoadedAssemblies();
+	}
+
+	public static IRequirementResult<TType> ShouldAlwaysFail<TType>(this IRequirement<TType> @this)
+	{
+		return @this.ShouldSatisfy(
+			Requirement.Create<TType>(
+				_ => false,
+				type => new TestError($"Expect {type} to fail.")));
+	}
+
 	public static ITestResult ShouldBeViolated(this ITestResult result)
 	{
 		result.IsViolated.Should().BeTrue();
@@ -33,18 +47,5 @@ internal static class TestResultExtensions
 	public static ITypeFilterResult WhichAre(this ITypeFilter typeFilter, params Type[] types)
 	{
 		return typeFilter.Which(t => types.Contains(t));
-	}
-
-	public static IRequirementResult<TType> ShouldAlwaysFail<TType>(this IRequirement<TType> @this)
-	{
-		return @this.ShouldSatisfy(
-			Requirement.Create<TType>(
-				_ => false,
-				type => new TestError($"Expect {type} to fail.")));
-	}
-
-	public static ITestResult GetMatchingTypesAsErrorInAllLoadedAssemblies<TType>(this IRequirement<TType> @this)
-	{
-		return @this.ShouldAlwaysFail().Check.InAllLoadedAssemblies();
 	}
 }

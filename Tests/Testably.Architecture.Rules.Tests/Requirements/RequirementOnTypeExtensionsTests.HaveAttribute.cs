@@ -18,7 +18,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldHaveAttribute<DummyAttribute>(
-				inherit: inherit);
+					inherit: inherit);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -36,7 +36,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldHaveAttribute<DummyAttribute>(
-				predicate: d => d.Value == value);
+					predicate: d => d.Value == value);
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 
@@ -84,7 +84,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotHaveAttribute<DummyAttribute>(
-				inherit: inherit);
+					inherit: inherit);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -103,7 +103,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotHaveAttribute<DummyAttribute>(
-				predicate: d => d.Value == value);
+					predicate: d => d.Value == value);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
