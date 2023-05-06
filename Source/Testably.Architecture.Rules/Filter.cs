@@ -48,22 +48,22 @@ public static class Filter
 	/// <summary>
 	///     Base class for additional filters on <see cref="Type" />.
 	/// </summary>
-	public abstract class OnType : Filter<Type>, IFilterResult<Type>
+	public abstract class OnType : Filter<Type>, ITypeFilterResult
 	{
 		/// <summary>
 		///     The list of predicates.
 		/// </summary>
 		protected readonly List<Func<Type, bool>> Predicates = new();
 
-		private readonly IFilter<Type> _expectationFilter;
+		private readonly ITypeFilter _expectationFilter;
 
-		private readonly IFilterResult<Type> _filtered;
+		private readonly ITypeFilterResult _filtered;
 
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnType" />.
 		/// </summary>
 		protected OnType(
-			IFilter<Type> expectationFilter,
+			ITypeFilter expectationFilter,
 			Func<Type, bool> predicate)
 		{
 			_expectationFilter = expectationFilter;
@@ -71,10 +71,14 @@ public static class Filter
 			_filtered = _expectationFilter.Which(this);
 		}
 
-		#region IFilterResult<Type> Members
+		#region ITypeFilterResult Members
 
-		/// <inheritdoc cref="IFilterResult{Type}.And" />
-		public IFilter<Type> And => _expectationFilter;
+		/// <inheritdoc cref="ITypeFilterResult.And" />
+		public ITypeFilter And => _expectationFilter;
+
+		/// <inheritdoc cref="ITypeFilterResult.Assemblies" />
+		public IAssemblyExpectation Assemblies
+			=> _filtered.Assemblies;
 
 		/// <inheritdoc cref="IRequirement{Type}.ShouldSatisfy(Requirement{Type})" />
 		public IRequirementResult<Type> ShouldSatisfy(Requirement<Type> requirement)

@@ -7,10 +7,10 @@
 		<Authors>Testably</Authors>
 		<Copyright>Copyright (c) 2023 Testably</Copyright>
 		<PackageTags>architecture testing</PackageTags>
-		<PackageProjectUrl>https://github.com/Testably/Testably.Architecture.Testing</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/Testably/Testably.Architecture.Rules</PackageProjectUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageIcon>Docs/logo_256x256.png</PackageIcon>
-		<RepositoryUrl>https://github.com/Testably/Testably.Architecture.Testing.git</RepositoryUrl>
+		<RepositoryUrl>https://github.com/Testably/Testably.Architecture.Rules.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<MinVerTagPrefix>v</MinVerTagPrefix>
 	</PropertyGroup>

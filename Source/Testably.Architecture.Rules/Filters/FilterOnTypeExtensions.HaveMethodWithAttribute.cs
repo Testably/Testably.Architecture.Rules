@@ -4,14 +4,14 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Extension methods for <see cref="IFilter{Type}" />.
+///     Extension methods for <see cref="ITypeFilter" />.
 /// </summary>
 public static partial class FilterOnTypeExtensions
 {
 	/// <summary>
 	///     Filter <see cref="Type" />s that have an attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	/// <param name="this">The <see cref="IFilter{Type}" />.</param>
+	/// <param name="this">The <see cref="ITypeFilter" />.</param>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
 	///     <para />
@@ -24,7 +24,7 @@ public static partial class FilterOnTypeExtensions
 	/// </param>
 	public static WithMethodAttributeFilterResult WhichHaveMethodWithAttribute<
 		TAttribute>(
-		this IFilter<Type> @this,
+		this ITypeFilter @this,
 		Func<TAttribute, MethodInfo, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
@@ -42,7 +42,7 @@ public static partial class FilterOnTypeExtensions
 	public class WithMethodAttributeFilterResult : Filter.OnType
 	{
 		internal WithMethodAttributeFilterResult(
-			IFilter<Type> expectationFilter,
+			ITypeFilter expectationFilter,
 			Func<Type, bool> predicate) : base(expectationFilter, predicate)
 		{
 		}

@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using System;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -12,12 +11,12 @@ public sealed partial class FilterOnTypeExtensionsTests
 		[Fact]
 		public void WhichArePublic_ShouldFilterForPublicTypes()
 		{
-			var result = Expect.That.Types
+			ITestResult result = Expect.That.Types
 				.WhichArePublic()
 				.ShouldAlwaysFail()
 				.Check.InExecutingAssembly();
 
-			result.Errors.Length.Should().Be(34);
+			result.Errors.Length.Should().Be(37);
 		}
 
 		private class PrivateClass

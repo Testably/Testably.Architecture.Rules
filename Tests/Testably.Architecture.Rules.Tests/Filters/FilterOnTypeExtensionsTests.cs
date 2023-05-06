@@ -8,11 +8,13 @@ public sealed partial class FilterOnTypeExtensionsTests
 	[Fact]
 	public void And_WithContraryConditions_ShouldReturnEmptyArray()
 	{
-		ITestResult result = Expect.That.Types
+		IRule rule = Expect.That.Types
 			.WhichArePublic().And.WhichAreNotPublic()
 			.ShouldAlwaysFail()
-			.AllowEmpty()
-			.Check.InExecutingAssembly();
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.InExecutingAssembly();
 
 		result.ShouldNotBeViolated();
 	}

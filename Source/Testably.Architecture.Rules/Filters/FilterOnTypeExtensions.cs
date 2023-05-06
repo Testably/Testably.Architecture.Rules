@@ -5,16 +5,16 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Extension methods for <see cref="IFilter{Type}" />.
+///     Extension methods for <see cref="ITypeFilter" />.
 /// </summary>
 public static partial class FilterOnTypeExtensions
 {
 	/// <summary>
 	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
 	/// </summary>
-	/// <param name="this">The <see cref="IFilter{Type}" />.</param>
+	/// <param name="this">The <see cref="ITypeFilter" />.</param>
 	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
-	public static IFilterResult<Type> Which(this IFilter<Type> @this,
+	public static ITypeFilterResult Which(this ITypeFilter @this,
 		Expression<Func<Type, bool>> filter)
 	{
 		return @this.Which(Filter.FromPredicate(filter));
@@ -23,10 +23,10 @@ public static partial class FilterOnTypeExtensions
 	/// <summary>
 	///     Filters the applicable <see cref="Type" /> on which the expectations should be applied.
 	/// </summary>
-	/// <param name="this">The <see cref="IFilter{Type}" />.</param>
+	/// <param name="this">The <see cref="ITypeFilter" />.</param>
 	/// <param name="filter">The filter to apply on the <see cref="Type" />.</param>
 	/// <param name="name">The name of the filter.</param>
-	public static IFilterResult<Type> Which(this IFilter<Type> @this,
+	public static ITypeFilterResult Which(this ITypeFilter @this,
 		Func<Type, bool> filter,
 		string name)
 	{

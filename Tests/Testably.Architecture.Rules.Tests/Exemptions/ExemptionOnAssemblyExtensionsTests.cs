@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Rules.Tests.TestHelpers;
+﻿using Testably.Abstractions.Testing;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Exemptions;
@@ -10,10 +11,10 @@ public sealed class ExemptionOnAssemblyExtensionsTests
 	{
 		IRule rule = Expect.That.Assemblies
 			.ShouldNotHaveDependenciesOn("Testably.*")
-			.ExceptDependencyOn("Testably.Architecture.Rules");
+			.ExceptDependencyOn("Testably.Abstractions.Interface");
 
 		rule.Check
-			.InAssemblyContaining<ExemptionOnAssemblyExtensionsTests>()
+			.InAssemblyContaining<MockFileSystem>()
 			.ShouldNotBeViolated();
 	}
 
@@ -25,10 +26,10 @@ public sealed class ExemptionOnAssemblyExtensionsTests
 	{
 		IRule rule = Expect.That.Assemblies
 			.ShouldNotHaveDependenciesOn("Testably.*")
-			.ExceptDependencyOn("testably.ARCHITECTURE.rules", ignoreCase);
+			.ExceptDependencyOn("testably.ABSTRACTIONS.interface", ignoreCase);
 
 		rule.Check
-			.InAssemblyContaining<ExemptionOnAssemblyExtensionsTests>()
+			.InAssemblyContaining<MockFileSystem>()
 			.ShouldBeViolatedIf(!ignoreCase);
 	}
 }
