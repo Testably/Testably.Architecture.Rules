@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Condition="'$(NCrunch)' == '1'">
+		<TargetFrameworks>net6.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Testably.Abstractions.Testing" Version="2.2.*" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\Source\Testably.Architecture.Rules\Testably.Architecture.Rules.csproj" />
+	</ItemGroup>
+
+</Project>
