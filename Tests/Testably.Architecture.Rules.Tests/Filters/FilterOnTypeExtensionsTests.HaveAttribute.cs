@@ -24,6 +24,7 @@ public class FilterOnTypeWithAttributeTests
 	}
 
 	[Bar]
+	// ReSharper disable once UnusedType.Local
 	private class BarClass
 	{
 	}
@@ -34,6 +35,7 @@ public class FilterOnTypeWithAttributeTests
 	}
 
 	[Foo]
+	// ReSharper disable once UnusedType.Local
 	private class FooClass
 	{
 	}

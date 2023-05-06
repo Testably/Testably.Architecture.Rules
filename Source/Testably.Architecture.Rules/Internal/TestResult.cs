@@ -25,7 +25,7 @@ internal class TestResult : ITestResult
 		sb.Append("The rule ");
 		if (!string.IsNullOrEmpty(ruleName))
 		{
-			sb.Append("'");
+			sb.Append('\'');
 			sb.Append(ruleName);
 			sb.Append("' ");
 		}
@@ -39,7 +39,7 @@ internal class TestResult : ITestResult
 		sb.Append("is violated");
 		if (Errors.Length == 1)
 		{
-			sb.Append(":");
+			sb.Append(':');
 		}
 		else
 		{

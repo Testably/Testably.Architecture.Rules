@@ -29,10 +29,9 @@ public static partial class FilterOnTypeExtensions
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		WithMethodAttributeFilterResult filter =
-			new(@this,
-				type => type.HasMethodWithAttribute(predicate, inherit));
-		@this.Which(filter);
+		WithMethodAttributeFilterResult filter = new(
+			@this,
+			type => type.HasMethodWithAttribute(predicate, inherit));
 		return filter;
 	}
 
@@ -42,8 +41,8 @@ public static partial class FilterOnTypeExtensions
 	public class WithMethodAttributeFilterResult : Filter.OnType
 	{
 		internal WithMethodAttributeFilterResult(
-			ITypeFilter expectationFilter,
-			Func<Type, bool> predicate) : base(expectationFilter, predicate)
+			ITypeFilter typeFilter,
+			Func<Type, bool> predicate) : base(typeFilter, predicate)
 		{
 		}
 
