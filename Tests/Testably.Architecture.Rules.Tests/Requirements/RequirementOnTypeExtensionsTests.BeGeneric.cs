@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BeGeneric
+	public sealed class BeGenericTests
 	{
 		[Fact]
 		public void ShouldBeGeneric_GenericType_ShouldBeSatisfied()

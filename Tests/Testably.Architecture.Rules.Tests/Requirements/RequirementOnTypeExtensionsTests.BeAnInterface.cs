@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BeAnInterface
+	public sealed class BeAnInterfaceTests
 	{
 		[Fact]
 		public void ShouldBeAnInterface_EnumType_ShouldNotBeSatisfied()

@@ -7,6 +7,23 @@ namespace Testably.Architecture.Example.Tests;
 public sealed class ExampleTests
 {
 	/// <summary>
+	///     All test classes should be named with 'Tests' as suffix.
+	///     <para />
+	///     Enforces this rule in assembly `Testably.Architecture.Rules.Tests`
+	/// </summary>
+	[Fact]
+	public void ExpectTestClassesToBeNamedWithTestSuffix()
+	{
+		IRule rule = Expect.That.Types
+			.WhichAreTestClasses()
+			.ShouldMatchName("*Tests");
+
+		rule.Check
+			.InTestAssembly()
+			.ThrowIfViolated();
+	}
+
+	/// <summary>
 	///     All test classes should be sealed.
 	///     <para />
 	///     Enforces this rule in assembly `Testably.Architecture.Rules.Tests`

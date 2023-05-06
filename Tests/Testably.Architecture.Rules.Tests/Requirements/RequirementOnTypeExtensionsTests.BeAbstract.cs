@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BeAbstract
+	public sealed class BeAbstractTests
 	{
 		[Fact]
 		public void ShouldBeAbstract_AbstractType_ShouldBeSatisfied()

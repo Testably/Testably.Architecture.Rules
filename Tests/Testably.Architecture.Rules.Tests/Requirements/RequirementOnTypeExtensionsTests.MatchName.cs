@@ -7,17 +7,17 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class MatchName
+	public sealed class MatchNameTests
 	{
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
 		public void ShouldMatchName_IgnoreCase_ShouldConsiderParameter(bool ignoreCase)
 		{
-			Type type = typeof(MatchName);
+			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldMatchName("MATCHname", ignoreCase);
+				.ShouldMatchName("MATCHnameTESTS", ignoreCase);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -27,11 +27,11 @@ public sealed partial class RequirementOnTypeExtensionsTests
 
 		[Theory]
 		[InlineData("*")]
-		[InlineData("?????Name")]
-		[InlineData("MatchName")]
+		[InlineData("?????NameTests")]
+		[InlineData("MatchNameTests")]
 		public void ShouldMatchName_MatchingPattern_ShouldBeSatisfied(string matchingPattern)
 		{
-			Type type = typeof(MatchName);
+			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldMatchName(matchingPattern);
@@ -44,12 +44,12 @@ public sealed partial class RequirementOnTypeExtensionsTests
 
 		[Theory]
 		[InlineData("*Foo")]
-		[InlineData("??Name")]
-		[InlineData("matchname")]
+		[InlineData("??NameTests")]
+		[InlineData("matchnametests")]
 		public void ShouldMatchName_NotMatchingPattern_ShouldNotBeSatisfied(
 			string notMatchingPattern)
 		{
-			Type type = typeof(MatchName);
+			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldMatchName(notMatchingPattern);
@@ -69,10 +69,10 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		[InlineData(true)]
 		public void ShouldNotMatchName_IgnoreCase_ShouldConsiderParameter(bool ignoreCase)
 		{
-			Type type = typeof(MatchName);
+			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldNotMatchName("matchNAME", ignoreCase);
+				.ShouldNotMatchName("matchNAMEtests", ignoreCase);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -82,11 +82,11 @@ public sealed partial class RequirementOnTypeExtensionsTests
 
 		[Theory]
 		[InlineData("*")]
-		[InlineData("?????Name")]
-		[InlineData("MatchName")]
+		[InlineData("?????NameTests")]
+		[InlineData("MatchNameTests")]
 		public void ShouldNotMatchName_MatchingPattern_ShouldNotBeSatisfied(string matchingPattern)
 		{
-			Type type = typeof(MatchName);
+			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotMatchName(matchingPattern);
@@ -103,12 +103,12 @@ public sealed partial class RequirementOnTypeExtensionsTests
 
 		[Theory]
 		[InlineData("*Foo")]
-		[InlineData("??Name")]
-		[InlineData("matchname")]
+		[InlineData("??NameTests")]
+		[InlineData("matchnametests")]
 		public void ShouldNotMatchName_NotMatchingPattern_ShouldBeSatisfied(
 			string notMatchingPattern)
 		{
-			Type type = typeof(MatchName);
+			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotMatchName(notMatchingPattern);

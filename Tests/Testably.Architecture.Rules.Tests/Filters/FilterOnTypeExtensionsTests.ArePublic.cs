@@ -6,7 +6,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 
 public sealed partial class FilterOnTypeExtensionsTests
 {
-	public sealed class ArePublic
+	public sealed class ArePublicTests
 	{
 		[Fact]
 		public void WhichArePublic_ShouldFilterForPublicTypes()
