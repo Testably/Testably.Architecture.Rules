@@ -4,13 +4,14 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
-public sealed partial class FilterOnTypeExtensionsTests
+public sealed class FilterOnAssemblyExtensionsTests
 {
 	[Fact]
 	public void And_WithContraryConditions_ShouldReturnEmptyArray()
 	{
-		IRule rule = Expect.That.Types
-			.WhichArePublic().And.WhichAreNotPublic()
+		IRule rule = Expect.That.Assemblies
+			.Which(_ => true)
+			.And.Which(_ => false)
 			.ShouldAlwaysFail()
 			.AllowEmpty();
 
@@ -25,7 +26,7 @@ public sealed partial class FilterOnTypeExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		ITypeFilterResult sut = Expect.That.Types
+		IAssemblyFilterResult sut = Expect.That.Assemblies
 			.Which(_ => predicateResult);
 
 		ITestResult result = sut
@@ -41,7 +42,7 @@ public sealed partial class FilterOnTypeExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		ITypeFilterResult sut = Expect.That.Types
+		IAssemblyFilterResult sut = Expect.That.Assemblies
 			.Which(_ => predicateResult, name);
 
 		ITestResult result = sut

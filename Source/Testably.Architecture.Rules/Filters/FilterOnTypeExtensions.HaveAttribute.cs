@@ -27,8 +27,9 @@ public static partial class FilterOnTypeExtensions
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		WithAttributeFilterResult filter =
-			new(@this, type => type.HasAttribute(predicate, inherit));
+		WithAttributeFilterResult filter = new(
+			@this,
+			type => type.HasAttribute(predicate, inherit));
 		return filter;
 	}
 

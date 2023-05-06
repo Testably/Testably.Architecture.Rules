@@ -7,7 +7,7 @@
 	<ItemGroup>
 		<PackageReference Include="Testably.Abstractions.Testing" Version="2.2.*" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\Testably.Architecture.Rules\Testably.Architecture.Rules.csproj" />
 	</ItemGroup>
