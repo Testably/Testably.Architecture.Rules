@@ -108,9 +108,9 @@ jobs:
       - name: Navigate to Workspace
         run: cd $GITHUB_WORKSPACE
       - name: Build solution
-        run: msbuild.exe Testably.Architecture.Testing.sln /p:NetFrameworkOnly=True /p:platform="Any CPU" /p:configuration="Release" -t:restore,build -p:RestorePackagesConfig=true
+        run: msbuild.exe Testably.Architecture.Rules.sln /p:NetFrameworkOnly=True /p:platform="Any CPU" /p:configuration="Release" -t:restore,build -p:RestorePackagesConfig=true
       - name: Run tests
-        run: vstest.console.exe .\Build\Tests\Testably.Architecture.Testing.Tests\net48\Testably.Architecture.Testing.Tests.dll /Logger:trx /ResultsDirectory:TestResults
+        run: vstest.console.exe .\Build\Tests\Testably.Architecture.Rules.Tests\net48\Testably.Architecture.Rules.Tests.dll /Logger:trx /ResultsDirectory:TestResults
       - name: Upload test results (.NET Framework)
         if: ${{ always() }}
         uses: actions/upload-artifact@v3

@@ -1,13 +1,13 @@
 {
 	"stryker-config": {
 		"project-info": {
-			"name": "github.com/Testably/Testably.Architecture.Testing",
-			"module": "Testably.Architecture.Testing"
+			"name": "github.com/Testably/Testably.Architecture.Rules",
+			"module": "Testably.Architecture.Rules"
 		},
 		"test-projects": [
-			"./Testably.Architecture.Testing.Tests/Testably.Architecture.Testing.Tests.csproj"
+			"./Testably.Architecture.Rules.Tests/Testably.Architecture.Rules.Tests.csproj"
 		],
-		"project": "Testably.Architecture.Testing.csproj",
+		"project": "Testably.Architecture.Rules.csproj",
 		"target-framework": "net6.0",
 		"since": {
 			"ignore-changes-in": [

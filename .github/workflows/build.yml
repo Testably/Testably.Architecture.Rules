@@ -52,7 +52,7 @@ jobs:
           $version = minver -t v
           $productVersion,$prerelease = $version -split '-',2
           echo "Detected product version: $productVersion"
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Testably_Testably.Architecture.Testing" /o:"testably" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /v:"$productVersion" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Testably_Testably.Architecture.Rules" /o:"testably" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /v:"$productVersion" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           dotnet tool install --global dotnet-coverage
           dotnet restore -s 'nuget.config'
           dotnet build --no-incremental /p:NetCoreOnly=True --configuration "Release"
@@ -148,9 +148,9 @@ jobs:
       - name: Navigate to Workspace
         run: cd $GITHUB_WORKSPACE
       - name: Build solution
-        run: msbuild.exe Testably.Architecture.Testing.sln /p:NetFrameworkOnly=True /p:platform="Any CPU" /p:configuration="Release" -t:restore,build -p:RestorePackagesConfig=true
+        run: msbuild.exe Testably.Architecture.Rules.sln /p:NetFrameworkOnly=True /p:platform="Any CPU" /p:configuration="Release" -t:restore,build -p:RestorePackagesConfig=true
       - name: Run tests
-        run: vstest.console.exe .\Build\Tests\Testably.Architecture.Testing.Tests\net48\Testably.Architecture.Testing.Tests.dll
+        run: vstest.console.exe .\Build\Tests\Testably.Architecture.Rules.Tests\net48\Testably.Architecture.Rules.Tests.dll
         
 
   upload-coverage:

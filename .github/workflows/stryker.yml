@@ -24,7 +24,7 @@ jobs:
         shell: bash
         run: |
           dotnet tool install dotnet-stryker --tool-path ../tools
-      - name: Analyze Testably.Architecture.Testing
+      - name: Analyze Testably.Architecture.Rules
         env:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
         shell: bash
