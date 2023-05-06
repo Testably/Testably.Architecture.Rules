@@ -3,8 +3,7 @@
 namespace Testably.Architecture.Rules.Internal;
 
 internal abstract class Rule<TType> :
-	IRequirement<TType>, IRequirementResult<TType>,
-	IExemption<TType>, IExemptionResult<TType>
+	IRequirement<TType>, IRequirementResult<TType>, IExemptionResult<TType>
 {
 	protected List<Exemption> Exemptions { get; } = new();
 	protected List<Filter<TType>> Filters { get; } = new();

@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules.Internal;
 
-internal class TypeRule : Rule<Type>, ITypeExpectation, ITypeFilter, ITypeFilterResult
+internal class TypeRule : Rule<Type>, ITypeExpectation, ITypeFilterResult
 {
 	/// <inheritdoc cref="IRule.Check" />
 	public override IRuleCheck Check
