@@ -14,11 +14,12 @@ This library is used to define architecture rules as expectations that can be ru
   [Fact]
   public void ExpectTestClassesToBeSuffixedWithTests()
   {
-    var result = Expect.That.AllLoadedTypes()
-     .Which(x => x.HasMethodWithAttribute<FactAttribute>() ||
-                 x.HasMethodWithAttribute<TheoryAttribute>())
-     .ShouldMatchName("*Tests");
-  
-    Assert.Empty(result.Errors);
+    IRule rule = Expect.That.Types
+        .WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+        .ShouldMatchName("*Tests");
+
+    rule.Check
+        .InAllLoadedAssemblies()
+        .ThrowIfViolated();
   }
   ```
