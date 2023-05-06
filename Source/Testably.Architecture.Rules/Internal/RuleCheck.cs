@@ -5,20 +5,9 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules.Internal;
 
-internal class RuleCheck<TType> : IRuleCheck
+internal class RuleCheck<TType> : RuleCheck, IRuleCheck
 {
-	/// <summary>
-	///     The list of <see cref="Assembly" />s to exclude from the current domain.
-	/// </summary>
-	private static readonly List<string> _excludedSystemAssemblies = new()
-	{
-		"mscorlib",
-		"System",
-		"xunit"
-	};
-
 	private readonly List<Exemption> _exemptions;
-
 	private readonly List<Filter<TType>> _filters;
 	private readonly List<Requirement<TType>> _requirements;
 	private readonly Func<IEnumerable<Assembly>, IEnumerable<TType>> _transformer;
@@ -90,8 +79,21 @@ internal class RuleCheck<TType> : IRuleCheck
 	}
 
 	private static bool IsSystemAssembly(Assembly assembly)
-		=> _excludedSystemAssemblies.Any(
+		=> ExcludedSystemAssemblies.Any(
 			excludedName => assembly.FullName?.StartsWith(
 				excludedName,
 				StringComparison.InvariantCulture) == true);
+}
+
+internal class RuleCheck
+{
+	/// <summary>
+	///     The list of <see cref="Assembly" />s to exclude from the current domain.
+	/// </summary>
+	protected static readonly List<string> ExcludedSystemAssemblies = new()
+	{
+		"mscorlib",
+		"System",
+		"xunit"
+	};
 }
