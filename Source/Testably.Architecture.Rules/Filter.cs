@@ -55,9 +55,9 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Func<Type, bool>> Predicates = new();
 
-		private readonly ITypeFilter _typeFilter;
-
 		private readonly ITypeFilterResult _filtered;
+
+		private readonly ITypeFilter _typeFilter;
 
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnType" />.
