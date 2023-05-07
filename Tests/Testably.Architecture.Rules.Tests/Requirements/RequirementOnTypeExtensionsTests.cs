@@ -26,11 +26,10 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	}
 }
 
-class UnnestedPrivateType
+internal class UnnestedPrivateType
 {
 }
 
 public class UnnestedPublicType
 {
 }
-

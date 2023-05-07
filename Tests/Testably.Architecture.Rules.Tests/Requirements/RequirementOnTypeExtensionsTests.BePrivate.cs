@@ -110,10 +110,6 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldNotBeViolated();
 		}
 
-		public class PublicType
-		{
-		}
-
 		internal class InternalType
 		{
 		}
@@ -127,5 +123,9 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		{
 		}
 		#pragma warning restore CS0628
+
+		public class PublicType
+		{
+		}
 	}
 }

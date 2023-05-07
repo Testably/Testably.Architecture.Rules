@@ -122,14 +122,14 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		{
 		}
 
-		public class PublicType
-		{
-		}
-
 		#pragma warning disable CS0628
 		protected class ProtectedType
 		{
 		}
 		#pragma warning restore CS0628
+
+		public class PublicType
+		{
+		}
 	}
 }
