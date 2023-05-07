@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Testably.Architecture.Rules;
+namespace Testably.Architecture.Rules.Internal;
 
 internal interface IDataFilter<TData>
 {
