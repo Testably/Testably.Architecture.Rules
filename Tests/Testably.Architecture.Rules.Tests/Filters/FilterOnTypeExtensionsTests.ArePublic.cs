@@ -12,11 +12,28 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichArePublic_ShouldFilterForPublicTypes()
 		{
 			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(Filter), typeof(PrivateClass)).And
 				.WhichArePublic()
 				.ShouldAlwaysFail()
-				.Check.InExecutingAssembly();
+				.Check.InAllLoadedAssemblies();
 
-			result.Errors.Length.Should().Be(37);
+			result.Errors.Length.Should().Be(1);
+			result.Errors[0].ToString().Should()
+				.Contain(typeof(Filter).FullName);
+		}
+
+		[Fact]
+		public void WhichAreNotPublic_ShouldFilterForNotPublicTypes()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(Filter), typeof(PrivateClass)).And
+				.WhichAreNotPublic()
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(1);
+			result.Errors[0].ToString().Should()
+				.Contain(typeof(PrivateClass).FullName);
 		}
 
 		private class PrivateClass

@@ -15,25 +15,20 @@ public static class RuleCheckExtensions
 	/// </summary>
 	/// <param name="this">The <see cref="IRuleCheck" />.</param>
 	/// <param name="predicate">(optional) A predicate to filter the assemblies.</param>
-	/// <param name="excludeSystemAssemblies">
-	///     Flag, indicating if system assemblies should be filtered out.
+	/// <param name="applyExclusionFilters">
+	///     Flag, indicating if default exclusion filters should be applied.
 	///     <para />
-	///     If set to <see langword="true" /> (default value), no assemblies starting with<br />
-	///     - <c>mscorlib</c><br />
-	///     - <c>System</c><br />
-	///     - <c>xunit</c><br />
-	///     are loaded.<br />
-	///     Otherwise all assemblies matching the <paramref name="predicate" /> are loaded.
+	///     See <see cref="ExclusionLists.ExcludedAssemblyNamespaces" /> for more details.
 	/// </param>
 	public static ITestResult InAllLoadedAssemblies(this IRuleCheck @this,
 		Func<Assembly, bool>? predicate = null,
-		bool excludeSystemAssemblies = true)
+		bool applyExclusionFilters = true)
 	{
 		predicate ??= _ => true;
 		return @this.In(new TestDataProvider(
 			AppDomain.CurrentDomain.GetAssemblies()
 				.Where(predicate),
-			excludeSystemAssemblies));
+			applyExclusionFilters));
 	}
 
 	/// <summary>
@@ -47,24 +42,19 @@ public static class RuleCheckExtensions
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </param>
 	/// <param name="ignoreCase">Flag indicating if the comparison should be case sensitive or not.</param>
-	/// <param name="excludeSystemAssemblies">
-	///     Flag, indicating if system assemblies should be filtered out.
+	/// <param name="applyExclusionFilters">
+	///     Flag, indicating if default exclusion filters should be applied.
 	///     <para />
-	///     If set to <see langword="true" /> (default value), no assemblies starting with<br />
-	///     - <c>mscorlib</c><br />
-	///     - <c>System</c><br />
-	///     - <c>xunit</c><br />
-	///     are loaded.<br />
-	///     Otherwise all assemblies matching the <paramref name="pattern" /> are loaded.
+	///     See <see cref="ExclusionLists.ExcludedAssemblyNamespaces" /> for more details.
 	/// </param>
 	public static ITestResult InAssembliesMatching(this IRuleCheck @this,
 		Match pattern,
 		bool ignoreCase = false,
-		bool excludeSystemAssemblies = true)
+		bool applyExclusionFilters = true)
 	{
 		return @this.InAllLoadedAssemblies(assembly
 				=> pattern.Matches(assembly.GetName().Name, ignoreCase),
-			excludeSystemAssemblies);
+			applyExclusionFilters);
 	}
 
 	/// <summary>
@@ -72,10 +62,7 @@ public static class RuleCheckExtensions
 	/// </summary>
 	public static ITestResult InAssemblyContaining<TAssembly>(this IRuleCheck @this)
 	{
-		return @this.In(new[]
-		{
-			typeof(TAssembly).Assembly
-		});
+		return @this.In(typeof(TAssembly).Assembly);
 	}
 
 	/// <summary>
@@ -83,10 +70,7 @@ public static class RuleCheckExtensions
 	/// </summary>
 	public static ITestResult InExecutingAssembly(this IRuleCheck @this)
 	{
-		return @this.In(new[]
-		{
-			Assembly.GetExecutingAssembly()
-		});
+		return @this.In(Assembly.GetExecutingAssembly());
 	}
 
 	/// <summary>

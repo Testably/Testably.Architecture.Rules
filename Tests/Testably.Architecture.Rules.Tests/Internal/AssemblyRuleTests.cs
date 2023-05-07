@@ -73,10 +73,34 @@ public sealed class AssemblyRuleTests
 			.InAllLoadedAssemblies();
 
 		result.Errors.Length.Should().BeLessThan(allLoadedTypes.Count);
-		foreach (Type type in otherTypes.Skip(180))
+		foreach (Type type in otherTypes)
 		{
-			result.Errors.Should().NotContain(e => e.ToString().Contains($"'{type.Name}'"));
+			result.Errors.Should().NotContain(e => e.ToString().Contains($"'{type.FullName}'"));
 		}
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldIncludeAssemblyFilterNamesInFilterName(
+		string assemblyFilterName1,
+		string assemblyFilterName2,
+		string typeFilterName)
+	{
+		IRule rule = Expect.That.Assemblies
+			.Which(_ => true, assemblyFilterName1).And
+			.Which(_ => true, assemblyFilterName2)
+			.Types
+			.Which(_ => false, typeFilterName)
+			.ShouldSatisfy(_ => false);
+		string expectedAssemblyFilters = $"{assemblyFilterName1}, {assemblyFilterName2}";
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors[0].Should().BeOfType<EmptySourceTestError>()
+			.Which.ToString().Should()
+			.Contain(expectedAssemblyFilters).And.Contain(typeFilterName);
 	}
 
 	[Fact]

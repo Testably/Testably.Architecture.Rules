@@ -33,7 +33,7 @@ public sealed class TypeRuleTests
 	public void ShouldSatisfy_DefaultError_ShouldIncludeTypeName()
 	{
 		Type type = typeof(TypeRuleTests);
-		string expectedTypeName = $"'{type.Name}'";
+		string expectedTypeName = $"'{type.FullName}'";
 		IRule rule = Expect.That.Types
 			.Which(t => t == type)
 			.ShouldSatisfy(_ => false);

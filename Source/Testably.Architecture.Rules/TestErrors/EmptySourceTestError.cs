@@ -8,7 +8,7 @@ public class EmptySourceTestError : TestError
 	/// <summary>
 	///     Creates an instance of <see cref="EmptySourceTestError" /> with the given <paramref name="errorMessage" />.
 	/// </summary>
-	public EmptySourceTestError(string errorMessage)
+	internal EmptySourceTestError(string errorMessage)
 		: base(errorMessage)
 	{
 	}

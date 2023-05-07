@@ -5,64 +5,51 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules.Internal;
 
-internal interface IDataFilter<TData>
-{
-	IEnumerable<TData> Filter(IEnumerable<TData> source);
-}
-
 internal class TestDataProvider : ITestDataProvider, IDataFilter<Assembly>, IDataFilter<Type>
 {
 	private readonly IEnumerable<Assembly> _assemblies;
-	private readonly bool _excludeSystemAssemblies;
+	private readonly bool _applyExclusionFilters;
 
-	public TestDataProvider(IEnumerable<Assembly> assemblies,
-		bool excludeSystemAssemblies = true)
+	internal TestDataProvider(IEnumerable<Assembly> assemblies,
+		bool applyExclusionFilters = true)
 	{
 		_assemblies = assemblies;
-		_excludeSystemAssemblies = excludeSystemAssemblies;
+		_applyExclusionFilters = applyExclusionFilters;
 	}
 
 	/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
 	public IEnumerable<Assembly> GetAssemblies()
 		=> _assemblies;
 
-	/// <inheritdoc cref="IDataFilter{Assembly}.Filter(IEnumerable{Assembly})"/>
+	/// <inheritdoc cref="IDataFilter{Assembly}.Filter(IEnumerable{Assembly})" />
 	public IEnumerable<Assembly> Filter(IEnumerable<Assembly> source)
 	{
-		if (!_excludeSystemAssemblies)
+		if (!_applyExclusionFilters)
 		{
 			return source;
 		}
 
-		return source
-			.Where(assembly =>
-				!IsSystemAssembly(assembly));
+		return source.Where(IncludeAssembly);
 	}
 
-	/// <inheritdoc cref="IDataFilter{Type}.Filter(IEnumerable{Type})"/>
+	/// <inheritdoc cref="IDataFilter{Type}.Filter(IEnumerable{Type})" />
 	public IEnumerable<Type> Filter(IEnumerable<Type> source)
 	{
-		if (!_excludeSystemAssemblies)
+		if (!_applyExclusionFilters)
 		{
 			return source;
 		}
 
-		return source
-			.Where(type => type.FullName?.StartsWith("Testably") == true);
+		return source.Where(IncludeType);
 	}
-	/// <summary>
-	///     The list of <see cref="Assembly" />s to exclude from the current domain.
-	/// </summary>
-	public static readonly List<string> ExcludedSystemAssemblies = new()
-	{
-		"mscorlib",
-		"System",
-		"xunit"
-	};
 
-	private static bool IsSystemAssembly(Assembly assembly)
-		=> ExcludedSystemAssemblies.Any(
-			excludedName => assembly.FullName?.StartsWith(
-				excludedName,
-				StringComparison.InvariantCulture) == true);
+	private static bool IncludeAssembly(Assembly assembly)
+		=> ExclusionLists.ExcludedAssemblyNamespaces.All(x
+			=> assembly.FullName?.StartsWith(x, StringComparison.InvariantCulture) != true);
+
+	private static bool IncludeType(Type type)
+	{
+		return ExclusionLists.ExcludedTypeNamespaces.All(x
+			=> type.FullName?.StartsWith(x, StringComparison.InvariantCulture) != true);
+	}
 }

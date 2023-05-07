@@ -12,7 +12,8 @@ internal class RuleCheck<TType> : IRuleCheck
 	private readonly List<Requirement<TType>> _requirements;
 	private readonly Func<IEnumerable<Assembly>, IEnumerable<TType>> _transformer;
 
-	public RuleCheck(List<Filter<TType>> filters,
+	public RuleCheck(
+		List<Filter<TType>> filters,
 		List<Requirement<TType>> requirements,
 		List<Exemption> exemptions,
 		Func<IEnumerable<Assembly>, IEnumerable<TType>> transformer)

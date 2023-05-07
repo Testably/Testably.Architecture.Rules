@@ -15,7 +15,8 @@ public sealed partial class FilterOnTypeExtensionsTests
 			ITestResult result = Expect.That.Types
 				.WhichHaveMethodWithAttribute<FooAttribute>()
 				.OrAttribute<BarAttribute>()
-				.GetMatchingTypesAsErrorInAllLoadedAssemblies();
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(2);
 		}
@@ -25,7 +26,8 @@ public sealed partial class FilterOnTypeExtensionsTests
 		{
 			ITestResult result = Expect.That.Types
 				.WhichHaveMethodWithAttribute<FooAttribute>()
-				.GetMatchingTypesAsErrorInAllLoadedAssemblies();
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should().Contain(nameof(FooClass));
