@@ -25,3 +25,11 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			.Which.ToString().Should().Contain(expression.ToString());
 	}
 }
+
+internal class UnnestedPrivateType
+{
+}
+
+public class UnnestedPublicType
+{
+}

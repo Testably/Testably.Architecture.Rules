@@ -36,11 +36,11 @@ public sealed partial class FilterOnTypeExtensionsTests
 				.Contain(typeof(PublicClass).FullName);
 		}
 
-		public class PublicClass
+		private class PrivateClass
 		{
 		}
 
-		private class PrivateClass
+		public class PublicClass
 		{
 		}
 	}

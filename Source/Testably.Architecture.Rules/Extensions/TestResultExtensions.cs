@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using Testably.Architecture.Rules.Internal;
 
 namespace Testably.Architecture.Rules;
 
@@ -19,37 +17,9 @@ public static class TestResultExtensions
 		if (result.IsViolated)
 		{
 			string message = result.WithDescription(ruleName).ToString()!;
-			ThrowIfViolatedUsingXunit(message);
-
-			throw new ArchitectureRuleViolatedException(message);
+			ThrowHelper.Throw(message);
 		}
 
 		return result;
-	}
-
-	/// <summary>
-	///     Try to throw the <paramref name="message" /> as a `XunitException`
-	///     to improve readability in the test result window.
-	/// </summary>
-	/// <param name="message"></param>
-	private static void ThrowIfViolatedUsingXunit(string message)
-	{
-		try
-		{
-			Type? exceptionType = Assembly
-				.Load(new AssemblyName("xunit.assert"))
-				.GetType("Xunit.Sdk.XunitException");
-
-			if (exceptionType != null &&
-			    Activator.CreateInstance(exceptionType, message) is Exception
-				    exception)
-			{
-				throw exception;
-			}
-		}
-		catch (FileNotFoundException)
-		{
-			// xunit.assert could not be loaded.
-		}
 	}
 }

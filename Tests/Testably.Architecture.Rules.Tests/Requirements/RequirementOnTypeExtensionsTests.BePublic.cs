@@ -12,7 +12,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	{
 		#region Test Setup
 
-		public static IEnumerable<object[]> GetUnpublicTypes
+		public static IEnumerable<object[]> GetNotPublicTypes
 		{
 			get
 			{
@@ -28,15 +28,34 @@ public sealed partial class RequirementOnTypeExtensionsTests
 				{
 					typeof(ProtectedType)
 				};
+				yield return new object[]
+				{
+					typeof(UnnestedPrivateType)
+				};
+			}
+		}
+
+		public static IEnumerable<object[]> GetPublicTypes
+		{
+			get
+			{
+				yield return new object[]
+				{
+					typeof(PublicType)
+				};
+				yield return new object[]
+				{
+					typeof(UnnestedPublicType)
+				};
 			}
 		}
 
 		#endregion
 
-		[Fact]
-		public void ShouldBePublic_PublicType_ShouldNotBeViolated()
+		[Theory]
+		[MemberData(nameof(GetPublicTypes))]
+		public void ShouldBePublic_PublicType_ShouldNotBeViolated(Type type)
 		{
-			Type type = typeof(RequirementOnTypeExtensionsTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldBePublic();
@@ -48,7 +67,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Theory]
-		[MemberData(nameof(GetUnpublicTypes))]
+		[MemberData(nameof(GetNotPublicTypes))]
 		public void ShouldBePublic_UnpublicType_ShouldNotBeSatisfied(Type type)
 		{
 			IRule rule = Expect.That.Types
@@ -64,10 +83,10 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.Errors[0].ToString().Should().Contain("should be public");
 		}
 
-		[Fact]
-		public void ShouldNotBePublic_PublicType_ShouldNotBeSatisfied()
+		[Theory]
+		[MemberData(nameof(GetPublicTypes))]
+		public void ShouldNotBePublic_PublicType_ShouldNotBeSatisfied(Type type)
 		{
-			Type type = typeof(RequirementOnTypeExtensionsTests);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotBePublic();
@@ -82,7 +101,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Theory]
-		[MemberData(nameof(GetUnpublicTypes))]
+		[MemberData(nameof(GetNotPublicTypes))]
 		public void ShouldNotBePublic_UnpublicType_ShouldNotBeViolated(Type type)
 		{
 			IRule rule = Expect.That.Types
@@ -108,5 +127,9 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		{
 		}
 		#pragma warning restore CS0628
+
+		public class PublicType
+		{
+		}
 	}
 }
