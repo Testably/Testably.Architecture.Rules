@@ -68,21 +68,26 @@ public sealed class TestResultTests
 
 	[Theory]
 	[AutoData]
-	public void ToString_WithMultipleErrors_ShouldIncludeErrorCount(TestError error1,
+	public void ToString_WithMultipleErrors_ShouldIncludeErrorCount(
+		TestError error1,
 		TestError error2)
 	{
+		TestError multiLineError = new($"foo{Environment.NewLine}bar");
 		ITestResult testResult = Expect.That.Assemblies
 			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error1)).And
-			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error2))
+			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => error2)).And
+			.ShouldSatisfy(Requirement.ForAssembly(_ => false, _ => multiLineError))
 			.Check.InExecutingAssembly();
 
 		string? result = testResult.ToString();
 
 		result.Should().NotBeNull();
-		result.Should().Contain("The rule is violated with 2 errors:" + Environment.NewLine);
+		result.Should().Contain("The rule is violated with 3 errors:" + Environment.NewLine);
 		result.Should().Contain(" - " + error1.ToString()
 			.Replace(Environment.NewLine, Environment.NewLine + "   "));
 		result.Should().Contain(" - " + error2.ToString()
+			.Replace(Environment.NewLine, Environment.NewLine + "   "));
+		result.Should().Contain(" - " + multiLineError.ToString()
 			.Replace(Environment.NewLine, Environment.NewLine + "   "));
 	}
 

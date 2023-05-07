@@ -74,6 +74,44 @@ public sealed class RuleCheckTests
 		result.ShouldNotBeViolated();
 	}
 
+	[Theory]
+	[AutoData]
+	public void In_WithRequirements_ShouldBeViolated(TestError error)
+	{
+		RuleCheck<int> sut = new(
+			new List<Filter<int>>(),
+			new List<Requirement<int>>
+			{
+				Requirement.Create<int>(_ => false, _ => error)
+			},
+			new List<Exemption>(),
+			TransformToInt);
+
+		ITestResult result = sut.In(new TestDataProviderMock());
+
+		result.ShouldBeViolated();
+		result.Errors[0].Should().Be(error);
+	}
+
+	[Theory]
+	[AutoData]
+	public void In_WithFilteredRequirements_ShouldBeViolated(TestError error)
+	{
+		RuleCheck<int> sut = new(
+			new List<Filter<int>>(),
+			new List<Requirement<int>>
+			{
+				Requirement.Create<int>(_ => false, _ => error)
+			},
+			new List<Exemption>(),
+			TransformToInt);
+
+		ITestResult result = sut.In(new FilteredTestDataProviderMock());
+
+		result.ShouldBeViolated();
+		result.Errors[0].Should().BeOfType<EmptySourceTestError>();
+	}
+
 	#region Helpers
 
 	private static IEnumerable<int> TransformToInt(IEnumerable<Assembly> assemblies)
@@ -97,5 +135,24 @@ public sealed class RuleCheckTests
 		}
 
 		#endregion
+	}
+
+	private class FilteredTestDataProviderMock : ITestDataProvider, IDataFilter<int>
+	{
+		#region ITestDataProvider Members
+
+		/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
+		public IEnumerable<Assembly> GetAssemblies()
+		{
+			yield return typeof(RuleCheckTests).Assembly;
+		}
+
+		#endregion
+
+		/// <inheritdoc />
+		public IEnumerable<int> Filter(IEnumerable<int> source)
+		{
+			return Array.Empty<int>();
+		}
 	}
 }
