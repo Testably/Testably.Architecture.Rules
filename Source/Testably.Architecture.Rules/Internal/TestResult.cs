@@ -6,6 +6,8 @@ namespace Testably.Architecture.Rules.Internal;
 
 internal class TestResult : ITestResult
 {
+	private string? _description;
+
 	public TestResult(List<TestError> errors)
 	{
 		Errors = errors.ToArray();
@@ -19,15 +21,24 @@ internal class TestResult : ITestResult
 	/// <inheritdoc cref="ITestResult.IsViolated" />
 	public bool IsViolated => Errors.Length > 0;
 
-	/// <inheritdoc />
-	public string ToString(string ruleName)
+	/// <inheritdoc cref="ITestResult.WithDescription(string)" />
+	public ITestResult WithDescription(string description)
+	{
+		_description = description;
+		return this;
+	}
+
+	#endregion
+
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
 	{
 		StringBuilder sb = new();
 		sb.Append("The rule ");
-		if (!string.IsNullOrEmpty(ruleName))
+		if (!string.IsNullOrEmpty(_description))
 		{
 			sb.Append('\'');
-			sb.Append(ruleName);
+			sb.Append(_description);
 			sb.Append("' ");
 		}
 
@@ -59,10 +70,4 @@ internal class TestResult : ITestResult
 
 		return sb.ToString();
 	}
-
-	#endregion
-
-	/// <inheritdoc />
-	public override string ToString()
-		=> ToString("");
 }

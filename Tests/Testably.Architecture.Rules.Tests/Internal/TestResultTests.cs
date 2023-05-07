@@ -93,29 +93,29 @@ public sealed class TestResultTests
 
 	[Theory]
 	[AutoData]
-	public void ToString_WithRuleNameAndWithError_ShouldIncludeRuleNameAndIsViolated(
-		string ruleName)
+	public void WithDescription_ToStringWithError_ShouldIncludeDescriptionAndIsViolated(
+		string description)
 	{
 		ITestResult testResult = Expect.That.Assemblies
 			.ShouldSatisfy(Requirement.ForAssembly(_ => false))
 			.Check.InExecutingAssembly();
 
-		string result = testResult.ToString(ruleName);
+		string? result = testResult.WithDescription(description).ToString();
 
-		result.Should().Contain($"The rule '{ruleName}' is violated:");
+		result.Should().Contain($"The rule '{description}' is violated:");
 	}
 
 	[Theory]
 	[AutoData]
-	public void ToString_WithRuleNameAndWithoutError_ShouldIncludeRuleNameAndIsNotViolated(
-		string ruleName)
+	public void WithDescription_ToStringWithoutError_ShouldIncludeDescriptionAndIsNotViolated(
+		string description)
 	{
 		ITestResult testResult = Expect.That.Assemblies
 			.ShouldSatisfy(Requirement.ForAssembly(_ => true))
 			.Check.InExecutingAssembly();
 
-		string result = testResult.ToString(ruleName);
+		string? result = testResult.WithDescription(description).ToString();
 
-		result.Should().Be($"The rule '{ruleName}' is not violated.");
+		result.Should().Be($"The rule '{description}' is not violated.");
 	}
 }

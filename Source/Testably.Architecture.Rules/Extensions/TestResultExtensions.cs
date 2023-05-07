@@ -18,7 +18,7 @@ public static class TestResultExtensions
 	{
 		if (result.IsViolated)
 		{
-			string message = result.ToString(ruleName);
+			string message = result.WithDescription(ruleName).ToString()!;
 			ThrowIfViolatedUsingXunit(message);
 
 			throw new ArchitectureRuleViolatedException(message);
