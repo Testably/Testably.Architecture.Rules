@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
+using System;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -78,9 +79,11 @@ public sealed class TestResultTests
 		string? result = testResult.ToString();
 
 		result.Should().NotBeNull();
-		result!.Should().Contain("2 errors");
-		result!.Should().Contain(error1);
-		result!.Should().Contain(error2);
+		result.Should().Contain("The rule is violated with 2 errors:" + Environment.NewLine);
+		result.Should().Contain(" - " + error1.ToString()
+			.Replace(Environment.NewLine, Environment.NewLine + "   "));
+		result.Should().Contain(" - " + error2.ToString()
+			.Replace(Environment.NewLine, Environment.NewLine + "   "));
 	}
 
 	[Theory]
@@ -94,8 +97,7 @@ public sealed class TestResultTests
 
 		string result = testResult.ToString(ruleName);
 
-		result.Should().Contain($"'{ruleName}'");
-		result.Should().Contain("is violated");
+		result.Should().Contain($"The rule '{ruleName}' is violated:");
 	}
 
 	[Theory]
@@ -109,7 +111,6 @@ public sealed class TestResultTests
 
 		string result = testResult.ToString(ruleName);
 
-		result.Should().Contain($"'{ruleName}'");
-		result.Should().Contain("is not violated");
+		result.Should().Be($"The rule '{ruleName}' is not violated.");
 	}
 }

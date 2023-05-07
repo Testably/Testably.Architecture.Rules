@@ -34,6 +34,23 @@ public sealed class ExemptionTests
 	}
 
 	[Theory]
+	[AutoData]
+	public void For_WithName_ShouldUseName(string name)
+	{
+		Exemption sut = Exemption.For<DummyTestError>(_ => true, name);
+
+		sut.ToString().Should().Contain(name);
+	}
+
+	[Fact]
+	public void For_WithoutName_ShouldContainType()
+	{
+		Exemption sut = Exemption.For<DummyTestError>(_ => true);
+
+		sut.ToString().Should().Contain(nameof(DummyTestError));
+	}
+
+	[Theory]
 	[InlineAutoData(true)]
 	[InlineAutoData(false)]
 	public void FromPredicate_WithExpression_NameShouldContainExpression(

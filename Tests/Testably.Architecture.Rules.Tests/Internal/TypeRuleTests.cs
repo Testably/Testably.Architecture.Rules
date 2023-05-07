@@ -9,13 +9,35 @@ namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class TypeRuleTests
 {
+	[Theory]
+	[AutoData]
+	public void Assemblies_ShouldApplyAllTypeFilters()
+	{
+		Type type1 = typeof(TypeRuleTests);
+		Type type2 = typeof(TypeRule);
+		string expectedAssemblyName1 = $"'{type1.Assembly.GetName().Name}'";
+		string expectedAssemblyName2 = $"'{type2.Assembly.GetName().Name}'";
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2).And
+			.Which(t => t == type1)
+			.Assemblies
+			.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedAssemblyName1));
+		result.Errors.Should().NotContain(e => e.ToString().Contains(expectedAssemblyName2));
+	}
+
 	[Fact]
 	public void Assemblies_ShouldFilterOutAssembliesFromTypes()
 	{
 		Type type1 = typeof(TypeRuleTests);
 		Type type2 = typeof(TypeRule);
 		string expectedAssemblyName1 = $"'{type1.Assembly.GetName().Name}'";
-		string expectedAssemblyName2 = $"'{type1.Assembly.GetName().Name}'";
+		string expectedAssemblyName2 = $"'{type2.Assembly.GetName().Name}'";
 		IRule rule = Expect.That.Types
 			.Which(t => t == type1 || t == type2)
 			.Assemblies
@@ -27,6 +49,27 @@ public sealed class TypeRuleTests
 		result.Errors.Length.Should().Be(2);
 		result.Errors.Should().Contain(e => e.ToString().Contains(expectedAssemblyName1));
 		result.Errors.Should().Contain(e => e.ToString().Contains(expectedAssemblyName2));
+	}
+
+	[Theory]
+	[AutoData]
+	public void Assemblies_ShouldIncludeTypeFilterNamesInFilterName(
+		string filter1, string filter2)
+	{
+		Type type1 = typeof(TypeRuleTests);
+		Type type2 = typeof(TypeRule);
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2, filter1).And
+			.Which(_ => false, filter2)
+			.Assemblies
+			.ShouldSatisfy(_ => true);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors[0].ToString().Should()
+			.Contain(filter1).And.Contain(filter2);
 	}
 
 	[Fact]
