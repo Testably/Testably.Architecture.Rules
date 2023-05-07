@@ -1,23 +1,26 @@
 ﻿using FluentAssertions;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace Testably.Architecture.Rules.Tests.TestHelpers;
 
 internal static class TestResultExtensions
 {
-	public static ITestResult GetMatchingTypesAsErrorInAllLoadedAssemblies<TType>(
-		this IRequirement<TType> @this)
-	{
-		return @this.ShouldAlwaysFail().Check.InAllLoadedAssemblies();
-	}
-
-	public static IRequirementResult<TType> ShouldAlwaysFail<TType>(this IRequirement<TType> @this)
+	public static IRequirementResult<Assembly> ShouldAlwaysFail(this IRequirement<Assembly> @this)
 	{
 		return @this.ShouldSatisfy(
-			Requirement.Create<TType>(
+			Requirement.Create<Assembly>(
 				_ => false,
 				type => new TestError($"Expect {type} to fail.")));
+	}
+
+	public static IRequirementResult<Type> ShouldAlwaysFail(this IRequirement<Type> @this)
+	{
+		return @this.ShouldSatisfy(
+			Requirement.Create<Type>(
+				_ => false,
+				type => new TestError($"Expect {type.FullName} to fail.")));
 	}
 
 	public static ITestResult ShouldBeViolated(this ITestResult result)

@@ -15,7 +15,8 @@ public sealed partial class FilterOnTypeExtensionsTests
 			ITestResult result = Expect.That.Types
 				.WhichHaveAttribute<FooAttribute>()
 				.OrAttribute<BarAttribute>()
-				.GetMatchingTypesAsErrorInAllLoadedAssemblies();
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(2);
 		}

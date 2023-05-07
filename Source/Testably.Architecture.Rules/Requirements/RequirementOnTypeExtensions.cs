@@ -348,6 +348,6 @@ public static class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			compiledCondition,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should satisfy the required condition {condition}.")));
+				$"Type '{type.FullName}' should satisfy the required condition {condition}.")));
 	}
 }
