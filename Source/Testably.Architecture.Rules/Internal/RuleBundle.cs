@@ -37,7 +37,7 @@ internal class RuleBundle : IRule, IRuleCheck
 
 	#endregion
 
-	private class BundleTestResult : ITestResult
+	private sealed class BundleTestResult : ITestResult
 	{
 		private string? _description;
 		private readonly string _name;
@@ -73,6 +73,13 @@ internal class RuleBundle : IRule, IRuleCheck
 			sb.Append('\'');
 			sb.Append(_name);
 			sb.Append("' ");
+			if (!string.IsNullOrEmpty(_description))
+			{
+				sb.Append('(');
+				sb.Append(_description);
+				sb.Append(") ");
+				return sb.ToString();
+			}
 
 			if (!IsViolated)
 			{

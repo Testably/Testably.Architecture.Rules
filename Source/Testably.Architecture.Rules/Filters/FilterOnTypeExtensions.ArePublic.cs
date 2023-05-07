@@ -1,8 +1,5 @@
 ﻿namespace Testably.Architecture.Rules;
 
-/// <summary>
-///     Extension methods for <see cref="ITypeFilter" />.
-/// </summary>
 public static partial class FilterOnTypeExtensions
 {
 	/// <summary>
@@ -11,7 +8,7 @@ public static partial class FilterOnTypeExtensions
 	public static ITypeFilterResult WhichAreNotPublic(
 		this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsPublic);
+		return @this.Which(type => type.IsNested ? !type.IsNestedPublic : !type.IsPublic);
 	}
 
 	/// <summary>
@@ -19,6 +16,6 @@ public static partial class FilterOnTypeExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichArePublic(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsPublic);
+		return @this.Which(type => type.IsNested ? type.IsNestedPublic : type.IsPublic);
 	}
 }

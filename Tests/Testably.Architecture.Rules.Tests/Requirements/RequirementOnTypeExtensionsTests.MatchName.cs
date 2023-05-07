@@ -29,7 +29,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		[InlineData("*")]
 		[InlineData("?????NameTests")]
 		[InlineData("MatchNameTests")]
-		public void ShouldMatchName_MatchingPattern_ShouldBeSatisfied(string matchingPattern)
+		public void ShouldMatchName_MatchingPattern_ShouldNotBeViolated(string matchingPattern)
 		{
 			Type type = typeof(MatchNameTests);
 			IRule rule = Expect.That.Types
@@ -105,7 +105,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		[InlineData("*Foo")]
 		[InlineData("??NameTests")]
 		[InlineData("matchnametests")]
-		public void ShouldNotMatchName_NotMatchingPattern_ShouldBeSatisfied(
+		public void ShouldNotMatchName_NotMatchingPattern_ShouldNotBeViolated(
 			string notMatchingPattern)
 		{
 			Type type = typeof(MatchNameTests);

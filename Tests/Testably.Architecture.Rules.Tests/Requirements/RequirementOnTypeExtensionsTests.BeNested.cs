@@ -10,7 +10,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	public sealed class BeNestedTests
 	{
 		[Fact]
-		public void ShouldBeNested_NestedType_ShouldBeSatisfied()
+		public void ShouldBeNested_NestedType_ShouldNotBeViolated()
 		{
 			Type type = typeof(NestedType);
 			IRule rule = Expect.That.Types
@@ -58,7 +58,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeNested_UnnestedType_ShouldBeSatisfied()
+		public void ShouldNotBeNested_UnnestedType_ShouldNotBeViolated()
 		{
 			Type type = typeof(RequirementOnTypeExtensionsTests);
 			IRule rule = Expect.That.Types

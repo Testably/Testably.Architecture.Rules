@@ -27,7 +27,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldBeAnInterface_InterfaceType_ShouldBeSatisfied()
+		public void ShouldBeAnInterface_InterfaceType_ShouldNotBeViolated()
 		{
 			Type type = typeof(InterfaceType);
 			IRule rule = Expect.That.Types
@@ -41,7 +41,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeAnInterface_EnumType_ShouldBeSatisfied()
+		public void ShouldNotBeAnInterface_EnumType_ShouldNotBeViolated()
 		{
 			Type type = typeof(EnumType);
 			IRule rule = Expect.That.Types

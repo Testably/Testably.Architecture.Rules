@@ -3,9 +3,6 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
-/// <summary>
-///     Extension methods for <see cref="ITypeFilter" />.
-/// </summary>
 public static partial class FilterOnTypeExtensions
 {
 	/// <summary>

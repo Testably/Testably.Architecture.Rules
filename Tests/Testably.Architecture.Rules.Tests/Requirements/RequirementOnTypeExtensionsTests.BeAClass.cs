@@ -10,7 +10,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	public sealed class BeAClassTests
 	{
 		[Fact]
-		public void ShouldBeAClass_ClassType_ShouldBeSatisfied()
+		public void ShouldBeAClass_ClassType_ShouldNotBeViolated()
 		{
 			Type type = typeof(ClassType);
 			IRule rule = Expect.That.Types
@@ -58,7 +58,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeAClass_EnumType_ShouldBeSatisfied()
+		public void ShouldNotBeAClass_EnumType_ShouldNotBeViolated()
 		{
 			Type type = typeof(EnumType);
 			IRule rule = Expect.That.Types

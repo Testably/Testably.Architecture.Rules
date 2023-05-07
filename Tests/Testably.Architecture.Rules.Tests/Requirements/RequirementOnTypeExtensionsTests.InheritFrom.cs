@@ -102,7 +102,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldInheritFrom_WithClass_ShouldBeSatisfied()
+		public void ShouldInheritFrom_WithClass_ShouldNotBeViolated()
 		{
 			Type type = typeof(FooImplementor3);
 			IRule rule = Expect.That.Types
@@ -116,7 +116,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldInheritFrom_WithGenericClass_ShouldBeSatisfied()
+		public void ShouldInheritFrom_WithGenericClass_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
 			IRule rule = Expect.That.Types
@@ -130,7 +130,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldInheritFrom_WithGenericInterface_ShouldBeSatisfied()
+		public void ShouldInheritFrom_WithGenericInterface_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
 			IRule rule = Expect.That.Types
@@ -144,7 +144,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldInheritFrom_WithInterface_ShouldBeSatisfied()
+		public void ShouldInheritFrom_WithInterface_ShouldNotBeViolated()
 		{
 			Type type = typeof(FooImplementor3);
 			IRule rule = Expect.That.Types
@@ -379,7 +379,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotInheritFrom_WithoutClass_ShouldBeSatisfied()
+		public void ShouldNotInheritFrom_WithoutClass_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
 			IRule rule = Expect.That.Types
@@ -393,7 +393,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotInheritFrom_WithoutGenericClass_ShouldBeSatisfied()
+		public void ShouldNotInheritFrom_WithoutGenericClass_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
 			IRule rule = Expect.That.Types
@@ -407,7 +407,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotInheritFrom_WithoutGenericInterface_ShouldBeSatisfied()
+		public void ShouldNotInheritFrom_WithoutGenericInterface_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
 			IRule rule = Expect.That.Types
@@ -421,7 +421,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotInheritFrom_WithoutInterface_ShouldBeSatisfied()
+		public void ShouldNotInheritFrom_WithoutInterface_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericFooImplementor3<>);
 			IRule rule = Expect.That.Types

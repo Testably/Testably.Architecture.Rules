@@ -44,7 +44,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldBeStatic_StaticType_ShouldBeSatisfied()
+		public void ShouldBeStatic_StaticType_ShouldNotBeViolated()
 		{
 			Type type = typeof(StaticType);
 			IRule rule = Expect.That.Types
@@ -58,7 +58,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeStatic_InstanceType_ShouldBeSatisfied()
+		public void ShouldNotBeStatic_InstanceType_ShouldNotBeViolated()
 		{
 			Type type = typeof(InstanceType);
 			IRule rule = Expect.That.Types
@@ -72,7 +72,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeStatic_InterfaceType_ShouldBeSatisfied()
+		public void ShouldNotBeStatic_InterfaceType_ShouldNotBeViolated()
 		{
 			Type type = typeof(IInterfaceType);
 			IRule rule = Expect.That.Types

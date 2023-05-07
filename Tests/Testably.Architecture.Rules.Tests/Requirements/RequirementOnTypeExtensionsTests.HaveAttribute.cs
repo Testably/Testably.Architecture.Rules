@@ -44,7 +44,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldHaveAttribute_WithAttribute_ShouldBeSatisfied()
+		public void ShouldHaveAttribute_WithAttribute_ShouldNotBeViolated()
 		{
 			Type type = typeof(TestClassWithAttribute);
 			IRule rule = Expect.That.Types
@@ -130,7 +130,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotHaveAttribute_WithoutAttribute_ShouldBeSatisfied()
+		public void ShouldNotHaveAttribute_WithoutAttribute_ShouldNotBeViolated()
 		{
 			Type type = typeof(TestClassWithoutAttribute);
 			IRule rule = Expect.That.Types

@@ -10,7 +10,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	public sealed class BeAbstractTests
 	{
 		[Fact]
-		public void ShouldBeAbstract_AbstractType_ShouldBeSatisfied()
+		public void ShouldBeAbstract_AbstractType_ShouldNotBeViolated()
 		{
 			Type type = typeof(AbstractType);
 			IRule rule = Expect.That.Types
@@ -58,7 +58,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeAbstract_ConcreteType_ShouldBeSatisfied()
+		public void ShouldNotBeAbstract_ConcreteType_ShouldNotBeViolated()
 		{
 			Type type = typeof(ConcreteType);
 			IRule rule = Expect.That.Types
