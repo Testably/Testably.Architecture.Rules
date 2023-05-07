@@ -11,6 +11,15 @@ namespace Testably.Architecture.Rules;
 public static class RuleCheckExtensions
 {
 	/// <summary>
+	///     Defines expectations on the given <paramref name="assemblies" />.
+	/// </summary>
+	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
+	{
+		// ReSharper disable once RedundantArgumentDefaultValue
+		return @this.In(new TestDataProvider(assemblies));
+	}
+
+	/// <summary>
 	///     Defines expectations on all loaded assemblies from the current <see cref="System.AppDomain.CurrentDomain" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IRuleCheck" />.</param>
@@ -71,14 +80,5 @@ public static class RuleCheckExtensions
 	public static ITestResult InExecutingAssembly(this IRuleCheck @this)
 	{
 		return @this.In(Assembly.GetExecutingAssembly());
-	}
-
-	/// <summary>
-	///     Defines expectations on the given <paramref name="assemblies" />.
-	/// </summary>
-	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
-	{
-		// ReSharper disable once RedundantArgumentDefaultValue
-		return @this.In(new TestDataProvider(assemblies));
 	}
 }
