@@ -44,12 +44,12 @@ internal class RuleCheck<TType> : IRuleCheck
 			if (_filters.Count == 1)
 			{
 				errors.Add(new EmptySourceTestError(
-					$"No {typeof(TType).Name} was found that matches the filter: {_filters.Single()}"));
+					$"No {typeof(TType).Name} was found that matches the filter: {_filters[0]}"));
 			}
 			else
 			{
 				errors.Add(new EmptySourceTestError(
-					$"No {typeof(TType).Name} was found that matches the {_filters.Count} filters:\n - {string.Join("\n - ", _filters)}"));
+					$"No {typeof(TType).Name} was found that matches the {_filters.Count} filters:{Environment.NewLine} - {string.Join($"{Environment.NewLine} - ", _filters)}"));
 			}
 		}
 

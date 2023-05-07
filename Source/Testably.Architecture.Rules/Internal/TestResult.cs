@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Testably.Architecture.Rules.Internal;
@@ -52,7 +53,8 @@ internal class TestResult : ITestResult
 		foreach (TestError error in Errors)
 		{
 			sb.Append(" - ");
-			sb.AppendLine(error.ToString().Replace("\n", "\n   "));
+			sb.AppendLine(
+				error.ToString().Replace(Environment.NewLine, $"{Environment.NewLine}   "));
 		}
 
 		return sb.ToString();

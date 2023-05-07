@@ -1,5 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,20 +12,6 @@ namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class RuleCheckTests
 {
-	[Fact]
-	public void In_WithoutRequirements_ShouldNotBeViolated()
-	{
-		RuleCheck<int> sut = new(
-			new List<Filter<int>>(),
-			new List<Requirement<int>>(),
-			new List<Exemption>(),
-			TransformToInt);
-
-		ITestResult result = sut.In(new TestDataProviderMock());
-
-		result.ShouldNotBeViolated();
-	}
-
 	[Theory]
 	[AutoData]
 	public void In_WhenAllSourceIsFilteredOut_ShouldBeViolatedWithSingleEmptySourceTestError(
@@ -44,7 +31,8 @@ public sealed class RuleCheckTests
 		result.ShouldBeViolated();
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].Should().BeOfType<EmptySourceTestError>()
-			.Which.ToString().Should().Contain(filterName);
+			.Which.ToString().Should()
+			.Be($"No Int32 was found that matches the filter: {filterName}");
 	}
 
 	[Theory]
@@ -66,12 +54,27 @@ public sealed class RuleCheckTests
 		result.ShouldBeViolated();
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].Should().BeOfType<EmptySourceTestError>()
-			.Which.ToString().Should().Contain($"{filterNames.Length} filters");
-		foreach (string filterName in filterNames)
-		{
-			result.Errors[0].ToString().Should().Contain(filterName);
-		}
+			.Which.ToString().Should()
+			.Contain($"No Int32 was found that matches the {filterNames.Length} filters:" +
+			         Environment.NewLine).And
+			.Contain(" - " + string.Join(Environment.NewLine + " - ", filterNames));
 	}
+
+	[Fact]
+	public void In_WithoutRequirements_ShouldNotBeViolated()
+	{
+		RuleCheck<int> sut = new(
+			new List<Filter<int>>(),
+			new List<Requirement<int>>(),
+			new List<Exemption>(),
+			TransformToInt);
+
+		ITestResult result = sut.In(new TestDataProviderMock());
+
+		result.ShouldNotBeViolated();
+	}
+
+	#region Helpers
 
 	private static IEnumerable<int> TransformToInt(IEnumerable<Assembly> assemblies)
 	{
@@ -81,12 +84,18 @@ public sealed class RuleCheckTests
 		}
 	}
 
+	#endregion
+
 	private class TestDataProviderMock : ITestDataProvider
 	{
+		#region ITestDataProvider Members
+
 		/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
 		public IEnumerable<Assembly> GetAssemblies()
 		{
 			yield return typeof(RuleCheckTests).Assembly;
 		}
+
+		#endregion
 	}
 }

@@ -54,6 +54,43 @@ public sealed class AssemblyRuleTests
 	}
 
 	[Fact]
+	public void Types_ShouldApplyAllAssemblyFilters()
+	{
+		TestDataProvider provider = new(
+			AppDomain.CurrentDomain.GetAssemblies());
+		List<Type> allLoadedTypes = provider.GetAssemblies()
+			.SelectMany(a => a.GetTypes())
+			.ToList();
+		Assembly assembly1 = typeof(TypeRuleTests).Assembly;
+		Assembly assembly2 = typeof(TypeRule).Assembly;
+		List<Type> otherTypes = allLoadedTypes
+			.Where(t => t.Assembly != assembly1 && t.Assembly != assembly2)
+			.ToList();
+		IRule rule = Expect.That.Assemblies
+			.Which(a => a == assembly1 || a == assembly2).And
+			.Which(a => a == assembly1)
+			.Types
+			.ShouldSatisfy(Requirement.ForType(
+				_ => false,
+				t => new TypeTestError(t, "")));
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().BeLessThan(allLoadedTypes.Count);
+		foreach (TestError error in result.Errors)
+		{
+			error.Should().BeOfType<TypeTestError>()
+				.Which.Type.Assembly.FullName.Should().Be(assembly1.FullName);
+		}
+
+		foreach (Type type in otherTypes)
+		{
+			result.Errors.Should().NotContain(e => e.ToString().Contains($"'{type.FullName}'"));
+		}
+	}
+
+	[Fact]
 	public void Types_ShouldFilterOutTypesFromAssemblies()
 	{
 		TestDataProvider provider = new(
@@ -69,12 +106,22 @@ public sealed class AssemblyRuleTests
 		IRule rule = Expect.That.Assemblies
 			.Which(a => a == assembly1 || a == assembly2)
 			.Types
-			.ShouldSatisfy(_ => false);
+			.ShouldSatisfy(Requirement.ForType(
+				_ => false,
+				t => new TypeTestError(t, "")));
 
 		ITestResult result = rule.Check
 			.InAllLoadedAssemblies();
 
 		result.Errors.Length.Should().BeLessThan(allLoadedTypes.Count);
+		foreach (TestError error in result.Errors)
+		{
+			error.Should().BeOfType<TypeTestError>()
+				.Which.Type.Assembly.FullName.Should()
+				.Match(f => f == assembly1.FullName ||
+				            f == assembly2.FullName);
+		}
+
 		foreach (Type type in otherTypes)
 		{
 			result.Errors.Should().NotContain(e => e.ToString().Contains($"'{type.FullName}'"));
