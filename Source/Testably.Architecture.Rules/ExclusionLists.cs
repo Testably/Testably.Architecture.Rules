@@ -15,12 +15,13 @@ public static class ExclusionLists
 	///     All assemblies which <see cref="Assembly.FullName" /> starts with any of the
 	///     excluded namespaces is omitted from the rule check.
 	/// </summary>
-	public static readonly List<string> ExcludedAssemblyNamespaces = new()
-	{
-		"mscorlib",
-		"System",
-		"xunit"
-	};
+	public static List<string> ExcludedAssemblyNamespaces { get; }
+		= new()
+		{
+			"mscorlib",
+			"System",
+			"xunit"
+		};
 
 	/// <summary>
 	///     The list of <see cref="Type" />s to exclude from rule checks.
@@ -28,12 +29,13 @@ public static class ExclusionLists
 	///     All types which <see cref="Type.FullName" /> starts with any of the
 	///     excluded namespaces is omitted from the rule check.
 	/// </summary>
-	public static readonly List<string> ExcludedTypeNamespaces = new()
-	{
-		"System",
-		"Microsoft",
-		"xunit",
-		"<Module>",
-		"<PrivateImplementationDetails>"
-	};
+	public static List<string> ExcludedTypeNamespaces { get; }
+		= new()
+		{
+			"System",
+			"Microsoft",
+			"xunit",
+			"<Module>",
+			"<PrivateImplementationDetails>"
+		};
 }
