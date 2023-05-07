@@ -56,7 +56,9 @@ public sealed class AssemblyRuleTests
 	[Fact]
 	public void Types_ShouldFilterOutTypesFromAssemblies()
 	{
-		List<Type> allLoadedTypes = AppDomain.CurrentDomain.GetAssemblies()
+		TestDataProvider provider = new(
+			AppDomain.CurrentDomain.GetAssemblies());
+		List<Type> allLoadedTypes = provider.GetAssemblies()
 			.SelectMany(a => a.GetTypes())
 			.ToList();
 		Assembly assembly1 = typeof(TypeRuleTests).Assembly;

@@ -40,7 +40,8 @@ public sealed class TestDataProviderTests
 			AppDomain.CurrentDomain.GetAssemblies());
 		TestDataProvider sutWithoutAppliedFilter = new(
 			AppDomain.CurrentDomain.GetAssemblies(), false);
-		List<Type> types = AppDomain.CurrentDomain.GetAssemblies()
+		List<Type> types = sutWithAppliedFilter.Filter(
+				AppDomain.CurrentDomain.GetAssemblies())
 			.SelectMany(x => x.GetTypes())
 			.ToList();
 

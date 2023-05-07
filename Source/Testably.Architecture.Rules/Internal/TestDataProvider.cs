@@ -19,7 +19,7 @@ internal class TestDataProvider : ITestDataProvider, IDataFilter<Assembly>, IDat
 
 	/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
 	public IEnumerable<Assembly> GetAssemblies()
-		=> _assemblies;
+		=> Filter(_assemblies);
 
 	/// <inheritdoc cref="IDataFilter{Assembly}.Filter(IEnumerable{Assembly})" />
 	public IEnumerable<Assembly> Filter(IEnumerable<Assembly> source)
