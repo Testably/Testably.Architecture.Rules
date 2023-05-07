@@ -16,8 +16,9 @@ public interface ITestResult
 	bool IsViolated { get; }
 
 	/// <summary>
-	///     Create a human-readable message for the test result.
+	///     Adds a human-readable description for the test result, which is included in <see cref="object.ToString()" />.
 	/// </summary>
-	/// <param name="ruleName">The default name of the rule.</param>
-	string ToString(string ruleName);
+	/// <param name="description"></param>
+	/// <returns></returns>
+	ITestResult WithDescription(string description);
 }

@@ -7,8 +7,8 @@ namespace Testably.Architecture.Rules.Internal;
 
 internal class TestDataProvider : ITestDataProvider, IDataFilter<Assembly>, IDataFilter<Type>
 {
-	private readonly IEnumerable<Assembly> _assemblies;
 	private readonly bool _applyExclusionFilters;
+	private readonly IEnumerable<Assembly> _assemblies;
 
 	internal TestDataProvider(IEnumerable<Assembly> assemblies,
 		bool applyExclusionFilters = true)
@@ -17,9 +17,7 @@ internal class TestDataProvider : ITestDataProvider, IDataFilter<Assembly>, IDat
 		_applyExclusionFilters = applyExclusionFilters;
 	}
 
-	/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
-	public IEnumerable<Assembly> GetAssemblies()
-		=> Filter(_assemblies);
+	#region IDataFilter<Assembly> Members
 
 	/// <inheritdoc cref="IDataFilter{Assembly}.Filter(IEnumerable{Assembly})" />
 	public IEnumerable<Assembly> Filter(IEnumerable<Assembly> source)
@@ -32,6 +30,10 @@ internal class TestDataProvider : ITestDataProvider, IDataFilter<Assembly>, IDat
 		return source.Where(IncludeAssembly);
 	}
 
+	#endregion
+
+	#region IDataFilter<Type> Members
+
 	/// <inheritdoc cref="IDataFilter{Type}.Filter(IEnumerable{Type})" />
 	public IEnumerable<Type> Filter(IEnumerable<Type> source)
 	{
@@ -42,6 +44,16 @@ internal class TestDataProvider : ITestDataProvider, IDataFilter<Assembly>, IDat
 
 		return source.Where(IncludeType);
 	}
+
+	#endregion
+
+	#region ITestDataProvider Members
+
+	/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
+	public IEnumerable<Assembly> GetAssemblies()
+		=> Filter(_assemblies);
+
+	#endregion
 
 	private static bool IncludeAssembly(Assembly assembly)
 		=> ExclusionLists.ExcludedAssemblyNamespaces.All(x
