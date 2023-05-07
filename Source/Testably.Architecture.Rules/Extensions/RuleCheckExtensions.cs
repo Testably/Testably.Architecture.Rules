@@ -84,7 +84,7 @@ public static class RuleCheckExtensions
 	{
 		return @this.In(new[]
 		{
-			Assembly.GetExecutingAssembly()!
+			Assembly.GetExecutingAssembly()
 		});
 	}
 
@@ -93,6 +93,7 @@ public static class RuleCheckExtensions
 	/// </summary>
 	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
 	{
-		return @this.In(assemblies);
+		// ReSharper disable once RedundantArgumentDefaultValue
+		return @this.In(assemblies, true);
 	}
 }
