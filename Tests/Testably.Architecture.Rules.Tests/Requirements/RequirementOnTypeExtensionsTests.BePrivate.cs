@@ -12,7 +12,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	{
 		#region Test Setup
 
-		public static IEnumerable<object[]> GetUnprivateTypes
+		public static IEnumerable<object[]> GetNotPrivateTypes
 		{
 			get
 			{
@@ -31,12 +31,27 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			}
 		}
 
+		public static IEnumerable<object[]> GetPrivateTypes
+		{
+			get
+			{
+				yield return new object[]
+				{
+					typeof(UnnestedPrivateType)
+				};
+				yield return new object[]
+				{
+					typeof(PrivateType)
+				};
+			}
+		}
+
 		#endregion
 
-		[Fact]
-		public void ShouldBePrivate_PrivateType_ShouldNotBeViolated()
+		[Theory]
+		[MemberData(nameof(GetPrivateTypes))]
+		public void ShouldBePrivate_PrivateType_ShouldNotBeViolated(Type type)
 		{
-			Type type = typeof(PrivateType);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldBePrivate();
@@ -48,7 +63,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Theory]
-		[MemberData(nameof(GetUnprivateTypes))]
+		[MemberData(nameof(GetNotPrivateTypes))]
 		public void ShouldBePrivate_UnprivateType_ShouldNotBeSatisfied(Type type)
 		{
 			IRule rule = Expect.That.Types
@@ -64,10 +79,10 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.Errors[0].ToString().Should().Contain("should be private");
 		}
 
-		[Fact]
-		public void ShouldNotBePrivate_PrivateType_ShouldNotBeSatisfied()
+		[Theory]
+		[MemberData(nameof(GetPrivateTypes))]
+		public void ShouldNotBePrivate_PrivateType_ShouldNotBeSatisfied(Type type)
 		{
-			Type type = typeof(PrivateType);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotBePrivate();
@@ -82,7 +97,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Theory]
-		[MemberData(nameof(GetUnprivateTypes))]
+		[MemberData(nameof(GetNotPrivateTypes))]
 		public void ShouldNotBePrivate_UnprivateType_ShouldNotBeViolated(Type type)
 		{
 			IRule rule = Expect.That.Types
