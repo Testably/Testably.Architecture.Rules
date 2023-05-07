@@ -12,7 +12,7 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichAreNotPublic_ShouldFilterForNotPublicTypes()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(Filter), typeof(PrivateClass)).And
+				.WhichAre(typeof(PublicClass), typeof(PrivateClass)).And
 				.WhichAreNotPublic()
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
@@ -26,14 +26,18 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichArePublic_ShouldFilterForPublicTypes()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(Filter), typeof(PrivateClass)).And
+				.WhichAre(typeof(PublicClass), typeof(PrivateClass)).And
 				.WhichArePublic()
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
-				.Contain(typeof(Filter).FullName);
+				.Contain(typeof(PublicClass).FullName);
+		}
+
+		public class PublicClass
+		{
 		}
 
 		private class PrivateClass

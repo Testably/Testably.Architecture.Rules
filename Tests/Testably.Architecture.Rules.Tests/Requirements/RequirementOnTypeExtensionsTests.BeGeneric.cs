@@ -10,7 +10,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	public sealed class BeGenericTests
 	{
 		[Fact]
-		public void ShouldBeGeneric_GenericType_ShouldBeSatisfied()
+		public void ShouldBeGeneric_GenericType_ShouldNotBeViolated()
 		{
 			Type type = typeof(GenericType<>);
 			IRule rule = Expect.That.Types
@@ -58,7 +58,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeGeneric_SpecificType_ShouldBeSatisfied()
+		public void ShouldNotBeGeneric_SpecificType_ShouldNotBeViolated()
 		{
 			Type type = typeof(SpecificType);
 			IRule rule = Expect.That.Types

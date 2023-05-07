@@ -8,11 +8,11 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BePublicTests
+	public sealed class BePrivateTests
 	{
 		#region Test Setup
 
-		public static IEnumerable<object[]> GetUnpublicTypes
+		public static IEnumerable<object[]> GetUnprivateTypes
 		{
 			get
 			{
@@ -22,7 +22,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 				};
 				yield return new object[]
 				{
-					typeof(PrivateType)
+					typeof(PublicType)
 				};
 				yield return new object[]
 				{
@@ -34,12 +34,12 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		#endregion
 
 		[Fact]
-		public void ShouldBePublic_PublicType_ShouldNotBeViolated()
+		public void ShouldBePrivate_PrivateType_ShouldNotBeViolated()
 		{
-			Type type = typeof(RequirementOnTypeExtensionsTests);
+			Type type = typeof(PrivateType);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldBePublic();
+				.ShouldBePrivate();
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -48,12 +48,12 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Theory]
-		[MemberData(nameof(GetUnpublicTypes))]
-		public void ShouldBePublic_UnpublicType_ShouldNotBeSatisfied(Type type)
+		[MemberData(nameof(GetUnprivateTypes))]
+		public void ShouldBePrivate_UnprivateType_ShouldNotBeSatisfied(Type type)
 		{
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldBePublic();
+				.ShouldBePrivate();
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -61,16 +61,16 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolated();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
-			result.Errors[0].ToString().Should().Contain("should be public");
+			result.Errors[0].ToString().Should().Contain("should be private");
 		}
 
 		[Fact]
-		public void ShouldNotBePublic_PublicType_ShouldNotBeSatisfied()
+		public void ShouldNotBePrivate_PrivateType_ShouldNotBeSatisfied()
 		{
-			Type type = typeof(RequirementOnTypeExtensionsTests);
+			Type type = typeof(PrivateType);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldNotBePublic();
+				.ShouldNotBePrivate();
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -78,21 +78,25 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolated();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
-			result.Errors[0].ToString().Should().Contain("should not be public");
+			result.Errors[0].ToString().Should().Contain("should not be private");
 		}
 
 		[Theory]
-		[MemberData(nameof(GetUnpublicTypes))]
-		public void ShouldNotBePublic_UnpublicType_ShouldNotBeViolated(Type type)
+		[MemberData(nameof(GetUnprivateTypes))]
+		public void ShouldNotBePrivate_UnprivateType_ShouldNotBeViolated(Type type)
 		{
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldNotBePublic();
+				.ShouldNotBePrivate();
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 
 			result.ShouldNotBeViolated();
+		}
+
+		public class PublicType
+		{
 		}
 
 		internal class InternalType
