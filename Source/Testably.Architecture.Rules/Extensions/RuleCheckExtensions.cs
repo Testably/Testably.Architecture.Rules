@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Testably.Architecture.Rules.Internal;
 
 namespace Testably.Architecture.Rules;
 
@@ -29,10 +30,10 @@ public static class RuleCheckExtensions
 		bool excludeSystemAssemblies = true)
 	{
 		predicate ??= _ => true;
-		return @this.In(
+		return @this.In(new TestDataProvider(
 			AppDomain.CurrentDomain.GetAssemblies()
 				.Where(predicate),
-			excludeSystemAssemblies);
+			excludeSystemAssemblies));
 	}
 
 	/// <summary>
@@ -94,6 +95,6 @@ public static class RuleCheckExtensions
 	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
 	{
 		// ReSharper disable once RedundantArgumentDefaultValue
-		return @this.In(assemblies, true);
+		return @this.In(new TestDataProvider(assemblies));
 	}
 }

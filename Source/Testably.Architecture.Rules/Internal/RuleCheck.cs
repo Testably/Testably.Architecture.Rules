@@ -25,13 +25,17 @@ internal class RuleCheck<TType> : IRuleCheck
 
 	#region IRuleCheck Members
 
-	/// <inheritdoc cref="IRuleCheck.In(IEnumerable{Assembly},bool)" />
-	public ITestResult In(IEnumerable<Assembly> assemblies, bool excludeSystemAssemblies = true)
+	/// <inheritdoc cref="IRuleCheck.In(ITestDataProvider)" />
+	public ITestResult In(ITestDataProvider testDataProvider)
 	{
 		List<TestError> errors = new();
-		IEnumerable<Assembly> filteredAssemblies =
-			FilterOutSystemAssemblies(assemblies, excludeSystemAssemblies);
-		List<TType> filteredSource = _transformer(filteredAssemblies)
+		IEnumerable<Assembly> assemblies = testDataProvider.GetAssemblies();
+		IEnumerable<TType> transformedSource = _transformer(assemblies);
+		if (testDataProvider is IDataFilter<TType> dataFilter)
+		{
+			transformedSource = dataFilter.Filter(transformedSource);
+		}
+		List<TType> filteredSource = transformedSource
 			.Where(assembly => _filters.All(filter => filter.Applies(assembly)))
 			.ToList();
 		if (filteredSource.Count == 0)
@@ -63,37 +67,4 @@ internal class RuleCheck<TType> : IRuleCheck
 	}
 
 	#endregion
-
-	private static IEnumerable<Assembly> FilterOutSystemAssemblies(IEnumerable<Assembly> assemblies,
-		bool excludeSystemAssemblies)
-	{
-		if (!excludeSystemAssemblies)
-		{
-			return assemblies;
-		}
-
-		return assemblies
-			.Where(assembly =>
-				!excludeSystemAssemblies ||
-				!IsSystemAssembly(assembly));
-	}
-
-	private static bool IsSystemAssembly(Assembly assembly)
-		=> RuleCheck.ExcludedSystemAssemblies.Any(
-			excludedName => assembly.FullName?.StartsWith(
-				excludedName,
-				StringComparison.InvariantCulture) == true);
-}
-
-internal static class RuleCheck
-{
-	/// <summary>
-	///     The list of <see cref="Assembly" />s to exclude from the current domain.
-	/// </summary>
-	public static readonly List<string> ExcludedSystemAssemblies = new()
-	{
-		"mscorlib",
-		"System",
-		"xunit"
-	};
 }
