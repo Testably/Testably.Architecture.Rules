@@ -101,6 +101,28 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolatedIf(forceDirect);
 		}
 
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldInheritFrom_ToString_ShouldBeCorrect(bool forceDirect)
+		{
+			Type type = typeof(FooImplementor2);
+			IRule rule = Expect.That.Types
+				.WhichAre(type)
+				.ShouldInheritFrom<BarClass>(
+					forceDirect: forceDirect);
+
+			ITestResult result = rule.Check
+				.InAllLoadedAssemblies();
+
+			result.ShouldBeViolated();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+				.And.Contain(
+					$"should{(forceDirect ? " directly" : "")} inherit from '{nameof(BarClass)}'.");
+		}
+
 		[Fact]
 		public void ShouldInheritFrom_WithClass_ShouldNotBeViolated()
 		{
@@ -312,6 +334,28 @@ public sealed partial class RequirementOnTypeExtensionsTests
 				.InAllLoadedAssemblies();
 
 			result.ShouldBeViolatedIf(!forceDirect);
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void ShouldNotInheritFrom_ToString_ShouldBeCorrect(bool forceDirect)
+		{
+			Type type = typeof(FooImplementor1);
+			IRule rule = Expect.That.Types
+				.WhichAre(type)
+				.ShouldNotInheritFrom<FooBase>(
+					forceDirect: forceDirect);
+
+			ITestResult result = rule.Check
+				.InAllLoadedAssemblies();
+
+			result.ShouldBeViolated();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+				.And.Contain(
+					$"should not{(forceDirect ? " directly" : "")} inherit from '{nameof(FooBase)}'.");
 		}
 
 		[Fact]
