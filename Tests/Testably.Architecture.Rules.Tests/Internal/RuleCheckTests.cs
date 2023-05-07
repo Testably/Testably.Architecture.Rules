@@ -60,6 +60,25 @@ public sealed class RuleCheckTests
 			.Contain(" - " + string.Join(Environment.NewLine + " - ", filterNames));
 	}
 
+	[Theory]
+	[AutoData]
+	public void In_WithFilteredRequirements_ShouldBeViolated(TestError error)
+	{
+		RuleCheck<int> sut = new(
+			new List<Filter<int>>(),
+			new List<Requirement<int>>
+			{
+				Requirement.Create<int>(_ => false, _ => error)
+			},
+			new List<Exemption>(),
+			TransformToInt);
+
+		ITestResult result = sut.In(new FilteredTestDataProviderMock());
+
+		result.ShouldBeViolated();
+		result.Errors[0].Should().BeOfType<EmptySourceTestError>();
+	}
+
 	[Fact]
 	public void In_WithoutRequirements_ShouldNotBeViolated()
 	{
@@ -93,25 +112,6 @@ public sealed class RuleCheckTests
 		result.Errors[0].Should().Be(error);
 	}
 
-	[Theory]
-	[AutoData]
-	public void In_WithFilteredRequirements_ShouldBeViolated(TestError error)
-	{
-		RuleCheck<int> sut = new(
-			new List<Filter<int>>(),
-			new List<Requirement<int>>
-			{
-				Requirement.Create<int>(_ => false, _ => error)
-			},
-			new List<Exemption>(),
-			TransformToInt);
-
-		ITestResult result = sut.In(new FilteredTestDataProviderMock());
-
-		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<EmptySourceTestError>();
-	}
-
 	#region Helpers
 
 	private static IEnumerable<int> TransformToInt(IEnumerable<Assembly> assemblies)
@@ -124,8 +124,18 @@ public sealed class RuleCheckTests
 
 	#endregion
 
-	private class TestDataProviderMock : ITestDataProvider
+	private class FilteredTestDataProviderMock : ITestDataProvider, IDataFilter<int>
 	{
+		#region IDataFilter<int> Members
+
+		/// <inheritdoc />
+		public IEnumerable<int> Filter(IEnumerable<int> source)
+		{
+			return Array.Empty<int>();
+		}
+
+		#endregion
+
 		#region ITestDataProvider Members
 
 		/// <inheritdoc cref="ITestDataProvider.GetAssemblies()" />
@@ -137,7 +147,7 @@ public sealed class RuleCheckTests
 		#endregion
 	}
 
-	private class FilteredTestDataProviderMock : ITestDataProvider, IDataFilter<int>
+	private class TestDataProviderMock : ITestDataProvider
 	{
 		#region ITestDataProvider Members
 
@@ -148,11 +158,5 @@ public sealed class RuleCheckTests
 		}
 
 		#endregion
-
-		/// <inheritdoc />
-		public IEnumerable<int> Filter(IEnumerable<int> source)
-		{
-			return Array.Empty<int>();
-		}
 	}
 }

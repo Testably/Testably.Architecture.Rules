@@ -36,6 +36,7 @@ internal class RuleCheck<TType> : IRuleCheck
 		{
 			transformedSource = dataFilter.Filter(transformedSource);
 		}
+
 		List<TType> filteredSource = transformedSource
 			.Where(assembly => _filters.All(filter => filter.Applies(assembly)))
 			.ToList();

@@ -9,20 +9,6 @@ public sealed partial class FilterOnTypeExtensionsTests
 	public sealed class ArePublicTests
 	{
 		[Fact]
-		public void WhichArePublic_ShouldFilterForPublicTypes()
-		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(Filter), typeof(PrivateClass)).And
-				.WhichArePublic()
-				.ShouldAlwaysFail()
-				.Check.InAllLoadedAssemblies();
-
-			result.Errors.Length.Should().Be(1);
-			result.Errors[0].ToString().Should()
-				.Contain(typeof(Filter).FullName);
-		}
-
-		[Fact]
 		public void WhichAreNotPublic_ShouldFilterForNotPublicTypes()
 		{
 			ITestResult result = Expect.That.Types
@@ -34,6 +20,20 @@ public sealed partial class FilterOnTypeExtensionsTests
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(PrivateClass).FullName);
+		}
+
+		[Fact]
+		public void WhichArePublic_ShouldFilterForPublicTypes()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(Filter), typeof(PrivateClass)).And
+				.WhichArePublic()
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(1);
+			result.Errors[0].ToString().Should()
+				.Contain(typeof(Filter).FullName);
 		}
 
 		private class PrivateClass
