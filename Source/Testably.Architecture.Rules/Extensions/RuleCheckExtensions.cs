@@ -87,4 +87,13 @@ public static class RuleCheckExtensions
 			Assembly.GetExecutingAssembly()
 		});
 	}
+
+	/// <summary>
+	///     Defines expectations on the given <paramref name="assemblies" />.
+	/// </summary>
+	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
+	{
+		// ReSharper disable once RedundantArgumentDefaultValue
+		return @this.In(assemblies, true);
+	}
 }

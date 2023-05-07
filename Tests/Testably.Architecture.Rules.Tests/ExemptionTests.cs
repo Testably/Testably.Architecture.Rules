@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests;
 
-public class ExemptionTests
+public sealed class ExemptionTests
 {
 	[Theory]
 	[InlineAutoData(0, true)]

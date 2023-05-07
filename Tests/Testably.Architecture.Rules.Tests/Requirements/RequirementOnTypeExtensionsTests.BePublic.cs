@@ -8,7 +8,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BePublic
+	public sealed class BePublicTests
 	{
 		#region Test Setup
 

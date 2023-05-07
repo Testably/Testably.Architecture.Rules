@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Internal;
 
-public class ExpectationTests
+public sealed class ExpectationTests
 {
 	[Fact]
 	public void Assemblies_ShouldReturnDifferentInstances()

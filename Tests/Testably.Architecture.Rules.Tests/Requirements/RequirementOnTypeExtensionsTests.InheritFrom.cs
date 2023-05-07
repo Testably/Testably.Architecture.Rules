@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class InheritFrom
+	public sealed class InheritFromTests
 	{
 		[Theory]
 		[InlineData(false)]

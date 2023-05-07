@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests;
 
-public class ArchitectureRuleViolatedExceptionTests
+public sealed class ArchitectureRuleViolatedExceptionTests
 {
 	[Theory]
 	[AutoData]

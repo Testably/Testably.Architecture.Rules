@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BeStatic
+	public sealed class BeStaticTests
 	{
 		[Fact]
 		public void ShouldBeStatic_InstanceType_ShouldNotBeSatisfied()

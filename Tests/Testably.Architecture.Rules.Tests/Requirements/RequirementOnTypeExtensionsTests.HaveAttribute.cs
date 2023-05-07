@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class HaveAttribute
+	public sealed class HaveAttributeTests
 	{
 		[Theory]
 		[InlineData(false)]

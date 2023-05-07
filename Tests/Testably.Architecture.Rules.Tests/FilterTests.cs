@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests;
 
-public class FilterTests
+public sealed class FilterTests
 {
 	[Theory]
 	[InlineAutoData(0, true)]

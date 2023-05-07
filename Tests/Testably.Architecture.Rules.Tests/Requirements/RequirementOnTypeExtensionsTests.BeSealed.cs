@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	public sealed class BeSealed
+	public sealed class BeSealedTests
 	{
 		[Fact]
 		public void ShouldBeSealed_SealedType_ShouldBeSatisfied()

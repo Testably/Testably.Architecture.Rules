@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testably.Architecture.Rules
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testably.Architecture.Rules.Tests", "Tests\Testably.Architecture.Rules.Tests\Testably.Architecture.Rules.Tests.csproj", "{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testably.Architecture.Example.Tests", "Tests\Testably.Architecture.Example.Tests\Testably.Architecture.Example.Tests.csproj", "{0017A098-5A15-4245-A715-5CAA72538FD4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0017A098-5A15-4245-A715-5CAA72538FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0017A098-5A15-4245-A715-5CAA72538FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0017A098-5A15-4245-A715-5CAA72538FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0017A098-5A15-4245-A715-5CAA72538FD4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{61D8BE6C-D930-4B4F-ABA2-586F73ACC2B8} = {5F53E3C1-216C-4948-B5D6-1E96170CD083}
 		{CC17C3DF-BF07-4C00-A4C1-9C61A66283F8} = {5F53E3C1-216C-4948-B5D6-1E96170CD083}
 		{78D5E43B-EE46-47F2-8091-F4D76A3E2D98} = {E08785BF-6C98-4CAC-BFC2-BBB79B522DD6}
+		{0017A098-5A15-4245-A715-5CAA72538FD4} = {E08785BF-6C98-4CAC-BFC2-BBB79B522DD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {65C0CC2C-5F10-4F18-9057-176DC70833FA}

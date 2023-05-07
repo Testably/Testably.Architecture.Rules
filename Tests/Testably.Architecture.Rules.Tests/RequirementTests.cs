@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests;
 
-public class RequirementTests
+public sealed class RequirementTests
 {
 	[Theory]
 	[InlineAutoData(true, 0)]
