@@ -11,6 +11,7 @@ internal class RuleCheck<TType> : IRuleCheck
 	private readonly List<Filter<TType>> _filters;
 	private readonly List<Requirement<TType>> _requirements;
 	private readonly Func<IEnumerable<Assembly>, IEnumerable<TType>> _transformer;
+	private Action<string>? _logAction;
 
 	public RuleCheck(
 		List<Filter<TType>> filters,
@@ -37,9 +38,17 @@ internal class RuleCheck<TType> : IRuleCheck
 			transformedSource = dataFilter.Filter(transformedSource);
 		}
 
-		List<TType> filteredSource = transformedSource
+		var transformedSourceList = transformedSource.ToList();
+		_logAction.Log($"Found {transformedSourceList.Count} {typeof(TType).Name}s before applying {_filters.Count} filters:");
+		foreach (var filter in _filters)
+		{
+			_logAction.Log("  Apply filter " + filter);
+		}
+
+		List<TType> filteredSource = transformedSourceList
 			.Where(assembly => _filters.All(filter => filter.Applies(assembly)))
 			.ToList();
+		_logAction.Log($"Found {filteredSource.Count} {typeof(TType).Name}s after applying {_filters.Count} filters.");
 		if (filteredSource.Count == 0)
 		{
 			if (_filters.Count == 1)
@@ -56,16 +65,32 @@ internal class RuleCheck<TType> : IRuleCheck
 
 		foreach (TType item in filteredSource)
 		{
+			List<TestError> newErrors = new();
 			foreach (Requirement<TType> requirement in _requirements)
 			{
-				requirement.CollectErrors(item, errors);
+				requirement.CollectErrors(item, newErrors);
 			}
+			_logAction.Log($"Found {newErrors.Count} errors in {typeof(TType).Name} {item}.");
+			foreach (var error in newErrors)
+			{
+				_logAction.Log($"- {error.ToString().Replace(Environment.NewLine, $"{Environment.NewLine}  ")}");
+			}
+			errors.AddRange(newErrors);
 		}
 
+		_logAction.Log($"Found {errors.Count} total errors.");
 		errors.RemoveAll(error =>
 			_exemptions.Any(exemption => exemption.Exempt(error)));
+		_logAction.Log($"After applying {_exemptions.Count} exemptions, {errors.Count} errors remain.");
 
 		return new TestResult(errors);
+	}
+
+	/// <inheritdoc cref="IRuleCheck.WithLog(Action{string})" />
+	public IRuleCheck WithLog(Action<string>? logAction)
+	{
+		_logAction = logAction;
+		return this;
 	}
 
 	#endregion

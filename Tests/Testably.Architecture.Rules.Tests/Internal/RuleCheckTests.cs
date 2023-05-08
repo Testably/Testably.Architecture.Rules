@@ -7,11 +7,19 @@ using System.Reflection;
 using Testably.Architecture.Rules.Internal;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class RuleCheckTests
 {
+	private readonly ITestOutputHelper _testOutputHelper;
+
+	public RuleCheckTests(ITestOutputHelper testOutputHelper)
+	{
+		_testOutputHelper = testOutputHelper;
+	}
+
 	[Theory]
 	[AutoData]
 	public void In_WhenAllSourceIsFilteredOut_ShouldBeViolatedWithSingleEmptySourceTestError(
@@ -110,6 +118,18 @@ public sealed class RuleCheckTests
 
 		result.ShouldBeViolated();
 		result.Errors[0].Should().Be(error);
+	}
+
+	[Fact]
+	public void WithLog_()
+	{
+		ITestResult result = Expect.That.Types
+			.WhichArePublic().And
+			.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+			.ShouldBeSealed()
+			.Check.WithLog(_testOutputHelper.WriteLine).InAllLoadedAssemblies();
+
+		result.ShouldNotBeViolated();
 	}
 
 	#region Helpers
