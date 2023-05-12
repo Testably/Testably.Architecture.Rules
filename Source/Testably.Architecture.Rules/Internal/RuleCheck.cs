@@ -38,9 +38,10 @@ internal class RuleCheck<TType> : IRuleCheck
 			transformedSource = dataFilter.Filter(transformedSource);
 		}
 
-		var transformedSourceList = transformedSource.ToList();
-		_logAction.Log($"Found {transformedSourceList.Count} {typeof(TType).Name}s before applying {_filters.Count} filters:");
-		foreach (var filter in _filters)
+		List<TType> transformedSourceList = transformedSource.ToList();
+		_logAction.Log(
+			$"Found {transformedSourceList.Count} {typeof(TType).Name}s before applying {_filters.Count} filters:");
+		foreach (Filter<TType> filter in _filters)
 		{
 			_logAction.Log("  Apply filter " + filter);
 		}
@@ -48,7 +49,8 @@ internal class RuleCheck<TType> : IRuleCheck
 		List<TType> filteredSource = transformedSourceList
 			.Where(assembly => _filters.All(filter => filter.Applies(assembly)))
 			.ToList();
-		_logAction.Log($"Found {filteredSource.Count} {typeof(TType).Name}s after applying {_filters.Count} filters.");
+		_logAction.Log(
+			$"Found {filteredSource.Count} {typeof(TType).Name}s after applying {_filters.Count} filters.");
 		if (filteredSource.Count == 0)
 		{
 			if (_filters.Count == 1)
@@ -70,18 +72,27 @@ internal class RuleCheck<TType> : IRuleCheck
 			{
 				requirement.CollectErrors(item, newErrors);
 			}
+
 			_logAction.Log($"Found {newErrors.Count} errors in {typeof(TType).Name} {item}.");
-			foreach (var error in newErrors)
+			foreach (TestError error in newErrors)
 			{
-				_logAction.Log($"- {error.ToString().Replace(Environment.NewLine, $"{Environment.NewLine}  ")}");
+				_logAction.Log(
+					$"- {error.ToString().Replace(Environment.NewLine, $"{Environment.NewLine}  ")}");
 			}
+
 			errors.AddRange(newErrors);
 		}
 
 		_logAction.Log($"Found {errors.Count} total errors.");
+		foreach (Exemption exemption in _exemptions)
+		{
+			_logAction.Log("  Apply exemption " + exemption);
+		}
+
 		errors.RemoveAll(error =>
 			_exemptions.Any(exemption => exemption.Exempt(error)));
-		_logAction.Log($"After applying {_exemptions.Count} exemptions, {errors.Count} errors remain.");
+		_logAction.Log(
+			$"After applying {_exemptions.Count} exemptions, {errors.Count} errors remain.");
 
 		return new TestResult(errors);
 	}

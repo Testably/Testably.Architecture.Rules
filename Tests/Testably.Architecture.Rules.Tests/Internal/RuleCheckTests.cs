@@ -7,19 +7,11 @@ using System.Reflection;
 using Testably.Architecture.Rules.Internal;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class RuleCheckTests
 {
-	private readonly ITestOutputHelper _testOutputHelper;
-
-	public RuleCheckTests(ITestOutputHelper testOutputHelper)
-	{
-		_testOutputHelper = testOutputHelper;
-	}
-
 	[Theory]
 	[AutoData]
 	public void In_WhenAllSourceIsFilteredOut_ShouldBeViolatedWithSingleEmptySourceTestError(
@@ -121,15 +113,104 @@ public sealed class RuleCheckTests
 	}
 
 	[Fact]
-	public void WithLog_()
+	public void WithLog_Null_ShouldNotThrowException()
 	{
-		ITestResult result = Expect.That.Types
+		Exception? exception = Record.Exception(() =>
+		{
+			Expect.That.Types
+				.WhichArePublic().And
+				.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+				.ShouldBeSealed()
+				.Check.WithLog(null).InAllLoadedAssemblies();
+		});
+
+		exception.Should().BeNull();
+	}
+
+	[Theory]
+	[AutoData]
+	public void WithLog_ShouldIncludeErrorCount(TestError[] errors)
+	{
+		List<string> logs = new();
+		IRequirement<Type> typeRequirement = Expect.That.Types
+			.Which(t => t == GetType());
+		foreach (TestError error in errors)
+		{
+			typeRequirement = typeRequirement
+				.ShouldSatisfy(Requirement.ForType(_ => false, _ => error)).And;
+		}
+
+		typeRequirement.ShouldSatisfy(_ => true)
+			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
+
+		logs.Should().Contain(log => log.Contains($"{errors.Length} total errors"));
+		foreach (string error in errors)
+		{
+			logs.Should().Contain(log => log.Contains(error));
+		}
+	}
+
+	[Theory]
+	[AutoData]
+	public void WithLog_ShouldIncludeExemptionCount(string[] exemptionNames)
+	{
+		List<string> logs = new();
+		IExemption<Type> exemption = Expect.That.Types
+			.Which(t => t == GetType())
+			.ShouldSatisfy(_ => false);
+
+		foreach (string exemptionName in exemptionNames)
+		{
+			exemption = exemption
+				.Unless(Exemption.FromPredicate(_ => false, exemptionName)).And;
+		}
+
+		exemption.Unless(Exemption.FromPredicate(_ => false))
+			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
+
+		logs.Should().Contain(log => log.Contains($"{exemptionNames.Length + 1} exemptions"));
+		foreach (string exemptionName in exemptionNames)
+		{
+			logs.Should().Contain(log => log.Contains(exemptionName));
+		}
+	}
+
+	[Theory]
+	[AutoData]
+	public void WithLog_ShouldIncludeFilterCount(string[] filterNames)
+	{
+		List<string> logs = new();
+		ITypeFilter typeFilter = Expect.That.Types;
+		foreach (string filterName in filterNames)
+		{
+			typeFilter = typeFilter.Which(Filter.FromPredicate<Type>(_ => true, filterName)).And;
+		}
+
+		typeFilter.Which(_ => false)
+			.ShouldBeSealed()
+			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
+
+		logs.Should().Contain(log => log.Contains($"{filterNames.Length + 1} filters"));
+		foreach (string filterName in filterNames)
+		{
+			logs.Should().Contain(log => log.Contains(filterName));
+		}
+	}
+
+	[Fact]
+	public void WithLog_ShouldIncludeTime()
+	{
+		List<string> logs = new();
+		DateTime begin = DateTime.Now;
+		Expect.That.Types
 			.WhichArePublic().And
 			.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
 			.ShouldBeSealed()
-			.Check.WithLog(_testOutputHelper.WriteLine).InAllLoadedAssemblies();
+			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
+		DateTime end = DateTime.Now;
+		DateTime middleTime = begin.AddSeconds((end - begin).TotalSeconds / 2);
 
-		result.ShouldNotBeViolated();
+		logs.Should().Contain(log => log.StartsWith(middleTime.ToString("HH:mm:ss")));
 	}
 
 	#region Helpers

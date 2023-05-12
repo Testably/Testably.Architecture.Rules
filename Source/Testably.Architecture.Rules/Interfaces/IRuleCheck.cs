@@ -15,7 +15,7 @@ public interface IRuleCheck
 	ITestResult In(ITestDataProvider testDataProvider);
 
 	/// <summary>
-	///     Adds a log action to get detailed information about the check steps.
+	///     Log detailed information about the check steps of the <see cref="IRule" />.
 	/// </summary>
 	IRuleCheck WithLog(Action<string>? logAction);
 }

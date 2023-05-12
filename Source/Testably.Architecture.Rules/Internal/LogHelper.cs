@@ -5,7 +5,7 @@ namespace Testably.Architecture.Rules.Internal;
 internal static class LogHelper
 {
 	/// <summary>
-	///     Logs the <paramref name="message" /> using the <paramref name="logAction" />
+	///     Logs the <paramref name="message" /> together with the current time using the <paramref name="logAction" />.
 	/// </summary>
 	public static void Log(this Action<string>? logAction, string message)
 	{
