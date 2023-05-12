@@ -84,6 +84,11 @@ public static class TypeExtensions
 		Type parentType,
 		bool forceDirect = false)
 	{
+		if (type == parentType)
+		{
+			return false;
+		}
+
 		if (parentType.IsGenericType)
 		{
 			parentType = parentType.GetGenericTypeDefinition();
@@ -111,10 +116,14 @@ public static class TypeExtensions
 				return true;
 			}
 
-			currentType = currentType.BaseType != null
-			              && currentType.BaseType.IsGenericType
+			if (currentType.BaseType == null)
+			{
+				break;
+			}
+
+			currentType = currentType.BaseType.IsGenericType
 				? currentType.BaseType.GetGenericTypeDefinition()
-				: currentType.BaseType!;
+				: currentType.BaseType;
 		}
 
 		return false;

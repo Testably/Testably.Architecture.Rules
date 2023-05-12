@@ -38,7 +38,7 @@ public static partial class RequirementOnTypeExtensions
 				$"Type '{type.Name}' should{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
 
 	/// <summary>
-	///     Expect the types to inherit from <typeparamref name="TBase" />.
+	///     Expect the types to not inherit from <typeparamref name="TBase" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IRequirement{Type}" />.</param>
 	/// <param name="forceDirect">
@@ -52,7 +52,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldNotInheritFrom(typeof(TBase), forceDirect);
 
 	/// <summary>
-	///     Expect the types to inherit from <paramref name="baseType" />.
+	///     Expect the types to not inherit from <paramref name="baseType" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IRequirement{Type}" />.</param>
 	/// <param name="baseType">The base type which should be inherited from.</param>
