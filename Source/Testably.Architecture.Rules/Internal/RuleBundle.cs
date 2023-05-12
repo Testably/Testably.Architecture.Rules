@@ -9,6 +9,7 @@ internal class RuleBundle : IRule, IRuleCheck
 {
 	private readonly string _name;
 	private readonly IRule[] _rules;
+	private Action<string>? _logAction;
 
 	public RuleBundle(string name, IRule[] rules)
 	{
@@ -30,9 +31,16 @@ internal class RuleBundle : IRule, IRuleCheck
 	public ITestResult In(ITestDataProvider testDataProvider)
 	{
 		List<ITestResult> testResults = _rules
-			.Select(rule => rule.Check.In(testDataProvider))
+			.Select(rule => rule.Check.WithLog(_logAction).In(testDataProvider))
 			.ToList();
 		return new BundleTestResult(_name, testResults);
+	}
+
+	/// <inheritdoc cref="IRuleCheck.WithLog(Action{string})" />
+	public IRuleCheck WithLog(Action<string>? logAction)
+	{
+		_logAction = logAction;
+		return this;
 	}
 
 	#endregion
