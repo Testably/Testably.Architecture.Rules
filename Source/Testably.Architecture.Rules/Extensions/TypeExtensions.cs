@@ -69,6 +69,45 @@ public static class TypeExtensions
 	}
 
 	/// <summary>
+	///     Determines whether the current <see cref="Type" /> implements the <paramref name="interfaceType" />.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <param name="interfaceType">The interface <see cref="Type" />.</param>
+	/// <param name="forceDirect">
+	///     If set to <see langword="false" /> (default value), the <paramref name="interfaceType" />
+	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
+	///     <paramref name="interfaceType" /> to be directly implemented in the <paramref name="type"/>.
+	/// </param>
+	public static bool Implements(
+		this Type type,
+		Type interfaceType,
+		bool forceDirect = false)
+	{
+		if (!interfaceType.IsInterface)
+		{
+			return false;
+		}
+
+		Type[] interfaces = type.GetInterfaces();
+		if (forceDirect && type.BaseType != null)
+		{
+			interfaces = interfaces
+				.Except(type.BaseType.GetInterfaces())
+				.ToArray();
+		}
+
+		return interfaces
+			.Any(childInterface =>
+			{
+				Type currentInterface = childInterface.IsGenericType
+					? childInterface.GetGenericTypeDefinition()
+					: childInterface;
+
+				return currentInterface == interfaceType;
+			});
+	}
+
+	/// <summary>
 	///     Determines whether the current <see cref="Type" /> inherits from the <paramref name="parentType" />.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
@@ -78,8 +117,7 @@ public static class TypeExtensions
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <paramref name="parentType" /> to be the direct parent.
 	/// </param>
-	/// <returns></returns>
-	public static bool Inherits(
+	public static bool InheritsFrom(
 		this Type type,
 		Type parentType,
 		bool forceDirect = false)
@@ -111,7 +149,7 @@ public static class TypeExtensions
 				return false;
 			}
 
-			if (currentType.ImplementsInterface(parentType, forceDirect))
+			if (currentType.Implements(parentType, forceDirect))
 			{
 				return true;
 			}
@@ -137,25 +175,5 @@ public static class TypeExtensions
 	public static bool IsStatic(this Type type)
 		=> type.IsAbstract && type.IsSealed && !type.IsInterface &&
 		   !type.GetConstructors().Any(m => m.IsPublic);
-
-	internal static bool ImplementsInterface(this Type type, Type interfaceType, bool forceDirect)
-	{
-		Type[] interfaces = type.GetInterfaces();
-		if (forceDirect && type.BaseType != null)
-		{
-			interfaces = interfaces
-				.Except(type.BaseType.GetInterfaces())
-				.ToArray();
-		}
-
-		return interfaces
-			.Any(childInterface =>
-			{
-				Type currentInterface = childInterface.IsGenericType
-					? childInterface.GetGenericTypeDefinition()
-					: childInterface;
-
-				return currentInterface == interfaceType;
-			});
-	}
+	
 }

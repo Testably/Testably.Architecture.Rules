@@ -85,11 +85,11 @@ public sealed class TypeExtensionsTests
 	[Theory]
 	[InlineData(false)]
 	[InlineData(true)]
-	public void ImplementsInterface_Object_ShouldReturnFalse(bool forceDirect)
+	public void Implements_Object_ShouldReturnFalse(bool forceDirect)
 	{
 		Type sut = typeof(object);
 
-		bool result = sut.ImplementsInterface(typeof(IFooInterface), forceDirect);
+		bool result = sut.Implements(typeof(IFooInterface), forceDirect);
 
 		result.Should().BeFalse();
 	}
