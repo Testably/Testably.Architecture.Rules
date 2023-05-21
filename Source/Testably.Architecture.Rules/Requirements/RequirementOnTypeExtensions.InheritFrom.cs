@@ -33,7 +33,7 @@ public static partial class RequirementOnTypeExtensions
 		Type baseType,
 		bool forceDirect = false)
 		=> @this.ShouldSatisfy(Requirement.ForType(
-			type => type.Inherits(baseType, forceDirect),
+			type => type.InheritsFrom(baseType, forceDirect),
 			type => new TypeTestError(type,
 				$"Type '{type.Name}' should{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
 
@@ -66,7 +66,7 @@ public static partial class RequirementOnTypeExtensions
 		Type baseType,
 		bool forceDirect = false)
 		=> @this.ShouldSatisfy(Requirement.ForType(
-			type => !type.Inherits(baseType, forceDirect),
+			type => !type.InheritsFrom(baseType, forceDirect),
 			type => new TypeTestError(type,
 				$"Type '{type.Name}' should not{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
 }
