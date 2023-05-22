@@ -9,6 +9,19 @@ internal class PropertyFilter : IPropertyFilter, IPropertyFilterResult
 {
 	private readonly List<Filter<PropertyInfo>> _predicates = new();
 
+	#region IPropertyFilter Members
+
+	/// <inheritdoc cref="IPropertyFilter.Which(Filter{PropertyInfo})" />
+	public IPropertyFilterResult Which(Filter<PropertyInfo> filter)
+	{
+		_predicates.Add(filter);
+		return this;
+	}
+
+	#endregion
+
+	#region IPropertyFilterResult Members
+
 	/// <inheritdoc cref="IPropertyFilterResult.And" />
 	public IPropertyFilter And
 		=> this;
@@ -20,10 +33,5 @@ internal class PropertyFilter : IPropertyFilter, IPropertyFilterResult
 			t => _predicates.All(p => t.GetProperties().Any(p.Applies)));
 	}
 
-	/// <inheritdoc cref="IPropertyFilter.Which(Filter{PropertyInfo})" />
-	public IPropertyFilterResult Which(Filter<PropertyInfo> filter)
-	{
-		_predicates.Add(filter);
-		return this;
-	}
+	#endregion
 }

@@ -9,6 +9,19 @@ internal class MethodFilter : IMethodFilter, IMethodFilterResult
 {
 	private readonly List<Filter<MethodInfo>> _predicates = new();
 
+	#region IMethodFilter Members
+
+	/// <inheritdoc cref="IMethodFilter.Which(Filter{MethodInfo})" />
+	public IMethodFilterResult Which(Filter<MethodInfo> filter)
+	{
+		_predicates.Add(filter);
+		return this;
+	}
+
+	#endregion
+
+	#region IMethodFilterResult Members
+
 	/// <inheritdoc cref="IMethodFilterResult.And" />
 	public IMethodFilter And
 		=> this;
@@ -20,10 +33,5 @@ internal class MethodFilter : IMethodFilter, IMethodFilterResult
 			t => _predicates.All(p => t.GetMethods().Any(p.Applies)));
 	}
 
-	/// <inheritdoc cref="IMethodFilter.Which(Filter{MethodInfo})" />
-	public IMethodFilterResult Which(Filter<MethodInfo> filter)
-	{
-		_predicates.Add(filter);
-		return this;
-	}
+	#endregion
 }

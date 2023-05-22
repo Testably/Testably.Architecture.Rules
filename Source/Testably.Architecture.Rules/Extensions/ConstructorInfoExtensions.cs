@@ -10,7 +10,8 @@ namespace Testably.Architecture.Rules;
 public static class ConstructorInfoExtensions
 {
 	/// <summary>
-	///     Checks if the <paramref name="constructorInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
+	///     Checks if the <paramref name="constructorInfo" /> has an attribute which satisfies the
+	///     <paramref name="predicate" />.
 	/// </summary>
 	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
 	/// <param name="constructorInfo">The <see cref="ConstructorInfo" /> which is checked to have the attribute.</param>

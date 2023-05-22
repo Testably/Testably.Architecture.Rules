@@ -9,6 +9,19 @@ internal class ConstructorFilter : IConstructorFilter, IConstructorFilterResult
 {
 	private readonly List<Filter<ConstructorInfo>> _predicates = new();
 
+	#region IConstructorFilter Members
+
+	/// <inheritdoc cref="IConstructorFilter.Which(Filter{ConstructorInfo})" />
+	public IConstructorFilterResult Which(Filter<ConstructorInfo> filter)
+	{
+		_predicates.Add(filter);
+		return this;
+	}
+
+	#endregion
+
+	#region IConstructorFilterResult Members
+
 	/// <inheritdoc cref="IConstructorFilterResult.And" />
 	public IConstructorFilter And
 		=> this;
@@ -20,10 +33,5 @@ internal class ConstructorFilter : IConstructorFilter, IConstructorFilterResult
 			t => _predicates.All(p => t.GetConstructors().Any(p.Applies)));
 	}
 
-	/// <inheritdoc cref="IConstructorFilter.Which(Filter{ConstructorInfo})" />
-	public IConstructorFilterResult Which(Filter<ConstructorInfo> filter)
-	{
-		_predicates.Add(filter);
-		return this;
-	}
+	#endregion
 }

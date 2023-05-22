@@ -9,6 +9,19 @@ internal class EventFilter : IEventFilter, IEventFilterResult
 {
 	private readonly List<Filter<EventInfo>> _predicates = new();
 
+	#region IEventFilter Members
+
+	/// <inheritdoc cref="IEventFilter.Which(Filter{EventInfo})" />
+	public IEventFilterResult Which(Filter<EventInfo> filter)
+	{
+		_predicates.Add(filter);
+		return this;
+	}
+
+	#endregion
+
+	#region IEventFilterResult Members
+
 	/// <inheritdoc cref="IEventFilterResult.And" />
 	public IEventFilter And
 		=> this;
@@ -20,10 +33,5 @@ internal class EventFilter : IEventFilter, IEventFilterResult
 			t => _predicates.All(p => t.GetEvents().Any(p.Applies)));
 	}
 
-	/// <inheritdoc cref="IEventFilter.Which(Filter{EventInfo})" />
-	public IEventFilterResult Which(Filter<EventInfo> filter)
-	{
-		_predicates.Add(filter);
-		return this;
-	}
+	#endregion
 }
