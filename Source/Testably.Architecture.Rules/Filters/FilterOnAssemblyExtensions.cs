@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension methods for <see cref="IAssemblyFilter" />.
 /// </summary>
-public static class FilterOnAssemblyExtensions
+public static partial class FilterOnAssemblyExtensions
 {
 	/// <summary>
 	///     Filters the applicable <see cref="Assembly" /> on which the expectations should be applied.

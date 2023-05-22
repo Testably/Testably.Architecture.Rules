@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
-public sealed class FilterOnAssemblyExtensionsTests
+public sealed partial class FilterOnAssemblyExtensionsTests
 {
 	[Fact]
 	public void And_WithContraryConditions_ShouldReturnEmptyArray()
