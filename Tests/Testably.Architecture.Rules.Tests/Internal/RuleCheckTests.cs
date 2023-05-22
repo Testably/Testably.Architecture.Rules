@@ -197,7 +197,7 @@ public sealed class RuleCheckTests
 			=> log.Contains($"after applying {filterNames.Length + 1} filters"));
 		foreach (string filterName in filterNames)
 		{
-			logs.Should().Contain(log => log.Contains(filterName));
+			logs.Should().Contain(log => log.Contains($"Apply filter {filterName}"));
 		}
 	}
 
@@ -217,8 +217,7 @@ public sealed class RuleCheckTests
 		logs.Should().Contain(log => log.StartsWith(middleTime.ToString("HH:mm:ss")));
 	}
 
-	[Theory]
-	[AutoData]
+	[Fact]
 	public void WithLog_ShouldIndentErrorsWithMultipleLines()
 	{
 		string errorMessage = $"foo{Environment.NewLine}bar";
