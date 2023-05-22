@@ -10,6 +10,8 @@ internal static class ThrowHelper
 	/// <summary>
 	///     Throw an exception containing the <paramref name="message" />.
 	/// </summary>
+	[DoesNotReturn]
+	[ExcludeFromCodeCoverage]
 	public static void Throw(string message)
 	{
 		ThrowIfViolatedUsingXunit(message);
