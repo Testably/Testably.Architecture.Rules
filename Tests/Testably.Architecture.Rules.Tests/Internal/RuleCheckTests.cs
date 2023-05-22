@@ -223,7 +223,7 @@ public sealed class RuleCheckTests
 	{
 		string errorMessage = $"foo{Environment.NewLine}bar";
 		List<string> logs = new();
-		ITestResult _ = Expect.That.Types
+		Expect.That.Types
 			.Which(t => t == GetType())
 			.ShouldSatisfy(Requirement.ForType(_ => false, _ => new TestError(errorMessage)))
 			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
