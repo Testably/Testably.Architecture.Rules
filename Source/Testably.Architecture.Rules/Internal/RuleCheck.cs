@@ -43,7 +43,7 @@ internal class RuleCheck<TType> : IRuleCheck
 			$"Found {transformedSourceList.Count} {typeof(TType).Name}s before applying {_filters.Count} filters:");
 		foreach (Filter<TType> filter in _filters)
 		{
-			_logAction.Log("  Apply filter " + filter);
+			_logAction.Log($"  Apply filter {filter}");
 		}
 
 		List<TType> filteredSource = transformedSourceList
