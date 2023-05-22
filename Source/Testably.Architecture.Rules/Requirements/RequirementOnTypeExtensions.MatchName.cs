@@ -41,5 +41,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !pattern.Matches(type.Name, ignoreCase),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' not match pattern '{pattern}'.")));
+				$"Type '{type.Name}' should not match pattern '{pattern}'.")));
 }
