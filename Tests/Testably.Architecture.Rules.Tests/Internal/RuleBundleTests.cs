@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -82,5 +83,24 @@ public sealed class RuleBundleTests
 
 		result.WithDescription(description).ShouldBeViolated();
 		result.ToString().Should().Contain($"({description})");
+	}
+
+	[Theory]
+	[AutoData]
+	public void WithLog_ShouldContainErrorMessage(string bundleName, string errorMessage)
+	{
+		List<string> receivedLogs = new();
+		IRule rule = Rules.Bundle(bundleName,
+			Expect.That.Assemblies.ShouldSatisfy(
+				Requirement.ForAssembly(
+					_ => false,
+					_ => new TestError(errorMessage))));
+
+		ITestResult result = rule.Check
+			.WithLog(m => receivedLogs.Add(m))
+			.InExecutingAssembly();
+
+		result.ShouldBeViolated();
+		receivedLogs.Should().Contain(l => l.Contains(errorMessage));
 	}
 }

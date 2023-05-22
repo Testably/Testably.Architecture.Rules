@@ -12,25 +12,6 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void
-			ShouldImplement_WithGenericInterface_ForceDirect_ShouldConsiderParameter(
-				bool forceDirect)
-		{
-			Type type = typeof(GenericFooImplementor2<>);
-			IRule rule = Expect.That.Types
-				.WhichAre(type)
-				.ShouldImplement(typeof(IGenericFooInterface<>),
-					forceDirect: forceDirect);
-
-			ITestResult result = rule.Check
-				.InAllLoadedAssemblies();
-
-			result.ShouldBeViolatedIf(forceDirect);
-		}
-
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
 		public void ShouldImplement_ForceDirect_WithInterface_ShouldConsiderParameter(
 			bool forceDirect)
 		{
@@ -69,22 +50,6 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldImplement_WithGenericClass_ShouldNotBeSatisfied()
-		{
-			Type type = typeof(GenericFooImplementor2<>);
-			IRule rule = Expect.That.Types
-				.WhichAre(type)
-				.ShouldImplement(typeof(GenericFooImplementor1<>));
-
-			ITestResult result = rule.Check
-				.InAllLoadedAssemblies();
-
-			result.ShouldBeViolated();
-			result.Errors[0].Should().BeOfType<TypeTestError>()
-				.Which.Type.Should().Be(type);
-		}
-
-		[Fact]
 		public void ShouldImplement_WithClass_ShouldNotBeSatisfied()
 		{
 			Type type = typeof(FooImplementor2);
@@ -100,23 +65,39 @@ public sealed partial class RequirementOnTypeExtensionsTests
 				.Which.Type.Should().Be(type);
 		}
 
+		[Fact]
+		public void ShouldImplement_WithGenericClass_ShouldNotBeSatisfied()
+		{
+			Type type = typeof(GenericFooImplementor2<>);
+			IRule rule = Expect.That.Types
+				.WhichAre(type)
+				.ShouldImplement(typeof(GenericFooImplementor1<>));
+
+			ITestResult result = rule.Check
+				.InAllLoadedAssemblies();
+
+			result.ShouldBeViolated();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+		}
+
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
 		public void
-			ShouldNotImplement_WithGenericInterface_ForceDirect_ShouldConsiderParameter(
+			ShouldImplement_WithGenericInterface_ForceDirect_ShouldConsiderParameter(
 				bool forceDirect)
 		{
 			Type type = typeof(GenericFooImplementor2<>);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldNotImplement(typeof(IGenericFooInterface<>),
+				.ShouldImplement(typeof(IGenericFooInterface<>),
 					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 
-			result.ShouldBeViolatedIf(!forceDirect);
+			result.ShouldBeViolatedIf(forceDirect);
 		}
 
 		[Theory]
@@ -142,11 +123,30 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		[InlineData(true)]
 		public void ShouldNotImplement_ToString_ShouldBeCorrect(bool forceDirect)
 		{
+			Type type = typeof(FooImplementor1);
+			IRule rule = Expect.That.Types
+				.WhichAre(type)
+				.ShouldNotImplement<IFooInterface>(
+					forceDirect: forceDirect);
+
+			ITestResult result = rule.Check
+				.InAllLoadedAssemblies();
+
+			result.ShouldBeViolated();
+			result.Errors[0].Should().BeOfType<TypeTestError>()
+				.Which.Type.Should().Be(type);
+			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+				.And.Contain(
+					$"should not{(forceDirect ? " directly" : "")} implement '{nameof(IFooInterface)}'.");
+		}
+
+		[Fact]
+		public void ShouldNotImplement_WithClass_ShouldNotBeSatisfied()
+		{
 			Type type = typeof(FooImplementor2);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldNotImplement<IOtherFooInterface>(
-					forceDirect: forceDirect);
+				.ShouldNotImplement<FooImplementor1>();
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
@@ -168,18 +168,23 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldNotBeViolated();
 		}
 
-		[Fact]
-		public void ShouldNotImplement_WithClass_ShouldNotBeSatisfied()
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public void
+			ShouldNotImplement_WithGenericInterface_ForceDirect_ShouldConsiderParameter(
+				bool forceDirect)
 		{
-			Type type = typeof(FooImplementor2);
+			Type type = typeof(GenericFooImplementor2<>);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
-				.ShouldNotImplement<FooImplementor1>();
+				.ShouldNotImplement(typeof(IGenericFooInterface<>),
+					forceDirect: forceDirect);
 
 			ITestResult result = rule.Check
 				.InAllLoadedAssemblies();
 
-			result.ShouldNotBeViolated();
+			result.ShouldBeViolatedIf(!forceDirect);
 		}
 
 		private class FooImplementor1 : IFooInterface
@@ -209,11 +214,6 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		private interface IOtherFooInterface
-		{
-		}
-
-		// ReSharper disable once UnusedTypeParameter
-		private interface IOtherGenericFooInterface<T>
 		{
 		}
 	}

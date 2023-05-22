@@ -2,12 +2,123 @@
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
+// ReSharper disable UnusedTypeParameter
 namespace Testably.Architecture.Rules.Tests.Filters;
 
 public sealed partial class FilterOnTypeExtensionsTests
 {
 	public sealed class InheritFromTests
 	{
+		[Fact]
+		public void WhichDoNotInheritFrom_WithForceDirect_WithClass_ShouldConsiderParameter()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(
+					typeof(FooImplementor1),
+					typeof(FooImplementor2)).And
+				.WhichDoNotInheritFrom<FooBase>(true)
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(1);
+			result.Errors.Should()
+				.NotContain(e => e.ToString().Contains(nameof(FooImplementor1)));
+			result.Errors.Should()
+				.Contain(e => e.ToString().Contains(nameof(FooImplementor2)));
+		}
+
+		[Fact]
+		public void WhichDoNotInheritFrom_WithForceDirect_WithGenericClass_ShouldConsiderParameter()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(
+					typeof(FooGenericImplementor1<,>),
+					typeof(FooGenericImplementor2<>)).And
+				.WhichDoNotInheritFrom(typeof(FooGenericClass<,>), true)
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(1);
+			result.Errors.Should()
+				.NotContain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
+			result.Errors.Should()
+				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor2<>).Name));
+		}
+
+		[Fact]
+		public void
+			WhichDoNotInheritFrom_WithForceDirect_WithGenericClassAndInterface_ShouldConsiderParameter()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(
+					typeof(FooImplementor1),
+					typeof(FooImplementor2),
+					typeof(FooGenericImplementor1<,>),
+					typeof(FooGenericImplementor2<>)).And
+				.WhichDoNotInheritFrom(typeof(IFooInterface), true)
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should()
+				.NotContain(e => e.ToString().Contains(nameof(FooImplementor1)));
+			result.Errors.Should()
+				.Contain(e => e.ToString().Contains(nameof(FooImplementor2)));
+			result.Errors.Should()
+				.NotContain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
+			result.Errors.Should()
+				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor2<>).Name));
+		}
+
+		[Fact]
+		public void WhichDoNotInheritFrom_WithoutForceDirect_WithClass_ShouldConsiderParameter()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(
+					typeof(FooImplementor1),
+					typeof(FooImplementor2)).And
+				.WhichDoNotInheritFrom<FooBase>()
+				.ShouldAlwaysFail()
+				.AllowEmpty()
+				.Check.InAllLoadedAssemblies();
+
+			result.ShouldNotBeViolated();
+		}
+
+		[Fact]
+		public void
+			WhichDoNotInheritFrom_WithoutForceDirect_WithGenericClass_ShouldConsiderParameter()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(
+					typeof(FooGenericImplementor1<,>),
+					typeof(FooGenericImplementor2<>)).And
+				.WhichDoNotInheritFrom(typeof(FooGenericClass<,>))
+				.ShouldAlwaysFail()
+				.AllowEmpty()
+				.Check.InAllLoadedAssemblies();
+
+			result.ShouldNotBeViolated();
+		}
+
+		[Fact]
+		public void
+			WhichDoNotInheritFrom_WithoutForceDirect_WithGenericClassAndInterface_ShouldConsiderParameter()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(
+					typeof(FooImplementor1),
+					typeof(FooImplementor2),
+					typeof(FooGenericImplementor1<,>),
+					typeof(FooGenericImplementor2<>)).And
+				.WhichDoNotInheritFrom(typeof(IFooInterface))
+				.ShouldAlwaysFail()
+				.AllowEmpty()
+				.Check.InAllLoadedAssemblies();
+
+			result.ShouldNotBeViolated();
+		}
+
 		[Fact]
 		public void WhichInheritFrom_WithForceDirect_WithClass_ShouldConsiderParameter()
 		{
@@ -27,13 +138,13 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichInheritFrom_WithForceDirect_WithGenericClass_ShouldConsiderParameter()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichInheritFrom(typeof(FooGenericClass<>), true)
+				.WhichInheritFrom(typeof(FooGenericClass<,>), true)
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
-				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<>).Name));
+				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
 			result.Errors.Should()
 				.NotContain(e => e.ToString().Contains(typeof(FooGenericImplementor2<>).Name));
 		}
@@ -53,7 +164,7 @@ public sealed partial class FilterOnTypeExtensionsTests
 			result.Errors.Should()
 				.NotContain(e => e.ToString().Contains(nameof(FooImplementor2)));
 			result.Errors.Should()
-				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<>).Name));
+				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
 			result.Errors.Should()
 				.NotContain(e => e.ToString().Contains(typeof(FooGenericImplementor2<>).Name));
 		}
@@ -77,13 +188,13 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichInheritFrom_WithoutForceDirect_WithGenericClass_ShouldConsiderParameter()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichInheritFrom(typeof(FooGenericClass<>))
+				.WhichInheritFrom(typeof(FooGenericClass<,>))
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(2);
 			result.Errors.Should()
-				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<>).Name));
+				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor2<>).Name));
 		}
@@ -103,7 +214,7 @@ public sealed partial class FilterOnTypeExtensionsTests
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(nameof(FooImplementor2)));
 			result.Errors.Should()
-				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<>).Name));
+				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor2<>).Name));
 		}
@@ -112,17 +223,17 @@ public sealed partial class FilterOnTypeExtensionsTests
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
-		private class FooGenericClass<T>
+		private class FooGenericClass<T1, T2>
 		{
 		}
 
-		private class FooGenericImplementor1<T> : FooGenericClass<T>, IGenericFooInterface<T>,
+		private class FooGenericImplementor1<T1, T2> : FooGenericClass<T1, T2>,
+			IGenericFooInterface<T1>,
 			IFooInterface
 		{
 		}
 
-		private class FooGenericImplementor2<T> : FooGenericImplementor1<T>
+		private class FooGenericImplementor2<T1> : FooGenericImplementor1<T1, FooBase>
 		{
 		}
 
@@ -138,7 +249,6 @@ public sealed partial class FilterOnTypeExtensionsTests
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
 		private interface IGenericFooInterface<T>
 		{
 		}
