@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Testably.Architecture.Rules.Tests.Internal;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -12,7 +13,7 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichAreNested_ShouldFilterForNestedTypes()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(NestedClass), typeof(FilterOnTypeExtensionsTests)).And
+				.WhichAre(typeof(NestedClass), typeof(RuleTests)).And
 				.WhichAreNested()
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
@@ -26,14 +27,14 @@ public sealed partial class FilterOnTypeExtensionsTests
 		public void WhichAreNotNested_ShouldFilterForNotNestedTypes()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(NestedClass), typeof(FilterOnTypeExtensionsTests)).And
+				.WhichAre(typeof(NestedClass), typeof(RuleTests)).And
 				.WhichAreNotNested()
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
-				.Contain(typeof(FilterOnTypeExtensionsTests).FullName);
+				.Contain(typeof(RuleTests).FullName);
 		}
 
 		private abstract class NestedClass
