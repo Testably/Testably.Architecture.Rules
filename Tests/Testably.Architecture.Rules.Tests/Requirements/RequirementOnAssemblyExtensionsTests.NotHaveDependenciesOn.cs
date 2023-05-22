@@ -9,7 +9,7 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnAssemblyExtensionsTests
 {
-	public sealed class HaveDependenciesOnTests
+	public sealed class NotHaveDependenciesOnTests
 	{
 		[Fact]
 		public void ShouldNotHaveDependenciesOn_CaseSensitivity_ShouldDefaultToSensitive()
