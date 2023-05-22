@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
@@ -89,6 +90,46 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(Type type)
 			=> Predicates.Any(p => p(type));
+	}
+
+	/// <summary>
+	///     Base class for additional filters on <see cref="MethodInfo" />.
+	/// </summary>
+	public abstract class OnMethod : Filter<MethodInfo>, IMethodFilterResult
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<MethodInfo>> Predicates = new();
+
+		private readonly IMethodFilter _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnMethod" />.
+		/// </summary>
+		protected OnMethod(
+			IMethodFilter typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IMethodFilterResult Members
+
+		/// <inheritdoc cref="IMethodFilterResult.And" />
+		public IMethodFilter And => _typeFilter;
+
+		/// <inheritdoc />
+		public Filter<Type> ToTypeFilter()
+		{
+			return FromPredicate<Type>(
+				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)));
+		}
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		public override bool Applies(MethodInfo type)
+			=> Predicates.Any(p => p.Applies(type));
 	}
 }
 
