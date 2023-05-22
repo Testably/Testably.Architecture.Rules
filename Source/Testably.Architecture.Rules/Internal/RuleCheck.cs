@@ -86,7 +86,7 @@ internal class RuleCheck<TType> : IRuleCheck
 		_logAction.Log($"Found {errors.Count} total errors.");
 		foreach (Exemption exemption in _exemptions)
 		{
-			_logAction.Log("  Apply exemption " + exemption);
+			_logAction.Log($"  Apply exemption {exemption}");
 		}
 
 		errors.RemoveAll(error =>

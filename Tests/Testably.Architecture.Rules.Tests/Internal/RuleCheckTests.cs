@@ -143,6 +143,7 @@ public sealed class RuleCheckTests
 		typeRequirement.ShouldSatisfy(_ => true)
 			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
 
+		logs.Should().Contain(log => log.Contains($"{errors.Length} errors in Type {GetType()}"));
 		logs.Should().Contain(log => log.Contains($"{errors.Length} total errors"));
 		foreach (string error in errors)
 		{
@@ -171,7 +172,7 @@ public sealed class RuleCheckTests
 		logs.Should().Contain(log => log.Contains($"{exemptionNames.Length + 1} exemptions"));
 		foreach (string exemptionName in exemptionNames)
 		{
-			logs.Should().Contain(log => log.Contains(exemptionName));
+			logs.Should().Contain(log => log.Contains($"Apply exemption {exemptionName}"));
 		}
 	}
 
@@ -190,7 +191,10 @@ public sealed class RuleCheckTests
 			.ShouldBeSealed()
 			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
 
-		logs.Should().Contain(log => log.Contains($"{filterNames.Length + 1} filters"));
+		logs.Should().Contain(log
+			=> log.Contains($"before applying {filterNames.Length + 1} filters"));
+		logs.Should().Contain(log
+			=> log.Contains($"after applying {filterNames.Length + 1} filters"));
 		foreach (string filterName in filterNames)
 		{
 			logs.Should().Contain(log => log.Contains(filterName));
@@ -211,6 +215,21 @@ public sealed class RuleCheckTests
 		DateTime middleTime = begin.AddSeconds((end - begin).TotalSeconds / 2);
 
 		logs.Should().Contain(log => log.StartsWith(middleTime.ToString("HH:mm:ss")));
+	}
+
+	[Theory]
+	[AutoData]
+	public void WithLog_ShouldIndentErrorsWithMultipleLines()
+	{
+		string errorMessage = $"foo{Environment.NewLine}bar";
+		List<string> logs = new();
+		ITestResult _ = Expect.That.Types
+			.Which(t => t == GetType())
+			.ShouldSatisfy(Requirement.ForType(_ => false, _ => new TestError(errorMessage)))
+			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
+
+		logs.Should().Contain(log => log.Contains($"foo{Environment.NewLine}"));
+		logs.Should().Contain(log => log.Contains("  bar"));
 	}
 
 	#region Helpers
