@@ -127,11 +127,6 @@ public static class TypeExtensions
 			return false;
 		}
 
-		if (parentType.IsGenericType)
-		{
-			parentType = parentType.GetGenericTypeDefinition();
-		}
-
 		Type currentType = type.IsGenericType
 			? type.GetGenericTypeDefinition()
 			: type;
