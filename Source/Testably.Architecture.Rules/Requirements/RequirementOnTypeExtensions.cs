@@ -9,6 +9,48 @@ namespace Testably.Architecture.Rules;
 public static partial class RequirementOnTypeExtensions
 {
 	/// <summary>
+	///     The <see cref="Type" /> should satisfy the given <paramref name="constructorFilter" />.
+	/// </summary>
+	public static IRequirementResult<Type> Should(
+		this IRequirement<Type> @this,
+		IConstructorFilterResult constructorFilter)
+	{
+		Filter<Type> typeFilter = constructorFilter.ToTypeFilter();
+		return @this.ShouldSatisfy(Requirement.ForType(
+			typeFilter.Applies,
+			type => new TypeTestError(type,
+				$"The constructors of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+	}
+
+	/// <summary>
+	///     The <see cref="Type" /> should satisfy the given <paramref name="eventFilter" />.
+	/// </summary>
+	public static IRequirementResult<Type> Should(
+		this IRequirement<Type> @this,
+		IEventFilterResult eventFilter)
+	{
+		Filter<Type> typeFilter = eventFilter.ToTypeFilter();
+		return @this.ShouldSatisfy(Requirement.ForType(
+			typeFilter.Applies,
+			type => new TypeTestError(type,
+				$"The events of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+	}
+
+	/// <summary>
+	///     The <see cref="Type" /> should satisfy the given <paramref name="fieldFilter" />.
+	/// </summary>
+	public static IRequirementResult<Type> Should(
+		this IRequirement<Type> @this,
+		IFieldFilterResult fieldFilter)
+	{
+		Filter<Type> typeFilter = fieldFilter.ToTypeFilter();
+		return @this.ShouldSatisfy(Requirement.ForType(
+			typeFilter.Applies,
+			type => new TypeTestError(type,
+				$"The fields of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+	}
+
+	/// <summary>
 	///     The <see cref="Type" /> should satisfy the given <paramref name="methodFilter" />.
 	/// </summary>
 	public static IRequirementResult<Type> Should(
@@ -23,17 +65,17 @@ public static partial class RequirementOnTypeExtensions
 	}
 
 	/// <summary>
-	///     The <see cref="Type" /> should satisfy the given <paramref name="constructorFilter" />.
+	///     The <see cref="Type" /> should satisfy the given <paramref name="propertyFilter" />.
 	/// </summary>
 	public static IRequirementResult<Type> Should(
 		this IRequirement<Type> @this,
-		IConstructorFilterResult constructorFilter)
+		IPropertyFilterResult propertyFilter)
 	{
-		Filter<Type> typeFilter = constructorFilter.ToTypeFilter();
+		Filter<Type> typeFilter = propertyFilter.ToTypeFilter();
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The constructors of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+				$"The properties of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
 	}
 
 	/// <summary>

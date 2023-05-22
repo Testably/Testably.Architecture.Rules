@@ -47,6 +47,206 @@ public static class Filter
 	}
 
 	/// <summary>
+	///     Base class for additional filters on <see cref="ConstructorInfo" />.
+	/// </summary>
+	public abstract class OnConstructor : Filter<ConstructorInfo>, IConstructorFilterResult
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<ConstructorInfo>> Predicates = new();
+
+		private readonly IConstructorFilter _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnConstructor" />.
+		/// </summary>
+		protected OnConstructor(
+			IConstructorFilter typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IConstructorFilterResult Members
+
+		/// <inheritdoc cref="IConstructorFilterResult.And" />
+		public IConstructorFilter And => _typeFilter;
+
+		/// <inheritdoc />
+		public Filter<Type> ToTypeFilter()
+		{
+			return FromPredicate<Type>(
+				t => Predicates.Any(p => t.GetConstructors().Any(p.Applies)));
+		}
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		public override bool Applies(ConstructorInfo type)
+			=> Predicates.Any(p => p.Applies(type));
+	}
+
+	/// <summary>
+	///     Base class for additional filters on <see cref="EventInfo" />.
+	/// </summary>
+	public abstract class OnEvent : Filter<EventInfo>, IEventFilterResult
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<EventInfo>> Predicates = new();
+
+		private readonly IEventFilter _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnEvent" />.
+		/// </summary>
+		protected OnEvent(
+			IEventFilter typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IEventFilterResult Members
+
+		/// <inheritdoc cref="IEventFilterResult.And" />
+		public IEventFilter And => _typeFilter;
+
+		/// <inheritdoc />
+		public Filter<Type> ToTypeFilter()
+		{
+			return FromPredicate<Type>(
+				t => Predicates.Any(p => t.GetEvents().Any(p.Applies)));
+		}
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		public override bool Applies(EventInfo type)
+			=> Predicates.Any(p => p.Applies(type));
+	}
+
+	/// <summary>
+	///     Base class for additional filters on <see cref="FieldInfo" />.
+	/// </summary>
+	public abstract class OnField : Filter<FieldInfo>, IFieldFilterResult
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<FieldInfo>> Predicates = new();
+
+		private readonly IFieldFilter _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnField" />.
+		/// </summary>
+		protected OnField(
+			IFieldFilter typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IFieldFilterResult Members
+
+		/// <inheritdoc cref="IFieldFilterResult.And" />
+		public IFieldFilter And => _typeFilter;
+
+		/// <inheritdoc />
+		public Filter<Type> ToTypeFilter()
+		{
+			return FromPredicate<Type>(
+				t => Predicates.Any(p => t.GetFields().Any(p.Applies)));
+		}
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		public override bool Applies(FieldInfo type)
+			=> Predicates.Any(p => p.Applies(type));
+	}
+
+	/// <summary>
+	///     Base class for additional filters on <see cref="MethodInfo" />.
+	/// </summary>
+	public abstract class OnMethod : Filter<MethodInfo>, IMethodFilterResult
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<MethodInfo>> Predicates = new();
+
+		private readonly IMethodFilter _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnMethod" />.
+		/// </summary>
+		protected OnMethod(
+			IMethodFilter typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IMethodFilterResult Members
+
+		/// <inheritdoc cref="IMethodFilterResult.And" />
+		public IMethodFilter And => _typeFilter;
+
+		/// <inheritdoc />
+		public Filter<Type> ToTypeFilter()
+		{
+			return FromPredicate<Type>(
+				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)));
+		}
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		public override bool Applies(MethodInfo type)
+			=> Predicates.Any(p => p.Applies(type));
+	}
+
+	/// <summary>
+	///     Base class for additional filters on <see cref="PropertyInfo" />.
+	/// </summary>
+	public abstract class OnProperty : Filter<PropertyInfo>, IPropertyFilterResult
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<PropertyInfo>> Predicates = new();
+
+		private readonly IPropertyFilter _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnProperty" />.
+		/// </summary>
+		protected OnProperty(
+			IPropertyFilter typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IPropertyFilterResult Members
+
+		/// <inheritdoc cref="IPropertyFilterResult.And" />
+		public IPropertyFilter And => _typeFilter;
+
+		/// <inheritdoc />
+		public Filter<Type> ToTypeFilter()
+		{
+			return FromPredicate<Type>(
+				t => Predicates.Any(p => t.GetProperties().Any(p.Applies)));
+		}
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		public override bool Applies(PropertyInfo type)
+			=> Predicates.Any(p => p.Applies(type));
+	}
+
+	/// <summary>
 	///     Base class for additional filters on <see cref="Type" />.
 	/// </summary>
 	public abstract class OnType : Filter<Type>, ITypeFilterResult
@@ -90,46 +290,6 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(Type type)
 			=> Predicates.Any(p => p(type));
-	}
-
-	/// <summary>
-	///     Base class for additional filters on <see cref="MethodInfo" />.
-	/// </summary>
-	public abstract class OnMethod : Filter<MethodInfo>, IMethodFilterResult
-	{
-		/// <summary>
-		///     The list of predicates.
-		/// </summary>
-		protected readonly List<Filter<MethodInfo>> Predicates = new();
-
-		private readonly IMethodFilter _typeFilter;
-
-		/// <summary>
-		///     Initializes a new instance of <see cref="OnMethod" />.
-		/// </summary>
-		protected OnMethod(
-			IMethodFilter typeFilter)
-		{
-			_typeFilter = typeFilter;
-		}
-
-		#region IMethodFilterResult Members
-
-		/// <inheritdoc cref="IMethodFilterResult.And" />
-		public IMethodFilter And => _typeFilter;
-
-		/// <inheritdoc />
-		public Filter<Type> ToTypeFilter()
-		{
-			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)));
-		}
-
-		#endregion
-
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
-		public override bool Applies(MethodInfo type)
-			=> Predicates.Any(p => p.Applies(type));
 	}
 }
 
