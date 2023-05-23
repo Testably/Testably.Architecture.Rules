@@ -7,9 +7,9 @@ namespace Testably.Architecture.Rules.Internal;
 
 internal class RuleBundle : IRule, IRuleCheck
 {
+	private Action<string>? _logAction;
 	private readonly string _name;
 	private readonly IRule[] _rules;
-	private Action<string>? _logAction;
 
 	public RuleBundle(string name, IRule[] rules)
 	{

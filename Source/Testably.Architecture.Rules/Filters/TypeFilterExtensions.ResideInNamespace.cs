@@ -3,16 +3,6 @@
 public static partial class TypeFilterExtensions
 {
 	/// <summary>
-	///     Filter for types where the <see cref="System.Type.Namespace" /> matches the given <paramref name="pattern" />.
-	/// </summary>
-	public static ITypeFilterResult WhichResideInNamespace(this ITypeFilter @this,
-		Match pattern,
-		bool ignoreCase = false)
-	{
-		return @this.Which(type => pattern.Matches(type.Namespace, ignoreCase));
-	}
-
-	/// <summary>
 	///     Filter for types where the <see cref="System.Type.Namespace" /> does not match the given
 	///     <paramref name="pattern" />.
 	/// </summary>
@@ -21,5 +11,15 @@ public static partial class TypeFilterExtensions
 		bool ignoreCase = false)
 	{
 		return @this.Which(type => !pattern.Matches(type.Namespace, ignoreCase));
+	}
+
+	/// <summary>
+	///     Filter for types where the <see cref="System.Type.Namespace" /> matches the given <paramref name="pattern" />.
+	/// </summary>
+	public static ITypeFilterResult WhichResideInNamespace(this ITypeFilter @this,
+		Match pattern,
+		bool ignoreCase = false)
+	{
+		return @this.Which(type => pattern.Matches(type.Namespace, ignoreCase));
 	}
 }
