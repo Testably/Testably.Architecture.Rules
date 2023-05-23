@@ -1,6 +1,8 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
 using System;
+using System.Linq;
+using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -39,6 +41,116 @@ public sealed class FilterTests
 		bool result = sut.Applies(test);
 		result.Should().Be(predicateResult);
 		sut.ToString().Should().Be(name);
+	}
+
+	[Fact]
+	public void OnConstructor_And_ShouldReturnTypeFilter()
+	{
+		IConstructorFilter constructorFilter = Have.Constructor;
+
+		OnConstructorMock sut = new(constructorFilter);
+
+		sut.And.Should().Be(constructorFilter);
+	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void OnConstructor_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	{
+		IConstructorFilter constructorFilter = Have.Constructor;
+
+		OnConstructorMock sut = new(constructorFilter, _ => predicateResult);
+
+		sut.Applies(typeof(DummyClass).GetConstructors().First()).Should().Be(predicateResult);
+	}
+
+	[Fact]
+	public void OnEvent_And_ShouldReturnTypeFilter()
+	{
+		IEventFilter constructorFilter = Have.Event;
+
+		OnEventMock sut = new(constructorFilter);
+
+		sut.And.Should().Be(constructorFilter);
+	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void OnEvent_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	{
+		IEventFilter constructorFilter = Have.Event;
+
+		OnEventMock sut = new(constructorFilter, _ => predicateResult);
+
+		sut.Applies(typeof(DummyClass).GetEvents().First()).Should().Be(predicateResult);
+	}
+
+	[Fact]
+	public void OnField_And_ShouldReturnTypeFilter()
+	{
+		IFieldFilter constructorFilter = Have.Field;
+
+		OnFieldMock sut = new(constructorFilter);
+
+		sut.And.Should().Be(constructorFilter);
+	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void OnField_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	{
+		IFieldFilter constructorFilter = Have.Field;
+
+		OnFieldMock sut = new(constructorFilter, _ => predicateResult);
+
+		sut.Applies(typeof(DummyClass).GetFields().First()).Should().Be(predicateResult);
+	}
+
+	[Fact]
+	public void OnMethod_And_ShouldReturnTypeFilter()
+	{
+		IMethodFilter constructorFilter = Have.Method;
+
+		OnMethodMock sut = new(constructorFilter);
+
+		sut.And.Should().Be(constructorFilter);
+	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void OnMethod_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	{
+		IMethodFilter constructorFilter = Have.Method;
+
+		OnMethodMock sut = new(constructorFilter, _ => predicateResult);
+
+		sut.Applies(typeof(DummyClass).GetMethods().First()).Should().Be(predicateResult);
+	}
+
+	[Fact]
+	public void OnProperty_And_ShouldReturnTypeFilter()
+	{
+		IPropertyFilter constructorFilter = Have.Property;
+
+		OnPropertyMock sut = new(constructorFilter);
+
+		sut.And.Should().Be(constructorFilter);
+	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void OnProperty_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	{
+		IPropertyFilter constructorFilter = Have.Property;
+
+		OnPropertyMock sut = new(constructorFilter, _ => predicateResult);
+
+		sut.Applies(typeof(DummyClass).GetProperties().First()).Should().Be(predicateResult);
 	}
 
 	[Fact]
@@ -95,14 +207,80 @@ public sealed class FilterTests
 		result.ShouldBeViolated();
 	}
 
+	private class OnEventMock : Filter.OnEvent
+	{
+		public OnEventMock(
+			IEventFilter constructorFilter,
+			Func<EventInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
+		}
+	}
+
+	private class OnFieldMock : Filter.OnField
+	{
+		public OnFieldMock(
+			IFieldFilter constructorFilter,
+			Func<FieldInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
+		}
+	}
+
+	private class OnMethodMock : Filter.OnMethod
+	{
+		public OnMethodMock(
+			IMethodFilter constructorFilter,
+			Func<MethodInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
+		}
+	}
+
+	private class OnPropertyMock : Filter.OnProperty
+	{
+		public OnPropertyMock(
+			IPropertyFilter constructorFilter,
+			Func<PropertyInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
+		}
+	} // ReSharper disable UnusedMember.Local
 	private class DummyClass
 	{
+		public int? DummyProperty { get; set; }
 		public int Value { get; }
+		#pragma warning disable CS0414
+		public int? DummyField = 0;
+		#pragma warning restore CS0414
 
 		public DummyClass(int value)
 		{
 			Value = value;
 		}
+
+		#pragma warning disable CS0067
+		public event Dummy DummyEvent = null!;
+		#pragma warning restore CS0067
+		public delegate void Dummy();
+
+		public void DummyMethod() { }
 	}
 
 	private class OnTypeMock : Filter.OnType
@@ -112,6 +290,20 @@ public sealed class FilterTests
 			Func<Type, bool> predicate)
 			: base(typeFilter, predicate)
 		{
+		}
+	}
+
+	private class OnConstructorMock : Filter.OnConstructor
+	{
+		public OnConstructorMock(
+			IConstructorFilter constructorFilter,
+			Func<ConstructorInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
 		}
 	}
 }
