@@ -42,7 +42,7 @@ public sealed class PropertyFilterTests
 	// ReSharper disable once UnusedMember.Local
 	private class TestDummy
 	{
-		public int Dummy1 { get; set; }
-		public int Dummy2 { get; set; }
+		public int Dummy1 { get; set; } = 1;
+		public int Dummy2 { get; set; } = 1;
 	}
 }

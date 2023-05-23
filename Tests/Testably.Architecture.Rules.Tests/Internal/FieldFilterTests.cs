@@ -42,8 +42,10 @@ public sealed class FieldFilterTests
 	private class TestDummy
 	{
 		#pragma warning disable CS0649
-		public int Dummy1;
-		public int Dummy2;
+		#pragma warning disable CS0414
+		public int Dummy1 = 1;
+		public int Dummy2 = 1;
+		#pragma warning restore CS0414
 		#pragma warning restore CS0649
 	}
 }

@@ -27,13 +27,14 @@ public sealed partial class MethodFilterExtensionsTests
 		{
 		}
 
-		// ReSharper disable once ClassNeverInstantiated.Local
+		// ReSharper disable ClassNeverInstantiated.Local
+		// ReSharper disable UnusedMember.Local
 		private class BarClass
 		{
 			[Bar]
-			// ReSharper disable once UnusedMember.Local
 			public void BarMethod()
 			{
+				// Do nothing
 			}
 		}
 
@@ -42,13 +43,12 @@ public sealed partial class MethodFilterExtensionsTests
 		{
 		}
 
-		// ReSharper disable once ClassNeverInstantiated.Local
 		private class FooClass
 		{
 			[Foo]
-			// ReSharper disable once UnusedMember.Local
 			public void FooMethod()
 			{
+				// Do nothing
 			}
 		}
 	}

@@ -67,16 +67,16 @@ public sealed class PropertyInfoExtensionsTests
 	private class TestClass : TestClassBase
 	{
 		[Dummy(1)]
-		public int Property1WithAttribute { get; set; }
+		public int Property1WithAttribute { get; set; } = 1;
 
-		public int Property2WithoutAttribute { get; set; }
+		public int Property2WithoutAttribute { get; set; } = 1;
 
-		public override int PropertyWithAttributeInBaseClass { get; set; }
+		public override int PropertyWithAttributeInBaseClass { get; set; } = 1;
 	}
 
 	private class TestClassBase
 	{
 		[Dummy(1)]
-		public virtual int PropertyWithAttributeInBaseClass { get; set; }
+		public virtual int PropertyWithAttributeInBaseClass { get; set; } = 1;
 	}
 }
