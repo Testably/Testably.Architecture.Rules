@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Testably.Architecture.Rules;
@@ -6,65 +7,29 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension events for <see cref="IEventFilter" />.
 /// </summary>
-public static class EventFilterExtensions
+public static partial class EventFilterExtensions
 {
 	/// <summary>
-	///     Filter <see cref="EventInfo" />s that have an attribute of type <typeparamref name="TAttribute" />.
+	///     Filters the applicable <see cref="EventInfo" /> on which the expectations should be applied.
 	/// </summary>
 	/// <param name="this">The <see cref="IEventFilter" />.</param>
-	/// <param name="predicate">
-	///     (optional) A predicate to check the attribute values.
-	///     <para />
-	///     If not set (<see langword="null" />), will only check if the attribute is present.
-	/// </param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
-	public static WithAttributeFilterResult WithAttribute<TAttribute>(
-		this IEventFilter @this,
-		Func<TAttribute, bool>? predicate = null,
-		bool inherit = true)
-		where TAttribute : Attribute
+	/// <param name="filter">The filter to apply on the <see cref="EventInfo" />.</param>
+	public static IEventFilterResult Which(this IEventFilter @this,
+		Expression<Func<EventInfo, bool>> filter)
 	{
-		WithAttributeFilterResult filter = new(
-			@this);
-		filter.OrAttribute(predicate, inherit);
-		return filter;
+		return @this.Which(Filter.FromPredicate(filter));
 	}
 
 	/// <summary>
-	///     Add additional filters on a <see cref="EventInfo" /> which has an attribute.
+	///     Filters the applicable <see cref="EventInfo" /> on which the expectations should be applied.
 	/// </summary>
-	public class WithAttributeFilterResult : Filter.OnEvent
+	/// <param name="this">The <see cref="IEventFilter" />.</param>
+	/// <param name="filter">The filter to apply on the <see cref="EventInfo" />.</param>
+	/// <param name="name">The name of the filter.</param>
+	public static IEventFilterResult Which(this IEventFilter @this,
+		Func<EventInfo, bool> filter,
+		string name)
 	{
-		internal WithAttributeFilterResult(
-			IEventFilter typeFilter) : base(typeFilter)
-		{
-		}
-
-		/// <summary>
-		///     Adds another filter <see cref="EventInfo" />s for an attribute of type <typeparamref name="TAttribute" />.
-		/// </summary>
-		/// <param name="predicate">
-		///     (optional) A predicate to check the attribute values.
-		///     <para />
-		///     If not set (<see langword="null" />), will only check if the attribute is present.
-		/// </param>
-		/// <param name="inherit">
-		///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-		///     <see langword="false" />.<br />
-		///     Defaults to <see langword="true" />
-		/// </param>
-		public WithAttributeFilterResult OrAttribute<TAttribute>(
-			Func<TAttribute, bool>? predicate = null,
-			bool inherit = true) where TAttribute : Attribute
-		{
-			Predicates.Add(Filter.FromPredicate<EventInfo>(
-				type => type.HasAttribute(predicate, inherit),
-				$"Event should have attribute {typeof(TAttribute).Name}"));
-			return this;
-		}
+		return @this.Which(Filter.FromPredicate(filter, name));
 	}
 }

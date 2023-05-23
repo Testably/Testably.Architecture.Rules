@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Testably.Architecture.Rules;
@@ -6,53 +7,29 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension constructors for <see cref="IConstructorFilter" />.
 /// </summary>
-public static class ConstructorFilterExtensions
+public static partial class ConstructorFilterExtensions
 {
 	/// <summary>
-	///     Filter <see cref="ConstructorInfo" />s that have an attribute of type <typeparamref name="TAttribute" />.
+	///     Filters the applicable <see cref="ConstructorInfo" /> on which the expectations should be applied.
 	/// </summary>
 	/// <param name="this">The <see cref="IConstructorFilter" />.</param>
-	/// <param name="predicate">
-	///     (optional) A predicate to check the attribute values.
-	///     <para />
-	///     If not set (<see langword="null" />), will only check if the attribute is present.
-	/// </param>
-	public static WithAttributeFilterResult WithAttribute<TAttribute>(
-		this IConstructorFilter @this,
-		Func<TAttribute, bool>? predicate = null)
-		where TAttribute : Attribute
+	/// <param name="filter">The filter to apply on the <see cref="ConstructorInfo" />.</param>
+	public static IConstructorFilterResult Which(this IConstructorFilter @this,
+		Expression<Func<ConstructorInfo, bool>> filter)
 	{
-		WithAttributeFilterResult filter = new(
-			@this);
-		filter.OrAttribute(predicate);
-		return filter;
+		return @this.Which(Filter.FromPredicate(filter));
 	}
 
 	/// <summary>
-	///     Add additional filters on a <see cref="ConstructorInfo" /> which has an attribute.
+	///     Filters the applicable <see cref="ConstructorInfo" /> on which the expectations should be applied.
 	/// </summary>
-	public class WithAttributeFilterResult : Filter.OnConstructor
+	/// <param name="this">The <see cref="IConstructorFilter" />.</param>
+	/// <param name="filter">The filter to apply on the <see cref="ConstructorInfo" />.</param>
+	/// <param name="name">The name of the filter.</param>
+	public static IConstructorFilterResult Which(this IConstructorFilter @this,
+		Func<ConstructorInfo, bool> filter,
+		string name)
 	{
-		internal WithAttributeFilterResult(
-			IConstructorFilter typeFilter) : base(typeFilter)
-		{
-		}
-
-		/// <summary>
-		///     Adds another filter <see cref="ConstructorInfo" />s for an attribute of type <typeparamref name="TAttribute" />.
-		/// </summary>
-		/// <param name="predicate">
-		///     (optional) A predicate to check the attribute values.
-		///     <para />
-		///     If not set (<see langword="null" />), will only check if the attribute is present.
-		/// </param>
-		public WithAttributeFilterResult OrAttribute<TAttribute>(
-			Func<TAttribute, bool>? predicate = null) where TAttribute : Attribute
-		{
-			Predicates.Add(Filter.FromPredicate<ConstructorInfo>(
-				type => type.HasAttribute(predicate),
-				$"Constructor should have attribute {typeof(TAttribute).Name}"));
-			return this;
-		}
+		return @this.Which(Filter.FromPredicate(filter, name));
 	}
 }
