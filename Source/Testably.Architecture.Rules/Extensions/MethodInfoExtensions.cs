@@ -30,7 +30,7 @@ public static class MethodInfoExtensions
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = methodInfo.GetCustomAttributes(typeof(TAttribute), inherit)
+		object? attribute = Attribute.GetCustomAttributes(methodInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{

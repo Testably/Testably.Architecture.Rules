@@ -30,7 +30,7 @@ public static class EventInfoExtensions
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = eventInfo.GetCustomAttributes(typeof(TAttribute), inherit)
+		object? attribute = Attribute.GetCustomAttributes(eventInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{

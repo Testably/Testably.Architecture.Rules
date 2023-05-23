@@ -30,7 +30,7 @@ public static class PropertyInfoExtensions
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = propertyInfo.GetCustomAttributes(typeof(TAttribute), inherit)
+		object? attribute = Attribute.GetCustomAttributes(propertyInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
