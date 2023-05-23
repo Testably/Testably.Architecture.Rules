@@ -17,20 +17,14 @@ public static class FieldFilterExtensions
 	///     <para />
 	///     If not set (<see langword="null" />), will only check if the attribute is present.
 	/// </param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
 	public static WithAttributeFilterResult WithAttribute<TAttribute>(
 		this IFieldFilter @this,
-		Func<TAttribute, bool>? predicate = null,
-		bool inherit = true)
+		Func<TAttribute, bool>? predicate = null)
 		where TAttribute : Attribute
 	{
 		WithAttributeFilterResult filter = new(
 			@this);
-		filter.OrAttribute(predicate, inherit);
+		filter.OrAttribute(predicate);
 		return filter;
 	}
 
@@ -52,17 +46,11 @@ public static class FieldFilterExtensions
 		///     <para />
 		///     If not set (<see langword="null" />), will only check if the attribute is present.
 		/// </param>
-		/// <param name="inherit">
-		///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-		///     <see langword="false" />.<br />
-		///     Defaults to <see langword="true" />
-		/// </param>
 		public WithAttributeFilterResult OrAttribute<TAttribute>(
-			Func<TAttribute, bool>? predicate = null,
-			bool inherit = true) where TAttribute : Attribute
+			Func<TAttribute, bool>? predicate = null) where TAttribute : Attribute
 		{
 			Predicates.Add(Filter.FromPredicate<FieldInfo>(
-				type => type.HasAttribute(predicate, inherit),
+				type => type.HasAttribute(predicate),
 				$"Field should have attribute {typeof(TAttribute).Name}"));
 			return this;
 		}

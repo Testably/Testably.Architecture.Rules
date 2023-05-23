@@ -19,18 +19,12 @@ public static class FieldInfoExtensions
 	///     <para />
 	///     If not set (<see langword="null" />), will only check if the attribute is present.
 	/// </param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
 	public static bool HasAttribute<TAttribute>(
 		this FieldInfo fieldInfo,
-		Func<TAttribute, bool>? predicate = null,
-		bool inherit = true)
+		Func<TAttribute, bool>? predicate = null)
 		where TAttribute : Attribute
 	{
-		object? attribute = fieldInfo.GetCustomAttributes(typeof(TAttribute), inherit)
+		object? attribute = fieldInfo.GetCustomAttributes(typeof(TAttribute))
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
