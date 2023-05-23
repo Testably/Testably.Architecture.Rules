@@ -9,9 +9,9 @@ internal class RuleCheck<TType> : IRuleCheck
 {
 	private readonly List<Exemption> _exemptions;
 	private readonly List<Filter<TType>> _filters;
+	private Action<string>? _logAction;
 	private readonly List<Requirement<TType>> _requirements;
 	private readonly Func<IEnumerable<Assembly>, IEnumerable<TType>> _transformer;
-	private Action<string>? _logAction;
 
 	public RuleCheck(
 		List<Filter<TType>> filters,

@@ -70,8 +70,9 @@ public sealed partial class RequirementOnAssemblyExtensionsTests
 		[Theory]
 		[InlineData(false)]
 		[InlineData(true)]
-		public void ShouldNotHaveDependenciesOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
-			bool ignoreCase)
+		public void
+			ShouldNotHaveDependenciesOn_WithIgnoreCaseParameter_ShouldConsiderCaseSensitivity(
+				bool ignoreCase)
 		{
 			IRule rule = Expect.That.Assemblies
 				.ShouldNotHaveDependenciesOn("testably.*", ignoreCase);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -20,7 +19,7 @@ public static partial class RequirementOnAssemblyExtensions
 		Func<Assembly, bool> compiledCondition = condition.Compile();
 		return @this.ShouldSatisfy(
 			Requirement.ForAssembly(compiledCondition,
-				assembly => new AssemblyTestError(assembly, 
+				assembly => new AssemblyTestError(assembly,
 					$"Assembly '{assembly.GetName().Name}' should satisfy the required condition {condition}.")));
 	}
 }

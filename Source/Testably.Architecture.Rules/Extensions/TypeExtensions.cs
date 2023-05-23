@@ -76,7 +76,7 @@ public static class TypeExtensions
 	/// <param name="forceDirect">
 	///     If set to <see langword="false" /> (default value), the <paramref name="interfaceType" />
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
-	///     <paramref name="interfaceType" /> to be directly implemented in the <paramref name="type"/>.
+	///     <paramref name="interfaceType" /> to be directly implemented in the <paramref name="type" />.
 	/// </param>
 	public static bool Implements(
 		this Type type,
@@ -170,5 +170,4 @@ public static class TypeExtensions
 	public static bool IsStatic(this Type type)
 		=> type.IsAbstract && type.IsSealed && !type.IsInterface &&
 		   !type.GetConstructors().Any(m => m.IsPublic);
-	
 }
