@@ -1,55 +1,37 @@
-﻿using FluentAssertions;
-using System;
+﻿using AutoFixture.Xunit2;
+using FluentAssertions;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
-public sealed class MethodFilterExtensionsTests
+public sealed partial class MethodFilterExtensionsTests
 {
-	public sealed class HaveAttributeTests
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		[Fact]
-		public void OrAttribute_ShouldReturnBothTypes()
-		{
-			ITestResult result = Expect.That.Types
-				.Which(Have.Method.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>())
-				.ShouldAlwaysFail()
-				.Check.InAllLoadedAssemblies();
+		IMethodFilterResult sut = Have.Method
+			.Which(_ => predicateResult);
 
-			result.Errors.Length.Should().Be(2);
-			result.Errors.Should().Contain(m => m.ToString().Contains(nameof(FooClass)));
-			result.Errors.Should().Contain(m => m.ToString().Contains(nameof(BarClass)));
-		}
+		bool result = sut.ToTypeFilter()
+			.Applies(typeof(DummyClass));
 
-		[AttributeUsage(AttributeTargets.Method)]
-		private class BarAttribute : Attribute
-		{
-		}
+		result.Should().Be(predicateResult);
+	}
 
-		// ReSharper disable once ClassNeverInstantiated.Local
-		private class BarClass
-		{
-			[Bar]
-			// ReSharper disable once UnusedMember.Local
-			public void BarMethod()
-			{
-			}
-		}
+	[Theory]
+	[InlineAutoData(false)]
+	[InlineAutoData(true)]
+	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
+	{
+		IMethodFilterResult sut = Have.Method
+			.Which(_ => predicateResult, name);
 
-		[AttributeUsage(AttributeTargets.Method)]
-		private class FooAttribute : Attribute
-		{
-		}
+		bool result = sut.ToTypeFilter()
+			.Applies(typeof(DummyClass));
 
-		// ReSharper disable once ClassNeverInstantiated.Local
-		private class FooClass
-		{
-			[Foo]
-			// ReSharper disable once UnusedMember.Local
-			public void FooMethod()
-			{
-			}
-		}
+		result.Should().Be(predicateResult);
 	}
 }
