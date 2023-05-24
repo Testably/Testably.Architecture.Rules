@@ -13,13 +13,24 @@ public sealed partial class EventFilterExtensionsTests
 		public void OrAttribute_ShouldReturnBothTypes()
 		{
 			ITestResult result = Expect.That.Types
-				.Which(Have.Event.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>())
-				.ShouldAlwaysFail()
+				.WhichAre(typeof(BarClass), typeof(FooClass))
+				.Should(Have.Event.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>())
 				.Check.InAllLoadedAssemblies();
 
-			result.Errors.Length.Should().Be(2);
-			result.Errors.Should().Contain(m => m.ToString().Contains(nameof(FooClass)));
-			result.Errors.Should().Contain(m => m.ToString().Contains(nameof(BarClass)));
+			result.ShouldNotBeViolated();
+		}
+
+		[Fact]
+		public void OrAttribute_ShouldUseCorrectErrorMessage()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(BarClass))
+				.Should(Have.Event.WithAttribute<FooAttribute>())
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(1);
+			result.Errors[0].ToString().Should()
+				.Contain($"events of type '{typeof(BarClass)}'");
 		}
 
 		[AttributeUsage(AttributeTargets.Event)]
@@ -27,11 +38,10 @@ public sealed partial class EventFilterExtensionsTests
 		{
 		}
 
-		public delegate void Dummy();
-
-		// ReSharper disable ClassNeverInstantiated.Local
-#pragma warning disable CS8618
-#pragma warning disable CS0067
+		public delegate void Dummy(); // ReSharper disable ClassNeverInstantiated.Local
+		// ReSharper disable EventNeverSubscribedTo.Local
+		#pragma warning disable CS8618
+		#pragma warning disable CS0067
 		private class BarClass
 		{
 			[Bar]
