@@ -5,15 +5,15 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Extension methods for <see cref="MethodInfo" />.
+///     Extension properties for <see cref="PropertyInfo" />.
 /// </summary>
-public static class MethodInfoExtensions
+public static class PropertyInfoExtensions
 {
 	/// <summary>
-	///     Checks if the <paramref name="methodInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
+	///     Checks if the <paramref name="propertyInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>
 	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
-	/// <param name="methodInfo">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
+	/// <param name="propertyInfo">The <see cref="PropertyInfo" /> which is checked to have the attribute.</param>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
 	///     <para />
@@ -25,12 +25,12 @@ public static class MethodInfoExtensions
 	///     Defaults to <see langword="true" />
 	/// </param>
 	public static bool HasAttribute<TAttribute>(
-		this MethodInfo methodInfo,
+		this PropertyInfo propertyInfo,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = Attribute.GetCustomAttributes(methodInfo, typeof(TAttribute), inherit)
+		object? attribute = Attribute.GetCustomAttributes(propertyInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{

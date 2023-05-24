@@ -5,15 +5,15 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Extension methods for <see cref="MethodInfo" />.
+///     Extension events for <see cref="EventInfo" />.
 /// </summary>
-public static class MethodInfoExtensions
+public static class EventInfoExtensions
 {
 	/// <summary>
-	///     Checks if the <paramref name="methodInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
+	///     Checks if the <paramref name="eventInfo" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>
 	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
-	/// <param name="methodInfo">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
+	/// <param name="eventInfo">The <see cref="EventInfo" /> which is checked to have the attribute.</param>
 	/// <param name="predicate">
 	///     (optional) A predicate to check the attribute values.
 	///     <para />
@@ -25,12 +25,12 @@ public static class MethodInfoExtensions
 	///     Defaults to <see langword="true" />
 	/// </param>
 	public static bool HasAttribute<TAttribute>(
-		this MethodInfo methodInfo,
+		this EventInfo eventInfo,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		object? attribute = Attribute.GetCustomAttributes(methodInfo, typeof(TAttribute), inherit)
+		object? attribute = Attribute.GetCustomAttributes(eventInfo, typeof(TAttribute), inherit)
 			.FirstOrDefault();
 		if (attribute is TAttribute castedAttribute)
 		{
