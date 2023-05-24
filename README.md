@@ -15,7 +15,7 @@ This library is used to define architecture rules as expectations that can be ru
   public void ExpectTestClassesToBeSuffixedWithTests()
   {
     IRule rule = Expect.That.Types
-        .WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+        .Which(Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>())
         .ShouldMatchName("*Tests");
 
     rule.Check
