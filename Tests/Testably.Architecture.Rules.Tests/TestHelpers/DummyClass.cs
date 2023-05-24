@@ -24,6 +24,6 @@ internal class DummyClass
 
 	public void DummyMethod()
 	{
-		// Do nothing
+		DummyEvent();
 	}
 }

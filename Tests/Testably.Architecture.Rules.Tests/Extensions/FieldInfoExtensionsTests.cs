@@ -53,9 +53,8 @@ public sealed class FieldInfoExtensionsTests
 	#pragma warning disable CS0649
 	private class TestClass
 	{
-		[Dummy(1)]
-		public int Field1WithAttribute = 1;
-		
+		[Dummy(1)] public int Field1WithAttribute = 1;
+
 		public int Field2WithoutAttribute = 1;
 	}
 	#pragma warning restore CS0649

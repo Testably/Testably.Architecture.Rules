@@ -41,12 +41,13 @@ public sealed partial class ConstructorFilterExtensionsTests
 		{
 		}
 
-		// ReSharper disable once ClassNeverInstantiated.Local
+		// ReSharper disable ClassNeverInstantiated.Local
+		// ReSharper disable UnusedMember.Local
+		// ReSharper disable UnusedParameter.Local
 		private class BarClass
 		{
 			[Bar]
-			// ReSharper disable once UnusedMember.Local
-			public BarClass()
+			public BarClass(int value)
 			{
 			}
 		}
@@ -56,12 +57,10 @@ public sealed partial class ConstructorFilterExtensionsTests
 		{
 		}
 
-		// ReSharper disable once ClassNeverInstantiated.Local
 		private class FooClass
 		{
 			[Foo]
-			// ReSharper disable once UnusedMember.Local
-			public FooClass()
+			public FooClass(int value)
 			{
 			}
 		}

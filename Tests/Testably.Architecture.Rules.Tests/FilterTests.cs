@@ -207,6 +207,20 @@ public sealed class FilterTests
 		result.ShouldBeViolated();
 	}
 
+	private class OnConstructorMock : Filter.OnConstructor
+	{
+		public OnConstructorMock(
+			IConstructorFilter constructorFilter,
+			Func<ConstructorInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
+		}
+	}
+
 	private class OnEventMock : Filter.OnEvent
 	{
 		public OnEventMock(
@@ -270,20 +284,6 @@ public sealed class FilterTests
 			Func<Type, bool> predicate)
 			: base(typeFilter, predicate)
 		{
-		}
-	}
-
-	private class OnConstructorMock : Filter.OnConstructor
-	{
-		public OnConstructorMock(
-			IConstructorFilter constructorFilter,
-			Func<ConstructorInfo, bool>? predicate = null)
-			: base(constructorFilter)
-		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
 		}
 	}
 }

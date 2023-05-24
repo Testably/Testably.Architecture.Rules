@@ -52,9 +52,7 @@ public sealed class ConstructorInfoExtensionsTests
 		{
 			Value = value;
 		}
-	}
-
-	// ReSharper disable UnusedParameter.Local
+	} // ReSharper disable UnusedParameter.Local
 	// ReSharper disable UnusedMember.Local
 	private class TestClass
 	{

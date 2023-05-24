@@ -37,7 +37,9 @@ public sealed class EventFilterTests
 		bool result = typeFilter.Applies(typeof(TestDummy));
 
 		result.Should().Be(expectedResult);
-	} // ReSharper disable EventNeverSubscribedTo.Local
+	}
+
+	// ReSharper disable EventNeverSubscribedTo.Local
 	private class TestDummy
 	{
 		public delegate void Dummy();
