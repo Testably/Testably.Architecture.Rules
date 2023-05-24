@@ -87,7 +87,7 @@ public static class Filter
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -131,7 +131,7 @@ public static class Filter
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -175,7 +175,7 @@ public static class Filter
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -219,7 +219,7 @@ public static class Filter
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -263,7 +263,7 @@ public static class Filter
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
