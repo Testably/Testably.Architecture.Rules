@@ -119,7 +119,7 @@ public sealed class RuleCheckTests
 		{
 			Expect.That.Types
 				.WhichArePublic().And
-				.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+				.Which(Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>())
 				.ShouldBeSealed()
 				.Check.WithLog(null).InAllLoadedAssemblies();
 		});
@@ -208,7 +208,7 @@ public sealed class RuleCheckTests
 		DateTime begin = DateTime.Now;
 		Expect.That.Types
 			.WhichArePublic().And
-			.WhichHaveMethodWithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>()
+			.Which(Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>())
 			.ShouldBeSealed()
 			.Check.WithLog(logs.Add).InAllLoadedAssemblies();
 		DateTime end = DateTime.Now;
