@@ -19,7 +19,7 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The constructors of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+				$"The type '{type.FullName}' should have a {typeFilter}")));
 	}
 
 	/// <summary>
@@ -33,7 +33,7 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The events of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+				$"The type '{type.FullName}' should have a {typeFilter}")));
 	}
 
 	/// <summary>
@@ -47,7 +47,7 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The fields of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+				$"The type '{type.FullName}' should have a {typeFilter}")));
 	}
 
 	/// <summary>
@@ -61,7 +61,7 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The methods of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+				$"The type '{type.FullName}' should have a {typeFilter}")));
 	}
 
 	/// <summary>
@@ -75,7 +75,7 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The properties of type '{type.FullName}' should satisfy the required condition {typeFilter}.")));
+				$"The type '{type.FullName}' should have a {typeFilter}")));
 	}
 
 	/// <summary>

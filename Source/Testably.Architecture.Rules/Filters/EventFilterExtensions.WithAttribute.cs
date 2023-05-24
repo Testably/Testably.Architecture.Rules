@@ -60,7 +60,7 @@ public static partial class EventFilterExtensions
 		{
 			Predicates.Add(Filter.FromPredicate<EventInfo>(
 				type => type.HasAttribute(predicate, inherit),
-				$"Event should have attribute {typeof(TAttribute).Name}"));
+				$"event with attribute {typeof(TAttribute).Name}"));
 			return this;
 		}
 	}

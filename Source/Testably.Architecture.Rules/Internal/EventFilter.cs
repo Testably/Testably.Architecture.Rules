@@ -30,8 +30,13 @@ internal class EventFilter : IEventFilter, IEventFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetEvents().Any(p.Applies)));
+			t => _predicates.All(p => t.GetEvents().Any(p.Applies)),
+			ToString());
 	}
 
 	#endregion
+
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", _predicates.Select(x => x.ToString()));
 }

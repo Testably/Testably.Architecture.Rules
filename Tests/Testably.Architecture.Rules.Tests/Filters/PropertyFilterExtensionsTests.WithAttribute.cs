@@ -30,7 +30,9 @@ public sealed partial class PropertyFilterExtensionsTests
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
-				.Contain($"properties of type '{typeof(BarClass)}'");
+				.Contain($"type '{typeof(BarClass)}'")
+				.And.Contain("property")
+				.And.Contain(nameof(FooAttribute));
 		}
 
 		[AttributeUsage(AttributeTargets.Property)]

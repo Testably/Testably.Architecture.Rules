@@ -48,7 +48,7 @@ public static partial class FieldFilterExtensions
 		{
 			Predicates.Add(Filter.FromPredicate<FieldInfo>(
 				type => type.HasAttribute(predicate),
-				$"Field should have attribute {typeof(TAttribute).Name}"));
+				$"field with attribute {typeof(TAttribute).Name}"));
 			return this;
 		}
 	}

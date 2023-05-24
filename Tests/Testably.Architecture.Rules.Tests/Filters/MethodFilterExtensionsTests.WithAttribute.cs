@@ -30,7 +30,9 @@ public sealed partial class MethodFilterExtensionsTests
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
-				.Contain($"methods of type '{typeof(BarClass)}'");
+				.Contain($"type '{typeof(BarClass)}'")
+				.And.Contain("method")
+				.And.Contain(nameof(FooAttribute));
 		}
 
 		[AttributeUsage(AttributeTargets.Method)]

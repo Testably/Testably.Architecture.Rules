@@ -60,7 +60,7 @@ public static partial class PropertyFilterExtensions
 		{
 			Predicates.Add(Filter.FromPredicate<PropertyInfo>(
 				type => type.HasAttribute(predicate, inherit),
-				$"Property should have attribute {typeof(TAttribute).Name}"));
+				$"property with attribute {typeof(TAttribute).Name}"));
 			return this;
 		}
 	}

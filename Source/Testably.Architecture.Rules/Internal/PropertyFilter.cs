@@ -30,8 +30,13 @@ internal class PropertyFilter : IPropertyFilter, IPropertyFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetProperties().Any(p.Applies)));
+			t => _predicates.All(p => t.GetProperties().Any(p.Applies)),
+			ToString());
 	}
 
 	#endregion
+
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", _predicates.Select(x => x.ToString()));
 }

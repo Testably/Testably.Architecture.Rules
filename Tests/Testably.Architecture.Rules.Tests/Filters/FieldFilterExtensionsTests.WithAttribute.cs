@@ -30,7 +30,9 @@ public sealed partial class FieldFilterExtensionsTests
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
-				.Contain($"fields of type '{typeof(BarClass)}'");
+				.Contain($"type '{typeof(BarClass)}'")
+				.And.Contain("field")
+				.And.Contain(nameof(FooAttribute));
 		}
 
 		[AttributeUsage(AttributeTargets.Field)]

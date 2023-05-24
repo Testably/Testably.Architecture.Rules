@@ -60,7 +60,7 @@ public static partial class MethodFilterExtensions
 		{
 			Predicates.Add(Filter.FromPredicate<MethodInfo>(
 				type => type.HasAttribute(predicate, inherit),
-				$"Method should have attribute {typeof(TAttribute).Name}"));
+				$"method with attribute {typeof(TAttribute).Name}"));
 			return this;
 		}
 	}

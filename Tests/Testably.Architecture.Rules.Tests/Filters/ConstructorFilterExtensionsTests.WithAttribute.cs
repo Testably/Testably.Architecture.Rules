@@ -29,8 +29,11 @@ public sealed partial class ConstructorFilterExtensionsTests
 				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(1);
-			result.Errors[0].ToString().Should()
-				.Contain($"constructors of type '{typeof(BarClass)}'");
+			string errorString = result.Errors[0].ToString();
+			errorString.Should()
+				.Contain($"type '{typeof(BarClass)}'")
+				.And.Contain("constructor")
+				.And.Contain(nameof(FooAttribute));
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]

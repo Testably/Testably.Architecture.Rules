@@ -48,7 +48,7 @@ public static partial class ConstructorFilterExtensions
 		{
 			Predicates.Add(Filter.FromPredicate<ConstructorInfo>(
 				type => type.HasAttribute(predicate),
-				$"Constructor should have attribute {typeof(TAttribute).Name}"));
+				$"constructor with attribute {typeof(TAttribute).Name}"));
 			return this;
 		}
 	}

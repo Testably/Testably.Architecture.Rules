@@ -76,7 +76,7 @@ public static class Filter
 		public Filter<Type> ToTypeFilter()
 		{
 			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetConstructors().Any(p.Applies)));
+				t => Predicates.Any(p => t.GetConstructors().Any(p.Applies)), ToString());
 		}
 
 		#endregion
@@ -84,6 +84,10 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(ConstructorInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -124,6 +128,10 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(EventInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -164,6 +172,10 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(FieldInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -204,6 +216,10 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(MethodInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
@@ -244,6 +260,10 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(PropertyInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" and ", Predicates.Select(x => x.ToString()));
 	}
 
 	/// <summary>
