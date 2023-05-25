@@ -40,7 +40,8 @@ public sealed partial class EventFilterExtensionsTests
 		{
 		}
 
-		public delegate void Dummy(); // ReSharper disable ClassNeverInstantiated.Local
+		public delegate void Dummy();
+		// ReSharper disable ClassNeverInstantiated.Local
 		// ReSharper disable EventNeverSubscribedTo.Local
 		#pragma warning disable CS8618
 		#pragma warning disable CS0067
