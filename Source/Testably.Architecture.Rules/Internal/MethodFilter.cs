@@ -31,8 +31,8 @@ internal class MethodFilter : IMethodFilter, IMethodFilterResult
 	{
 		return Filter.FromPredicate<Type>(
 			t => t.GetMethods().Any(
-				method => _predicates.All(
-					predicate => predicate.Applies(method))),
+				methodInfo => _predicates.All(
+					predicate => predicate.Applies(methodInfo))),
 			ToString());
 	}
 

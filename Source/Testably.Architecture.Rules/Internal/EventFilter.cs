@@ -30,7 +30,9 @@ internal class EventFilter : IEventFilter, IEventFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetEvents().Any(p.Applies)),
+			t => t.GetEvents().Any(
+				eventInfo => _predicates.All(
+					predicate => predicate.Applies(eventInfo))),
 			ToString());
 	}
 
