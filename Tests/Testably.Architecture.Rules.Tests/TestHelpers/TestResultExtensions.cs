@@ -46,9 +46,4 @@ internal static class TestResultExtensions
 		result.Errors.Should().BeEmpty();
 		return result;
 	}
-
-	public static ITypeFilterResult WhichAre(this ITypeFilter typeFilter, params Type[] types)
-	{
-		return typeFilter.Which(t => types.Contains(t));
-	}
 }

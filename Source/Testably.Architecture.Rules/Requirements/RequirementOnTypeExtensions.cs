@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
@@ -15,11 +16,12 @@ public static partial class RequirementOnTypeExtensions
 		this IRequirement<Type> @this,
 		IConstructorFilterResult constructorFilter)
 	{
-		Filter<Type> typeFilter = constructorFilter.ToTypeFilter();
-		return @this.ShouldSatisfy(Requirement.ForType(
-			typeFilter.Applies,
-			type => new TypeTestError(type,
-				$"The type '{type.FullName}' should have a {typeFilter}")));
+		return @this.ShouldSatisfy(
+			Requirement.Delegate<Type, ConstructorInfo>(
+				type => type.GetConstructors(),
+				Requirement.ForConstructor(constructorFilter.Applies,
+					constructor => new ConstructorTestError(constructor,
+						$"The type should have a constructor whose {constructorFilter}"))));
 	}
 
 	/// <summary>
@@ -29,11 +31,12 @@ public static partial class RequirementOnTypeExtensions
 		this IRequirement<Type> @this,
 		IEventFilterResult eventFilter)
 	{
-		Filter<Type> typeFilter = eventFilter.ToTypeFilter();
-		return @this.ShouldSatisfy(Requirement.ForType(
-			typeFilter.Applies,
-			type => new TypeTestError(type,
-				$"The type '{type.FullName}' should have a {typeFilter}")));
+		return @this.ShouldSatisfy(
+			Requirement.Delegate<Type, EventInfo>(
+				type => type.GetEvents(),
+				Requirement.ForEvent(eventFilter.Applies,
+					@event => new EventTestError(@event,
+						$"The type should have a event whose {eventFilter}"))));
 	}
 
 	/// <summary>
@@ -43,11 +46,12 @@ public static partial class RequirementOnTypeExtensions
 		this IRequirement<Type> @this,
 		IFieldFilterResult fieldFilter)
 	{
-		Filter<Type> typeFilter = fieldFilter.ToTypeFilter();
-		return @this.ShouldSatisfy(Requirement.ForType(
-			typeFilter.Applies,
-			type => new TypeTestError(type,
-				$"The type '{type.FullName}' should have a {typeFilter}")));
+		return @this.ShouldSatisfy(
+			Requirement.Delegate<Type, FieldInfo>(
+				type => type.GetFields(),
+				Requirement.ForField(fieldFilter.Applies,
+					field => new FieldTestError(field,
+						$"The type should have a field whose {fieldFilter}"))));
 	}
 
 	/// <summary>
@@ -57,11 +61,12 @@ public static partial class RequirementOnTypeExtensions
 		this IRequirement<Type> @this,
 		IMethodFilterResult methodFilter)
 	{
-		Filter<Type> typeFilter = methodFilter.ToTypeFilter();
-		return @this.ShouldSatisfy(Requirement.ForType(
-			typeFilter.Applies,
-			type => new TypeTestError(type,
-				$"The type '{type.FullName}' should have a method whose {typeFilter}")));
+		return @this.ShouldSatisfy(
+			Requirement.Delegate<Type, MethodInfo>(
+				type => type.GetMethods(),
+				Requirement.ForMethod(methodFilter.Applies,
+					method => new MethodTestError(method,
+						$"The type should have a method whose {methodFilter}"))));
 	}
 
 	/// <summary>
@@ -71,11 +76,12 @@ public static partial class RequirementOnTypeExtensions
 		this IRequirement<Type> @this,
 		IPropertyFilterResult propertyFilter)
 	{
-		Filter<Type> typeFilter = propertyFilter.ToTypeFilter();
-		return @this.ShouldSatisfy(Requirement.ForType(
-			typeFilter.Applies,
-			type => new TypeTestError(type,
-				$"The type '{type.FullName}' should have a {typeFilter}")));
+		return @this.ShouldSatisfy(
+			Requirement.Delegate<Type, PropertyInfo>(
+				type => type.GetProperties(),
+				Requirement.ForProperty(propertyFilter.Applies,
+					property => new PropertyTestError(property,
+						$"The type should have a property whose {propertyFilter}"))));
 	}
 
 	/// <summary>

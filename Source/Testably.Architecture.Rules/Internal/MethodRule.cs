@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -32,9 +33,35 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 	/// <inheritdoc cref="IMethodFilterResult.And" />
 	public IMethodFilter And => this;
 
-	/// <inheritdoc />
-	public Filter<Type> ToTypeFilter()
-		=> throw new NotImplementedException();
+	/// <inheritdoc cref="IMethodFilterResult.Types" />
+	public ITypeExpectation Types
+		=> new TypeRule(new MethodTypeFilter(Filters));
+
+	/// <inheritdoc cref="IFilter{MethodInfo}.Applies(MethodInfo)" />
+	public bool Applies(MethodInfo type)
+		=> Filters.All(f => f.Applies(type));
 
 	#endregion
+
+	private sealed class MethodTypeFilter : Filter<Type>
+	{
+		private readonly List<Filter<MethodInfo>> _methodFilters;
+
+		public MethodTypeFilter(List<Filter<MethodInfo>> methodFilters)
+		{
+			_methodFilters = methodFilters;
+		}
+
+		/// <inheritdoc cref="Filter{Type}.Applies(Type)" />
+		public override bool Applies(Type type)
+		{
+			return type.GetMethods().Any(
+				method => _methodFilters.All(
+					filter => filter.Applies(method)));
+		}
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> $"The type must have a method which matches the filters: {string.Join(", ", _methodFilters)}";
+	}
 }

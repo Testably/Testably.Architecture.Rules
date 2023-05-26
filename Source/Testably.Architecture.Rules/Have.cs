@@ -13,29 +13,29 @@ public static class Have
 	///     Applies conditions on the <see cref="Type.GetConstructors()" />.
 	/// </summary>
 	public static IConstructorFilter Constructor
-		=> new ConstructorFilter();
+		=> new ConstructorRule();
 
 	/// <summary>
 	///     Applies conditions on the <see cref="Type.GetEvents()" />.
 	/// </summary>
 	public static IEventFilter Event
-		=> new EventFilter();
+		=> new EventRule();
 
 	/// <summary>
 	///     Applies conditions on the <see cref="Type.GetFields()" />.
 	/// </summary>
 	public static IFieldFilter Field
-		=> new FieldFilter();
+		=> new FieldRule();
 
 	/// <summary>
 	///     Applies conditions on the <see cref="Type.GetMethods()" />.
 	/// </summary>
 	public static IMethodFilter Method
-		=> new MethodFilter();
+		=> new MethodRule();
 
 	/// <summary>
 	///     Applies conditions on the <see cref="Type.GetProperties()" />.
 	/// </summary>
 	public static IPropertyFilter Property
-		=> new PropertyFilter();
+		=> new PropertyRule();
 }

@@ -6,7 +6,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Add additional filters on the <see cref="EventInfo" />s.
 /// </summary>
-public interface IEventFilterResult
+public interface IEventFilterResult : IFilter<EventInfo>, IRequirement<EventInfo>
 {
 	/// <summary>
 	///     Add additional filters on the <see cref="EventInfo" />s.
@@ -14,7 +14,7 @@ public interface IEventFilterResult
 	IEventFilter And { get; }
 
 	/// <summary>
-	///     Create a <see cref="Filter{Type}" /> which satisfies all event filters.
+	///     Get all types from the filtered events.
 	/// </summary>
-	Filter<Type> ToTypeFilter();
+	ITypeExpectation Types { get; }
 }

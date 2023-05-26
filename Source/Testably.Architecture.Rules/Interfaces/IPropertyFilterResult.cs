@@ -6,7 +6,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Add additional filters on the <see cref="PropertyInfo" />s.
 /// </summary>
-public interface IPropertyFilterResult
+public interface IPropertyFilterResult : IFilter<PropertyInfo>, IRequirement<PropertyInfo>
 {
 	/// <summary>
 	///     Add additional filters on the <see cref="PropertyInfo" />s.
@@ -14,7 +14,7 @@ public interface IPropertyFilterResult
 	IPropertyFilter And { get; }
 
 	/// <summary>
-	///     Create a <see cref="Filter{Type}" /> which satisfies all property filters.
+	///     Get all types from the filtered properties.
 	/// </summary>
-	Filter<Type> ToTypeFilter();
+	ITypeExpectation Types { get; }
 }

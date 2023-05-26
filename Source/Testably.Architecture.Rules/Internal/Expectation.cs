@@ -8,6 +8,22 @@ internal class Expectation : IExpectation
 	public IAssemblyExpectation Assemblies
 		=> new AssemblyRule();
 
+	/// <inheritdoc cref="IExpectation.Constructors" />
+	public IConstructorExpectation Constructors
+		=> new ConstructorRule();
+
+	/// <inheritdoc cref="IExpectation.Events" />
+	public IEventExpectation Events
+		=> new EventRule();
+
+	/// <inheritdoc cref="IExpectation.Fields" />
+	public IFieldExpectation Fields
+		=> new FieldRule();
+
+	/// <inheritdoc cref="IExpectation.Properties" />
+	public IPropertyExpectation Properties
+		=> new PropertyRule();
+
 	/// <inheritdoc cref="IExpectation.Methods" />
 	public IMethodExpectation Methods
 		=> new MethodRule();

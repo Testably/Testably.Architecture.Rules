@@ -75,6 +75,71 @@ public sealed class TypeRuleTests
 	}
 
 	[Fact]
+	public void Methods_ShouldApplyAllTypeFilters()
+	{
+		Type type1 = typeof(Dummy);
+		Type type2 = typeof(TypeRuleTests);
+		string expectedMethodName1 = $"'{nameof(Dummy.Method1)}'";
+		string expectedMethodName2 = $"'{nameof(Methods_ShouldApplyAllTypeFilters)}'";
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2).And
+			.Which(t => t == type1)
+			.Methods
+			.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(2);
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedMethodName1));
+		result.Errors.Should().NotContain(e => e.ToString().Contains(expectedMethodName2));
+	}
+
+	[Fact]
+	public void Methods_ShouldFilterOutMethodsFromTypes()
+	{
+		Type type1 = typeof(Dummy);
+		Type type2 = typeof(TypeRuleTests);
+		string expectedMethodName1 = $"'{nameof(Dummy.Method1)}'";
+		string expectedMethodName2 = $"'{nameof(Methods_ShouldApplyAllTypeFilters)}'";
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2)
+			.Methods
+			.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().BeGreaterThan(2);
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedMethodName1));
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedMethodName2));
+	}
+
+	[Theory]
+	[AutoData]
+	public void Methods_ShouldIncludeTypeFilterNamesInFilterName(
+		string typeFilterName1, string typeFilterName2, string assemblyFilterName)
+	{
+		Type type1 = typeof(TypeRuleTests);
+		Type type2 = typeof(TypeRule);
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2, typeFilterName1).And
+			.Which(_ => false, typeFilterName2)
+			.Methods
+			.Which(_ => false, assemblyFilterName)
+			.ShouldSatisfy(_ => true);
+		string expectedTypeFilters = $"{typeFilterName1}, {typeFilterName2}";
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors[0].Should().BeOfType<EmptySourceTestError>()
+			.Which.ToString().Should()
+			.Contain(expectedTypeFilters).And.Contain(assemblyFilterName);
+	}
+
+	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeTypeName()
 	{
 		Type type = typeof(TypeRuleTests);
@@ -136,5 +201,17 @@ public sealed class TypeRuleTests
 
 		result.Errors.Length.Should().BeLessThan(allTypesCount);
 		result.Errors.Should().OnlyContain(e => e.ToString().Contains($"'{nameof(TypeRuleTests)}"));
+	}
+
+	private class Dummy
+	{
+		public void Method1()
+		{
+		}
+
+		// ReSharper disable once UnusedMember.Local
+		public void Method2()
+		{
+		}
 	}
 }

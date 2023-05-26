@@ -16,4 +16,29 @@ public interface ITypeFilterResult : IRequirement<Type>
 	///     Get all assemblies from the filtered types.
 	/// </summary>
 	IAssemblyExpectation Assemblies { get; }
+
+	/// <summary>
+	///     Get all constructors from the filtered types.
+	/// </summary>
+	IConstructorExpectation Constructors { get; }
+
+	/// <summary>
+	///     Get all events from the filtered types.
+	/// </summary>
+	IEventExpectation Events { get; }
+
+	/// <summary>
+	///     Get all fields from the filtered types.
+	/// </summary>
+	IFieldExpectation Fields { get; }
+
+	/// <summary>
+	///     Get all methods from the filtered types.
+	/// </summary>
+	IMethodExpectation Methods { get; }
+
+	/// <summary>
+	///     Get all properties from the filtered types.
+	/// </summary>
+	IPropertyExpectation Properties { get; }
 }

@@ -5,9 +5,9 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Extension methods for <see cref="IRequirement{Type}" />.
+///     Extension methods for <see cref="IRequirement{MethodInfo}" />.
 /// </summary>
-public static partial class RequirementOnMethodExtensions
+public static class RequirementOnMethodExtensions
 {
 	/// <summary>
 	///     The <see cref="MethodInfo" /> should satisfy the given <paramref name="condition" />.
