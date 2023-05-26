@@ -4,9 +4,23 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules.Internal;
 
-internal class ParameterAnyFilter : IParameterFilter<IUnorderedParameterFilterResult>, IUnorderedParameterFilterResult
+internal class ParameterAnyFilter : IParameterFilter<IUnorderedParameterFilterResult>,
+	IUnorderedParameterFilterResult
 {
 	private readonly List<Filter<ParameterInfo>> _filters = new();
+
+	#region IParameterFilter<IUnorderedParameterFilterResult> Members
+
+	/// <inheritdoc cref="IParameterFilter{IUnorderedParameterFilterResult}.Which(Filter{ParameterInfo})" />
+	public IUnorderedParameterFilterResult Which(Filter<ParameterInfo> filter)
+	{
+		_filters.Add(filter);
+		return this;
+	}
+
+	#endregion
+
+	#region IUnorderedParameterFilterResult Members
 
 	/// <inheritdoc cref="IParameterFilterResult{IUnorderedParameterFilterResult}.And" />
 	public IParameterFilter<IUnorderedParameterFilterResult> And
@@ -20,12 +34,7 @@ internal class ParameterAnyFilter : IParameterFilter<IUnorderedParameterFilterRe
 	public bool Apply(ParameterInfo[] parameterInfos)
 		=> _filters.All(f => parameterInfos.Any(f.Applies));
 
-	/// <inheritdoc cref="IParameterFilter{IUnorderedParameterFilterResult}.Which(Filter{ParameterInfo})" />
-	public IUnorderedParameterFilterResult Which(Filter<ParameterInfo> filter)
-	{
-		_filters.Add(filter);
-		return this;
-	}
+	#endregion
 
 	/// <inheritdoc />
 	public override string ToString()

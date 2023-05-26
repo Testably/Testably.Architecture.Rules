@@ -39,9 +39,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 		[AttributeUsage(AttributeTargets.Constructor)]
 		private class BarAttribute : Attribute
 		{
-		}
-
-		// ReSharper disable ClassNeverInstantiated.Local
+		} // ReSharper disable ClassNeverInstantiated.Local
 		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
 		private class BarClass

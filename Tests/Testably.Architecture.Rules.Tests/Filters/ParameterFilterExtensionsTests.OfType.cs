@@ -54,6 +54,22 @@ public sealed partial class ParameterFilterExtensionsTests
 		}
 
 		[Theory]
+		[InlineData(typeof(Foo), true)]
+		[InlineData(typeof(Bar), false)]
+		public void OfType_Ordered_ShouldReturnExpectedValue(Type type, bool expectedValue)
+		{
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+
+			Filter<Type> typeFilter = Have.Method
+				.With(
+					sut.OfType(type))
+				.ToTypeFilter();
+
+			bool result = typeFilter.Applies(typeof(TestClass));
+			result.Should().Be(expectedValue);
+		}
+
+		[Theory]
 		[InlineData(typeof(Foo), typeof(Bar), true)]
 		[InlineData(typeof(Bar), typeof(Foo), false)]
 		public void OfType_Ordered_Then_ShouldGoToNextParameter(Type type1, Type type2,
@@ -69,22 +85,6 @@ public sealed partial class ParameterFilterExtensionsTests
 				.ToTypeFilter();
 
 			bool result = typeFilter.Applies(typeof(TestClassWithMultipleParameters));
-			result.Should().Be(expectedValue);
-		}
-
-		[Theory]
-		[InlineData(typeof(Foo), true)]
-		[InlineData(typeof(Bar), false)]
-		public void OfType_Ordered_ShouldReturnExpectedValue(Type type, bool expectedValue)
-		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
-
-			Filter<Type> typeFilter = Have.Method
-				.With(
-					sut.OfType(type))
-				.ToTypeFilter();
-
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().Be(expectedValue);
 		}
 

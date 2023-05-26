@@ -236,7 +236,7 @@ public static class Filter
 			And = typeFilter;
 		}
 
-		#region IParameterFilterResult Members
+		#region IParameterFilterResult<TResult> Members
 
 		/// <inheritdoc cref="IParameterFilterResult{TResult}.And" />
 		public IParameterFilter<TResult> And { get; }

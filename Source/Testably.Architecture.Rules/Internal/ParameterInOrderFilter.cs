@@ -7,18 +7,13 @@ namespace Testably.Architecture.Rules.Internal;
 internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilterResult>,
 	IOrderedParameterFilterResult
 {
-	private readonly Dictionary<int, List<Filter<ParameterInfo>>> _filters = new();
 	private int _currentIndex;
+	private readonly Dictionary<int, List<Filter<ParameterInfo>>> _filters = new();
+
+	#region IOrderedParameterFilterResult Members
 
 	/// <inheritdoc cref="IParameterFilterResult{IOrderedParameterFilterResult}.And" />
 	public IParameterFilter<IOrderedParameterFilterResult> And => this;
-
-	/// <inheritdoc cref="IOrderedParameterFilterResult.Then" />
-	public IParameterFilter<IOrderedParameterFilterResult> Then()
-	{
-		_currentIndex++;
-		return this;
-	}
 
 	/// <inheritdoc cref="IOrderedParameterFilterResult.Apply(ParameterInfo[])" />
 	public bool Apply(ParameterInfo[] parameterInfos)
@@ -26,6 +21,13 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 		return _filters.All(
 			item => parameterInfos.Length > item.Key &&
 			        item.Value.All(f => f.Applies(parameterInfos[item.Key])));
+	}
+
+	/// <inheritdoc cref="IOrderedParameterFilterResult.Then" />
+	public IParameterFilter<IOrderedParameterFilterResult> Then()
+	{
+		_currentIndex++;
+		return this;
 	}
 
 	/// <inheritdoc />
@@ -36,6 +38,10 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 				=> $"{IndexToString(item.Key)} parameter {string.Join(" and ", item.Value)}"));
 	}
 
+	#endregion
+
+	#region IParameterFilter<IOrderedParameterFilterResult> Members
+
 	/// <inheritdoc cref="IParameterFilter{IOrderedParameterFilterResult}.Which(Filter{ParameterInfo})" />
 	public IOrderedParameterFilterResult Which(Filter<ParameterInfo> filter)
 	{
@@ -43,9 +49,12 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 		{
 			_filters.Add(_currentIndex, new List<Filter<ParameterInfo>>());
 		}
+
 		_filters[_currentIndex].Add(filter);
 		return this;
 	}
+
+	#endregion
 
 	/// <inheritdoc />
 	public override string ToString()

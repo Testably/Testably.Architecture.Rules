@@ -52,14 +52,13 @@ public sealed partial class EventFilterExtensionsTests
 
 		private class TestClass
 		{
-			public delegate void Dummy();
-
 			// ReSharper disable once EventNeverSubscribedTo.Local
 			#pragma warning disable CS0067
 			#pragma warning disable CS8618
 			public event Dummy TestEvent;
 			#pragma warning restore CS8618
 			#pragma warning restore CS0067
+			public delegate void Dummy();
 		}
 	}
 }

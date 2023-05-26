@@ -88,6 +88,22 @@ public static partial class ParameterFilterExtensions
 			_filterResult = typeFilter.Which(this);
 		}
 
+		#region IUnorderedParameterFilterResult Members
+
+		/// <inheritdoc />
+		public override string FriendlyName()
+			=> _filterResult.FriendlyName();
+
+		/// <inheritdoc />
+		public bool Apply(ParameterInfo[] parameterInfos)
+			=> _filterResult.Apply(parameterInfos);
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
+		public override bool Applies(ParameterInfo type)
+			=> Predicates.Any(predicate => predicate.Applies(type));
+
 		/// <summary>
 		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <typeparamref name="TParameter" />.
 		/// </summary>
@@ -120,18 +136,6 @@ public static partial class ParameterFilterExtensions
 			return this;
 		}
 
-		/// <inheritdoc />
-		public bool Apply(ParameterInfo[] parameterInfos)
-			=> _filterResult.Apply(parameterInfos);
-
-		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
-		public override bool Applies(ParameterInfo type)
-			=> Predicates.Any(predicate => predicate.Applies(type));
-
-		/// <inheritdoc />
-		public override string FriendlyName()
-			=> _filterResult.FriendlyName();
-
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 		{
@@ -152,6 +156,26 @@ public static partial class ParameterFilterExtensions
 		{
 			_filterResult = typeFilter.Which(this);
 		}
+
+		#region IOrderedParameterFilterResult Members
+
+		/// <inheritdoc />
+		public bool Apply(ParameterInfo[] parameterInfos)
+			=> _filterResult.Apply(parameterInfos);
+
+		/// <inheritdoc />
+		public IParameterFilter<IOrderedParameterFilterResult> Then()
+			=> _filterResult.Then();
+
+		/// <inheritdoc />
+		public override string FriendlyName()
+			=> _filterResult.FriendlyName();
+
+		#endregion
+
+		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
+		public override bool Applies(ParameterInfo type)
+			=> Predicates.Any(predicate => predicate.Applies(type));
 
 		/// <summary>
 		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <typeparamref name="TParameter" />.
@@ -184,22 +208,6 @@ public static partial class ParameterFilterExtensions
 				$"is of type {parameterType.Name}"));
 			return this;
 		}
-
-		/// <inheritdoc />
-		public IParameterFilter<IOrderedParameterFilterResult> Then()
-			=> _filterResult.Then();
-
-		/// <inheritdoc />
-		public bool Apply(ParameterInfo[] parameterInfos)
-			=> _filterResult.Apply(parameterInfos);
-
-		/// <inheritdoc />
-		public override string FriendlyName()
-			=> _filterResult.FriendlyName();
-
-		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
-		public override bool Applies(ParameterInfo type)
-			=> Predicates.Any(predicate => predicate.Applies(type));
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()

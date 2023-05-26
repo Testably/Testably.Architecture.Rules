@@ -9,6 +9,8 @@ public sealed partial class ConstructorFilterExtensionsTests
 {
 	public sealed class ParameterTests
 	{
+		#region Test Setup
+
 		private readonly ITestOutputHelper _testOutputHelper;
 
 		public ParameterTests(ITestOutputHelper testOutputHelper)
@@ -16,21 +18,23 @@ public sealed partial class ConstructorFilterExtensionsTests
 			_testOutputHelper = testOutputHelper;
 		}
 
+		#endregion
+
 		[Theory]
-		[InlineData(0, true)]
+		[InlineData(0, false)]
 		[InlineData(1, false)]
-		[InlineData(2, false)]
-		public void WithoutParameter_ShouldBeFoundWhenConstructorHasNoParameters(
+		[InlineData(2, true)]
+		public void With_OrderedParameters_ShouldApplyParameterFilter(
 			int parameterCount, bool expectFound)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
 				.Which(Have.Constructor
 					.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
-					.WithoutParameter())
+					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
-				.Check.WithLog(_testOutputHelper.WriteLine).InAllLoadedAssemblies();
+				.Check.InAllLoadedAssemblies();
 
 			result.ShouldBeViolatedIf(expectFound);
 		}
@@ -55,20 +59,20 @@ public sealed partial class ConstructorFilterExtensionsTests
 		}
 
 		[Theory]
-		[InlineData(0, false)]
+		[InlineData(0, true)]
 		[InlineData(1, false)]
-		[InlineData(2, true)]
-		public void With_OrderedParameters_ShouldApplyParameterFilter(
+		[InlineData(2, false)]
+		public void WithoutParameter_ShouldBeFoundWhenConstructorHasNoParameters(
 			int parameterCount, bool expectFound)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
 				.Which(Have.Constructor
 					.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
-					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
+					.WithoutParameter())
 				.ShouldAlwaysFail()
 				.AllowEmpty()
-				.Check.InAllLoadedAssemblies();
+				.Check.WithLog(_testOutputHelper.WriteLine).InAllLoadedAssemblies();
 
 			result.ShouldBeViolatedIf(expectFound);
 		}
@@ -81,9 +85,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 			{
 				Count = count;
 			}
-		}
-
-		// ReSharper disable UnusedMember.Local
+		} // ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{

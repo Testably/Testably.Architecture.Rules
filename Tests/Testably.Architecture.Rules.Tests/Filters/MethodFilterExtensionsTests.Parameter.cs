@@ -8,16 +8,16 @@ public sealed partial class MethodFilterExtensionsTests
 	public sealed class ParameterTests
 	{
 		[Theory]
-		[InlineData(nameof(TestClass.TestMethodWithoutParameters), true)]
+		[InlineData(nameof(TestClass.TestMethodWithoutParameters), false)]
 		[InlineData(nameof(TestClass.TestMethodWithStringParameter), false)]
-		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), false)]
-		public void WithoutParameter_ShouldBeFoundWhenMethodHasNoParameters(
+		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), true)]
+		public void With_OrderedParameters_ShouldApplyParameterFilter(
 			string methodName, bool expectFound)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
 				.Which(Have.Method.WithName(methodName).And
-					.WithoutParameter())
+					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
@@ -43,18 +43,17 @@ public sealed partial class MethodFilterExtensionsTests
 			result.ShouldBeViolatedIf(expectFound);
 		}
 
-
 		[Theory]
-		[InlineData(nameof(TestClass.TestMethodWithoutParameters), false)]
+		[InlineData(nameof(TestClass.TestMethodWithoutParameters), true)]
 		[InlineData(nameof(TestClass.TestMethodWithStringParameter), false)]
-		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), true)]
-		public void With_OrderedParameters_ShouldApplyParameterFilter(
+		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), false)]
+		public void WithoutParameter_ShouldBeFoundWhenMethodHasNoParameters(
 			string methodName, bool expectFound)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
 				.Which(Have.Method.WithName(methodName).And
-					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
+					.WithoutParameter())
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
@@ -69,12 +68,12 @@ public sealed partial class MethodFilterExtensionsTests
 				// Do nothing
 			}
 
-			public void TestMethodWithStringParameter(string value1)
+			public void TestMethodWithStringAndIntParameter(int value1, string value2)
 			{
 				// Do nothing
 			}
 
-			public void TestMethodWithStringAndIntParameter(int value1, string value2)
+			public void TestMethodWithStringParameter(string value1)
 			{
 				// Do nothing
 			}

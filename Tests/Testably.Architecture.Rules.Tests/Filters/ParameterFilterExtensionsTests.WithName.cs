@@ -48,9 +48,7 @@ public sealed partial class ParameterFilterExtensionsTests
 				.Check.InAllLoadedAssemblies();
 
 			result.ShouldBeViolatedIf(expectMatch);
-		}
-
-		// ReSharper disable UnusedMember.Local
+		} // ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{

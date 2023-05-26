@@ -20,6 +20,7 @@ public static class ExampleTestExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreTestClasses(this ITypeFilter @this)
 	{
-		return @this.Which(Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>());
+		return @this.Which(
+			Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>());
 	}
 }

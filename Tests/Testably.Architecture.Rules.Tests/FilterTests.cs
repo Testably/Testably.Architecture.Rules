@@ -132,6 +132,16 @@ public sealed class FilterTests
 	}
 
 	[Fact]
+	public void OnParameter_And_ShouldReturnTypeFilter()
+	{
+		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
+
+		OnParameterMock sut = new(parameterFilter);
+
+		sut.And.Should().Be(parameterFilter);
+	}
+
+	[Fact]
 	public void OnProperty_And_ShouldReturnTypeFilter()
 	{
 		IPropertyFilter propertyFilter = Have.Property;
@@ -151,16 +161,6 @@ public sealed class FilterTests
 		OnPropertyMock sut = new(propertyFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetProperties().First()).Should().Be(predicateResult);
-	}
-
-	[Fact]
-	public void OnParameter_And_ShouldReturnTypeFilter()
-	{
-		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
-
-		OnParameterMock sut = new(parameterFilter);
-
-		sut.And.Should().Be(parameterFilter);
 	}
 
 	[Fact]
@@ -273,20 +273,6 @@ public sealed class FilterTests
 		}
 	}
 
-	private class OnPropertyMock : Filter.OnProperty
-	{
-		public OnPropertyMock(
-			IPropertyFilter constructorFilter,
-			Func<PropertyInfo, bool>? predicate = null)
-			: base(constructorFilter)
-		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
-		}
-	}
-
 	private class OnParameterMock : Filter.OnParameter<IUnorderedParameterFilterResult>
 	{
 		public OnParameterMock(
@@ -302,6 +288,20 @@ public sealed class FilterTests
 		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
 		public override string FriendlyName()
 			=> throw new NotSupportedException();
+	}
+
+	private class OnPropertyMock : Filter.OnProperty
+	{
+		public OnPropertyMock(
+			IPropertyFilter constructorFilter,
+			Func<PropertyInfo, bool>? predicate = null)
+			: base(constructorFilter)
+		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
+		}
 	}
 
 	private class OnTypeMock : Filter.OnType

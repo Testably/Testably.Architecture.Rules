@@ -1,12 +1,12 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
 public static partial class MethodFilterExtensions
 {
 	/// <summary>
-	///     Filter <see cref="MethodInfo" />s where the <see cref="MemberInfo.Name" /> matches the given <paramref name="pattern" />.
+	///     Filter <see cref="MethodInfo" />s where the <see cref="MemberInfo.Name" /> matches the given
+	///     <paramref name="pattern" />.
 	/// </summary>
 	public static IMethodFilterResult WithName(
 		this IMethodFilter @this,
