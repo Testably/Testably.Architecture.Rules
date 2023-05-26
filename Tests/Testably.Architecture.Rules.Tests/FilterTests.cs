@@ -68,11 +68,11 @@ public sealed class FilterTests
 	[Fact]
 	public void OnEvent_And_ShouldReturnTypeFilter()
 	{
-		IEventFilter constructorFilter = Have.Event;
+		IEventFilter eventFilter = Have.Event;
 
-		OnEventMock sut = new(constructorFilter);
+		OnEventMock sut = new(eventFilter);
 
-		sut.And.Should().Be(constructorFilter);
+		sut.And.Should().Be(eventFilter);
 	}
 
 	[Theory]
@@ -80,9 +80,9 @@ public sealed class FilterTests
 	[InlineData(true)]
 	public void OnEvent_Applies_ShouldReturnPredicateResult(bool predicateResult)
 	{
-		IEventFilter constructorFilter = Have.Event;
+		IEventFilter eventFilter = Have.Event;
 
-		OnEventMock sut = new(constructorFilter, _ => predicateResult);
+		OnEventMock sut = new(eventFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetEvents().First()).Should().Be(predicateResult);
 	}
@@ -90,11 +90,11 @@ public sealed class FilterTests
 	[Fact]
 	public void OnField_And_ShouldReturnTypeFilter()
 	{
-		IFieldFilter constructorFilter = Have.Field;
+		IFieldFilter fieldFilter = Have.Field;
 
-		OnFieldMock sut = new(constructorFilter);
+		OnFieldMock sut = new(fieldFilter);
 
-		sut.And.Should().Be(constructorFilter);
+		sut.And.Should().Be(fieldFilter);
 	}
 
 	[Theory]
@@ -102,9 +102,9 @@ public sealed class FilterTests
 	[InlineData(true)]
 	public void OnField_Applies_ShouldReturnPredicateResult(bool predicateResult)
 	{
-		IFieldFilter constructorFilter = Have.Field;
+		IFieldFilter fieldFilter = Have.Field;
 
-		OnFieldMock sut = new(constructorFilter, _ => predicateResult);
+		OnFieldMock sut = new(fieldFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetFields().First()).Should().Be(predicateResult);
 	}
@@ -112,11 +112,11 @@ public sealed class FilterTests
 	[Fact]
 	public void OnMethod_And_ShouldReturnTypeFilter()
 	{
-		IMethodFilter constructorFilter = Have.Method;
+		IMethodFilter methodFilter = Have.Method;
 
-		OnMethodMock sut = new(constructorFilter);
+		OnMethodMock sut = new(methodFilter);
 
-		sut.And.Should().Be(constructorFilter);
+		sut.And.Should().Be(methodFilter);
 	}
 
 	[Theory]
@@ -124,9 +124,9 @@ public sealed class FilterTests
 	[InlineData(true)]
 	public void OnMethod_Applies_ShouldReturnPredicateResult(bool predicateResult)
 	{
-		IMethodFilter constructorFilter = Have.Method;
+		IMethodFilter methodFilter = Have.Method;
 
-		OnMethodMock sut = new(constructorFilter, _ => predicateResult);
+		OnMethodMock sut = new(methodFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetMethods().First()).Should().Be(predicateResult);
 	}
@@ -134,11 +134,11 @@ public sealed class FilterTests
 	[Fact]
 	public void OnProperty_And_ShouldReturnTypeFilter()
 	{
-		IPropertyFilter constructorFilter = Have.Property;
+		IPropertyFilter propertyFilter = Have.Property;
 
-		OnPropertyMock sut = new(constructorFilter);
+		OnPropertyMock sut = new(propertyFilter);
 
-		sut.And.Should().Be(constructorFilter);
+		sut.And.Should().Be(propertyFilter);
 	}
 
 	[Theory]
@@ -146,11 +146,21 @@ public sealed class FilterTests
 	[InlineData(true)]
 	public void OnProperty_Applies_ShouldReturnPredicateResult(bool predicateResult)
 	{
-		IPropertyFilter constructorFilter = Have.Property;
+		IPropertyFilter propertyFilter = Have.Property;
 
-		OnPropertyMock sut = new(constructorFilter, _ => predicateResult);
+		OnPropertyMock sut = new(propertyFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetProperties().First()).Should().Be(predicateResult);
+	}
+
+	[Fact]
+	public void OnParameter_And_ShouldReturnTypeFilter()
+	{
+		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
+
+		OnParameterMock sut = new(parameterFilter);
+
+		sut.And.Should().Be(parameterFilter);
 	}
 
 	[Fact]
@@ -275,6 +285,23 @@ public sealed class FilterTests
 				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
 			}
 		}
+	}
+
+	private class OnParameterMock : Filter.OnParameter<IUnorderedParameterFilterResult>
+	{
+		public OnParameterMock(
+			IParameterFilter<IUnorderedParameterFilterResult> constructorFilter)
+			: base(constructorFilter)
+		{
+		}
+
+		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
+		public override bool Applies(ParameterInfo type)
+			=> throw new NotSupportedException();
+
+		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
+		public override string FriendlyName()
+			=> throw new NotSupportedException();
 	}
 
 	private class OnTypeMock : Filter.OnType

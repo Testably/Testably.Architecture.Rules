@@ -30,7 +30,9 @@ internal class MethodFilter : IMethodFilter, IMethodFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetMethods().Any(p.Applies)),
+			t => t.GetMethods().Any(
+				method => _predicates.All(
+					predicate => predicate.Applies(method))),
 			ToString());
 	}
 
