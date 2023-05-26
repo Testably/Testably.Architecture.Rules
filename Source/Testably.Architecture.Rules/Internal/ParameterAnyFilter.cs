@@ -12,6 +12,10 @@ internal class ParameterAnyFilter : IParameterFilter<IUnorderedParameterFilterRe
 	public IParameterFilter<IUnorderedParameterFilterResult> And
 		=> this;
 
+	/// <inheritdoc />
+	public string FriendlyName()
+		=> string.Join(" and ", _filters);
+
 	/// <inheritdoc cref="IUnorderedParameterFilterResult.Apply(ParameterInfo[])" />
 	public bool Apply(ParameterInfo[] parameterInfos)
 		=> _filters.All(f => parameterInfos.Any(f.Applies));
@@ -25,5 +29,5 @@ internal class ParameterAnyFilter : IParameterFilter<IUnorderedParameterFilterRe
 
 	/// <inheritdoc />
 	public override string ToString()
-		=> string.Join(" and ", _filters);
+		=> FriendlyName();
 }

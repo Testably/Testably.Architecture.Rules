@@ -188,27 +188,26 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<MethodInfo>> Predicates = new();
 
-		private readonly IMethodFilter _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnMethod" />.
 		/// </summary>
 		protected OnMethod(
 			IMethodFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
+			And = typeFilter;
 		}
 
 		#region IMethodFilterResult Members
 
 		/// <inheritdoc cref="IMethodFilterResult.And" />
-		public IMethodFilter And => _typeFilter;
+		public IMethodFilter And { get; }
 
 		/// <inheritdoc />
 		public Filter<Type> ToTypeFilter()
 		{
 			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)));
+				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)),
+				ToString());
 		}
 
 		#endregion
@@ -225,7 +224,7 @@ public static class Filter
 	/// <summary>
 	///     Base class for additional filters on <see cref="ParameterInfo" />.
 	/// </summary>
-	public abstract class OnParameter<TResult> : IParameterFilterResult<TResult>
+	public abstract class OnParameter<TResult> : Filter<ParameterInfo>, IParameterFilterResult<TResult>
 		where TResult : IParameterFilterResult<TResult>
 	{
 		/// <summary>
@@ -233,30 +232,24 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<ParameterInfo>> Predicates = new();
 
-		private readonly IParameterFilter<TResult> _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnParameter{TResult}" />.
 		/// </summary>
 		protected OnParameter(
 			IParameterFilter<TResult> typeFilter)
 		{
-			_typeFilter = typeFilter;
+			And = typeFilter;
 		}
 
 		#region IParameterFilterResult Members
 
 		/// <inheritdoc cref="IParameterFilterResult{TResult}.And" />
-		public IParameterFilter<TResult> And
-			=> _typeFilter;
+		public IParameterFilter<TResult> And { get; }
+
+		/// <inheritdoc />
+		public abstract string FriendlyName();
 
 		#endregion
-
-		/// <summary>
-		///     Checks if any predicate applies to any <paramref name="parameterInfos" />.
-		/// </summary>
-		protected bool ApplyAny(ParameterInfo[] parameterInfos)
-			=> Predicates.Any(predicate => parameterInfos.Any(predicate.Applies));
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()

@@ -16,7 +16,7 @@ public static partial class MethodFilterExtensions
 	{
 		return @this.Which(Filter.FromPredicate<MethodInfo>(
 			methodInfo => parameterFilter.Apply(methodInfo.GetParameters()),
-			parameterFilter.ToString() ?? ""));
+			parameterFilter.FriendlyName()));
 	}
 
 	/// <summary>
@@ -30,7 +30,7 @@ public static partial class MethodFilterExtensions
 	{
 		return @this.Which(Filter.FromPredicate<MethodInfo>(
 			methodInfo => parameterFilter.Apply(methodInfo.GetParameters()),
-			parameterFilter.ToString() ?? ""));
+			parameterFilter.FriendlyName()));
 	}
 
 	/// <summary>

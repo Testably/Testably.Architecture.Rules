@@ -47,12 +47,12 @@ public static partial class ParameterFilterExtensions
 	public class OfTypeUnorderedFilterResult : Filter.OnParameter<IUnorderedParameterFilterResult>,
 		IUnorderedParameterFilterResult
 	{
-		private readonly IParameterFilter<IUnorderedParameterFilterResult> _typeFilter;
+		private readonly IUnorderedParameterFilterResult _filterResult;
 
 		internal OfTypeUnorderedFilterResult(
 			IParameterFilter<IUnorderedParameterFilterResult> typeFilter) : base(typeFilter)
 		{
-			_typeFilter = typeFilter;
+			_filterResult = typeFilter.Which(this);
 		}
 
 		/// <summary>
@@ -67,23 +67,28 @@ public static partial class ParameterFilterExtensions
 			bool inherit = true)
 		{
 			Predicates.Add(Filter.FromPredicate<ParameterInfo>(
-				parameterInfo
-					=> parameterInfo.ParameterType.IsOrInheritsFrom(typeof(TParameter), !inherit),
-				$"parameter is of type {typeof(TParameter).Name}"));
+				parameterInfo => parameterInfo.ParameterType.IsOrInheritsFrom(typeof(TParameter), !inherit),
+				ToString()));
 			return this;
 		}
 
 		/// <inheritdoc />
 		public bool Apply(ParameterInfo[] parameterInfos)
-			=> _typeFilter
-				.Which(
-					Filter.FromPredicate<ParameterInfo>(
-						parameterInfo => Predicates.Any(predicate => predicate.Applies(parameterInfo))))
-				.Apply(parameterInfos);
+			=> _filterResult.Apply(parameterInfos);
+
+		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
+		public override bool Applies(ParameterInfo type)
+			=> Predicates.Any(predicate => predicate.Applies(type));
+
+		/// <inheritdoc />
+		public override string FriendlyName()
+			=> _filterResult.FriendlyName();
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"{_typeFilter} and ({string.Join(" or ", Predicates)})";
+		{
+			return string.Join(" or ", Predicates);
+		}
 	}
 
 	/// <summary>
@@ -92,12 +97,12 @@ public static partial class ParameterFilterExtensions
 	public class OfTypeOrderedFilterResult : Filter.OnParameter<IOrderedParameterFilterResult>,
 		IOrderedParameterFilterResult
 	{
-		private readonly IParameterFilter<IOrderedParameterFilterResult> _typeFilter;
+		private readonly IOrderedParameterFilterResult _filterResult;
 
 		internal OfTypeOrderedFilterResult(
 			IParameterFilter<IOrderedParameterFilterResult> typeFilter) : base(typeFilter)
 		{
-			_typeFilter = typeFilter;
+			_filterResult = typeFilter.Which(this);
 		}
 
 		/// <summary>
@@ -114,20 +119,34 @@ public static partial class ParameterFilterExtensions
 			Predicates.Add(Filter.FromPredicate<ParameterInfo>(
 				parameterInfo
 					=> parameterInfo.ParameterType.InheritsFrom(typeof(TParameter), !inherit),
-				$"parameter of type {typeof(TParameter).Name}"));
+				$"is of type {typeof(TParameter).Name}"));
 			return this;
 		}
 
 		/// <inheritdoc />
-		public IParameterFilter<IOrderedParameterFilterResult> Then
-			=> _typeFilter;
+		public IParameterFilter<IOrderedParameterFilterResult> Then()
+			=> _filterResult.Then();
 
 		/// <inheritdoc />
 		public bool Apply(ParameterInfo[] parameterInfos)
-			=> ApplyAny(parameterInfos);
+			=> _filterResult.Apply(parameterInfos);
+
+		/// <inheritdoc />
+		public override string FriendlyName()
+			=> _filterResult.FriendlyName();
+
+		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
+		public override bool Applies(ParameterInfo type)
+			=> Predicates.Any(predicate => predicate.Applies(type));
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"{_typeFilter} and ({string.Join(" or ", Predicates)})";
+		{
+			if (Predicates.Count > 0)
+			{
+				return $"({string.Join(" or ", Predicates)})";
+			}
+			return string.Join(" or ", Predicates);
+		}
 	}
 }

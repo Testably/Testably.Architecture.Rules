@@ -10,7 +10,7 @@ public interface IOrderedParameterFilterResult : IParameterFilterResult<IOrdered
 	/// <summary>
 	///     Specifies filters on the next <see cref="ParameterInfo" />.
 	/// </summary>
-	IParameterFilter<IOrderedParameterFilterResult> Then { get; }
+	IParameterFilter<IOrderedParameterFilterResult> Then();
 
 	/// <summary>
 	///     Applies the filter on the array of <see cref="ParameterInfo" />s.

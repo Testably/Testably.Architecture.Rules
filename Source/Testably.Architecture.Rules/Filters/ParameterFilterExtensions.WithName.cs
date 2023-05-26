@@ -16,6 +16,6 @@ public static partial class ParameterFilterExtensions
 	{
 		return @this.Which(
 			parameter => pattern.Matches(parameter.Name, ignoreCase),
-			$"parameter name matches '{pattern}'");
+			$"name matches '{pattern}'");
 	}
 }
