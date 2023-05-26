@@ -5,8 +5,8 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Add additional filters on the array of <see cref="ParameterInfo" />s.
 /// </summary>
-public interface
-	IOrderedParameterFilterResult : IParameterFilterResult<IOrderedParameterFilterResult>
+public interface IOrderedParameterFilterResult
+	: IParameterFilterResult<IOrderedParameterFilterResult>
 {
 	/// <summary>
 	///     Applies the filter on the array of <see cref="ParameterInfo" />s.
