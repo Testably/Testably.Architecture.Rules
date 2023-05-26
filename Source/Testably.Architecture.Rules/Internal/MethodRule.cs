@@ -12,11 +12,7 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 		=> new RuleCheck<MethodInfo>(Filters, Requirements, Exemptions,
 			assemblies => assemblies
 				.SelectMany(assembly => assembly.GetTypes()
-					.SelectMany(type => type
-						.GetMethods(BindingFlags.DeclaredOnly |
-						            BindingFlags.Public |
-						            BindingFlags.Instance)
-						.Where(m => !m.IsSpecialName))));
+					.SelectMany(type => type.GetDeclaredMethods())));
 
 	public MethodRule(params Filter<MethodInfo>[] filters)
 	{
@@ -61,9 +57,7 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 		/// <inheritdoc cref="Filter{Type}.Applies(Type)" />
 		public override bool Applies(Type type)
 		{
-			return type
-				.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
-				.Where(m => !m.IsSpecialName)
+			return type.GetDeclaredMethods()
 				.Any(method => _methodFilters.All(
 					filter => filter.Applies(method)));
 		}

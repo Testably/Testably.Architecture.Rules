@@ -14,7 +14,7 @@ public sealed partial class MethodFilterExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetMethods().First();
+		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
 		IMethodFilterResult sut = Have.Method
 			.Which(_ => predicateResult);
 
@@ -28,7 +28,7 @@ public sealed partial class MethodFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetMethods().First();
+		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
 		IMethodFilterResult sut = Have.Method
 			.Which(_ => predicateResult, name);
 

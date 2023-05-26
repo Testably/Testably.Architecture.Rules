@@ -20,7 +20,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType<FooBase>(allowDerivedType))
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
 		}
@@ -33,7 +33,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>())
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().BeFalse();
 		}
@@ -46,7 +46,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>().OrOfType<Foo>())
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().BeTrue();
 		}
@@ -61,7 +61,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType(type))
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
 		}
@@ -79,7 +79,7 @@ public sealed partial class ParameterFilterExtensionsTests
 					.OfType(type1)
 					.Then()
 					.OfType(type2))
-				.Applies(typeof(TestClassWithMultipleParameters).GetMethods().First());
+				.Applies(typeof(TestClassWithMultipleParameters).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
 		}
@@ -95,7 +95,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType<FooBase>(allowDerivedType))
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
 		}
@@ -108,7 +108,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>())
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().BeFalse();
 		}
@@ -121,7 +121,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>().OrOfType<Foo>())
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().BeTrue();
 		}
@@ -136,7 +136,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			bool result = Have.Method
 				.With(
 					sut.OfType(type))
-				.Applies(typeof(TestClass).GetMethods().First());
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
 		}

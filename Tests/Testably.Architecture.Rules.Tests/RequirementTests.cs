@@ -168,7 +168,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		MethodInfo method = typeof(DummyClass).GetMethods().First();
+		MethodInfo method = typeof(DummyClass).GetDeclaredMethods().First();
 		List<TestError> errors = new();
 
 		Requirement<MethodInfo> sut = Requirement.ForMethod(_ => predicateResult, _ => testError);
@@ -188,7 +188,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		MethodInfo method = typeof(DummyClass).GetMethods().First();
+		MethodInfo method = typeof(DummyClass).GetDeclaredMethods().First();
 		List<TestError> errors = new();
 
 		Requirement<MethodInfo> sut = Requirement.ForMethod(_ => predicateResult);

@@ -12,7 +12,7 @@ public sealed class MethodRuleTests
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeMethodInfoName()
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetMethods().First();
+		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
 		string expectedMethodInfoName = $"'{methodInfo.Name}'";
 		IRule rule = Expect.That.Methods
 			.Which(t => t == methodInfo)
@@ -29,7 +29,7 @@ public sealed class MethodRuleTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetMethods().First();
+		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
 		IRule rule = Expect.That.Methods
 			.Which(t => t == methodInfo)
 			.ShouldSatisfy(Requirement.ForMethod(_ => false, _ => error));
@@ -45,7 +45,7 @@ public sealed class MethodRuleTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetMethods().First();
+		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
 		IRule rule = Expect.That.Methods
 			.Which(t => t == methodInfo)
 			.ShouldSatisfy(Requirement.ForMethod(_ => true, _ => error));
@@ -59,7 +59,7 @@ public sealed class MethodRuleTests
 	[Fact]
 	public void Which_ShouldFilterOutMethodInfos()
 	{
-		int allMethodsCount = typeof(DummyClass).GetMethods().Length;
+		int allMethodsCount = typeof(DummyClass).GetDeclaredMethods().Length;
 
 		IRule rule = Expect.That.Methods
 			.Which(t => t.DeclaringType == typeof(DummyClass)).And

@@ -128,7 +128,7 @@ public sealed class FilterTests
 
 		OnMethodMock sut = new(methodFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetMethods().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyClass).GetDeclaredMethods().First()).Should().Be(predicateResult);
 	}
 
 	[Fact]

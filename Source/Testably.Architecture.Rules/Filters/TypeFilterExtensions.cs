@@ -93,9 +93,7 @@ public static partial class TypeFilterExtensions
 		IMethodFilterResult methodFilter)
 	{
 		return @this.Which(Filter.Delegate<Type, MethodInfo>(
-			type => type
-				.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
-				.Where(m => !m.IsSpecialName),
+			type => type.GetDeclaredMethods(),
 			methodFilter,
 			$"has method whose {methodFilter}"));
 	}

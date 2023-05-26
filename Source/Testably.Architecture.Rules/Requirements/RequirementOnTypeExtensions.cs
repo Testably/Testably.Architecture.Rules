@@ -64,9 +64,7 @@ public static partial class RequirementOnTypeExtensions
 	{
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, MethodInfo>(
-				type => type
-					.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
-					.Where(m => !m.IsSpecialName),
+				type => type.GetDeclaredMethods(),
 				Requirement.ForMethod(methodFilter.Applies,
 					method => new MethodTestError(method,
 						$"The type should have a method whose {methodFilter}"))));
