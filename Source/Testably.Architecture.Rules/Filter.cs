@@ -223,6 +223,47 @@ public static class Filter
 	}
 
 	/// <summary>
+	///     Base class for additional filters on <see cref="ParameterInfo" />.
+	/// </summary>
+	public abstract class OnParameter<TResult> : IParameterFilterResult<TResult>
+		where TResult : IParameterFilterResult<TResult>
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<ParameterInfo>> Predicates = new();
+
+		private readonly IParameterFilter<TResult> _typeFilter;
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnParameter{TResult}" />.
+		/// </summary>
+		protected OnParameter(
+			IParameterFilter<TResult> typeFilter)
+		{
+			_typeFilter = typeFilter;
+		}
+
+		#region IParameterFilterResult Members
+
+		/// <inheritdoc cref="IParameterFilterResult{TResult}.And" />
+		public IParameterFilter<TResult> And
+			=> _typeFilter;
+
+		#endregion
+
+		/// <summary>
+		///     Checks if any predicate applies to any <paramref name="parameterInfos" />.
+		/// </summary>
+		protected bool ApplyAny(ParameterInfo[] parameterInfos)
+			=> Predicates.Any(predicate => parameterInfos.Any(predicate.Applies));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
+	}
+
+	/// <summary>
 	///     Base class for additional filters on <see cref="PropertyInfo" />.
 	/// </summary>
 	public abstract class OnProperty : Filter<PropertyInfo>, IPropertyFilterResult
