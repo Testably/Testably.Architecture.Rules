@@ -210,6 +210,10 @@ public static class Filter
 		public override bool Applies(MethodInfo type)
 			=> Predicates.Any(p => p.Applies(type));
 
+		/// <inheritdoc />
+		public IRequirementResult<MethodInfo> ShouldSatisfy(Requirement<MethodInfo> requirement)
+			=> throw new NotImplementedException();
+
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 			=> string.Join(" or ", Predicates.Select(x => x.ToString()));

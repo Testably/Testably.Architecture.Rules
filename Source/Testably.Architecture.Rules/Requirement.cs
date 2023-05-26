@@ -56,6 +56,25 @@ public static class Requirement
 		Func<Type, TestError> errorGenerator)
 		=> new GenericRequirement<Type>(predicate, errorGenerator);
 
+	/// <summary>
+	///     Creates a new <see cref="Requirement{MethodInfo}" /> from the given <paramref name="predicate" />.
+	/// </summary>
+	public static Requirement<MethodInfo> ForMethod(Expression<Func<MethodInfo, bool>> predicate)
+	{
+		Func<MethodInfo, bool> compiledPredicate = predicate.Compile();
+		return new GenericRequirement<MethodInfo>(compiledPredicate,
+			method => new MethodTestError(method,
+				$"The method '{method.Name}' should satisfy the required condition {predicate}."));
+	}
+
+	/// <summary>
+	///     Creates a new <see cref="Requirement{MethodInfo}" /> from the given <paramref name="predicate" />
+	///     and <paramref name="errorGenerator" />.
+	/// </summary>
+	public static Requirement<MethodInfo> ForMethod(Func<MethodInfo, bool> predicate,
+		Func<MethodInfo, TestError> errorGenerator)
+		=> new GenericRequirement<MethodInfo>(predicate, errorGenerator);
+
 	private sealed class GenericRequirement<TType> : Requirement<TType>
 	{
 		private readonly Func<TType, TestError> _errorGenerator;

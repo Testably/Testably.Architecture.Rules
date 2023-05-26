@@ -8,6 +8,10 @@ internal class Expectation : IExpectation
 	public IAssemblyExpectation Assemblies
 		=> new AssemblyRule();
 
+	/// <inheritdoc cref="IExpectation.Methods" />
+	public IMethodExpectation Methods
+		=> new MethodRule();
+
 	/// <inheritdoc cref="IExpectation.Types" />
 	public ITypeExpectation Types
 		=> new TypeRule();

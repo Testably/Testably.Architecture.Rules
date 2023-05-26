@@ -38,6 +38,10 @@ internal class MethodFilter : IMethodFilter, IMethodFilterResult
 
 	#endregion
 
+	/// <inheritdoc />
+	public IRequirementResult<MethodInfo> ShouldSatisfy(Requirement<MethodInfo> requirement)
+		=> throw new NotImplementedException();
+
 	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
 		=> string.Join(" and ", _predicates.Select(x => x.ToString()));

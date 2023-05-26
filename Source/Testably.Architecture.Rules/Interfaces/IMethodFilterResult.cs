@@ -6,7 +6,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Add additional filters on the <see cref="MethodInfo" />s.
 /// </summary>
-public interface IMethodFilterResult
+public interface IMethodFilterResult : IRequirement<MethodInfo>
 {
 	/// <summary>
 	///     Add additional filters on the <see cref="MethodInfo" />s.

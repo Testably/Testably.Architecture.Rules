@@ -14,6 +14,11 @@ public interface IExpectation
 	IAssemblyExpectation Assemblies { get; }
 
 	/// <summary>
+	///     Defines expectations for <see cref="MethodInfo" />.
+	/// </summary>
+	IMethodExpectation Methods { get; }
+
+	/// <summary>
 	///     Defines expectations for <see cref="Type" />.
 	/// </summary>
 	ITypeExpectation Types { get; }
