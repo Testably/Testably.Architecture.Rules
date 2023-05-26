@@ -14,7 +14,8 @@ public static partial class ParameterFilterExtensions
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
 	/// <param name="filter">The filter to apply on the <see cref="ParameterInfo" />.</param>
-	public static TResult Which<TResult>(this IParameterFilter<TResult> @this,
+	public static TResult Which<TResult>(
+		this IParameterFilter<TResult> @this,
 		Expression<Func<ParameterInfo, bool>> filter)
 		where TResult : IParameterFilterResult<TResult>
 	{
@@ -27,7 +28,8 @@ public static partial class ParameterFilterExtensions
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
 	/// <param name="filter">The filter to apply on the <see cref="ParameterInfo" />.</param>
 	/// <param name="name">The name of the filter.</param>
-	public static TResult Which<TResult>(this IParameterFilter<TResult> @this,
+	public static TResult Which<TResult>(
+		this IParameterFilter<TResult> @this,
 		Func<ParameterInfo, bool> filter,
 		string name)
 		where TResult : IParameterFilterResult<TResult>
