@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsInterface,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be an interface.")));
+				$"The type '{type.Name}' should be an interface.")));
 
 	/// <summary>
 	///     Expect the types to not be an interface.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsInterface,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be an interface.")));
+				$"The type '{type.Name}' should not be an interface.")));
 }

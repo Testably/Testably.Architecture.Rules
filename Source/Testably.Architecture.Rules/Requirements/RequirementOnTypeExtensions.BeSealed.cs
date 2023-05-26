@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsSealed,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be sealed.")));
+				$"The type '{type.Name}' should be sealed.")));
 
 	/// <summary>
 	///     Expect the types to not be sealed.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsSealed,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be sealed.")));
+				$"The type '{type.Name}' should not be sealed.")));
 }

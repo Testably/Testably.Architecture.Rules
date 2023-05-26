@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsGenericType,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be generic.")));
+				$"The type '{type.Name}' should be generic.")));
 
 	/// <summary>
 	///     Expect the types to not be generic.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsGenericType,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be generic.")));
+				$"The type '{type.Name}' should not be generic.")));
 }

@@ -61,7 +61,7 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			typeFilter.Applies,
 			type => new TypeTestError(type,
-				$"The type '{type.FullName}' should have a {typeFilter}")));
+				$"The type '{type.FullName}' should have a method whose {typeFilter}")));
 	}
 
 	/// <summary>
@@ -89,6 +89,6 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(Requirement.ForType(
 			compiledCondition,
 			type => new TypeTestError(type,
-				$"Type '{type.FullName}' should satisfy the required condition {condition}.")));
+				$"The type '{type.FullName}' should satisfy the required condition {condition}.")));
 	}
 }

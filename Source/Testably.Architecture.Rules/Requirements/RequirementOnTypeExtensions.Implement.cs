@@ -36,7 +36,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.Implements(interfaceType, forceDirect),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should{(forceDirect ? " directly" : "")} implement '{interfaceType.Name}'.")));
+				$"The type '{type.Name}' should{(forceDirect ? " directly" : "")} implement '{interfaceType.Name}'.")));
 
 	/// <summary>
 	///     Expect the types to not implement the <typeparamref name="TInterface" />.
@@ -70,5 +70,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.Implements(interfaceType, forceDirect),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not{(forceDirect ? " directly" : "")} implement '{interfaceType.Name}'.")));
+				$"The type '{type.Name}' should not{(forceDirect ? " directly" : "")} implement '{interfaceType.Name}'.")));
 }

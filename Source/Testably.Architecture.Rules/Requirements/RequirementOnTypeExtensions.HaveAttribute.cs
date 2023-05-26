@@ -26,7 +26,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.HasAttribute(predicate, inherit),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should have correct attribute '{typeof(TAttribute).Name}'.")));
+				$"The type '{type.Name}' should have correct attribute '{typeof(TAttribute).Name}'.")));
 
 	/// <summary>
 	///     Expect the types to not have an attribute of type <typeparamref name="TAttribute" />.
@@ -50,5 +50,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.HasAttribute(predicate, inherit),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not have correct attribute '{typeof(TAttribute).Name}'.")));
+				$"The type '{type.Name}' should not have correct attribute '{typeof(TAttribute).Name}'.")));
 }

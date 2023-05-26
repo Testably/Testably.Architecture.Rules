@@ -22,7 +22,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => pattern.Matches(type.Name, ignoreCase),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should match pattern '{pattern}'.")));
+				$"The type '{type.Name}' should match pattern '{pattern}'.")));
 
 	/// <summary>
 	///     Expect the <see cref="MemberInfo.Name" /> of the types to not match the given <paramref name="pattern" />.
@@ -41,5 +41,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !pattern.Matches(type.Name, ignoreCase),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not match pattern '{pattern}'.")));
+				$"The type '{type.Name}' should not match pattern '{pattern}'.")));
 }

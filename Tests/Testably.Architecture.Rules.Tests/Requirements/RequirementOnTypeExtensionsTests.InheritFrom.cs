@@ -118,7 +118,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolated();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
-			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+			result.Errors[0].ToString().Should().Contain($"type '{type.Name}'")
 				.And.Contain(
 					$"should{(forceDirect ? " directly" : "")} inherit from '{nameof(BarClass)}'.");
 		}
@@ -353,7 +353,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolated();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
-			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+			result.Errors[0].ToString().Should().Contain($"type '{type.Name}'")
 				.And.Contain(
 					$"should not{(forceDirect ? " directly" : "")} inherit from '{nameof(FooBase)}'.");
 		}

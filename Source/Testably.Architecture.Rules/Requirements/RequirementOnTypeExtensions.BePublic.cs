@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsNested ? type.IsNestedPublic : type.IsPublic,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be public.")));
+				$"The type '{type.Name}' should be public.")));
 
 	/// <summary>
 	///     Expect the types to not be public.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsNested ? !type.IsNestedPublic : !type.IsPublic,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be public.")));
+				$"The type '{type.Name}' should not be public.")));
 }
