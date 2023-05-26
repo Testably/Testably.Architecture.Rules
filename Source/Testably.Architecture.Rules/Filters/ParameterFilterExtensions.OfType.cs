@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Testably.Architecture.Rules;
@@ -9,17 +10,33 @@ public static partial class ParameterFilterExtensions
 	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <typeparamref name="TParameter" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
+	/// <param name="allowDerivedType">
+	///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+	///     Defaults to <see langword="false" />
 	/// </param>
 	public static OfTypeOrderedFilterResult OfType<TParameter>(
 		this IParameterFilter<IOrderedParameterFilterResult> @this,
-		bool inherit = true)
+		bool allowDerivedType = false)
+	{
+		return @this.OfType(typeof(TParameter), allowDerivedType);
+	}
+
+	/// <summary>
+	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <paramref name="parameterType" />.
+	/// </summary>
+	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
+	/// <param name="parameterType">The type of the parameter.</param>
+	/// <param name="allowDerivedType">
+	///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+	///     Defaults to <see langword="false" />
+	/// </param>
+	public static OfTypeOrderedFilterResult OfType(
+		this IParameterFilter<IOrderedParameterFilterResult> @this,
+		Type parameterType,
+		bool allowDerivedType = false)
 	{
 		OfTypeOrderedFilterResult filter = new(@this);
-		filter.OrOfType<TParameter>(inherit);
+		filter.OrOfType(parameterType, allowDerivedType);
 		return filter;
 	}
 
@@ -27,17 +44,33 @@ public static partial class ParameterFilterExtensions
 	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <typeparamref name="TParameter" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
+	/// <param name="allowDerivedType">
+	///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+	///     Defaults to <see langword="false" />
 	/// </param>
 	public static OfTypeUnorderedFilterResult OfType<TParameter>(
 		this IParameterFilter<IUnorderedParameterFilterResult> @this,
-		bool inherit = true)
+		bool allowDerivedType = false)
+	{
+		return @this.OfType(typeof(TParameter), allowDerivedType);
+	}
+
+	/// <summary>
+	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <paramref name="parameterType" />.
+	/// </summary>
+	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
+	/// <param name="parameterType">The type of the parameter.</param>
+	/// <param name="allowDerivedType">
+	///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+	///     Defaults to <see langword="false" />
+	/// </param>
+	public static OfTypeUnorderedFilterResult OfType(
+		this IParameterFilter<IUnorderedParameterFilterResult> @this,
+		Type parameterType,
+		bool allowDerivedType = false)
 	{
 		OfTypeUnorderedFilterResult filter = new(@this);
-		filter.OrOfType<TParameter>(inherit);
+		filter.OrOfType(parameterType, allowDerivedType);
 		return filter;
 	}
 
@@ -58,16 +91,31 @@ public static partial class ParameterFilterExtensions
 		/// <summary>
 		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <typeparamref name="TParameter" />.
 		/// </summary>
-		/// <param name="inherit">
-		///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-		///     <see langword="false" />.<br />
-		///     Defaults to <see langword="true" />
+		/// <param name="allowDerivedType">
+		///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+		///     Defaults to <see langword="false" />
 		/// </param>
 		public OfTypeUnorderedFilterResult OrOfType<TParameter>(
-			bool inherit = true)
+			bool allowDerivedType = false)
+		{
+			return OrOfType(typeof(TParameter), allowDerivedType);
+		}
+
+		/// <summary>
+		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <paramref name="parameterType" />.
+		/// </summary>
+		/// <param name="parameterType">The type of the parameter.</param>
+		/// <param name="allowDerivedType">
+		///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+		///     Defaults to <see langword="false" />
+		/// </param>
+		public OfTypeUnorderedFilterResult OrOfType(
+			Type parameterType,
+			bool allowDerivedType = false)
 		{
 			Predicates.Add(Filter.FromPredicate<ParameterInfo>(
-				parameterInfo => parameterInfo.ParameterType.IsOrInheritsFrom(typeof(TParameter), !inherit),
+				parameterInfo => parameterInfo.ParameterType
+					.IsOrInheritsFrom(parameterType, !allowDerivedType),
 				ToString()));
 			return this;
 		}
@@ -108,18 +156,32 @@ public static partial class ParameterFilterExtensions
 		/// <summary>
 		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <typeparamref name="TParameter" />.
 		/// </summary>
-		/// <param name="inherit">
-		///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-		///     <see langword="false" />.<br />
-		///     Defaults to <see langword="true" />
+		/// <param name="allowDerivedType">
+		///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+		///     Defaults to <see langword="false" />
 		/// </param>
 		public OfTypeOrderedFilterResult OrOfType<TParameter>(
-			bool inherit = true)
+			bool allowDerivedType = false)
+		{
+			return OrOfType(typeof(TParameter), allowDerivedType);
+		}
+
+		/// <summary>
+		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <paramref name="parameterType" />.
+		/// </summary>
+		/// <param name="parameterType">The type of the parameter.</param>
+		/// <param name="allowDerivedType">
+		///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
+		///     Defaults to <see langword="false" />
+		/// </param>
+		public OfTypeOrderedFilterResult OrOfType(
+			Type parameterType,
+			bool allowDerivedType = false)
 		{
 			Predicates.Add(Filter.FromPredicate<ParameterInfo>(
-				parameterInfo
-					=> parameterInfo.ParameterType.IsOrInheritsFrom(typeof(TParameter), !inherit),
-				$"is of type {typeof(TParameter).Name}"));
+				parameterInfo => parameterInfo.ParameterType
+					.IsOrInheritsFrom(parameterType, !allowDerivedType),
+				$"is of type {parameterType.Name}"));
 			return this;
 		}
 
@@ -146,6 +208,7 @@ public static partial class ParameterFilterExtensions
 			{
 				return $"({string.Join(" or ", Predicates)})";
 			}
+
 			return string.Join(" or ", Predicates);
 		}
 	}

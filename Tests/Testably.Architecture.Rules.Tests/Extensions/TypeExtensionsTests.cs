@@ -94,19 +94,6 @@ public sealed class TypeExtensionsTests
 		result.Should().BeFalse();
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void InheritsFrom_SameType_ShouldConsiderAllowSameTypeParameter(bool allowSameType)
-	{
-		Type sut = typeof(TestClassWithAttribute);
-
-		bool result =
-			sut.InheritsFrom(typeof(TestClassWithAttribute), allowSameType: allowSameType);
-
-		result.Should().Be(allowSameType);
-	}
-
 	[Fact]
 	public void InheritsFrom_SameType_ShouldReturnFalse()
 	{

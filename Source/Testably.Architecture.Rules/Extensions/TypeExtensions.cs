@@ -117,19 +117,14 @@ public static class TypeExtensions
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
 	///     <paramref name="parentType" /> to be the direct parent.
 	/// </param>
-	/// <param name="allowSameType">
-	///     The value returned, when the <paramref name="type" /> is the same as the
-	///     <paramref name="parentType" />.
-	/// </param>
 	public static bool InheritsFrom(
 		this Type type,
 		Type parentType,
-		bool forceDirect = false,
-		bool allowSameType = false)
+		bool forceDirect = false)
 	{
 		if (type == parentType)
 		{
-			return allowSameType;
+			return false;
 		}
 
 		Type currentType = type.IsGenericType
@@ -183,7 +178,12 @@ public static class TypeExtensions
 		Type parentType,
 		bool forceDirect = false)
 	{
-		return type.InheritsFrom(parentType, forceDirect, true);
+		if (type == parentType)
+		{
+			return true;
+		}
+
+		return !forceDirect && type.InheritsFrom(parentType);
 	}
 
 	/// <summary>
