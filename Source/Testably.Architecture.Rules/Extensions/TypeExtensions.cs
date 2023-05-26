@@ -63,9 +63,12 @@ public static class TypeExtensions
 		where TAttribute : Attribute
 	{
 		predicate ??= (_, _) => true;
-		return type.GetMethods().Any(
-			method => method.HasAttribute<TAttribute>(
-				a => predicate(a, method), inherit));
+		return type
+			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+			.Where(m => !m.IsSpecialName)
+			.Any(
+				method => method.HasAttribute<TAttribute>(
+					a => predicate(a, method), inherit));
 	}
 
 	/// <summary>

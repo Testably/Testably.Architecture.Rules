@@ -10,7 +10,13 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 	/// <inheritdoc cref="IRule.Check" />
 	public override IRuleCheck Check
 		=> new RuleCheck<MethodInfo>(Filters, Requirements, Exemptions,
-			_ => _.SelectMany(a => a.GetTypes().SelectMany(t => t.GetMethods())));
+			assemblies => assemblies
+				.SelectMany(assembly => assembly.GetTypes()
+					.SelectMany(type => type
+						.GetMethods(BindingFlags.DeclaredOnly |
+						            BindingFlags.Public |
+						            BindingFlags.Instance)
+						.Where(m => !m.IsSpecialName))));
 
 	public MethodRule(params Filter<MethodInfo>[] filters)
 	{
@@ -55,8 +61,10 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 		/// <inheritdoc cref="Filter{Type}.Applies(Type)" />
 		public override bool Applies(Type type)
 		{
-			return type.GetMethods().Any(
-				method => _methodFilters.All(
+			return type
+				.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+				.Where(m => !m.IsSpecialName)
+				.Any(method => _methodFilters.All(
 					filter => filter.Applies(method)));
 		}
 

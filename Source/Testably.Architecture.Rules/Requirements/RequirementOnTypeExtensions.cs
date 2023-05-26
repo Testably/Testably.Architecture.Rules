@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -63,7 +64,9 @@ public static partial class RequirementOnTypeExtensions
 	{
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, MethodInfo>(
-				type => type.GetMethods(),
+				type => type
+					.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+					.Where(m => !m.IsSpecialName),
 				Requirement.ForMethod(methodFilter.Applies,
 					method => new MethodTestError(method,
 						$"The type should have a method whose {methodFilter}"))));

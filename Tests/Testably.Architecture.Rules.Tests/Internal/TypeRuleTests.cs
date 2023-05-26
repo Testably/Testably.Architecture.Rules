@@ -2,7 +2,9 @@
 using FluentAssertions;
 using System;
 using System.Linq;
+using System.Reflection;
 using Testably.Architecture.Rules.Internal;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Internal;
@@ -77,9 +79,9 @@ public sealed class TypeRuleTests
 	[Fact]
 	public void Methods_ShouldApplyAllTypeFilters()
 	{
-		Type type1 = typeof(Dummy);
+		Type type1 = typeof(DummyClass);
 		Type type2 = typeof(TypeRuleTests);
-		string expectedMethodName1 = $"'{nameof(Dummy.Method1)}'";
+		string expectedMethodName1 = $"'{nameof(DummyClass.DummyMethod1)}'";
 		string expectedMethodName2 = $"'{nameof(Methods_ShouldApplyAllTypeFilters)}'";
 		IRule rule = Expect.That.Types
 			.Which(t => t == type1 || t == type2).And
@@ -98,9 +100,9 @@ public sealed class TypeRuleTests
 	[Fact]
 	public void Methods_ShouldFilterOutMethodsFromTypes()
 	{
-		Type type1 = typeof(Dummy);
+		Type type1 = typeof(DummyClass);
 		Type type2 = typeof(TypeRuleTests);
-		string expectedMethodName1 = $"'{nameof(Dummy.Method1)}'";
+		string expectedMethodName1 = $"'{nameof(DummyClass.DummyMethod1)}'";
 		string expectedMethodName2 = $"'{nameof(Methods_ShouldApplyAllTypeFilters)}'";
 		IRule rule = Expect.That.Types
 			.Which(t => t == type1 || t == type2)
@@ -201,17 +203,5 @@ public sealed class TypeRuleTests
 
 		result.Errors.Length.Should().BeLessThan(allTypesCount);
 		result.Errors.Should().OnlyContain(e => e.ToString().Contains($"'{nameof(TypeRuleTests)}"));
-	}
-
-	private class Dummy
-	{
-		public void Method1()
-		{
-		}
-
-		// ReSharper disable once UnusedMember.Local
-		public void Method2()
-		{
-		}
 	}
 }
