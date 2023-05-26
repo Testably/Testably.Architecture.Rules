@@ -163,6 +163,30 @@ public static class TypeExtensions
 	}
 
 	/// <summary>
+	///     Determines whether the current <see cref="Type" /> is the same type or inherits from the
+	///     <paramref name="parentType" />.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <param name="parentType">The parent <see cref="Type" />.</param>
+	/// <param name="forceDirect">
+	///     If set to <see langword="false" /> (default value), the <paramref name="parentType" />
+	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
+	///     <paramref name="parentType" /> to be the direct parent.
+	/// </param>
+	public static bool IsOrInheritsFrom(
+		this Type type,
+		Type parentType,
+		bool forceDirect = false)
+	{
+		if (type == parentType)
+		{
+			return true;
+		}
+
+		return !forceDirect && type.InheritsFrom(parentType);
+	}
+
+	/// <summary>
 	///     Gets a value indicating whether the <see cref="Type" /> is static.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>

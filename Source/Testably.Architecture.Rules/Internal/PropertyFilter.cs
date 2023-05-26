@@ -30,7 +30,9 @@ internal class PropertyFilter : IPropertyFilter, IPropertyFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetProperties().Any(p.Applies)),
+			t => t.GetProperties().Any(
+				propertyInfo => _predicates.All(
+					predicate => predicate.Applies(propertyInfo))),
 			ToString());
 	}
 

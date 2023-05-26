@@ -35,7 +35,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.InheritsFrom(baseType, forceDirect),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
+				$"The type '{type.Name}' should{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
 
 	/// <summary>
 	///     Expect the types to not inherit from <typeparamref name="TBase" />.
@@ -68,5 +68,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.InheritsFrom(baseType, forceDirect),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
+				$"The type '{type.Name}' should not{(forceDirect ? " directly" : "")} inherit from '{baseType.Name}'.")));
 }

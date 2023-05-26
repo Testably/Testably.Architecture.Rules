@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsClass,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be a class.")));
+				$"The type '{type.Name}' should be a class.")));
 
 	/// <summary>
 	///     Expect the types to not be a class.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsClass,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be a class.")));
+				$"The type '{type.Name}' should not be a class.")));
 }

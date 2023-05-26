@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsNested,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be nested.")));
+				$"The type '{type.Name}' should be nested.")));
 
 	/// <summary>
 	///     Expect the types to not be nested.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsNested,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be nested.")));
+				$"The type '{type.Name}' should not be nested.")));
 }

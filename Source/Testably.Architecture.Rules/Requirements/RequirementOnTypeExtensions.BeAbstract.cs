@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsAbstract,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be abstract.")));
+				$"The type '{type.Name}' should be abstract.")));
 
 	/// <summary>
 	///     Expect the types to not be abstract.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsAbstract,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be abstract.")));
+				$"The type '{type.Name}' should not be abstract.")));
 }

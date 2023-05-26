@@ -13,7 +13,7 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => type.IsStatic(),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should be static.")));
+				$"The type '{type.Name}' should be static.")));
 
 	/// <summary>
 	///     Expect the types to not be static.
@@ -24,5 +24,5 @@ public static partial class RequirementOnTypeExtensions
 		=> @this.ShouldSatisfy(Requirement.ForType(
 			type => !type.IsStatic(),
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should not be static.")));
+				$"The type '{type.Name}' should not be static.")));
 }

@@ -8,7 +8,8 @@ public static partial class TypeFilterExtensions
 	public static ITypeFilterResult WhichAreNotPublic(
 		this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsNested ? !type.IsNestedPublic : !type.IsPublic);
+		return @this.Which(type => type.IsNested ? !type.IsNestedPublic : !type.IsPublic,
+			"is not public");
 	}
 
 	/// <summary>
@@ -16,6 +17,7 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichArePublic(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsNested ? type.IsNestedPublic : type.IsPublic);
+		return @this.Which(type => type.IsNested ? type.IsNestedPublic : type.IsPublic,
+			"is public");
 	}
 }

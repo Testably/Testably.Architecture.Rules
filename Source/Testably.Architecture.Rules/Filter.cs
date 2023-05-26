@@ -56,21 +56,19 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<ConstructorInfo>> Predicates = new();
 
-		private readonly IConstructorFilter _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnConstructor" />.
 		/// </summary>
-		protected OnConstructor(
-			IConstructorFilter typeFilter)
+		protected OnConstructor(IConstructorFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
+			typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region IConstructorFilterResult Members
 
 		/// <inheritdoc cref="IConstructorFilterResult.And" />
-		public IConstructorFilter And => _typeFilter;
+		public IConstructorFilter And { get; }
 
 		/// <inheritdoc />
 		public Filter<Type> ToTypeFilter()
@@ -100,21 +98,19 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<EventInfo>> Predicates = new();
 
-		private readonly IEventFilter _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnEvent" />.
 		/// </summary>
-		protected OnEvent(
-			IEventFilter typeFilter)
+		protected OnEvent(IEventFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
+			typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region IEventFilterResult Members
 
 		/// <inheritdoc cref="IEventFilterResult.And" />
-		public IEventFilter And => _typeFilter;
+		public IEventFilter And { get; }
 
 		/// <inheritdoc />
 		public Filter<Type> ToTypeFilter()
@@ -144,21 +140,19 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<FieldInfo>> Predicates = new();
 
-		private readonly IFieldFilter _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnField" />.
 		/// </summary>
-		protected OnField(
-			IFieldFilter typeFilter)
+		protected OnField(IFieldFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
+			typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region IFieldFilterResult Members
 
 		/// <inheritdoc cref="IFieldFilterResult.And" />
-		public IFieldFilter And => _typeFilter;
+		public IFieldFilter And { get; }
 
 		/// <inheritdoc />
 		public Filter<Type> ToTypeFilter()
@@ -188,27 +182,26 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<MethodInfo>> Predicates = new();
 
-		private readonly IMethodFilter _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnMethod" />.
 		/// </summary>
-		protected OnMethod(
-			IMethodFilter typeFilter)
+		protected OnMethod(IMethodFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
+			typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region IMethodFilterResult Members
 
 		/// <inheritdoc cref="IMethodFilterResult.And" />
-		public IMethodFilter And => _typeFilter;
+		public IMethodFilter And { get; }
 
 		/// <inheritdoc />
 		public Filter<Type> ToTypeFilter()
 		{
 			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)));
+				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)),
+				ToString());
 		}
 
 		#endregion
@@ -216,6 +209,42 @@ public static class Filter
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(MethodInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
+	}
+
+	/// <summary>
+	///     Base class for additional filters on <see cref="ParameterInfo" />.
+	/// </summary>
+	public abstract class OnParameter<TResult> : Filter<ParameterInfo>,
+		IParameterFilterResult<TResult>
+		where TResult : IParameterFilterResult<TResult>
+	{
+		/// <summary>
+		///     The list of predicates.
+		/// </summary>
+		protected readonly List<Filter<ParameterInfo>> Predicates = new();
+
+		/// <summary>
+		///     Initializes a new instance of <see cref="OnParameter{TResult}" />.
+		/// </summary>
+		protected OnParameter(
+			IParameterFilter<TResult> typeFilter)
+		{
+			And = typeFilter;
+		}
+
+		#region IParameterFilterResult<TResult> Members
+
+		/// <inheritdoc cref="IParameterFilterResult{TResult}.And" />
+		public IParameterFilter<TResult> And { get; }
+
+		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
+		public abstract string FriendlyName();
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -232,21 +261,19 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<PropertyInfo>> Predicates = new();
 
-		private readonly IPropertyFilter _typeFilter;
-
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnProperty" />.
 		/// </summary>
-		protected OnProperty(
-			IPropertyFilter typeFilter)
+		protected OnProperty(IPropertyFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
+			typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region IPropertyFilterResult Members
 
 		/// <inheritdoc cref="IPropertyFilterResult.And" />
-		public IPropertyFilter And => _typeFilter;
+		public IPropertyFilter And { get; }
 
 		/// <inheritdoc />
 		public Filter<Type> ToTypeFilter()

@@ -30,7 +30,9 @@ internal class FieldFilter : IFieldFilter, IFieldFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetFields().Any(p.Applies)),
+			t => t.GetFields().Any(
+				fieldInfo => _predicates.All(
+					predicate => predicate.Applies(fieldInfo))),
 			ToString());
 	}
 

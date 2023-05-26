@@ -30,7 +30,9 @@ internal class ConstructorFilter : IConstructorFilter, IConstructorFilterResult
 	public Filter<Type> ToTypeFilter()
 	{
 		return Filter.FromPredicate<Type>(
-			t => _predicates.All(p => t.GetConstructors().Any(p.Applies)),
+			t => t.GetConstructors().Any(
+				constructorInfo => _predicates.All(
+					predicate => predicate.Applies(constructorInfo))),
 			ToString());
 	}
 

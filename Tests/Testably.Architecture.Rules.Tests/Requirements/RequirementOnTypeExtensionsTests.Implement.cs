@@ -44,7 +44,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolated();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
-			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+			result.Errors[0].ToString().Should().Contain($"type '{type.Name}'")
 				.And.Contain(
 					$"should{(forceDirect ? " directly" : "")} implement '{nameof(IOtherFooInterface)}'.");
 		}
@@ -135,7 +135,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldBeViolated();
 			result.Errors[0].Should().BeOfType<TypeTestError>()
 				.Which.Type.Should().Be(type);
-			result.Errors[0].ToString().Should().Contain($"Type '{type.Name}'")
+			result.Errors[0].ToString().Should().Contain($"type '{type.Name}'")
 				.And.Contain(
 					$"should not{(forceDirect ? " directly" : "")} implement '{nameof(IFooInterface)}'.");
 		}

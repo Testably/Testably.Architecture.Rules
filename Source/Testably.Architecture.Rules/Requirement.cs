@@ -45,7 +45,7 @@ public static class Requirement
 		Func<Type, bool> compiledPredicate = predicate.Compile();
 		return new GenericRequirement<Type>(compiledPredicate,
 			type => new TypeTestError(type,
-				$"Type '{type.Name}' should satisfy the required condition {predicate}."));
+				$"The type '{type.Name}' should satisfy the required condition {predicate}."));
 	}
 
 	/// <summary>

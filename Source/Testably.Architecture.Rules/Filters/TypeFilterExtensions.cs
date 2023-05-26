@@ -81,7 +81,10 @@ public static partial class TypeFilterExtensions
 		this ITypeFilter @this,
 		IMethodFilterResult methodFilter)
 	{
-		return @this.Which(methodFilter.ToTypeFilter());
+		Filter<Type> typeFilter = methodFilter.ToTypeFilter();
+		return @this.Which(Filter.FromPredicate<Type>(
+			typeFilter.Applies,
+			$"has method whose {typeFilter}"));
 	}
 
 	/// <summary>

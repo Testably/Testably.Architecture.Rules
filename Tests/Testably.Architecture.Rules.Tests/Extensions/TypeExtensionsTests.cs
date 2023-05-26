@@ -94,6 +94,26 @@ public sealed class TypeExtensionsTests
 		result.Should().BeFalse();
 	}
 
+	[Fact]
+	public void InheritsFrom_SameType_ShouldReturnFalse()
+	{
+		Type sut = typeof(TestClassWithAttribute);
+
+		bool result = sut.InheritsFrom(typeof(TestClassWithAttribute));
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
+	public void IsOrInheritsFrom_SameType_ShouldReturnTrue()
+	{
+		Type sut = typeof(TestClassWithAttribute);
+
+		bool result = sut.IsOrInheritsFrom(typeof(TestClassWithAttribute));
+
+		result.Should().BeTrue();
+	}
+
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 	private class DummyAttribute : Attribute
 	{

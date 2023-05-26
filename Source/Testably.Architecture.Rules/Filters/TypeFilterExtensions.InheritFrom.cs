@@ -19,7 +19,8 @@ public static partial class TypeFilterExtensions
 	public static ITypeFilterResult WhichDoNotInheritFrom(this ITypeFilter @this, Type baseType,
 		bool forceDirect = false)
 	{
-		return @this.Which(type => !type.InheritsFrom(baseType, forceDirect));
+		return @this.Which(type => !type.InheritsFrom(baseType, forceDirect),
+			$"does not inherit from {baseType.Name}");
 	}
 
 	/// <summary>
@@ -37,6 +38,7 @@ public static partial class TypeFilterExtensions
 	public static ITypeFilterResult WhichInheritFrom(this ITypeFilter @this, Type baseType,
 		bool forceDirect = false)
 	{
-		return @this.Which(type => type.InheritsFrom(baseType, forceDirect));
+		return @this.Which(type => type.InheritsFrom(baseType, forceDirect),
+			$"inherits from {baseType.Name}");
 	}
 }
