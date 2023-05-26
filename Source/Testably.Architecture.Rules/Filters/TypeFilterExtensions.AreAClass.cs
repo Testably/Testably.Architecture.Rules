@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreAClass(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsClass);
+		return @this.Which(
+			type => type.IsClass,
+			"is a class");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotAClass(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsClass);
+		return @this.Which(
+			type => !type.IsClass,
+			"is no class");
 	}
 }

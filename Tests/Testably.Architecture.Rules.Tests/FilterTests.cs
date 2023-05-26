@@ -308,9 +308,13 @@ public sealed class FilterTests
 	{
 		public OnTypeMock(
 			ITypeFilter typeFilter,
-			Func<Type, bool> predicate)
-			: base(typeFilter, predicate)
+			Func<Type, bool>? predicate = null)
+			: base(typeFilter)
 		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
 		}
 	}
 }

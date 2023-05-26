@@ -24,9 +24,8 @@ public static partial class TypeFilterExtensions
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
-		WithAttributeFilterResult filter = new(
-			@this,
-			type => type.HasAttribute(predicate, inherit));
+		WithAttributeFilterResult filter = new(@this);
+		filter.OrAttribute(predicate, inherit);
 		return filter;
 	}
 
@@ -36,8 +35,7 @@ public static partial class TypeFilterExtensions
 	public class WithAttributeFilterResult : Filter.OnType
 	{
 		internal WithAttributeFilterResult(
-			ITypeFilter typeFilter,
-			Func<Type, bool> predicate) : base(typeFilter, predicate)
+			ITypeFilter typeFilter) : base(typeFilter)
 		{
 		}
 
@@ -58,7 +56,9 @@ public static partial class TypeFilterExtensions
 			Func<TAttribute, bool>? predicate = null,
 			bool inherit = true) where TAttribute : Attribute
 		{
-			Predicates.Add(type => type.HasAttribute(predicate, inherit));
+			Predicates.Add(Filter.FromPredicate<Type>(
+				type => type.HasAttribute(predicate, inherit),
+				$"has attribute {typeof(TAttribute).Name}"));
 			return this;
 		}
 	}

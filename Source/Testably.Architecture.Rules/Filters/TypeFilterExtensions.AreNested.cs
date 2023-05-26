@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNested(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsNested);
+		return @this.Which(
+			type => type.IsNested,
+			"is nested");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotNested(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsNested);
+		return @this.Which(
+			type => !type.IsNested,
+			"is not nested");
 	}
 }

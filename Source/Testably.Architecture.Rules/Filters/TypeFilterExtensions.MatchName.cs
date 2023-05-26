@@ -11,7 +11,8 @@ public static partial class TypeFilterExtensions
 		Match pattern,
 		bool ignoreCase = false)
 	{
-		return @this.Which(type => !pattern.Matches(type.Name, ignoreCase));
+		return @this.Which(type => !pattern.Matches(type.Name, ignoreCase),
+			$"name does not match pattern '{pattern}'");
 	}
 
 	/// <summary>
@@ -21,6 +22,8 @@ public static partial class TypeFilterExtensions
 		Match pattern,
 		bool ignoreCase = false)
 	{
-		return @this.Which(type => pattern.Matches(type.Name, ignoreCase));
+		return @this.Which(
+			type => pattern.Matches(type.Name, ignoreCase),
+			$"name matches pattern '{pattern}'");
 	}
 }

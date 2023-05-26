@@ -10,7 +10,9 @@ public static partial class TypeFilterExtensions
 		Match pattern,
 		bool ignoreCase = false)
 	{
-		return @this.Which(type => !pattern.Matches(type.Namespace, ignoreCase));
+		return @this.Which(
+			type => !pattern.Matches(type.Namespace, ignoreCase),
+			$"does not reside in namespace '{pattern}'");
 	}
 
 	/// <summary>
@@ -20,6 +22,8 @@ public static partial class TypeFilterExtensions
 		Match pattern,
 		bool ignoreCase = false)
 	{
-		return @this.Which(type => pattern.Matches(type.Namespace, ignoreCase));
+		return @this.Which(
+			type => pattern.Matches(type.Namespace, ignoreCase),
+			$"does reside in namespace '{pattern}'");
 	}
 }

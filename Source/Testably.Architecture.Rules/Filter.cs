@@ -349,28 +349,23 @@ public static class Filter
 		/// <summary>
 		///     The list of predicates.
 		/// </summary>
-		protected readonly List<Func<Type, bool>> Predicates = new();
+		protected readonly List<Filter<Type>> Predicates = new();
 
 		private readonly ITypeFilterResult _filtered;
-
-		private readonly ITypeFilter _typeFilter;
 
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnType" />.
 		/// </summary>
-		protected OnType(
-			ITypeFilter typeFilter,
-			Func<Type, bool> predicate)
+		protected OnType(ITypeFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
-			_filtered = _typeFilter.Which(this);
-			Predicates.Add(predicate);
+			_filtered = typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region ITypeFilterResult Members
 
 		/// <inheritdoc cref="ITypeFilterResult.And" />
-		public ITypeFilter And => _typeFilter;
+		public ITypeFilter And { get; }
 
 		/// <inheritdoc cref="ITypeFilterResult.Assemblies" />
 		public IAssemblyExpectation Assemblies
@@ -404,7 +399,11 @@ public static class Filter
 
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(Type type)
-			=> Predicates.Any(p => p(type));
+			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 }
 

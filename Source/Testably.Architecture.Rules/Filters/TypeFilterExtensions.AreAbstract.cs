@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreAbstract(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsAbstract);
+		return @this.Which(
+			type => type.IsAbstract,
+			"is abstract");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotAbstract(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsAbstract);
+		return @this.Which(
+			type => !type.IsAbstract,
+			"is not abstract");
 	}
 }

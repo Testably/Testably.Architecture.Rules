@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreGeneric(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsGenericType);
+		return @this.Which(
+			type => type.IsGenericType,
+			"is generic");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotGeneric(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsGenericType);
+		return @this.Which(
+			type => !type.IsGenericType,
+			"is not generic");
 	}
 }
