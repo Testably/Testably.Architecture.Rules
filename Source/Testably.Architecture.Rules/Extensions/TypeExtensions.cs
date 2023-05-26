@@ -41,31 +41,15 @@ public static class TypeExtensions
 	}
 
 	/// <summary>
-	///     Checks if any method of the <paramref name="type" /> has an attribute which satisfies the
-	///     <paramref name="predicate" />.
+	///     Searches for methods in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
-	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
-	/// <param name="type">The <see cref="Type" /> which is checked to have a member with the attribute.</param>
-	/// <param name="predicate">
-	///     (optional) A predicate to check the attribute values.
-	///     <para />
-	///     If not set (<see langword="null" />), will only check if the attribute is present on any member.
-	/// </param>
-	/// <param name="inherit">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
-	/// </param>
-	public static bool HasMethodWithAttribute<TAttribute>(
-		this Type type,
-		Func<TAttribute, MethodInfo, bool>? predicate = null,
-		bool inherit = true)
-		where TAttribute : Attribute
+	public static MethodInfo[] GetDeclaredMethods(
+		this Type type)
 	{
-		predicate ??= (_, _) => true;
-		return type.GetMethods().Any(
-			method => method.HasAttribute<TAttribute>(
-				a => predicate(a, method), inherit));
+		return type
+			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+			.Where(m => !m.IsSpecialName)
+			.ToArray();
 	}
 
 	/// <summary>

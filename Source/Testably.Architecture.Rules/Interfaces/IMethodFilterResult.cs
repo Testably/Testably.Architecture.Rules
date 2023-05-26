@@ -1,12 +1,11 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
 /// <summary>
 ///     Add additional filters on the <see cref="MethodInfo" />s.
 /// </summary>
-public interface IMethodFilterResult
+public interface IMethodFilterResult : IFilter<MethodInfo>, IRequirement<MethodInfo>
 {
 	/// <summary>
 	///     Add additional filters on the <see cref="MethodInfo" />s.
@@ -14,7 +13,7 @@ public interface IMethodFilterResult
 	IMethodFilter And { get; }
 
 	/// <summary>
-	///     Create a <see cref="Filter{Type}" /> which satisfies all method filters.
+	///     Get all types from the filtered methods.
 	/// </summary>
-	Filter<Type> ToTypeFilter();
+	ITypeExpectation Types { get; }
 }

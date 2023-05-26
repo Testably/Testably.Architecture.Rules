@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreAnInterface(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsInterface);
+		return @this.Which(
+			type => type.IsInterface,
+			"is an interface");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotAnInterface(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsInterface);
+		return @this.Which(
+			type => !type.IsInterface,
+			"is no interface");
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using System;
-using System.Linq;
 using System.Reflection;
 
 namespace Testably.Architecture.Rules.Tests.TestHelpers;
@@ -45,10 +44,5 @@ internal static class TestResultExtensions
 		result.IsViolated.Should().BeFalse(because: result.ToString());
 		result.Errors.Should().BeEmpty();
 		return result;
-	}
-
-	public static ITypeFilterResult WhichAre(this ITypeFilter typeFilter, params Type[] types)
-	{
-		return typeFilter.Which(t => types.Contains(t));
 	}
 }

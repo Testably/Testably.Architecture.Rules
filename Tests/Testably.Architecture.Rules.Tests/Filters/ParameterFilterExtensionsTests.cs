@@ -17,7 +17,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			.Which(_ => predicateResult);
 
 		bool result = sut.Apply(
-			typeof(DummyClass).GetConstructors().Single().GetParameters());
+			typeof(DummyClass).GetConstructors().First().GetParameters());
 
 		result.Should().Be(predicateResult);
 	}
@@ -31,7 +31,7 @@ public sealed partial class ParameterFilterExtensionsTests
 			.Which(_ => predicateResult, name);
 
 		bool result = sut.Apply(
-			typeof(DummyClass).GetConstructors().Single().GetParameters());
+			typeof(DummyClass).GetConstructors().First().GetParameters());
 
 		result.Should().Be(predicateResult);
 	}

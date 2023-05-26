@@ -2,7 +2,9 @@
 using FluentAssertions;
 using System;
 using System.Linq;
+using System.Reflection;
 using Testably.Architecture.Rules.Internal;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Internal;
@@ -61,6 +63,71 @@ public sealed class TypeRuleTests
 			.Which(t => t == type1 || t == type2, typeFilterName1).And
 			.Which(_ => false, typeFilterName2)
 			.Assemblies
+			.Which(_ => false, assemblyFilterName)
+			.ShouldSatisfy(_ => true);
+		string expectedTypeFilters = $"{typeFilterName1}, {typeFilterName2}";
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors[0].Should().BeOfType<EmptySourceTestError>()
+			.Which.ToString().Should()
+			.Contain(expectedTypeFilters).And.Contain(assemblyFilterName);
+	}
+
+	[Fact]
+	public void Methods_ShouldApplyAllTypeFilters()
+	{
+		Type type1 = typeof(DummyClass);
+		Type type2 = typeof(TypeRuleTests);
+		string expectedMethodName1 = $"'{nameof(DummyClass.DummyMethod1)}'";
+		string expectedMethodName2 = $"'{nameof(Methods_ShouldApplyAllTypeFilters)}'";
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2).And
+			.Which(t => t == type1)
+			.Methods
+			.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().Be(2);
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedMethodName1));
+		result.Errors.Should().NotContain(e => e.ToString().Contains(expectedMethodName2));
+	}
+
+	[Fact]
+	public void Methods_ShouldFilterOutMethodsFromTypes()
+	{
+		Type type1 = typeof(DummyClass);
+		Type type2 = typeof(TypeRuleTests);
+		string expectedMethodName1 = $"'{nameof(DummyClass.DummyMethod1)}'";
+		string expectedMethodName2 = $"'{nameof(Methods_ShouldApplyAllTypeFilters)}'";
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2)
+			.Methods
+			.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.Errors.Length.Should().BeGreaterThan(2);
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedMethodName1));
+		result.Errors.Should().Contain(e => e.ToString().Contains(expectedMethodName2));
+	}
+
+	[Theory]
+	[AutoData]
+	public void Methods_ShouldIncludeTypeFilterNamesInFilterName(
+		string typeFilterName1, string typeFilterName2, string assemblyFilterName)
+	{
+		Type type1 = typeof(TypeRuleTests);
+		Type type2 = typeof(TypeRule);
+		IRule rule = Expect.That.Types
+			.Which(t => t == type1 || t == type2, typeFilterName1).And
+			.Which(_ => false, typeFilterName2)
+			.Methods
 			.Which(_ => false, assemblyFilterName)
 			.ShouldSatisfy(_ => true);
 		string expectedTypeFilters = $"{typeFilterName1}, {typeFilterName2}";

@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotSealed(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsSealed);
+		return @this.Which(
+			type => !type.IsSealed,
+			"is not sealed");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreSealed(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsSealed);
+		return @this.Which(
+			type => type.IsSealed,
+			"is sealed");
 	}
 }

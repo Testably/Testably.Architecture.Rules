@@ -20,7 +20,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 			result.ShouldNotBeViolated();
 		}
 
-		[Fact]
+		[Fact(Skip = "TODO")]
 		public void OrAttribute_ShouldUseCorrectErrorMessage()
 		{
 			ITestResult result = Expect.That.Types

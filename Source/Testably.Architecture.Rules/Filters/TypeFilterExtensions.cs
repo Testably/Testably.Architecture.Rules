@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
@@ -42,7 +44,10 @@ public static partial class TypeFilterExtensions
 		this ITypeFilter @this,
 		IConstructorFilterResult constructorFilter)
 	{
-		return @this.Which(constructorFilter.ToTypeFilter());
+		return @this.Which(Filter.Delegate<Type, ConstructorInfo>(
+			type => type.GetConstructors(),
+			constructorFilter,
+			$"has constructors whose {constructorFilter}"));
 	}
 
 	/// <summary>
@@ -55,7 +60,10 @@ public static partial class TypeFilterExtensions
 		this ITypeFilter @this,
 		IEventFilterResult eventFilter)
 	{
-		return @this.Which(eventFilter.ToTypeFilter());
+		return @this.Which(Filter.Delegate<Type, EventInfo>(
+			type => type.GetEvents(),
+			eventFilter,
+			$"has events whose {eventFilter}"));
 	}
 
 	/// <summary>
@@ -68,7 +76,10 @@ public static partial class TypeFilterExtensions
 		this ITypeFilter @this,
 		IFieldFilterResult fieldFilter)
 	{
-		return @this.Which(fieldFilter.ToTypeFilter());
+		return @this.Which(Filter.Delegate<Type, FieldInfo>(
+			type => type.GetFields(),
+			fieldFilter,
+			$"has fields whose {fieldFilter}"));
 	}
 
 	/// <summary>
@@ -81,10 +92,10 @@ public static partial class TypeFilterExtensions
 		this ITypeFilter @this,
 		IMethodFilterResult methodFilter)
 	{
-		Filter<Type> typeFilter = methodFilter.ToTypeFilter();
-		return @this.Which(Filter.FromPredicate<Type>(
-			typeFilter.Applies,
-			$"has method whose {typeFilter}"));
+		return @this.Which(Filter.Delegate<Type, MethodInfo>(
+			type => type.GetDeclaredMethods(),
+			methodFilter,
+			$"has method whose {methodFilter}"));
 	}
 
 	/// <summary>
@@ -97,6 +108,9 @@ public static partial class TypeFilterExtensions
 		this ITypeFilter @this,
 		IPropertyFilterResult propertyFilter)
 	{
-		return @this.Which(propertyFilter.ToTypeFilter());
+		return @this.Which(Filter.Delegate<Type, PropertyInfo>(
+			type => type.GetProperties(),
+			propertyFilter,
+			$"has method whose {propertyFilter}"));
 	}
 }

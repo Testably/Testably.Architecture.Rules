@@ -128,7 +128,7 @@ public sealed class FilterTests
 
 		OnMethodMock sut = new(methodFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetMethods().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyClass).GetDeclaredMethods().First()).Should().Be(predicateResult);
 	}
 
 	[Fact]
@@ -308,9 +308,13 @@ public sealed class FilterTests
 	{
 		public OnTypeMock(
 			ITypeFilter typeFilter,
-			Func<Type, bool> predicate)
-			: base(typeFilter, predicate)
+			Func<Type, bool>? predicate = null)
+			: base(typeFilter)
 		{
+			if (predicate != null)
+			{
+				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
+			}
 		}
 	}
 }

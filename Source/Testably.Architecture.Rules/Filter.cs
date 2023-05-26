@@ -12,6 +12,16 @@ namespace Testably.Architecture.Rules;
 public static class Filter
 {
 	/// <summary>
+	///     Creates a new delegate filter that applies the <paramref name="delegateFilter" /> on all
+	///     <typeparamref name="TDelegate" /> from the <paramref name="delegateGenerator" />.
+	/// </summary>
+	public static Filter<TType> Delegate<TType, TDelegate>(
+		Func<TType, IEnumerable<TDelegate>> delegateGenerator,
+		IFilter<TDelegate> delegateFilter,
+		string name)
+		=> new DelegateFilter<TType, TDelegate>(delegateGenerator, delegateFilter, name);
+
+	/// <summary>
 	///     Creates a new <see cref="Filter{TType}" /> from the given <paramref name="predicate" />.
 	/// </summary>
 	public static Filter<TType> FromPredicate<TType>(Expression<Func<TType, bool>> predicate)
@@ -25,6 +35,29 @@ public static class Filter
 	/// </summary>
 	public static Filter<TType> FromPredicate<TType>(Func<TType, bool> predicate, string name)
 		=> new GenericFilter<TType>(predicate, name);
+
+	private sealed class DelegateFilter<TType, TDelegate> : Filter<TType>
+	{
+		private readonly IFilter<TDelegate> _delegateFilter;
+		private readonly Func<TType, IEnumerable<TDelegate>> _delegateGenerator;
+		private readonly string _name;
+
+		public DelegateFilter(Func<TType, IEnumerable<TDelegate>> delegateGenerator,
+			IFilter<TDelegate> delegateFilter, string name)
+		{
+			_delegateGenerator = delegateGenerator;
+			_delegateFilter = delegateFilter;
+			_name = name;
+		}
+
+		/// <inheritdoc cref="Filter{TType}.Applies(TType)" />
+		public override bool Applies(TType type)
+			=> _delegateGenerator(type).Any(_delegateFilter.Applies);
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> _name;
+	}
 
 	private sealed class GenericFilter<TType> : Filter<TType>
 	{
@@ -56,12 +89,14 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<ConstructorInfo>> Predicates = new();
 
+		private readonly IConstructorFilterResult _filtered;
+
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnConstructor" />.
 		/// </summary>
 		protected OnConstructor(IConstructorFilter typeFilter)
 		{
-			typeFilter.Which(this);
+			_filtered = typeFilter.Which(this);
 			And = typeFilter;
 		}
 
@@ -70,18 +105,20 @@ public static class Filter
 		/// <inheritdoc cref="IConstructorFilterResult.And" />
 		public IConstructorFilter And { get; }
 
-		/// <inheritdoc />
-		public Filter<Type> ToTypeFilter()
-		{
-			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetConstructors().Any(p.Applies)), ToString());
-		}
+		/// <inheritdoc cref="IConstructorFilterResult.Types" />
+		public ITypeExpectation Types
+			=> _filtered.Types;
 
-		#endregion
-
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		/// <inheritdoc cref="Filter{ConstructorInfo}.Applies(ConstructorInfo)" />
 		public override bool Applies(ConstructorInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="IRequirement{ConstructorInfo}.ShouldSatisfy(Requirement{ConstructorInfo})" />
+		public IRequirementResult<ConstructorInfo> ShouldSatisfy(
+			Requirement<ConstructorInfo> requirement)
+			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -98,12 +135,14 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<EventInfo>> Predicates = new();
 
+		private readonly IEventFilterResult _filtered;
+
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnEvent" />.
 		/// </summary>
 		protected OnEvent(IEventFilter typeFilter)
 		{
-			typeFilter.Which(this);
+			_filtered = typeFilter.Which(this);
 			And = typeFilter;
 		}
 
@@ -112,18 +151,19 @@ public static class Filter
 		/// <inheritdoc cref="IEventFilterResult.And" />
 		public IEventFilter And { get; }
 
-		/// <inheritdoc />
-		public Filter<Type> ToTypeFilter()
-		{
-			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetEvents().Any(p.Applies)));
-		}
+		/// <inheritdoc cref="IEventFilterResult.Types" />
+		public ITypeExpectation Types
+			=> _filtered.Types;
 
-		#endregion
-
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		/// <inheritdoc cref="Filter{EventInfo}.Applies(EventInfo)" />
 		public override bool Applies(EventInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="IRequirement{EventInfo}.ShouldSatisfy(Requirement{EventInfo})" />
+		public IRequirementResult<EventInfo> ShouldSatisfy(Requirement<EventInfo> requirement)
+			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -140,12 +180,14 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<FieldInfo>> Predicates = new();
 
+		private readonly IFieldFilterResult _filtered;
+
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnField" />.
 		/// </summary>
 		protected OnField(IFieldFilter typeFilter)
 		{
-			typeFilter.Which(this);
+			_filtered = typeFilter.Which(this);
 			And = typeFilter;
 		}
 
@@ -154,18 +196,19 @@ public static class Filter
 		/// <inheritdoc cref="IFieldFilterResult.And" />
 		public IFieldFilter And { get; }
 
-		/// <inheritdoc />
-		public Filter<Type> ToTypeFilter()
-		{
-			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetFields().Any(p.Applies)));
-		}
+		/// <inheritdoc cref="IFieldFilterResult.Types" />
+		public ITypeExpectation Types
+			=> _filtered.Types;
 
-		#endregion
-
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		/// <inheritdoc cref="Filter{FieldInfo}.Applies(FieldInfo)" />
 		public override bool Applies(FieldInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="IRequirement{FieldInfo}.ShouldSatisfy(Requirement{FieldInfo})" />
+		public IRequirementResult<FieldInfo> ShouldSatisfy(Requirement<FieldInfo> requirement)
+			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -182,12 +225,14 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<MethodInfo>> Predicates = new();
 
+		private readonly IMethodFilterResult _filtered;
+
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnMethod" />.
 		/// </summary>
 		protected OnMethod(IMethodFilter typeFilter)
 		{
-			typeFilter.Which(this);
+			_filtered = typeFilter.Which(this);
 			And = typeFilter;
 		}
 
@@ -196,19 +241,19 @@ public static class Filter
 		/// <inheritdoc cref="IMethodFilterResult.And" />
 		public IMethodFilter And { get; }
 
-		/// <inheritdoc />
-		public Filter<Type> ToTypeFilter()
-		{
-			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetMethods().Any(p.Applies)),
-				ToString());
-		}
+		/// <inheritdoc cref="IMethodFilterResult.Types" />
+		public ITypeExpectation Types
+			=> _filtered.Types;
 
-		#endregion
-
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		/// <inheritdoc cref="Filter{MethodInfo}.Applies(MethodInfo)" />
 		public override bool Applies(MethodInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="IRequirement{MethodInfo}.ShouldSatisfy(Requirement{MethodInfo})" />
+		public IRequirementResult<MethodInfo> ShouldSatisfy(Requirement<MethodInfo> requirement)
+			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -261,12 +306,14 @@ public static class Filter
 		/// </summary>
 		protected readonly List<Filter<PropertyInfo>> Predicates = new();
 
+		private readonly IPropertyFilterResult _filtered;
+
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnProperty" />.
 		/// </summary>
 		protected OnProperty(IPropertyFilter typeFilter)
 		{
-			typeFilter.Which(this);
+			_filtered = typeFilter.Which(this);
 			And = typeFilter;
 		}
 
@@ -275,18 +322,19 @@ public static class Filter
 		/// <inheritdoc cref="IPropertyFilterResult.And" />
 		public IPropertyFilter And { get; }
 
-		/// <inheritdoc />
-		public Filter<Type> ToTypeFilter()
-		{
-			return FromPredicate<Type>(
-				t => Predicates.Any(p => t.GetProperties().Any(p.Applies)));
-		}
+		/// <inheritdoc cref="IPropertyFilterResult.Types" />
+		public ITypeExpectation Types
+			=> _filtered.Types;
 
-		#endregion
-
-		/// <inheritdoc cref="Filter{T}.Applies(T)" />
+		/// <inheritdoc cref="Filter{PropertyInfo}.Applies(PropertyInfo)" />
 		public override bool Applies(PropertyInfo type)
 			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="IRequirement{PropertyInfo}.ShouldSatisfy(Requirement{PropertyInfo})" />
+		public IRequirementResult<PropertyInfo> ShouldSatisfy(Requirement<PropertyInfo> requirement)
+			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -301,32 +349,47 @@ public static class Filter
 		/// <summary>
 		///     The list of predicates.
 		/// </summary>
-		protected readonly List<Func<Type, bool>> Predicates = new();
+		protected readonly List<Filter<Type>> Predicates = new();
 
 		private readonly ITypeFilterResult _filtered;
-
-		private readonly ITypeFilter _typeFilter;
 
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnType" />.
 		/// </summary>
-		protected OnType(
-			ITypeFilter typeFilter,
-			Func<Type, bool> predicate)
+		protected OnType(ITypeFilter typeFilter)
 		{
-			_typeFilter = typeFilter;
-			Predicates.Add(predicate);
-			_filtered = _typeFilter.Which(this);
+			_filtered = typeFilter.Which(this);
+			And = typeFilter;
 		}
 
 		#region ITypeFilterResult Members
 
 		/// <inheritdoc cref="ITypeFilterResult.And" />
-		public ITypeFilter And => _typeFilter;
+		public ITypeFilter And { get; }
 
 		/// <inheritdoc cref="ITypeFilterResult.Assemblies" />
 		public IAssemblyExpectation Assemblies
 			=> _filtered.Assemblies;
+
+		/// <inheritdoc cref="ITypeFilterResult.Constructors" />
+		public IConstructorExpectation Constructors
+			=> _filtered.Constructors;
+
+		/// <inheritdoc cref="ITypeFilterResult.Events" />
+		public IEventExpectation Events
+			=> _filtered.Events;
+
+		/// <inheritdoc cref="ITypeFilterResult.Fields" />
+		public IFieldExpectation Fields
+			=> _filtered.Fields;
+
+		/// <inheritdoc cref="ITypeFilterResult.Methods" />
+		public IMethodExpectation Methods
+			=> _filtered.Methods;
+
+		/// <inheritdoc cref="ITypeFilterResult.Properties" />
+		public IPropertyExpectation Properties
+			=> _filtered.Properties;
 
 		/// <inheritdoc cref="IRequirement{Type}.ShouldSatisfy(Requirement{Type})" />
 		public IRequirementResult<Type> ShouldSatisfy(Requirement<Type> requirement)
@@ -336,17 +399,25 @@ public static class Filter
 
 		/// <inheritdoc cref="Filter{T}.Applies(T)" />
 		public override bool Applies(Type type)
-			=> Predicates.Any(p => p(type));
+			=> Predicates.Any(p => p.Applies(type));
+
+		/// <inheritdoc cref="object.ToString()" />
+		public override string ToString()
+			=> string.Join(" or ", Predicates.Select(x => x.ToString()));
 	}
 }
 
 /// <summary>
 ///     Filter for <typeparamref name="TType" />.
 /// </summary>
-public abstract class Filter<TType>
+public abstract class Filter<TType> : IFilter<TType>
 {
+	#region IFilter<TType> Members
+
 	/// <summary>
 	///     Specifies if the filter applies to the given <typeparamref name="TType" />.
 	/// </summary>
 	public abstract bool Applies(TType type);
+
+	#endregion
 }

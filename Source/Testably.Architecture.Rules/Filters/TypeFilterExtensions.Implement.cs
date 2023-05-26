@@ -20,7 +20,9 @@ public static partial class TypeFilterExtensions
 		Type interfaceType,
 		bool forceDirect = false)
 	{
-		return @this.Which(type => !type.Implements(interfaceType, forceDirect));
+		return @this.Which(
+			type => !type.Implements(interfaceType, forceDirect),
+			$"does not implement {interfaceType}");
 	}
 
 	/// <summary>
@@ -39,6 +41,8 @@ public static partial class TypeFilterExtensions
 		Type interfaceType,
 		bool forceDirect = false)
 	{
-		return @this.Which(type => type.Implements(interfaceType, forceDirect));
+		return @this.Which(
+			type => type.Implements(interfaceType, forceDirect),
+			$"implements {interfaceType}");
 	}
 }

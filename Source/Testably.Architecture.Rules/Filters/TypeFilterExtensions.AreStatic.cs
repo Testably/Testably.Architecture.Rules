@@ -7,7 +7,9 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreNotStatic(this ITypeFilter @this)
 	{
-		return @this.Which(type => !type.IsStatic());
+		return @this.Which(
+			type => !type.IsStatic(),
+			"is not static");
 	}
 
 	/// <summary>
@@ -15,6 +17,8 @@ public static partial class TypeFilterExtensions
 	/// </summary>
 	public static ITypeFilterResult WhichAreStatic(this ITypeFilter @this)
 	{
-		return @this.Which(type => type.IsStatic());
+		return @this.Which(
+			type => type.IsStatic(),
+			"is static");
 	}
 }

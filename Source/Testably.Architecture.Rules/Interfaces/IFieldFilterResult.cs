@@ -1,12 +1,11 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Testably.Architecture.Rules;
 
 /// <summary>
 ///     Add additional filters on the <see cref="FieldInfo" />s.
 /// </summary>
-public interface IFieldFilterResult
+public interface IFieldFilterResult : IFilter<FieldInfo>, IRequirement<FieldInfo>
 {
 	/// <summary>
 	///     Add additional filters on the <see cref="FieldInfo" />s.
@@ -14,7 +13,7 @@ public interface IFieldFilterResult
 	IFieldFilter And { get; }
 
 	/// <summary>
-	///     Create a <see cref="Filter{Type}" /> which satisfies all field filters.
+	///     Get all types from the filtered fields.
 	/// </summary>
-	Filter<Type> ToTypeFilter();
+	ITypeExpectation Types { get; }
 }

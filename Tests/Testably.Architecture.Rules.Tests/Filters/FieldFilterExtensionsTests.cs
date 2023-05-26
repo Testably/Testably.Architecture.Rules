@@ -1,5 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
+using System.Linq;
+using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -12,11 +14,11 @@ public sealed partial class FieldFilterExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
+		FieldInfo fieldInfo = typeof(DummyClass).GetFields().First();
 		IFieldFilterResult sut = Have.Field
 			.Which(_ => predicateResult);
 
-		bool result = sut.ToTypeFilter()
-			.Applies(typeof(DummyClass));
+		bool result = sut.Applies(fieldInfo);
 
 		result.Should().Be(predicateResult);
 	}
@@ -26,11 +28,11 @@ public sealed partial class FieldFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
+		FieldInfo fieldInfo = typeof(DummyClass).GetFields().First();
 		IFieldFilterResult sut = Have.Field
 			.Which(_ => predicateResult, name);
 
-		bool result = sut.ToTypeFilter()
-			.Applies(typeof(DummyClass));
+		bool result = sut.Applies(fieldInfo);
 
 		result.Should().Be(predicateResult);
 	}

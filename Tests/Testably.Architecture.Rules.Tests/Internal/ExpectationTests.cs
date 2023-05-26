@@ -15,6 +15,15 @@ public sealed class ExpectationTests
 	}
 
 	[Fact]
+	public void Methods_ShouldReturnDifferentInstances()
+	{
+		IMethodExpectation result1 = Expect.That.Methods;
+		IMethodExpectation result2 = Expect.That.Methods;
+
+		result1.Should().NotBe(result2);
+	}
+
+	[Fact]
 	public void Types_ShouldReturnDifferentInstances()
 	{
 		ITypeExpectation result1 = Expect.That.Types;

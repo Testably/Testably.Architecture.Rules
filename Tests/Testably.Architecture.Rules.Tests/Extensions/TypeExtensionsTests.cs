@@ -48,40 +48,6 @@ public sealed class TypeExtensionsTests
 		result2.Should().BeFalse();
 	}
 
-	[Fact]
-	public void HasMethodWithAttribute_WithAttribute_ShouldReturnFalse()
-	{
-		Type type = typeof(TestClassWithAttribute);
-
-		bool result = type.HasMethodWithAttribute<DummyAttribute>();
-
-		result.Should().BeFalse();
-	}
-
-	[Fact]
-	public void HasMethodWithAttribute_WithoutAttribute_ShouldReturnTrue()
-	{
-		Type type = typeof(TestClassWithoutAttribute);
-
-		bool result = type.HasMethodWithAttribute<DummyAttribute>();
-
-		result.Should().BeTrue();
-	}
-
-	[Fact]
-	public void HasMethodWithAttribute_WithPredicate_ShouldReturnPredicateResult()
-	{
-		Type type = typeof(TestClassWithoutAttribute);
-
-		bool result1 = type.HasMethodWithAttribute<DummyAttribute>((d, _) => d.Value == 1);
-		bool result2 = type.HasMethodWithAttribute<DummyAttribute>((d, _) => d.Value == 2);
-		bool result3 = type.HasMethodWithAttribute<DummyAttribute>((d, _) => d.Value == 3);
-
-		result1.Should().BeTrue();
-		result2.Should().BeTrue();
-		result3.Should().BeFalse();
-	}
-
 	[Theory]
 	[InlineData(false)]
 	[InlineData(true)]

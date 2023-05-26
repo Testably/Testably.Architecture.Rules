@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Linq;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
@@ -16,12 +17,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType<FooBase>(allowDerivedType))
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().Be(expectedValue);
 		}
 
@@ -30,12 +30,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>())
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().BeFalse();
 		}
 
@@ -44,12 +43,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>().OrOfType<Foo>())
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().BeTrue();
 		}
 
@@ -60,12 +58,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType(type))
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().Be(expectedValue);
 		}
 
@@ -77,14 +74,13 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(sut
 					.OfType(type1)
 					.Then()
 					.OfType(type2))
-				.ToTypeFilter();
+				.Applies(typeof(TestClassWithMultipleParameters).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClassWithMultipleParameters));
 			result.Should().Be(expectedValue);
 		}
 
@@ -96,12 +92,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType<FooBase>(allowDerivedType))
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().Be(expectedValue);
 		}
 
@@ -110,12 +105,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>())
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().BeFalse();
 		}
 
@@ -124,12 +118,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType<Bar>().OrOfType<Foo>())
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().BeTrue();
 		}
 
@@ -140,12 +133,11 @@ public sealed partial class ParameterFilterExtensionsTests
 		{
 			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
 
-			Filter<Type> typeFilter = Have.Method
+			bool result = Have.Method
 				.With(
 					sut.OfType(type))
-				.ToTypeFilter();
+				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
-			bool result = typeFilter.Applies(typeof(TestClass));
 			result.Should().Be(expectedValue);
 		}
 
