@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using System;
-using System.Linq;
 using System.Reflection;
 
 namespace Testably.Architecture.Rules.Tests.TestHelpers;

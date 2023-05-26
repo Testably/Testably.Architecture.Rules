@@ -29,14 +29,14 @@ public interface IExpectation
 	IFieldExpectation Fields { get; }
 
 	/// <summary>
-	///     Defines expectations for <see cref="PropertyInfo" />.
-	/// </summary>
-	IPropertyExpectation Properties { get; }
-
-	/// <summary>
 	///     Defines expectations for <see cref="MethodInfo" />.
 	/// </summary>
 	IMethodExpectation Methods { get; }
+
+	/// <summary>
+	///     Defines expectations for <see cref="PropertyInfo" />.
+	/// </summary>
+	IPropertyExpectation Properties { get; }
 
 	/// <summary>
 	///     Defines expectations for <see cref="Type" />.

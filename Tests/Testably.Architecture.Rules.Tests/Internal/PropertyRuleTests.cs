@@ -70,6 +70,7 @@ public sealed class PropertyRuleTests
 			.In(typeof(DummyClass).Assembly);
 
 		result.Errors.Length.Should().BeLessThan(allPropertiesCount);
-		result.Errors.Should().OnlyContain(e => e.ToString().Contains($"'{nameof(DummyClass.DummyProperty1)}"));
+		result.Errors.Should()
+			.OnlyContain(e => e.ToString().Contains($"'{nameof(DummyClass.DummyProperty1)}"));
 	}
 }

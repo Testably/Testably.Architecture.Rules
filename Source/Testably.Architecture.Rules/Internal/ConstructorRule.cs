@@ -5,7 +5,8 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules.Internal;
 
-internal class ConstructorRule : Rule<ConstructorInfo>, IConstructorExpectation, IConstructorFilterResult
+internal class ConstructorRule : Rule<ConstructorInfo>, IConstructorExpectation,
+	IConstructorFilterResult
 {
 	/// <inheritdoc cref="IRule.Check" />
 	public override IRuleCheck Check

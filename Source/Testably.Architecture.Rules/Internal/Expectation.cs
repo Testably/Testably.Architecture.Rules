@@ -20,13 +20,13 @@ internal class Expectation : IExpectation
 	public IFieldExpectation Fields
 		=> new FieldRule();
 
-	/// <inheritdoc cref="IExpectation.Properties" />
-	public IPropertyExpectation Properties
-		=> new PropertyRule();
-
 	/// <inheritdoc cref="IExpectation.Methods" />
 	public IMethodExpectation Methods
 		=> new MethodRule();
+
+	/// <inheritdoc cref="IExpectation.Properties" />
+	public IPropertyExpectation Properties
+		=> new PropertyRule();
 
 	/// <inheritdoc cref="IExpectation.Types" />
 	public ITypeExpectation Types

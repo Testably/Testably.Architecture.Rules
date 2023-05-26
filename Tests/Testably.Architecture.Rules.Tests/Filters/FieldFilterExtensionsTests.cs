@@ -28,7 +28,7 @@ public sealed partial class FieldFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		var fieldInfo = typeof(DummyClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyClass).GetFields().First();
 		IFieldFilterResult sut = Have.Field
 			.Which(_ => predicateResult, name);
 

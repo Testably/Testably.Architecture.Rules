@@ -39,7 +39,7 @@ public sealed partial class MethodFilterExtensionsTests
 		private class BarAttribute : Attribute
 		{
 		} // ReSharper disable ClassNeverInstantiated.Local
-		  // ReSharper disable UnusedMember.Local
+		// ReSharper disable UnusedMember.Local
 		private class BarClass
 		{
 			[Bar]

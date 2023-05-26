@@ -12,6 +12,16 @@ namespace Testably.Architecture.Rules;
 public static class Filter
 {
 	/// <summary>
+	///     Creates a new delegate filter that applies the <paramref name="delegateFilter" /> on all
+	///     <typeparamref name="TDelegate" /> from the <paramref name="delegateGenerator" />.
+	/// </summary>
+	public static Filter<TType> Delegate<TType, TDelegate>(
+		Func<TType, IEnumerable<TDelegate>> delegateGenerator,
+		IFilter<TDelegate> delegateFilter,
+		string name)
+		=> new DelegateFilter<TType, TDelegate>(delegateGenerator, delegateFilter, name);
+
+	/// <summary>
 	///     Creates a new <see cref="Filter{TType}" /> from the given <paramref name="predicate" />.
 	/// </summary>
 	public static Filter<TType> FromPredicate<TType>(Expression<Func<TType, bool>> predicate)
@@ -26,20 +36,10 @@ public static class Filter
 	public static Filter<TType> FromPredicate<TType>(Func<TType, bool> predicate, string name)
 		=> new GenericFilter<TType>(predicate, name);
 
-	/// <summary>
-	///     Creates a new delegate filter that applies the <paramref name="delegateFilter" /> on all
-	///     <typeparamref name="TDelegate" /> from the <paramref name="delegateGenerator" />.
-	/// </summary>
-	public static Filter<TType> Delegate<TType, TDelegate>(
-		Func<TType, IEnumerable<TDelegate>> delegateGenerator,
-		IFilter<TDelegate> delegateFilter,
-		string name)
-		=> new DelegateFilter<TType, TDelegate>(delegateGenerator, delegateFilter, name);
-
 	private sealed class DelegateFilter<TType, TDelegate> : Filter<TType>
 	{
-		private readonly Func<TType, IEnumerable<TDelegate>> _delegateGenerator;
 		private readonly IFilter<TDelegate> _delegateFilter;
+		private readonly Func<TType, IEnumerable<TDelegate>> _delegateGenerator;
 		private readonly string _name;
 
 		public DelegateFilter(Func<TType, IEnumerable<TDelegate>> delegateGenerator,
@@ -109,8 +109,6 @@ public static class Filter
 		public ITypeExpectation Types
 			=> _filtered.Types;
 
-		#endregion
-
 		/// <inheritdoc cref="Filter{ConstructorInfo}.Applies(ConstructorInfo)" />
 		public override bool Applies(ConstructorInfo type)
 			=> Predicates.Any(p => p.Applies(type));
@@ -119,6 +117,8 @@ public static class Filter
 		public IRequirementResult<ConstructorInfo> ShouldSatisfy(
 			Requirement<ConstructorInfo> requirement)
 			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -155,8 +155,6 @@ public static class Filter
 		public ITypeExpectation Types
 			=> _filtered.Types;
 
-		#endregion
-
 		/// <inheritdoc cref="Filter{EventInfo}.Applies(EventInfo)" />
 		public override bool Applies(EventInfo type)
 			=> Predicates.Any(p => p.Applies(type));
@@ -164,6 +162,8 @@ public static class Filter
 		/// <inheritdoc cref="IRequirement{EventInfo}.ShouldSatisfy(Requirement{EventInfo})" />
 		public IRequirementResult<EventInfo> ShouldSatisfy(Requirement<EventInfo> requirement)
 			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -200,8 +200,6 @@ public static class Filter
 		public ITypeExpectation Types
 			=> _filtered.Types;
 
-		#endregion
-
 		/// <inheritdoc cref="Filter{FieldInfo}.Applies(FieldInfo)" />
 		public override bool Applies(FieldInfo type)
 			=> Predicates.Any(p => p.Applies(type));
@@ -209,6 +207,8 @@ public static class Filter
 		/// <inheritdoc cref="IRequirement{FieldInfo}.ShouldSatisfy(Requirement{FieldInfo})" />
 		public IRequirementResult<FieldInfo> ShouldSatisfy(Requirement<FieldInfo> requirement)
 			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -245,8 +245,6 @@ public static class Filter
 		public ITypeExpectation Types
 			=> _filtered.Types;
 
-		#endregion
-
 		/// <inheritdoc cref="Filter{MethodInfo}.Applies(MethodInfo)" />
 		public override bool Applies(MethodInfo type)
 			=> Predicates.Any(p => p.Applies(type));
@@ -254,6 +252,8 @@ public static class Filter
 		/// <inheritdoc cref="IRequirement{MethodInfo}.ShouldSatisfy(Requirement{MethodInfo})" />
 		public IRequirementResult<MethodInfo> ShouldSatisfy(Requirement<MethodInfo> requirement)
 			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -326,8 +326,6 @@ public static class Filter
 		public ITypeExpectation Types
 			=> _filtered.Types;
 
-		#endregion
-
 		/// <inheritdoc cref="Filter{PropertyInfo}.Applies(PropertyInfo)" />
 		public override bool Applies(PropertyInfo type)
 			=> Predicates.Any(p => p.Applies(type));
@@ -335,6 +333,8 @@ public static class Filter
 		/// <inheritdoc cref="IRequirement{PropertyInfo}.ShouldSatisfy(Requirement{PropertyInfo})" />
 		public IRequirementResult<PropertyInfo> ShouldSatisfy(Requirement<PropertyInfo> requirement)
 			=> _filtered.ShouldSatisfy(requirement);
+
+		#endregion
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
@@ -413,8 +413,12 @@ public static class Filter
 /// </summary>
 public abstract class Filter<TType> : IFilter<TType>
 {
+	#region IFilter<TType> Members
+
 	/// <summary>
 	///     Specifies if the filter applies to the given <typeparamref name="TType" />.
 	/// </summary>
 	public abstract bool Applies(TType type);
+
+	#endregion
 }
