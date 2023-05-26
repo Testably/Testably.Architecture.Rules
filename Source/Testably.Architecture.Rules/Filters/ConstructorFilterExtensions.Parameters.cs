@@ -38,10 +38,8 @@ public static partial class ConstructorFilterExtensions
 	public static IConstructorFilterResult WithoutParameter(
 		this IConstructorFilter @this)
 	{
-		return @this.Which(constructor =>
-		{
-			return constructor.GetParameters().Length == 0;
-		},
+		return @this.Which(
+			constructor => constructor.GetParameters().Length == 0,
 			"without parameter");
 	}
 }

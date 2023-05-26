@@ -59,8 +59,7 @@ public static class Filter
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnConstructor" />.
 		/// </summary>
-		protected OnConstructor(
-			IConstructorFilter typeFilter)
+		protected OnConstructor(IConstructorFilter typeFilter)
 		{
 			typeFilter.Which(this);
 			And = typeFilter;
@@ -102,8 +101,7 @@ public static class Filter
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnEvent" />.
 		/// </summary>
-		protected OnEvent(
-			IEventFilter typeFilter)
+		protected OnEvent(IEventFilter typeFilter)
 		{
 			typeFilter.Which(this);
 			And = typeFilter;
@@ -145,8 +143,7 @@ public static class Filter
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnField" />.
 		/// </summary>
-		protected OnField(
-			IFieldFilter typeFilter)
+		protected OnField(IFieldFilter typeFilter)
 		{
 			typeFilter.Which(this);
 			And = typeFilter;
@@ -188,9 +185,9 @@ public static class Filter
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnMethod" />.
 		/// </summary>
-		protected OnMethod(
-			IMethodFilter typeFilter)
+		protected OnMethod(IMethodFilter typeFilter)
 		{
+			typeFilter.Which(this);
 			And = typeFilter;
 		}
 
@@ -221,7 +218,8 @@ public static class Filter
 	/// <summary>
 	///     Base class for additional filters on <see cref="ParameterInfo" />.
 	/// </summary>
-	public abstract class OnParameter<TResult> : Filter<ParameterInfo>, IParameterFilterResult<TResult>
+	public abstract class OnParameter<TResult> : Filter<ParameterInfo>,
+		IParameterFilterResult<TResult>
 		where TResult : IParameterFilterResult<TResult>
 	{
 		/// <summary>
@@ -266,8 +264,7 @@ public static class Filter
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnProperty" />.
 		/// </summary>
-		protected OnProperty(
-			IPropertyFilter typeFilter)
+		protected OnProperty(IPropertyFilter typeFilter)
 		{
 			typeFilter.Which(this);
 			And = typeFilter;
