@@ -118,7 +118,7 @@ public static partial class ParameterFilterExtensions
 		{
 			Predicates.Add(Filter.FromPredicate<ParameterInfo>(
 				parameterInfo
-					=> parameterInfo.ParameterType.InheritsFrom(typeof(TParameter), !inherit),
+					=> parameterInfo.ParameterType.IsOrInheritsFrom(typeof(TParameter), !inherit),
 				$"is of type {typeof(TParameter).Name}"));
 			return this;
 		}

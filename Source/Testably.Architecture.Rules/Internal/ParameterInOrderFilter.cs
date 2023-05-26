@@ -24,7 +24,7 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 	public bool Apply(ParameterInfo[] parameterInfos)
 	{
 		return _filters.All(
-			item => parameterInfos.Length < item.Key &&
+			item => parameterInfos.Length > item.Key &&
 			        item.Value.All(f => f.Applies(parameterInfos[item.Key])));
 	}
 
