@@ -12,14 +12,16 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichDoNotInheritFrom_WithForceDirect_WithClass_ShouldConsiderParameter()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(
-					typeof(FooImplementor1),
-					typeof(FooImplementor2)).And
-				.WhichDoNotInheritFrom<FooBase>(true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(FooImplementor1), typeof(FooImplementor2)).And;
+
+			ITypeFilterResult sut = source.WhichDoNotInheritFrom<FooBase>(true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"does not inherit from {nameof(FooBase)}");
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
 				.NotContain(e => e.ToString().Contains(nameof(FooImplementor1)));
@@ -30,14 +32,16 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichDoNotInheritFrom_WithForceDirect_WithGenericClass_ShouldConsiderParameter()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(
-					typeof(FooGenericImplementor1<,>),
-					typeof(FooGenericImplementor2<>)).And
-				.WhichDoNotInheritFrom(typeof(FooGenericClass<,>), true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(FooGenericImplementor1<,>), typeof(FooGenericImplementor2<>)).And;
+
+			ITypeFilterResult sut = source.WhichDoNotInheritFrom(typeof(FooGenericClass<,>), true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"does not inherit from {typeof(FooGenericClass<,>).Name}");
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
 				.NotContain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));
@@ -122,11 +126,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichInheritFrom_WithForceDirect_WithClass_ShouldConsiderParameter()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichInheritFrom<FooBase>(true)
+			ITypeFilter source = Expect.That.Types;
+
+			ITypeFilterResult sut = source.WhichInheritFrom<FooBase>(true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"inherits from {nameof(FooBase)}");
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(nameof(FooImplementor1)));
@@ -137,11 +145,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichInheritFrom_WithForceDirect_WithGenericClass_ShouldConsiderParameter()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichInheritFrom(typeof(FooGenericClass<,>), true)
+			ITypeFilter source = Expect.That.Types;
+
+			ITypeFilterResult sut = source.WhichInheritFrom(typeof(FooGenericClass<,>), true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"inherits from {typeof(FooGenericClass<,>).Name}");
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<,>).Name));

@@ -24,6 +24,6 @@ public static partial class TypeFilterExtensions
 	{
 		return @this.Which(
 			type => pattern.Matches(type.Namespace, ignoreCase),
-			$"does reside in namespace '{pattern}'");
+			$"resides in namespace '{pattern}'");
 	}
 }

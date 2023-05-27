@@ -11,12 +11,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotStatic_ShouldFilterForNotStaticTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(StaticClass), typeof(NotStaticClass)).And
-				.WhichAreNotStatic()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(StaticClass), typeof(NotStaticClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotStatic();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not static");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(NotStaticClass).FullName);
@@ -25,12 +28,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreStatic_ShouldFilterForStaticTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(StaticClass), typeof(NotStaticClass)).And
-				.WhichAreStatic()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(StaticClass), typeof(NotStaticClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreStatic();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is static");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(StaticClass).FullName);

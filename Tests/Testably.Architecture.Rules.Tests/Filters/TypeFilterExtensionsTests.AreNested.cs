@@ -12,12 +12,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNested_ShouldFilterForNestedTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(NestedClass), typeof(RuleTests)).And
-				.WhichAreNested()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(NestedClass), typeof(RuleTests)).And;
+
+			ITypeFilterResult sut = source.WhichAreNested();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is nested");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(NestedClass).FullName);
@@ -26,12 +29,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotNested_ShouldFilterForNotNestedTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(NestedClass), typeof(RuleTests)).And
-				.WhichAreNotNested()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(NestedClass), typeof(RuleTests)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotNested();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not nested");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(RuleTests).FullName);

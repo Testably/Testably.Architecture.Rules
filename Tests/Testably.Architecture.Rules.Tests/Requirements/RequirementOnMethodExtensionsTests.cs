@@ -13,7 +13,7 @@ public sealed class RequirementOnMethodExtensionsTests
 	[Fact]
 	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
 	{
-		MethodInfo method = typeof(DummyClass).GetDeclaredMethods().First();
+		MethodInfo method = typeof(DummyFooClass).GetDeclaredMethods().First();
 		Expression<Func<MethodInfo, bool>> expression = _ => false;
 		IRule rule = Expect.That.Methods
 			.WhichAre(method)

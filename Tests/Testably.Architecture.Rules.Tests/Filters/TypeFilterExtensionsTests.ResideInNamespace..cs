@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Rules.Tests.TestHelpers;
+﻿using FluentAssertions;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
@@ -19,13 +20,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichDoNotResideInNamespace_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TypeFilterExtensionsTests)).And
-				.WhichDoNotResideInNamespace(pattern)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TypeFilterExtensionsTests)).And;
+
+			ITypeFilterResult sut = source.WhichDoNotResideInNamespace(pattern);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"does not reside in namespace '{pattern}'");
 			result.ShouldBeViolatedIf(!expectMatch);
 		}
 
@@ -40,13 +45,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichDoNotResideInNamespace_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TypeFilterExtensionsTests)).And
-				.WhichDoNotResideInNamespace(pattern, true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TypeFilterExtensionsTests)).And;
+
+			ITypeFilterResult sut = source.WhichDoNotResideInNamespace(pattern, true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"does not reside in namespace '{pattern}'");
 			result.ShouldBeViolatedIf(!expectMatch);
 		}
 
@@ -62,13 +71,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichResideInNamespace_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TypeFilterExtensionsTests)).And
-				.WhichResideInNamespace(pattern)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TypeFilterExtensionsTests)).And;
+
+			ITypeFilterResult sut = source.WhichResideInNamespace(pattern);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"resides in namespace '{pattern}'");
 			result.ShouldBeViolatedIf(expectMatch);
 		}
 
@@ -83,13 +96,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichResideInNamespace_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TypeFilterExtensionsTests)).And
-				.WhichResideInNamespace(pattern, true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TypeFilterExtensionsTests)).And;
+
+			ITypeFilterResult sut = source.WhichResideInNamespace(pattern, true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"resides in namespace '{pattern}'");
 			result.ShouldBeViolatedIf(expectMatch);
 		}
 	}

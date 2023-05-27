@@ -45,6 +45,10 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class MethodTypeFilter : Filter<Type>
 	{
 		private readonly List<Filter<MethodInfo>> _methodFilters;

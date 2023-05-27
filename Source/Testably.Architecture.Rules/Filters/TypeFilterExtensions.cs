@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -111,6 +110,6 @@ public static partial class TypeFilterExtensions
 		return @this.Which(Filter.Delegate<Type, PropertyInfo>(
 			type => type.GetProperties(),
 			propertyFilter,
-			$"has method whose {propertyFilter}"));
+			$"has property whose {propertyFilter}"));
 	}
 }

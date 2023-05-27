@@ -12,7 +12,7 @@ public sealed class PropertyTestErrorTests
 	[Fact]
 	public void Property_ShouldSetProperty()
 	{
-		PropertyInfo propertyInfo = typeof(DummyClass).GetProperties().First();
+		PropertyInfo propertyInfo = typeof(DummyFooClass).GetProperties().First();
 
 		PropertyTestError sut = new(propertyInfo, "foo");
 
@@ -23,7 +23,7 @@ public sealed class PropertyTestErrorTests
 	[AutoData]
 	public void ToString_ShouldReturnMessage(string message)
 	{
-		PropertyInfo propertyInfo = typeof(DummyClass).GetProperties().First();
+		PropertyInfo propertyInfo = typeof(DummyFooClass).GetProperties().First();
 
 		PropertyTestError sut = new(propertyInfo, message);
 		string result = sut.ToString();

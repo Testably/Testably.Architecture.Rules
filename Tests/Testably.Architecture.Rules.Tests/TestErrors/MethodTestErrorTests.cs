@@ -12,7 +12,7 @@ public sealed class MethodTestErrorTests
 	[Fact]
 	public void Method_ShouldSetMethod()
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
+		MethodInfo methodInfo = typeof(DummyFooClass).GetDeclaredMethods().First();
 
 		MethodTestError sut = new(methodInfo, "foo");
 
@@ -23,7 +23,7 @@ public sealed class MethodTestErrorTests
 	[AutoData]
 	public void ToString_ShouldReturnMessage(string message)
 	{
-		MethodInfo methodInfo = typeof(DummyClass).GetDeclaredMethods().First();
+		MethodInfo methodInfo = typeof(DummyFooClass).GetDeclaredMethods().First();
 
 		MethodTestError sut = new(methodInfo, message);
 		string result = sut.ToString();

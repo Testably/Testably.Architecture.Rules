@@ -44,6 +44,10 @@ internal class ConstructorRule : Rule<ConstructorInfo>, IConstructorExpectation,
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class ConstructorTypeFilter : Filter<Type>
 	{
 		private readonly List<Filter<ConstructorInfo>> _constructorFilters;

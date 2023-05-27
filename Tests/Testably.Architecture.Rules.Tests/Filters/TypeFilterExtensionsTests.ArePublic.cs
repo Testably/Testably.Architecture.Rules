@@ -11,12 +11,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotPublic_Nested_ShouldFilterForNotPublicTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(PublicClass), typeof(PrivateClass)).And
-				.WhichAreNotPublic()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(PublicClass), typeof(PrivateClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotPublic();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not public");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(PrivateClass).FullName);
@@ -25,12 +28,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotPublic_ShouldFilterForNotPublicTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(PublicUnnestedClass), typeof(InternalUnnestedClass)).And
-				.WhichAreNotPublic()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(InternalUnnestedClass), typeof(PublicUnnestedClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotPublic();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not public");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(InternalUnnestedClass).FullName);
@@ -39,12 +45,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichArePublic_Nested_ShouldFilterForPublicTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(PublicClass), typeof(PrivateClass)).And
-				.WhichArePublic()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(PublicClass), typeof(PrivateClass)).And;
+
+			ITypeFilterResult sut = source.WhichArePublic();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is public");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(PublicClass).FullName);
@@ -53,12 +62,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichArePublic_ShouldFilterForPublicTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(PublicUnnestedClass), typeof(InternalUnnestedClass)).And
-				.WhichArePublic()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(InternalUnnestedClass), typeof(PublicUnnestedClass)).And;
+
+			ITypeFilterResult sut = source.WhichArePublic();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is public");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(PublicUnnestedClass).FullName);

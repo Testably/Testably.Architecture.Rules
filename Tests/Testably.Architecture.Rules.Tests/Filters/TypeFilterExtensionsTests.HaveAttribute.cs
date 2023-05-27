@@ -12,12 +12,16 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void OrAttribute_ShouldReturnBothTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichHaveAttribute<FooAttribute>()
-				.OrAttribute<BarAttribute>()
+			ITypeFilter source = Expect.That.Types;
+
+			ITypeFilterResult sut = source.WhichHaveAttribute<FooAttribute>()
+				.OrAttribute<BarAttribute>();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"has attribute {nameof(FooAttribute)} or has attribute {nameof(BarAttribute)}");
 			result.Errors.Length.Should().Be(2);
 		}
 

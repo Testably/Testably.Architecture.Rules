@@ -11,12 +11,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreGeneric_ShouldFilterForGenericTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(GenericClass<>), typeof(NotGenericClass)).And
-				.WhichAreGeneric()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(GenericClass<>), typeof(NotGenericClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreGeneric();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is generic");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(GenericClass<>).FullName);
@@ -25,12 +28,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotGeneric_ShouldFilterForNotGenericTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(GenericClass<>), typeof(NotGenericClass)).And
-				.WhichAreNotGeneric()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(GenericClass<>), typeof(NotGenericClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotGeneric();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not generic");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(NotGenericClass).FullName);

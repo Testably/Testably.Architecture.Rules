@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Rules.Tests.TestHelpers;
+﻿using FluentAssertions;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
@@ -19,13 +20,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichDoNotMatchName_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.WhichDoNotMatchName(pattern)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source.WhichDoNotMatchName(pattern);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"name does not match pattern '{pattern}'");
 			result.ShouldBeViolatedIf(!expectMatch);
 		}
 
@@ -40,13 +45,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichDoNotMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.WhichDoNotMatchName(pattern, true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source.WhichDoNotMatchName(pattern, true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"name does not match pattern '{pattern}'");
 			result.ShouldBeViolatedIf(!expectMatch);
 		}
 
@@ -62,13 +71,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.WhichMatchName(pattern)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source.WhichMatchName(pattern);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"name matches pattern '{pattern}'");
 			result.ShouldBeViolatedIf(expectMatch);
 		}
 
@@ -83,13 +96,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.WhichMatchName(pattern, true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source.WhichMatchName(pattern, true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"name matches pattern '{pattern}'");
 			result.ShouldBeViolatedIf(expectMatch);
 		}
 
