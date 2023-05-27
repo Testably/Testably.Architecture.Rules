@@ -10,6 +10,18 @@ namespace Testably.Architecture.Rules;
 public static class TypeExtensions
 {
 	/// <summary>
+	///     Searches for methods in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static MethodInfo[] GetDeclaredMethods(
+		this Type type)
+	{
+		return type
+			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+			.Where(m => !m.IsSpecialName)
+			.ToArray();
+	}
+
+	/// <summary>
 	///     Checks if the <paramref name="type" /> has an attribute which satisfies the <paramref name="predicate" />.
 	/// </summary>
 	/// <typeparam name="TAttribute">The type of the <see cref="Attribute" />.</typeparam>
@@ -38,18 +50,6 @@ public static class TypeExtensions
 		}
 
 		return false;
-	}
-
-	/// <summary>
-	///     Searches for methods in the <paramref name="type" /> that were directly declared there.
-	/// </summary>
-	public static MethodInfo[] GetDeclaredMethods(
-		this Type type)
-	{
-		return type
-			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
-			.Where(m => !m.IsSpecialName)
-			.ToArray();
 	}
 
 	/// <summary>

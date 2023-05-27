@@ -9,23 +9,6 @@ namespace Testably.Architecture.Rules.Tests.Requirements;
 
 public sealed partial class RequirementOnTypeExtensionsTests
 {
-	[Fact]
-	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
-	{
-		Type type = typeof(RequirementOnTypeExtensionsTests);
-		Expression<Func<Type, bool>> expression = _ => false;
-		IRule rule = Expect.That.Types
-			.WhichAre(type)
-			.ShouldSatisfy(expression);
-
-		ITestResult result = rule.Check
-			.InAllLoadedAssemblies();
-
-		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<TypeTestError>()
-			.Which.ToString().Should().Contain(expression.ToString());
-	}
-
 	[Theory]
 	[AutoData]
 	public void Should_ConstructorFilter_ShouldContainFilterName(string filterName)
@@ -114,5 +97,22 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		result.Errors[0].Should().BeOfType<PropertyTestError>()
 			.Which.ToString().Should()
 			.Contain("type should have a property").And.Contain(filterName);
+	}
+
+	[Fact]
+	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
+	{
+		Type type = typeof(RequirementOnTypeExtensionsTests);
+		Expression<Func<Type, bool>> expression = _ => false;
+		IRule rule = Expect.That.Types
+			.WhichAre(type)
+			.ShouldSatisfy(expression);
+
+		ITestResult result = rule.Check
+			.InAllLoadedAssemblies();
+
+		result.ShouldBeViolated();
+		result.Errors[0].Should().BeOfType<TypeTestError>()
+			.Which.ToString().Should().Contain(expression.ToString());
 	}
 }
