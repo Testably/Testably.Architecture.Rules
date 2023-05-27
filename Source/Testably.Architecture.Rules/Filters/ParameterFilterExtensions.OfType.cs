@@ -139,12 +139,13 @@ public static partial class ParameterFilterExtensions
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 		{
+			string result = string.Join(" or ", Predicates);
 			if (Predicates.Count > 1)
 			{
-				return $"({string.Join(" or ", Predicates)})";
+				return $"({result})";
 			}
 
-			return string.Join(" or ", Predicates);
+			return result;
 		}
 	}
 
@@ -217,12 +218,13 @@ public static partial class ParameterFilterExtensions
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 		{
+			string result = string.Join(" or ", Predicates);
 			if (Predicates.Count > 1)
 			{
-				return $"({string.Join(" or ", Predicates)})";
+				return $"({result})";
 			}
 
-			return string.Join(" or ", Predicates);
+			return result;
 		}
 	}
 }

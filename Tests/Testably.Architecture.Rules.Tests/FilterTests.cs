@@ -58,7 +58,8 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnConstructor_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnConstructor_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IConstructorFilter constructorFilter = Have.Constructor;
 
@@ -103,7 +104,8 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnEvent_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnEvent_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IEventFilter eventFilter = Have.Event;
 
@@ -148,7 +150,8 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnField_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnField_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IFieldFilter fieldFilter = Have.Field;
 
@@ -193,7 +196,8 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnMethod_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnMethod_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IMethodFilter methodFilter = Have.Method;
 
@@ -238,9 +242,11 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnParameter_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnParameter_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
-		var parameter = typeof(DummyFooClass).GetConstructors().First().GetParameters()[0];
+		ParameterInfo parameter =
+			typeof(DummyFooClass).GetConstructors().First().GetParameters()[0];
 		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
 
 		OnParameterMock sut = new(parameterFilter);
@@ -284,7 +290,8 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnProperty_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnProperty_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IPropertyFilter propertyFilter = Have.Property;
 
@@ -330,7 +337,8 @@ public sealed class FilterTests
 	[InlineData(true, false, true)]
 	[InlineData(false, true, true)]
 	[InlineData(true, true, true)]
-	public void OnType_Applies_ShouldUseAnyForResult(bool result1, bool result2, bool expectedResult)
+	public void OnType_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		ITypeFilter typeFilter = Expect.That.Types;
 
@@ -436,14 +444,14 @@ public sealed class FilterTests
 		{
 		}
 
-		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
-		public override string FriendlyName()
-			=> throw new NotSupportedException();
-
 		public void AddPredicates(params Filter<ParameterInfo>[] predicates)
 		{
 			Predicates.AddRange(predicates);
 		}
+
+		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
+		public override string FriendlyName()
+			=> throw new NotSupportedException();
 	}
 
 	private class OnPropertyMock : Filter.OnProperty
