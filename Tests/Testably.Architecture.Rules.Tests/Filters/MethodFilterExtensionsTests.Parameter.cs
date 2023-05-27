@@ -65,6 +65,7 @@ public sealed partial class MethodFilterExtensionsTests
 			sut.ToString().Should().Contain("without parameter");
 		}
 
+		#pragma warning disable CA1822
 		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
@@ -83,5 +84,6 @@ public sealed partial class MethodFilterExtensionsTests
 				// Do nothing
 			}
 		}
+		#pragma warning restore CA1822
 	}
 }

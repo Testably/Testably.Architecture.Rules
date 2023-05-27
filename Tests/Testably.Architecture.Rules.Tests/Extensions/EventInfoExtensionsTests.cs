@@ -61,6 +61,7 @@ public sealed class EventInfoExtensionsTests
 		}
 	}
 	#pragma warning disable CS8618
+	#pragma warning disable CS0067
 	public delegate void Dummy();
 
 	private class TestClass : TestClassBase
@@ -78,5 +79,6 @@ public sealed class EventInfoExtensionsTests
 		[Dummy(1)]
 		public virtual event Dummy EventWithAttributeInBaseClass;
 	}
+	#pragma warning restore CS0067
 	#pragma warning restore CS8618
 }

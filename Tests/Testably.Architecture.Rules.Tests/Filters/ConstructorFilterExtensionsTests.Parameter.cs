@@ -80,6 +80,10 @@ public sealed partial class ConstructorFilterExtensionsTests
 			sut.ToString().Should().Contain("without parameter");
 		}
 
+		// ReSharper disable UnusedMember.Local
+		// ReSharper disable UnusedParameter.Local
+
+		[AttributeUsage(AttributeTargets.Constructor)]
 		public class ParameterCountAttribute : Attribute
 		{
 			public int Count { get; }
@@ -88,8 +92,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 			{
 				Count = count;
 			}
-		} // ReSharper disable UnusedMember.Local
-		// ReSharper disable UnusedParameter.Local
+		}
 		private class TestClass
 		{
 			[ParameterCount(0)]

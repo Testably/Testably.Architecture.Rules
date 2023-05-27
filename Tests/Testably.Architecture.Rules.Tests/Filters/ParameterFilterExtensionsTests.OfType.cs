@@ -181,10 +181,11 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.Should().Be($"is of type {nameof(Foo)}");
 		}
 
+		#pragma warning disable CA1822
+		// ReSharper disable UnusedMember.Local
+		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
-			// ReSharper disable UnusedMember.Local
-			// ReSharper disable UnusedParameter.Local
 			public void MethodWithFooParameter(Foo value)
 			{
 				// Do nothing
@@ -193,8 +194,6 @@ public sealed partial class ParameterFilterExtensionsTests
 
 		private class TestClassWithMultipleParameters
 		{
-			// ReSharper disable UnusedMember.Local
-			// ReSharper disable UnusedParameter.Local
 			public void MethodWithFooParameter(Foo value1, Bar value2)
 			{
 				// Do nothing
@@ -212,5 +211,6 @@ public sealed partial class ParameterFilterExtensionsTests
 		public class FooBase
 		{
 		}
+		#pragma warning restore CA1822
 	}
 }

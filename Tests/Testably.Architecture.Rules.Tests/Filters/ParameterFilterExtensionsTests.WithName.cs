@@ -61,7 +61,10 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.ShouldBeViolatedIf(expectMatch);
 			sut.ToString().Should()
 				.Contain($"name matches '{pattern}'");
-		} // ReSharper disable UnusedMember.Local
+		}
+
+		#pragma warning disable CA1822
+		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
@@ -70,5 +73,6 @@ public sealed partial class ParameterFilterExtensionsTests
 				// Do nothing
 			}
 		}
+		#pragma warning restore CA1822
 	}
 }

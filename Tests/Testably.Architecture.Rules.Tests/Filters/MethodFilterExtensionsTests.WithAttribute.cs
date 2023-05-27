@@ -38,7 +38,10 @@ public sealed partial class MethodFilterExtensionsTests
 		[AttributeUsage(AttributeTargets.Method)]
 		private class BarAttribute : Attribute
 		{
-		} // ReSharper disable ClassNeverInstantiated.Local
+		}
+
+		#pragma warning disable CA1822
+		// ReSharper disable ClassNeverInstantiated.Local
 		// ReSharper disable UnusedMember.Local
 		private class BarClass
 		{
@@ -62,5 +65,6 @@ public sealed partial class MethodFilterExtensionsTests
 				// Do nothing
 			}
 		}
+		#pragma warning restore CA1822
 	}
 }
