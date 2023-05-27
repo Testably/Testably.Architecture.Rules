@@ -66,6 +66,6 @@ internal class FieldRule : Rule<FieldInfo>, IFieldExpectation, IFieldFilterResul
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"The type must have a field which matches the filters: {string.Join(", ", _fieldFilters)}";
+			=> $"The type must have a field {string.Join(" and ", _fieldFilters)}";
 	}
 }

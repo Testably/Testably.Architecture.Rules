@@ -20,7 +20,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 			result.ShouldNotBeViolated();
 		}
 
-		[Fact(Skip = "TODO")]
+		[Fact]
 		public void OrAttribute_ShouldUseCorrectErrorMessage()
 		{
 			ITestResult result = Expect.That.Types
@@ -36,12 +36,15 @@ public sealed partial class ConstructorFilterExtensionsTests
 				.And.Contain(nameof(FooAttribute));
 		}
 
+		// ReSharper disable ClassNeverInstantiated.Local
+		// ReSharper disable UnusedMember.Local
+		// ReSharper disable UnusedParameter.Local
+
 		[AttributeUsage(AttributeTargets.Constructor)]
 		private class BarAttribute : Attribute
 		{
-		} // ReSharper disable ClassNeverInstantiated.Local
-		// ReSharper disable UnusedMember.Local
-		// ReSharper disable UnusedParameter.Local
+		}
+
 		private class BarClass
 		{
 			[Bar]

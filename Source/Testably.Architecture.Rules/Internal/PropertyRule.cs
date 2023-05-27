@@ -66,6 +66,6 @@ internal class PropertyRule : Rule<PropertyInfo>, IPropertyExpectation, IPropert
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"The type must have a property which matches the filters: {string.Join(", ", _propertyFilters)}";
+			=> $"The type must have a property {string.Join(" and ", _propertyFilters)}";
 	}
 }

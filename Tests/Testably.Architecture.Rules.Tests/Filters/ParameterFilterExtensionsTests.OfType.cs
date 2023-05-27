@@ -51,6 +51,16 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.Should().BeTrue();
 		}
 
+		[Fact]
+		public void OfType_Ordered_OrOfType_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+
+			string result = sut.OfType<Foo>().OrOfType<Bar>().ToString();
+
+			result.Should().Contain($"(is of type {nameof(Foo)} or is of type {nameof(Bar)})");
+		}
+
 		[Theory]
 		[InlineData(typeof(Foo), true)]
 		[InlineData(typeof(Bar), false)]
@@ -82,6 +92,16 @@ public sealed partial class ParameterFilterExtensionsTests
 				.Applies(typeof(TestClassWithMultipleParameters).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
+		}
+
+		[Fact]
+		public void OfType_Ordered_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+
+			string result = sut.OfType<Foo>().ToString();
+
+			result.Should().Be($"is of type {nameof(Foo)}");
 		}
 
 		[Theory]
@@ -126,6 +146,16 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.Should().BeTrue();
 		}
 
+		[Fact]
+		public void OfType_Unordered_OrOfType_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
+
+			string result = sut.OfType<Foo>().OrOfType<Bar>().ToString();
+
+			result.Should().Contain($"(is of type {nameof(Foo)} or is of type {nameof(Bar)})");
+		}
+
 		[Theory]
 		[InlineData(typeof(Foo), true)]
 		[InlineData(typeof(Bar), false)]
@@ -141,10 +171,21 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.Should().Be(expectedValue);
 		}
 
+		[Fact]
+		public void OfType_Unordered_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
+
+			string result = sut.OfType<Foo>().ToString();
+
+			result.Should().Be($"is of type {nameof(Foo)}");
+		}
+
+		#pragma warning disable CA1822
+		// ReSharper disable UnusedMember.Local
+		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
-			// ReSharper disable UnusedMember.Local
-			// ReSharper disable UnusedParameter.Local
 			public void MethodWithFooParameter(Foo value)
 			{
 				// Do nothing
@@ -153,8 +194,6 @@ public sealed partial class ParameterFilterExtensionsTests
 
 		private class TestClassWithMultipleParameters
 		{
-			// ReSharper disable UnusedMember.Local
-			// ReSharper disable UnusedParameter.Local
 			public void MethodWithFooParameter(Foo value1, Bar value2)
 			{
 				// Do nothing
@@ -172,5 +211,6 @@ public sealed partial class ParameterFilterExtensionsTests
 		public class FooBase
 		{
 		}
+		#pragma warning restore CA1822
 	}
 }

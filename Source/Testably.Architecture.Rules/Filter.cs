@@ -291,6 +291,10 @@ public static class Filter
 
 		#endregion
 
+		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
+		public override bool Applies(ParameterInfo type)
+			=> Predicates.Any(p => p.Applies(type));
+
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 			=> string.Join(" or ", Predicates.Select(x => x.ToString()));

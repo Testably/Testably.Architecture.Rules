@@ -54,15 +54,21 @@ public sealed class FilterTests
 	}
 
 	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void OnConstructor_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnConstructor_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IConstructorFilter constructorFilter = Have.Constructor;
 
-		OnConstructorMock sut = new(constructorFilter, _ => predicateResult);
+		OnConstructorMock sut = new(constructorFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<ConstructorInfo>(_ => result1),
+			Filter.FromPredicate<ConstructorInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetConstructors().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetConstructors().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -94,15 +100,21 @@ public sealed class FilterTests
 	}
 
 	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void OnEvent_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnEvent_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IEventFilter eventFilter = Have.Event;
 
-		OnEventMock sut = new(eventFilter, _ => predicateResult);
+		OnEventMock sut = new(eventFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<EventInfo>(_ => result1),
+			Filter.FromPredicate<EventInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetEvents().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetEvents().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -134,15 +146,21 @@ public sealed class FilterTests
 	}
 
 	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void OnField_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnField_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IFieldFilter fieldFilter = Have.Field;
 
-		OnFieldMock sut = new(fieldFilter, _ => predicateResult);
+		OnFieldMock sut = new(fieldFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<FieldInfo>(_ => result1),
+			Filter.FromPredicate<FieldInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetFields().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetFields().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -174,16 +192,21 @@ public sealed class FilterTests
 	}
 
 	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void OnMethod_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnMethod_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IMethodFilter methodFilter = Have.Method;
 
-		OnMethodMock sut = new(methodFilter, _ => predicateResult);
+		OnMethodMock sut = new(methodFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<MethodInfo>(_ => result1),
+			Filter.FromPredicate<MethodInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetDeclaredMethods().First())
-			.Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetMethods().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -214,6 +237,44 @@ public sealed class FilterTests
 		sut.And.Should().Be(parameterFilter);
 	}
 
+	[Theory]
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnParameter_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
+	{
+		ParameterInfo parameter =
+			typeof(DummyFooClass).GetConstructors().First().GetParameters()[0];
+		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
+
+		OnParameterMock sut = new(parameterFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<ParameterInfo>(_ => result1),
+			Filter.FromPredicate<ParameterInfo>(_ => result2));
+
+		sut.Applies(parameter).Should().Be(expectedResult);
+	}
+
+	[Theory]
+	[AutoData]
+	public void OnParameter_Or_ToString_ShouldIncludeAllFilterNames(
+		string filter1,
+		string filter2)
+	{
+		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
+
+		OnParameterMock sut = new(parameterFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<ParameterInfo>(_ => false, filter1),
+			Filter.FromPredicate<ParameterInfo>(_ => true, filter2));
+
+		string result = sut.ToString();
+
+		result.Should().Be($"{filter1} or {filter2}");
+	}
+
 	[Fact]
 	public void OnProperty_And_ShouldReturnTypeFilter()
 	{
@@ -225,15 +286,21 @@ public sealed class FilterTests
 	}
 
 	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void OnProperty_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnProperty_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		IPropertyFilter propertyFilter = Have.Property;
 
-		OnPropertyMock sut = new(propertyFilter, _ => predicateResult);
+		OnPropertyMock sut = new(propertyFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<PropertyInfo>(_ => result1),
+			Filter.FromPredicate<PropertyInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetProperties().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetProperties().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -259,21 +326,28 @@ public sealed class FilterTests
 	{
 		ITypeFilter typeFilter = Expect.That.Types;
 
-		OnTypeMock sut = new(typeFilter, _ => true);
+		OnTypeMock sut = new(typeFilter);
+		sut.AddPredicates(Filter.FromPredicate<Type>(_ => true));
 
 		sut.And.Should().Be(typeFilter);
 	}
 
 	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
-	public void OnType_Applies_ShouldReturnPredicateResult(bool predicateResult)
+	[InlineData(false, false, false)]
+	[InlineData(true, false, true)]
+	[InlineData(false, true, true)]
+	[InlineData(true, true, true)]
+	public void OnType_Applies_ShouldUseAnyForResult(bool result1, bool result2,
+		bool expectedResult)
 	{
 		ITypeFilter typeFilter = Expect.That.Types;
 
-		OnTypeMock sut = new(typeFilter, _ => predicateResult);
+		OnTypeMock sut = new(typeFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<Type>(_ => result1),
+			Filter.FromPredicate<Type>(_ => result2));
 
-		sut.Applies(GetType()).Should().Be(predicateResult);
+		sut.Applies(GetType()).Should().Be(expectedResult);
 	}
 
 	[Fact]
@@ -281,7 +355,8 @@ public sealed class FilterTests
 	{
 		ITypeFilter typeFilter = Expect.That.Types;
 
-		OnTypeMock sut = new(typeFilter, t => t == typeof(FilterTests));
+		OnTypeMock sut = new(typeFilter);
+		sut.AddPredicates(Filter.FromPredicate<Type>(t => t == typeof(FilterTests)));
 		IAssemblyExpectation assemblies = sut.Assemblies;
 
 		ITestResult result = assemblies
@@ -297,7 +372,8 @@ public sealed class FilterTests
 	{
 		ITypeFilter typeFilter = Expect.That.Types;
 
-		OnTypeMock sut = new(typeFilter, t => t == typeof(FilterTests));
+		OnTypeMock sut = new(typeFilter);
+		sut.AddPredicates(Filter.FromPredicate<Type>(t => t == typeof(FilterTests)));
 		IAssemblyExpectation assemblies = sut.Assemblies;
 
 		ITestResult result = assemblies
@@ -310,15 +386,9 @@ public sealed class FilterTests
 
 	private class OnConstructorMock : Filter.OnConstructor
 	{
-		public OnConstructorMock(
-			IConstructorFilter constructorFilter,
-			Func<ConstructorInfo, bool>? predicate = null)
+		public OnConstructorMock(IConstructorFilter constructorFilter)
 			: base(constructorFilter)
 		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
 		}
 
 		public void AddPredicates(params Filter<ConstructorInfo>[] predicates)
@@ -329,15 +399,9 @@ public sealed class FilterTests
 
 	private class OnEventMock : Filter.OnEvent
 	{
-		public OnEventMock(
-			IEventFilter constructorFilter,
-			Func<EventInfo, bool>? predicate = null)
-			: base(constructorFilter)
+		public OnEventMock(IEventFilter eventFilter)
+			: base(eventFilter)
 		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
 		}
 
 		public void AddPredicates(params Filter<EventInfo>[] predicates)
@@ -348,15 +412,9 @@ public sealed class FilterTests
 
 	private class OnFieldMock : Filter.OnField
 	{
-		public OnFieldMock(
-			IFieldFilter constructorFilter,
-			Func<FieldInfo, bool>? predicate = null)
-			: base(constructorFilter)
+		public OnFieldMock(IFieldFilter fieldFilter)
+			: base(fieldFilter)
 		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
 		}
 
 		public void AddPredicates(params Filter<FieldInfo>[] predicates)
@@ -367,15 +425,9 @@ public sealed class FilterTests
 
 	private class OnMethodMock : Filter.OnMethod
 	{
-		public OnMethodMock(
-			IMethodFilter constructorFilter,
-			Func<MethodInfo, bool>? predicate = null)
-			: base(constructorFilter)
+		public OnMethodMock(IMethodFilter methodFilter)
+			: base(methodFilter)
 		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
 		}
 
 		public void AddPredicates(params Filter<MethodInfo>[] predicates)
@@ -387,14 +439,15 @@ public sealed class FilterTests
 	private class OnParameterMock : Filter.OnParameter<IUnorderedParameterFilterResult>
 	{
 		public OnParameterMock(
-			IParameterFilter<IUnorderedParameterFilterResult> constructorFilter)
-			: base(constructorFilter)
+			IParameterFilter<IUnorderedParameterFilterResult> parameterFilter)
+			: base(parameterFilter)
 		{
 		}
 
-		/// <inheritdoc cref="Filter{ParameterInfo}.Applies(ParameterInfo)" />
-		public override bool Applies(ParameterInfo type)
-			=> throw new NotSupportedException();
+		public void AddPredicates(params Filter<ParameterInfo>[] predicates)
+		{
+			Predicates.AddRange(predicates);
+		}
 
 		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
 		public override string FriendlyName()
@@ -403,15 +456,9 @@ public sealed class FilterTests
 
 	private class OnPropertyMock : Filter.OnProperty
 	{
-		public OnPropertyMock(
-			IPropertyFilter constructorFilter,
-			Func<PropertyInfo, bool>? predicate = null)
-			: base(constructorFilter)
+		public OnPropertyMock(IPropertyFilter propertyFilter)
+			: base(propertyFilter)
 		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
 		}
 
 		public void AddPredicates(params Filter<PropertyInfo>[] predicates)
@@ -422,15 +469,14 @@ public sealed class FilterTests
 
 	private class OnTypeMock : Filter.OnType
 	{
-		public OnTypeMock(
-			ITypeFilter typeFilter,
-			Func<Type, bool>? predicate = null)
+		public OnTypeMock(ITypeFilter typeFilter)
 			: base(typeFilter)
 		{
-			if (predicate != null)
-			{
-				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
-			}
+		}
+
+		public void AddPredicates(params Filter<Type>[] predicates)
+		{
+			Predicates.AddRange(predicates);
 		}
 	}
 }

@@ -449,6 +449,18 @@ public sealed class TypeRuleTests
 		result.Errors.Should().BeEmpty();
 	}
 
+	[Theory]
+	[AutoData]
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Types
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
 	[Fact]
 	public void Which_ShouldFilterOutTypes()
 	{

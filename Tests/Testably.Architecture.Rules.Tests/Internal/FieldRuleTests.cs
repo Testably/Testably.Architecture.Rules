@@ -77,12 +77,25 @@ public sealed class FieldRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyFieldFilter(string filterName)
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Fields
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldApplyFieldFilter(string filter1, string filter2)
 	{
 		FieldInfo origin = typeof(DummyFooClass).GetFields().First();
 
 		IRule rule = Expect.That.Fields
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -92,7 +105,27 @@ public sealed class FieldRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a field");
+			.Contain("type must have a field").And
+			.Contain($"{filter1} and {filter2}");
+	}
+
+	[Fact]
+	public void Types_ShouldRequireAllFields()
+	{
+		FieldInfo field1 = typeof(DummyFooClass).GetFields().First();
+		FieldInfo field2 = typeof(DummyFooClass).GetFields().Last();
+
+		IRule rule = Expect.That.Fields
+			.Which(p => p == field1).And
+			.Which(p => p == field2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
 	}
 
 	[Fact]

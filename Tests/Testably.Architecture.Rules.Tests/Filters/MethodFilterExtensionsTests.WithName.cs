@@ -50,6 +50,8 @@ public sealed partial class MethodFilterExtensionsTests
 			result.ShouldBeViolatedIf(expectMatch);
 		}
 
+		#pragma warning disable CA1822
+		// ReSharper disable UnusedMember.Local
 		private class TestClass
 		{
 			public void TestMethod()
@@ -57,5 +59,6 @@ public sealed partial class MethodFilterExtensionsTests
 				// Do nothing
 			}
 		}
+		#pragma warning restore CA1822
 	}
 }

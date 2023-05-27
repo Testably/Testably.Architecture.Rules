@@ -77,12 +77,25 @@ public sealed class PropertyRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyPropertyFilter(string filterName)
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Properties
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldApplyPropertyFilter(string filter1, string filter2)
 	{
 		PropertyInfo origin = typeof(DummyFooClass).GetProperties().First();
 
 		IRule rule = Expect.That.Properties
-			.Which(c => c == origin, filterName)
+			.Which(p => p == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -92,7 +105,27 @@ public sealed class PropertyRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a property");
+			.Contain("type must have a property").And
+			.Contain($"{filter1} and {filter2}");
+	}
+
+	[Fact]
+	public void Types_ShouldRequireAllProperties()
+	{
+		PropertyInfo property1 = typeof(DummyFooClass).GetProperties().First();
+		PropertyInfo property2 = typeof(DummyFooClass).GetProperties().Last();
+
+		IRule rule = Expect.That.Properties
+			.Which(p => p == property1).And
+			.Which(p => p == property2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
 	}
 
 	[Fact]

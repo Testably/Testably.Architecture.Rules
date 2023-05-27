@@ -77,12 +77,25 @@ public sealed class ConstructorRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyConstructorFilter(string filterName)
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Constructors
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldApplyConstructorFilter(string filter1, string filter2)
 	{
 		ConstructorInfo origin = typeof(DummyFooClass).GetConstructors().First();
 
 		IRule rule = Expect.That.Constructors
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -92,7 +105,27 @@ public sealed class ConstructorRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a constructor");
+			.Contain("type must have a constructor").And
+			.Contain($"{filter1} and {filter2}");
+	}
+
+	[Fact]
+	public void Types_ShouldRequireAllConstructors()
+	{
+		ConstructorInfo constructor1 = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructor2 = typeof(DummyFooClass).GetConstructors().Last();
+
+		IRule rule = Expect.That.Constructors
+			.Which(p => p == constructor1).And
+			.Which(p => p == constructor2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
 	}
 
 	[Fact]

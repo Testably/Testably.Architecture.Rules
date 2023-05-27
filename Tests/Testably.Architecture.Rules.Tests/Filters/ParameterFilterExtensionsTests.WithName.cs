@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Rules.Tests.TestHelpers;
+﻿using FluentAssertions;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
@@ -19,14 +20,20 @@ public sealed partial class ParameterFilterExtensionsTests
 		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Method.With(Parameters.Any.WithName(pattern)))
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source
+				.Which(Have.Method.With(Parameters.Any.WithName(pattern)));
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
 
 			result.ShouldBeViolatedIf(expectMatch);
+			sut.ToString().Should()
+				.Contain($"name matches '{pattern}'");
 		}
 
 		[Theory]
@@ -40,15 +47,24 @@ public sealed partial class ParameterFilterExtensionsTests
 		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Method.With(Parameters.Any.WithName(pattern, true)))
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source
+				.Which(Have.Method.With(Parameters.Any.WithName(pattern, true)));
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
 
 			result.ShouldBeViolatedIf(expectMatch);
-		} // ReSharper disable UnusedMember.Local
+			sut.ToString().Should()
+				.Contain($"name matches '{pattern}'");
+		}
+
+		#pragma warning disable CA1822
+		// ReSharper disable UnusedMember.Local
 		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
@@ -57,5 +73,6 @@ public sealed partial class ParameterFilterExtensionsTests
 				// Do nothing
 			}
 		}
+		#pragma warning restore CA1822
 	}
 }

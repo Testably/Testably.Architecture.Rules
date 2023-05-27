@@ -77,12 +77,25 @@ public sealed class EventRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyEventFilter(string filterName)
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Events
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldApplyEventFilter(string filter1, string filter2)
 	{
 		EventInfo origin = typeof(DummyFooClass).GetEvents().First();
 
 		IRule rule = Expect.That.Events
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -92,7 +105,27 @@ public sealed class EventRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have an event");
+			.Contain("type must have an event").And
+			.Contain($"{filter1} and {filter2}");
+	}
+
+	[Fact]
+	public void Types_ShouldRequireAllEvents()
+	{
+		EventInfo event1 = typeof(DummyFooClass).GetEvents().First();
+		EventInfo event2 = typeof(DummyFooClass).GetEvents().Last();
+
+		IRule rule = Expect.That.Events
+			.Which(p => p == event1).And
+			.Which(p => p == event2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
 	}
 
 	[Fact]
