@@ -56,13 +56,9 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 
 	#endregion
 
-	/// <inheritdoc />
+	/// <inheritdoc cref="object.ToString()" />
 	public override string ToString()
-	{
-		return string.Join(" and ",
-			_filters.Select(item
-				=> $"{IndexToString(item.Key)} parameter {string.Join(" and ", item.Value)}"));
-	}
+		=> FriendlyName();
 
 	private static string IndexToString(int index)
 	{
