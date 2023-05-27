@@ -108,6 +108,25 @@ public sealed class ConstructorRuleTests
 	}
 
 	[Fact]
+	public void Types_ShouldRequireAllConstructors()
+	{
+		ConstructorInfo constructor1 = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructor2 = typeof(DummyFooClass).GetConstructors().Last();
+
+		IRule rule = Expect.That.Constructors
+			.Which(p => p == constructor1).And
+			.Which(p => p == constructor2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
+	}
+
+	[Fact]
 	public void Which_ShouldFilterOutConstructorInfos()
 	{
 		ConstructorInfo excludedConstructor = typeof(DummyFooClass).GetConstructors().First();

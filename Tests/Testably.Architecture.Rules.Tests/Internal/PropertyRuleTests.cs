@@ -94,7 +94,7 @@ public sealed class PropertyRuleTests
 		PropertyInfo origin = typeof(DummyFooClass).GetProperties().First();
 
 		IRule rule = Expect.That.Properties
-			.Which(c => c == origin, filterName)
+			.Which(p => p == origin, filterName)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -105,6 +105,25 @@ public sealed class PropertyRuleTests
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
 			.Contain(filterName).And.Contain("type must have a property");
+	}
+
+	[Fact]
+	public void Types_ShouldRequireAllProperties()
+	{
+		PropertyInfo property1 = typeof(DummyFooClass).GetProperties().First();
+		PropertyInfo property2 = typeof(DummyFooClass).GetProperties().Last();
+
+		IRule rule = Expect.That.Properties
+			.Which(p => p == property1).And
+			.Which(p => p == property2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
 	}
 
 	[Fact]

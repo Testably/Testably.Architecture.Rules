@@ -108,6 +108,25 @@ public sealed class MethodRuleTests
 	}
 
 	[Fact]
+	public void Types_ShouldRequireAllMethods()
+	{
+		MethodInfo method1 = typeof(DummyFooClass).GetMethods().First();
+		MethodInfo method2 = typeof(DummyFooClass).GetMethods().Last();
+
+		IRule rule = Expect.That.Methods
+			.Which(p => p == method1).And
+			.Which(p => p == method2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
+	}
+
+	[Fact]
 	public void Which_ShouldFilterOutMethodInfos()
 	{
 		int allMethodsCount = typeof(DummyFooClass).GetDeclaredMethods().Length;

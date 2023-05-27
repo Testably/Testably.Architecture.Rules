@@ -108,6 +108,25 @@ public sealed class FieldRuleTests
 	}
 
 	[Fact]
+	public void Types_ShouldRequireAllFields()
+	{
+		FieldInfo field1 = typeof(DummyFooClass).GetFields().First();
+		FieldInfo field2 = typeof(DummyFooClass).GetFields().Last();
+
+		IRule rule = Expect.That.Fields
+			.Which(p => p == field1).And
+			.Which(p => p == field2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
+	}
+
+	[Fact]
 	public void Which_ShouldFilterOutFieldInfos()
 	{
 		int allFieldsCount = typeof(DummyFooClass).GetFields().Length;

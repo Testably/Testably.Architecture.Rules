@@ -108,6 +108,25 @@ public sealed class EventRuleTests
 	}
 
 	[Fact]
+	public void Types_ShouldRequireAllEvents()
+	{
+		EventInfo event1 = typeof(DummyFooClass).GetEvents().First();
+		EventInfo event2 = typeof(DummyFooClass).GetEvents().Last();
+
+		IRule rule = Expect.That.Events
+			.Which(p => p == event1).And
+			.Which(p => p == event2)
+			.Types
+			.ShouldAlwaysFail()
+			.AllowEmpty();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyFooClass).Assembly);
+
+		result.ShouldNotBeViolated();
+	}
+
+	[Fact]
 	public void Which_ShouldFilterOutEventInfos()
 	{
 		int allEventsCount = typeof(DummyFooClass).GetEvents().Length;
