@@ -2,6 +2,7 @@
 using FluentAssertions;
 using System.Linq;
 using System.Reflection;
+using Testably.Architecture.Rules.Internal;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -9,6 +10,24 @@ namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class MethodRuleTests
 {
+	[Theory]
+	[InlineData(true, true, true)]
+	[InlineData(true, false, false)]
+	[InlineData(false, true, false)]
+	[InlineData(false, false, false)]
+	public void Applies_ShouldApplyAllFilters(bool result1, bool result2, bool expectedResult)
+	{
+		MethodInfo element = typeof(DummyClass).GetMethods().First();
+
+		MethodRule sut = new(
+			Filter.FromPredicate<MethodInfo>(_ => result1),
+			Filter.FromPredicate<MethodInfo>(_ => result2));
+
+		bool result = sut.Applies(element);
+
+		result.Should().Be(expectedResult);
+	}
+
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeMethodInfoName()
 	{
@@ -54,6 +73,26 @@ public sealed class MethodRuleTests
 			.In(typeof(DummyClass).Assembly);
 
 		result.Errors.Should().BeEmpty();
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldApplyMethodFilter(string filterName)
+	{
+		MethodInfo origin = typeof(DummyClass).GetMethods().First();
+
+		IRule rule = Expect.That.Methods
+			.Which(c => c == origin, filterName)
+			.Types
+			.Which(_ => false)
+			.ShouldAlwaysFail();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyClass).Assembly);
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors[0].ToString().Should()
+			.Contain(filterName).And.Contain("type must have a method");
 	}
 
 	[Fact]

@@ -2,6 +2,7 @@
 using FluentAssertions;
 using System.Linq;
 using System.Reflection;
+using Testably.Architecture.Rules.Internal;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -9,6 +10,24 @@ namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class EventRuleTests
 {
+	[Theory]
+	[InlineData(true, true, true)]
+	[InlineData(true, false, false)]
+	[InlineData(false, true, false)]
+	[InlineData(false, false, false)]
+	public void Applies_ShouldApplyAllFilters(bool result1, bool result2, bool expectedResult)
+	{
+		EventInfo element = typeof(DummyClass).GetEvents().First();
+
+		EventRule sut = new(
+			Filter.FromPredicate<EventInfo>(_ => result1),
+			Filter.FromPredicate<EventInfo>(_ => result2));
+
+		bool result = sut.Applies(element);
+
+		result.Should().Be(expectedResult);
+	}
+
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeEventInfoName()
 	{
@@ -54,6 +73,26 @@ public sealed class EventRuleTests
 			.In(typeof(DummyClass).Assembly);
 
 		result.Errors.Should().BeEmpty();
+	}
+
+	[Theory]
+	[AutoData]
+	public void Types_ShouldApplyEventFilter(string filterName)
+	{
+		EventInfo origin = typeof(DummyClass).GetEvents().First();
+
+		IRule rule = Expect.That.Events
+			.Which(c => c == origin, filterName)
+			.Types
+			.Which(_ => false)
+			.ShouldAlwaysFail();
+
+		ITestResult result = rule.Check
+			.In(typeof(DummyClass).Assembly);
+
+		result.Errors.Length.Should().Be(1);
+		result.Errors[0].ToString().Should()
+			.Contain(filterName).And.Contain("type must have an event");
 	}
 
 	[Fact]

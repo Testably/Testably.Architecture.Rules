@@ -66,6 +66,6 @@ internal class EventRule : Rule<EventInfo>, IEventExpectation, IEventFilterResul
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"The type must have a event which matches the filters: {string.Join(", ", _eventFilters)}";
+			=> $"The type must have an event which matches the filters: {string.Join(", ", _eventFilters)}";
 	}
 }
