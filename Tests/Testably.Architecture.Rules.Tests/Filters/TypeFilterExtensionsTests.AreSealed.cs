@@ -11,12 +11,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotSealed_ShouldFilterForNotSealedTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(SealedClass), typeof(NotSealedClass)).And
-				.WhichAreNotSealed()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(SealedClass), typeof(NotSealedClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotSealed();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not sealed");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(NotSealedClass).FullName);
@@ -25,12 +28,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreSealed_ShouldFilterForSealedTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(SealedClass), typeof(NotSealedClass)).And
-				.WhichAreSealed()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(SealedClass), typeof(NotSealedClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreSealed();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is sealed");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(SealedClass).FullName);

@@ -11,12 +11,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreAbstract_ShouldFilterForAbstractTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(AbstractClass), typeof(NotAbstractClass)).And
-				.WhichAreAbstract()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(AbstractClass), typeof(NotAbstractClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreAbstract();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is abstract");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(AbstractClass).FullName);
@@ -25,12 +28,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotAbstract_ShouldFilterForNotAbstractTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(AbstractClass), typeof(NotAbstractClass)).And
-				.WhichAreNotAbstract()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(AbstractClass), typeof(NotAbstractClass)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotAbstract();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is not abstract");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(NotAbstractClass).FullName);

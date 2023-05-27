@@ -13,13 +13,16 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData(true)]
 		public void WhichDoNotImplement_WithClass_ShouldAlwaysBeViolated(bool forceDirect)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(FooImplementor1), typeof(FooImplementor2)).And
-				.WhichDoNotImplement<FooImplementor1>(forceDirect)
-				.ShouldAlwaysFail()
-				.AllowEmpty()
-				.Check.InAllLoadedAssemblies();
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(FooImplementor1), typeof(FooImplementor2)).And;
 
+			ITypeFilterResult sut = source.WhichDoNotImplement<FooImplementor1>(forceDirect);
+
+			ITestResult result = sut
+				.ShouldAlwaysFail()
+				.Check.InAllLoadedAssemblies();
+			sut.ToString().Should().Contain(
+				$"does not implement {typeof(FooImplementor1)}");
 			result.ShouldBeViolated();
 			result.Errors.Length.Should().Be(2);
 			result.Errors.Should()
@@ -32,12 +35,17 @@ public sealed partial class TypeFilterExtensionsTests
 		public void
 			WhichDoNotImplement_WithGenericInterface_WithForceDirect_ShouldReturnTypesDirectlyImplementingTheInterface()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(FooGenericImplementor1<>), typeof(FooGenericImplementor2<>)).And
-				.WhichDoNotImplement(typeof(IGenericFooInterface<>), true)
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(FooGenericImplementor1<>), typeof(FooGenericImplementor2<>)).And;
+
+			ITypeFilterResult sut =
+				source.WhichDoNotImplement(typeof(IGenericFooInterface<>), true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"does not implement {typeof(IGenericFooInterface<>)}");
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
 				.NotContain(e => e.ToString().Contains(typeof(FooGenericImplementor1<>).Name));
@@ -109,11 +117,15 @@ public sealed partial class TypeFilterExtensionsTests
 		public void
 			WhichImplement_WithGenericInterface_WithForceDirect_ShouldReturnTypesDirectlyImplementingTheInterface()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichImplement(typeof(IGenericFooInterface<>), true)
+			ITypeFilter source = Expect.That.Types;
+
+			ITypeFilterResult sut = source.WhichImplement(typeof(IGenericFooInterface<>), true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"implements {typeof(IGenericFooInterface<>)}");
 			result.Errors.Length.Should().Be(1);
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(typeof(FooGenericImplementor1<>).Name));
@@ -141,11 +153,15 @@ public sealed partial class TypeFilterExtensionsTests
 		public void
 			WhichImplement_WithInterface_WithForceDirect_ShouldReturnTypesDirectlyImplementingTheInterface()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichImplement<IFooInterface>(true)
+			ITypeFilter source = Expect.That.Types;
+
+			ITypeFilterResult sut = source.WhichImplement<IFooInterface>(true);
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain(
+				$"implements {typeof(IFooInterface)}");
 			result.Errors.Length.Should().Be(2);
 			result.Errors.Should()
 				.Contain(e => e.ToString().Contains(nameof(FooImplementor1)));

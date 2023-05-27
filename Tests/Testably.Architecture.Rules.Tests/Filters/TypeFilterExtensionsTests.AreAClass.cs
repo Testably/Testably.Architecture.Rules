@@ -11,12 +11,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreAClass_ShouldFilterForAClassTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(ClassType), typeof(InterfaceType)).And
-				.WhichAreAClass()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(ClassType), typeof(InterfaceType)).And;
+
+			ITypeFilterResult sut = source.WhichAreAClass();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is a class");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(ClassType).FullName);
@@ -25,12 +28,15 @@ public sealed partial class TypeFilterExtensionsTests
 		[Fact]
 		public void WhichAreNotAClass_ShouldFilterForNotAClassTypes()
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(ClassType), typeof(InterfaceType)).And
-				.WhichAreNotAClass()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(ClassType), typeof(InterfaceType)).And;
+
+			ITypeFilterResult sut = source.WhichAreNotAClass();
+
+			ITestResult result = sut
 				.ShouldAlwaysFail()
 				.Check.InAllLoadedAssemblies();
-
+			sut.ToString().Should().Contain("is no class");
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
 				.Contain(typeof(InterfaceType).FullName);
