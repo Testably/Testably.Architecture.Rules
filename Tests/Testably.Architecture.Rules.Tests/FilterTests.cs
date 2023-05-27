@@ -65,6 +65,24 @@ public sealed class FilterTests
 		sut.Applies(typeof(DummyClass).GetConstructors().First()).Should().Be(predicateResult);
 	}
 
+	[Theory]
+	[AutoData]
+	public void OnConstructor_Or_ToString_ShouldIncludeAllFilterNames(
+		string filter1,
+		string filter2)
+	{
+		IConstructorFilter constructorFilter = Have.Constructor;
+
+		OnConstructorMock sut = new(constructorFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<ConstructorInfo>(_ => false, filter1),
+			Filter.FromPredicate<ConstructorInfo>(_ => true, filter2));
+
+		string result = sut.ToString();
+
+		result.Should().Be($"{filter1} or {filter2}");
+	}
+
 	[Fact]
 	public void OnEvent_And_ShouldReturnTypeFilter()
 	{
@@ -85,6 +103,24 @@ public sealed class FilterTests
 		OnEventMock sut = new(eventFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetEvents().First()).Should().Be(predicateResult);
+	}
+
+	[Theory]
+	[AutoData]
+	public void OnEvent_Or_ToString_ShouldIncludeAllFilterNames(
+		string filter1,
+		string filter2)
+	{
+		IEventFilter eventFilter = Have.Event;
+
+		OnEventMock sut = new(eventFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<EventInfo>(_ => false, filter1),
+			Filter.FromPredicate<EventInfo>(_ => true, filter2));
+
+		string result = sut.ToString();
+
+		result.Should().Be($"{filter1} or {filter2}");
 	}
 
 	[Fact]
@@ -109,6 +145,24 @@ public sealed class FilterTests
 		sut.Applies(typeof(DummyClass).GetFields().First()).Should().Be(predicateResult);
 	}
 
+	[Theory]
+	[AutoData]
+	public void OnField_Or_ToString_ShouldIncludeAllFilterNames(
+		string filter1,
+		string filter2)
+	{
+		IFieldFilter fieldFilter = Have.Field;
+
+		OnFieldMock sut = new(fieldFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<FieldInfo>(_ => false, filter1),
+			Filter.FromPredicate<FieldInfo>(_ => true, filter2));
+
+		string result = sut.ToString();
+
+		result.Should().Be($"{filter1} or {filter2}");
+	}
+
 	[Fact]
 	public void OnMethod_And_ShouldReturnTypeFilter()
 	{
@@ -129,6 +183,24 @@ public sealed class FilterTests
 		OnMethodMock sut = new(methodFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetDeclaredMethods().First()).Should().Be(predicateResult);
+	}
+
+	[Theory]
+	[AutoData]
+	public void OnMethod_Or_ToString_ShouldIncludeAllFilterNames(
+		string filter1,
+		string filter2)
+	{
+		IMethodFilter methodFilter = Have.Method;
+
+		OnMethodMock sut = new(methodFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<MethodInfo>(_ => false, filter1),
+			Filter.FromPredicate<MethodInfo>(_ => true, filter2));
+
+		string result = sut.ToString();
+
+		result.Should().Be($"{filter1} or {filter2}");
 	}
 
 	[Fact]
@@ -161,6 +233,24 @@ public sealed class FilterTests
 		OnPropertyMock sut = new(propertyFilter, _ => predicateResult);
 
 		sut.Applies(typeof(DummyClass).GetProperties().First()).Should().Be(predicateResult);
+	}
+
+	[Theory]
+	[AutoData]
+	public void OnProperty_Or_ToString_ShouldIncludeAllFilterNames(
+		string filter1,
+		string filter2)
+	{
+		IPropertyFilter propertyFilter = Have.Property;
+
+		OnPropertyMock sut = new(propertyFilter);
+		sut.AddPredicates(
+			Filter.FromPredicate<PropertyInfo>(_ => false, filter1),
+			Filter.FromPredicate<PropertyInfo>(_ => true, filter2));
+
+		string result = sut.ToString();
+
+		result.Should().Be($"{filter1} or {filter2}");
 	}
 
 	[Fact]
@@ -229,6 +319,11 @@ public sealed class FilterTests
 				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
 			}
 		}
+
+		public void AddPredicates(params Filter<ConstructorInfo>[] predicates)
+		{
+			Predicates.AddRange(predicates);
+		}
 	}
 
 	private class OnEventMock : Filter.OnEvent
@@ -242,6 +337,11 @@ public sealed class FilterTests
 			{
 				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
 			}
+		}
+
+		public void AddPredicates(params Filter<EventInfo>[] predicates)
+		{
+			Predicates.AddRange(predicates);
 		}
 	}
 
@@ -257,6 +357,11 @@ public sealed class FilterTests
 				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
 			}
 		}
+
+		public void AddPredicates(params Filter<FieldInfo>[] predicates)
+		{
+			Predicates.AddRange(predicates);
+		}
 	}
 
 	private class OnMethodMock : Filter.OnMethod
@@ -270,6 +375,11 @@ public sealed class FilterTests
 			{
 				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
 			}
+		}
+
+		public void AddPredicates(params Filter<MethodInfo>[] predicates)
+		{
+			Predicates.AddRange(predicates);
 		}
 	}
 
@@ -301,6 +411,11 @@ public sealed class FilterTests
 			{
 				Predicates.Add(Filter.FromPredicate(predicate, "predicate"));
 			}
+		}
+
+		public void AddPredicates(params Filter<PropertyInfo>[] predicates)
+		{
+			Predicates.AddRange(predicates);
 		}
 	}
 
