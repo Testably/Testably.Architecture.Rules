@@ -51,6 +51,16 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.Should().BeTrue();
 		}
 
+		[Fact]
+		public void OfType_Ordered_OrOfType_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+
+			string result = sut.OfType<Foo>().OrOfType<Bar>().ToString();
+
+			result.Should().Contain($"(is of type {nameof(Foo)} or is of type {nameof(Bar)})");
+		}
+
 		[Theory]
 		[InlineData(typeof(Foo), true)]
 		[InlineData(typeof(Bar), false)]
@@ -82,6 +92,16 @@ public sealed partial class ParameterFilterExtensionsTests
 				.Applies(typeof(TestClassWithMultipleParameters).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
+		}
+
+		[Fact]
+		public void OfType_Ordered_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+
+			string result = sut.OfType<Foo>().ToString();
+
+			result.Should().Be($"is of type {nameof(Foo)}");
 		}
 
 		[Theory]
@@ -126,6 +146,16 @@ public sealed partial class ParameterFilterExtensionsTests
 			result.Should().BeTrue();
 		}
 
+		[Fact]
+		public void OfType_Unordered_OrOfType_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
+
+			string result = sut.OfType<Foo>().OrOfType<Bar>().ToString();
+
+			result.Should().Contain($"(is of type {nameof(Foo)} or is of type {nameof(Bar)})");
+		}
+
 		[Theory]
 		[InlineData(typeof(Foo), true)]
 		[InlineData(typeof(Bar), false)]
@@ -139,6 +169,16 @@ public sealed partial class ParameterFilterExtensionsTests
 				.Applies(typeof(TestClass).GetDeclaredMethods().First());
 
 			result.Should().Be(expectedValue);
+		}
+
+		[Fact]
+		public void OfType_Unordered_ToString_ShouldCombineBothTypes()
+		{
+			IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
+
+			string result = sut.OfType<Foo>().ToString();
+
+			result.Should().Be($"is of type {nameof(Foo)}");
 		}
 
 		private class TestClass

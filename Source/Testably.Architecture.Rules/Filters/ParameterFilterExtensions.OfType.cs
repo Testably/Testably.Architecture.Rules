@@ -132,13 +132,18 @@ public static partial class ParameterFilterExtensions
 			Predicates.Add(Filter.FromPredicate<ParameterInfo>(
 				parameterInfo => parameterInfo.ParameterType
 					.IsOrInheritsFrom(parameterType, !allowDerivedType),
-				ToString()));
+				$"is of type {parameterType.Name}"));
 			return this;
 		}
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 		{
+			if (Predicates.Count > 1)
+			{
+				return $"({string.Join(" or ", Predicates)})";
+			}
+
 			return string.Join(" or ", Predicates);
 		}
 	}
@@ -212,7 +217,7 @@ public static partial class ParameterFilterExtensions
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 		{
-			if (Predicates.Count > 0)
+			if (Predicates.Count > 1)
 			{
 				return $"({string.Join(" or ", Predicates)})";
 			}
