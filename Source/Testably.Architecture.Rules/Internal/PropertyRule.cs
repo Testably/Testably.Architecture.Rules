@@ -43,6 +43,10 @@ internal class PropertyRule : Rule<PropertyInfo>, IPropertyExpectation, IPropert
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class PropertyTypeFilter : Filter<Type>
 	{
 		private readonly List<Filter<PropertyInfo>> _propertyFilters;

@@ -37,7 +37,7 @@ public static partial class RequirementOnTypeExtensions
 				type => type.GetEvents(),
 				Requirement.ForEvent(eventFilter.Applies,
 					@event => new EventTestError(@event,
-						$"The type should have a event whose {eventFilter}"))));
+						$"The type should have an event whose {eventFilter}"))));
 	}
 
 	/// <summary>

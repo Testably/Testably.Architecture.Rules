@@ -43,6 +43,10 @@ internal class EventRule : Rule<EventInfo>, IEventExpectation, IEventFilterResul
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class EventTypeFilter : Filter<Type>
 	{
 		private readonly List<Filter<EventInfo>> _eventFilters;

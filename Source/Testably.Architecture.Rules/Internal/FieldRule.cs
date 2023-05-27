@@ -43,6 +43,10 @@ internal class FieldRule : Rule<FieldInfo>, IFieldExpectation, IFieldFilterResul
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class FieldTypeFilter : Filter<Type>
 	{
 		private readonly List<Filter<FieldInfo>> _fieldFilters;
