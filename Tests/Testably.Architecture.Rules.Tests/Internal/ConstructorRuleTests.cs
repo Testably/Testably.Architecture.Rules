@@ -89,12 +89,13 @@ public sealed class ConstructorRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyConstructorFilter(string filterName)
+	public void Types_ShouldApplyConstructorFilter(string filter1, string filter2)
 	{
 		ConstructorInfo origin = typeof(DummyFooClass).GetConstructors().First();
 
 		IRule rule = Expect.That.Constructors
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -104,7 +105,8 @@ public sealed class ConstructorRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a constructor");
+			.Contain("type must have a constructor").And
+			.Contain($"{filter1} and {filter2}");
 	}
 
 	[Fact]

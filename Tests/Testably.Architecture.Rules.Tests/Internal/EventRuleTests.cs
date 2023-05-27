@@ -89,12 +89,13 @@ public sealed class EventRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyEventFilter(string filterName)
+	public void Types_ShouldApplyEventFilter(string filter1, string filter2)
 	{
 		EventInfo origin = typeof(DummyFooClass).GetEvents().First();
 
 		IRule rule = Expect.That.Events
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -104,7 +105,8 @@ public sealed class EventRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have an event");
+			.Contain("type must have an event").And
+			.Contain($"{filter1} and {filter2}");
 	}
 
 	[Fact]

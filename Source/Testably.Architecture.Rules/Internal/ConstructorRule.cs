@@ -67,6 +67,6 @@ internal class ConstructorRule : Rule<ConstructorInfo>, IConstructorExpectation,
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"The type must have a constructor which matches the filters: {string.Join(", ", _constructorFilters)}";
+			=> $"The type must have a constructor {string.Join(" and ", _constructorFilters)}";
 	}
 }

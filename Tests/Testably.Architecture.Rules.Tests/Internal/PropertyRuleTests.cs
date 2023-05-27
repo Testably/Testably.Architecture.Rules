@@ -89,12 +89,13 @@ public sealed class PropertyRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyPropertyFilter(string filterName)
+	public void Types_ShouldApplyPropertyFilter(string filter1, string filter2)
 	{
 		PropertyInfo origin = typeof(DummyFooClass).GetProperties().First();
 
 		IRule rule = Expect.That.Properties
-			.Which(p => p == origin, filterName)
+			.Which(p => p == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -104,7 +105,8 @@ public sealed class PropertyRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a property");
+			.Contain("type must have a property").And
+			.Contain($"{filter1} and {filter2}");
 	}
 
 	[Fact]

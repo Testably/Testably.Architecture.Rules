@@ -61,13 +61,13 @@ internal class MethodRule : Rule<MethodInfo>, IMethodExpectation, IMethodFilterR
 		/// <inheritdoc cref="Filter{Type}.Applies(Type)" />
 		public override bool Applies(Type type)
 		{
-			return type.GetDeclaredMethods()
-				.Any(method => _methodFilters.All(
+			return type.GetDeclaredMethods().Any(
+				method => _methodFilters.All(
 					filter => filter.Applies(method)));
 		}
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
-			=> $"The type must have a method which matches the filters: {string.Join(", ", _methodFilters)}";
+			=> $"The type must have a method {string.Join(" and ", _methodFilters)}";
 	}
 }

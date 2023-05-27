@@ -89,12 +89,13 @@ public sealed class FieldRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyFieldFilter(string filterName)
+	public void Types_ShouldApplyFieldFilter(string filter1, string filter2)
 	{
 		FieldInfo origin = typeof(DummyFooClass).GetFields().First();
 
 		IRule rule = Expect.That.Fields
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -104,7 +105,8 @@ public sealed class FieldRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a field");
+			.Contain("type must have a field").And
+			.Contain($"{filter1} and {filter2}");
 	}
 
 	[Fact]

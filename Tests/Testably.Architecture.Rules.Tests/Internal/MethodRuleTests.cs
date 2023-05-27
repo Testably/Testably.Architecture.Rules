@@ -89,12 +89,13 @@ public sealed class MethodRuleTests
 
 	[Theory]
 	[AutoData]
-	public void Types_ShouldApplyMethodFilter(string filterName)
+	public void Types_ShouldApplyMethodFilter(string filter1, string filter2)
 	{
 		MethodInfo origin = typeof(DummyFooClass).GetMethods().First();
 
 		IRule rule = Expect.That.Methods
-			.Which(c => c == origin, filterName)
+			.Which(c => c == origin, filter1).And
+			.Which(_ => true, filter2)
 			.Types
 			.Which(_ => false)
 			.ShouldAlwaysFail();
@@ -104,14 +105,15 @@ public sealed class MethodRuleTests
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
-			.Contain(filterName).And.Contain("type must have a method");
+			.Contain("type must have a method").And
+			.Contain($"{filter1} and {filter2}");
 	}
 
 	[Fact]
 	public void Types_ShouldRequireAllMethods()
 	{
-		MethodInfo method1 = typeof(DummyFooClass).GetMethods().First();
-		MethodInfo method2 = typeof(DummyFooClass).GetMethods().Last();
+		MethodInfo method1 = typeof(DummyFooClass).GetDeclaredMethods().First();
+		MethodInfo method2 = typeof(DummyFooClass).GetDeclaredMethods().Last();
 
 		IRule rule = Expect.That.Methods
 			.Which(p => p == method1).And
