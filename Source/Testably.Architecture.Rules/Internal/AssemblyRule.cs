@@ -38,6 +38,10 @@ internal class AssemblyRule : Rule<Assembly>, IAssemblyExpectation, IAssemblyFil
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class TypeAssemblyFilter : Filter<Type>
 	{
 		private readonly List<Filter<Assembly>> _assemblyFilters;

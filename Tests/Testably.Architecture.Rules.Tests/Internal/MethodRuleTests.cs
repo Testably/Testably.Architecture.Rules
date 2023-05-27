@@ -77,6 +77,18 @@ public sealed class MethodRuleTests
 
 	[Theory]
 	[AutoData]
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Methods
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
+	[Theory]
+	[AutoData]
 	public void Types_ShouldApplyMethodFilter(string filterName)
 	{
 		MethodInfo origin = typeof(DummyFooClass).GetMethods().First();

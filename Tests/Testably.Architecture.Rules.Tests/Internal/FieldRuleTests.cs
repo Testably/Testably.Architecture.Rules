@@ -77,6 +77,18 @@ public sealed class FieldRuleTests
 
 	[Theory]
 	[AutoData]
+	public void ToString_ShouldCombineFilters(string filter1, string filter2)
+	{
+		IRule rule = Expect.That.Fields
+			.Which(_ => true, filter1).And
+			.Which(_ => true, filter2)
+			.ShouldSatisfy(_ => true);
+
+		rule.ToString().Should().Be($"{filter1} and {filter2}");
+	}
+
+	[Theory]
+	[AutoData]
 	public void Types_ShouldApplyFieldFilter(string filterName)
 	{
 		FieldInfo origin = typeof(DummyFooClass).GetFields().First();
