@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Rules.Tests.TestHelpers;
+﻿using FluentAssertions;
+using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
@@ -50,17 +51,21 @@ public sealed partial class MethodFilterExtensionsTests
 		public void WithoutParameter_ShouldBeFoundWhenMethodHasNoParameters(
 			string methodName, bool expectFound)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source
 				.Which(Have.Method.WithName(methodName).And
-					.WithoutParameter())
-				.ShouldAlwaysFail()
+					.WithoutParameter());
+
+			ITestResult result = sut.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
-
 			result.ShouldBeViolatedIf(expectFound);
+			sut.ToString().Should().Contain("without parameter");
 		}
 
+		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
 			public void TestMethodWithoutParameters()

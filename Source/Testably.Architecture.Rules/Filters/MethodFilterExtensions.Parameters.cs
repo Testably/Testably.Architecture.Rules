@@ -38,6 +38,8 @@ public static partial class MethodFilterExtensions
 	public static IMethodFilterResult WithoutParameter(
 		this IMethodFilter @this)
 	{
-		return @this.Which(method => method.GetParameters().Length == 0);
+		return @this.Which(
+			method => method.GetParameters().Length == 0,
+			"without parameter");
 	}
 }

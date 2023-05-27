@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 using Xunit.Abstractions;
@@ -65,16 +66,18 @@ public sealed partial class ConstructorFilterExtensionsTests
 		public void WithoutParameter_ShouldBeFoundWhenConstructorHasNoParameters(
 			int parameterCount, bool expectFound)
 		{
-			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Constructor
-					.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
-					.WithoutParameter())
-				.ShouldAlwaysFail()
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source.Which(Have.Constructor
+				.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
+				.WithoutParameter());
+
+			ITestResult result = sut.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.WithLog(_testOutputHelper.WriteLine).InAllLoadedAssemblies();
-
 			result.ShouldBeViolatedIf(expectFound);
+			sut.ToString().Should().Contain("without parameter");
 		}
 
 		public class ParameterCountAttribute : Attribute
