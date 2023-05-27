@@ -12,7 +12,7 @@ public sealed class EventTestErrorTests
 	[Fact]
 	public void Event_ShouldSetEvent()
 	{
-		EventInfo eventInfo = typeof(DummyClass).GetEvents().First();
+		EventInfo eventInfo = typeof(DummyFooClass).GetEvents().First();
 
 		EventTestError sut = new(eventInfo, "foo");
 
@@ -23,7 +23,7 @@ public sealed class EventTestErrorTests
 	[AutoData]
 	public void ToString_ShouldReturnMessage(string message)
 	{
-		EventInfo eventInfo = typeof(DummyClass).GetEvents().First();
+		EventInfo eventInfo = typeof(DummyFooClass).GetEvents().First();
 
 		EventTestError sut = new(eventInfo, message);
 		string result = sut.ToString();

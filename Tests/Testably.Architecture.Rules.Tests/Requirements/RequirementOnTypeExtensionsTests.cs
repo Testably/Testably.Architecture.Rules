@@ -30,7 +30,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	[AutoData]
 	public void Should_ConstructorFilter_ShouldContainFilterName(string filterName)
 	{
-		Type type = typeof(DummyClass);
+		Type type = typeof(DummyFooClass);
 		IRule rule = Expect.That.Types
 			.WhichAre(type)
 			.Should(Have.Constructor.Which(_ => false, filterName));
@@ -48,7 +48,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	[AutoData]
 	public void Should_EventFilter_ShouldContainFilterName(string filterName)
 	{
-		Type type = typeof(DummyClass);
+		Type type = typeof(DummyFooClass);
 		IRule rule = Expect.That.Types
 			.WhichAre(type)
 			.Should(Have.Event.Which(_ => false, filterName));
@@ -66,7 +66,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	[AutoData]
 	public void Should_FieldFilter_ShouldContainFilterName(string filterName)
 	{
-		Type type = typeof(DummyClass);
+		Type type = typeof(DummyFooClass);
 		IRule rule = Expect.That.Types
 			.WhichAre(type)
 			.Should(Have.Field.Which(_ => false, filterName));
@@ -84,7 +84,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	[AutoData]
 	public void Should_MethodFilter_ShouldContainFilterName(string filterName)
 	{
-		Type type = typeof(DummyClass);
+		Type type = typeof(DummyFooClass);
 		IRule rule = Expect.That.Types
 			.WhichAre(type)
 			.Should(Have.Method.Which(_ => false, filterName));
@@ -102,7 +102,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	[AutoData]
 	public void Should_PropertyFilter_ShouldContainFilterName(string filterName)
 	{
-		Type type = typeof(DummyClass);
+		Type type = typeof(DummyFooClass);
 		IRule rule = Expect.That.Types
 			.WhichAre(type)
 			.Should(Have.Property.Which(_ => false, filterName));

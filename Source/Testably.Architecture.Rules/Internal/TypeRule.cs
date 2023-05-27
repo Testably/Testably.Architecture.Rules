@@ -59,6 +59,10 @@ internal class TypeRule : Rule<Type>, ITypeExpectation, ITypeFilterResult
 
 	#endregion
 
+	/// <inheritdoc cref="object.ToString()" />
+	public override string ToString()
+		=> string.Join(" and ", Filters);
+
 	private sealed class TypeAssemblyFilter : Filter<Assembly>
 	{
 		private readonly List<Filter<Type>> _typeFilters;

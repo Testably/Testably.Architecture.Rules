@@ -19,11 +19,11 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		DummyClass element = new(1);
+		DummyFooClass element = new(1);
 		List<TestError> errors = new();
 
-		Requirement<DummyClass> sut =
-			Requirement.Create<DummyClass>(_ => predicateResult, _ => testError);
+		Requirement<DummyFooClass> sut =
+			Requirement.Create<DummyFooClass>(_ => predicateResult, _ => testError);
 
 		sut.CollectErrors(element, errors);
 		errors.Count.Should().Be(expectedErrorCount);
@@ -44,9 +44,9 @@ public sealed class RequirementTests
 	{
 		List<TestError> errors = new();
 
-		Requirement<int> sut = Requirement.Delegate<int, DummyClass>(
-			_ => Enumerable.Range(1, multiply).Select(x => new DummyClass(x)),
-			Requirement.Create<DummyClass>(_ => predicateResult, _ => testError));
+		Requirement<int> sut = Requirement.Delegate<int, DummyFooClass>(
+			_ => Enumerable.Range(1, multiply).Select(x => new DummyFooClass(x)),
+			Requirement.Create<DummyFooClass>(_ => predicateResult, _ => testError));
 
 		sut.CollectErrors(5, errors);
 		errors.Count.Should().Be(expectedErrorCount * multiply);
@@ -98,7 +98,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		ConstructorInfo constructor = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructor = typeof(DummyFooClass).GetConstructors().First();
 		List<TestError> errors = new();
 
 		Requirement<ConstructorInfo> sut =
@@ -119,7 +119,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		ConstructorInfo constructor = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructor = typeof(DummyFooClass).GetConstructors().First();
 		List<TestError> errors = new();
 
 		Requirement<ConstructorInfo> sut = Requirement.ForConstructor(_ => predicateResult);
@@ -136,7 +136,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		EventInfo @event = typeof(DummyClass).GetEvents().First();
+		EventInfo @event = typeof(DummyFooClass).GetEvents().First();
 		List<TestError> errors = new();
 
 		Requirement<EventInfo> sut = Requirement.ForEvent(_ => predicateResult, _ => testError);
@@ -156,7 +156,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		EventInfo @event = typeof(DummyClass).GetEvents().First();
+		EventInfo @event = typeof(DummyFooClass).GetEvents().First();
 		List<TestError> errors = new();
 
 		Requirement<EventInfo> sut = Requirement.ForEvent(_ => predicateResult);
@@ -173,7 +173,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		FieldInfo field = typeof(DummyClass).GetFields().First();
+		FieldInfo field = typeof(DummyFooClass).GetFields().First();
 		List<TestError> errors = new();
 
 		Requirement<FieldInfo> sut = Requirement.ForField(_ => predicateResult, _ => testError);
@@ -193,7 +193,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		FieldInfo field = typeof(DummyClass).GetFields().First();
+		FieldInfo field = typeof(DummyFooClass).GetFields().First();
 		List<TestError> errors = new();
 
 		Requirement<FieldInfo> sut = Requirement.ForField(_ => predicateResult);
@@ -210,7 +210,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		MethodInfo method = typeof(DummyClass).GetDeclaredMethods().First();
+		MethodInfo method = typeof(DummyFooClass).GetDeclaredMethods().First();
 		List<TestError> errors = new();
 
 		Requirement<MethodInfo> sut = Requirement.ForMethod(_ => predicateResult, _ => testError);
@@ -230,7 +230,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		MethodInfo method = typeof(DummyClass).GetDeclaredMethods().First();
+		MethodInfo method = typeof(DummyFooClass).GetDeclaredMethods().First();
 		List<TestError> errors = new();
 
 		Requirement<MethodInfo> sut = Requirement.ForMethod(_ => predicateResult);
@@ -247,7 +247,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		PropertyInfo property = typeof(DummyClass).GetProperties().First();
+		PropertyInfo property = typeof(DummyFooClass).GetProperties().First();
 		List<TestError> errors = new();
 
 		Requirement<PropertyInfo> sut =
@@ -268,7 +268,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		PropertyInfo property = typeof(DummyClass).GetProperties().First();
+		PropertyInfo property = typeof(DummyFooClass).GetProperties().First();
 		List<TestError> errors = new();
 
 		Requirement<PropertyInfo> sut = Requirement.ForProperty(_ => predicateResult);

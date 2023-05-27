@@ -17,7 +17,7 @@ public sealed class ConstructorRuleTests
 	[InlineData(false, false, false)]
 	public void Applies_ShouldApplyAllFilters(bool result1, bool result2, bool expectedResult)
 	{
-		ConstructorInfo element = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo element = typeof(DummyFooClass).GetConstructors().First();
 
 		ConstructorRule sut = new(
 			Filter.FromPredicate<ConstructorInfo>(_ => result1),
@@ -31,14 +31,14 @@ public sealed class ConstructorRuleTests
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeConstructorInfoName()
 	{
-		ConstructorInfo constructorInfo = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
 		string expectedConstructorInfoName = $"'{constructorInfo.Name}'";
 		IRule rule = Expect.That.Constructors
 			.Which(t => t == constructorInfo)
 			.ShouldSatisfy(_ => false);
 
 		ITestResult result = rule.Check
-			.In(typeof(DummyClass).Assembly);
+			.In(typeof(DummyFooClass).Assembly);
 
 		TestError error = result.Errors.Single();
 		error.ToString().Should().Contain(expectedConstructorInfoName);
@@ -48,13 +48,13 @@ public sealed class ConstructorRuleTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
 		IRule rule = Expect.That.Constructors
 			.Which(t => t == constructorInfo)
 			.ShouldSatisfy(Requirement.ForConstructor(_ => false, _ => error));
 
 		ITestResult result = rule.Check
-			.In(typeof(DummyClass).Assembly);
+			.In(typeof(DummyFooClass).Assembly);
 
 		result.Errors.Should().NotBeEmpty();
 		result.Errors.Single().Should().Be(error);
@@ -64,13 +64,13 @@ public sealed class ConstructorRuleTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
 		IRule rule = Expect.That.Constructors
 			.Which(t => t == constructorInfo)
 			.ShouldSatisfy(Requirement.ForConstructor(_ => true, _ => error));
 
 		ITestResult result = rule.Check
-			.In(typeof(DummyClass).Assembly);
+			.In(typeof(DummyFooClass).Assembly);
 
 		result.Errors.Should().BeEmpty();
 	}
@@ -79,7 +79,7 @@ public sealed class ConstructorRuleTests
 	[AutoData]
 	public void Types_ShouldApplyConstructorFilter(string filterName)
 	{
-		ConstructorInfo origin = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo origin = typeof(DummyFooClass).GetConstructors().First();
 
 		IRule rule = Expect.That.Constructors
 			.Which(c => c == origin, filterName)
@@ -88,7 +88,7 @@ public sealed class ConstructorRuleTests
 			.ShouldAlwaysFail();
 
 		ITestResult result = rule.Check
-			.In(typeof(DummyClass).Assembly);
+			.In(typeof(DummyFooClass).Assembly);
 
 		result.Errors.Length.Should().Be(1);
 		result.Errors[0].ToString().Should()
@@ -98,16 +98,16 @@ public sealed class ConstructorRuleTests
 	[Fact]
 	public void Which_ShouldFilterOutConstructorInfos()
 	{
-		ConstructorInfo excludedConstructor = typeof(DummyClass).GetConstructors().First();
-		int allConstructorsCount = typeof(DummyClass).GetConstructors().Length;
+		ConstructorInfo excludedConstructor = typeof(DummyFooClass).GetConstructors().First();
+		int allConstructorsCount = typeof(DummyFooClass).GetConstructors().Length;
 
 		IRule rule = Expect.That.Constructors
-			.Which(t => t.DeclaringType == typeof(DummyClass)).And
+			.Which(t => t.DeclaringType == typeof(DummyFooClass)).And
 			.Which(p => p == excludedConstructor)
 			.ShouldSatisfy(Requirement.ForConstructor(_ => false));
 
 		ITestResult result = rule.Check
-			.In(typeof(DummyClass).Assembly);
+			.In(typeof(DummyFooClass).Assembly);
 
 		result.Errors.Length.Should().BeLessThan(allConstructorsCount);
 		result.Errors.Should().OnlyContain(e => e.ToString().Contains("'.ctor'"));

@@ -14,7 +14,7 @@ public sealed partial class EventFilterExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		EventInfo eventInfo = typeof(DummyClass).GetEvents().First();
+		EventInfo eventInfo = typeof(DummyFooClass).GetEvents().First();
 		IEventFilterResult sut = Have.Event
 			.Which(_ => predicateResult);
 
@@ -28,7 +28,7 @@ public sealed partial class EventFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		EventInfo eventInfo = typeof(DummyClass).GetEvents().First();
+		EventInfo eventInfo = typeof(DummyFooClass).GetEvents().First();
 		IEventFilterResult sut = Have.Event
 			.Which(_ => predicateResult, name);
 

@@ -18,8 +18,8 @@ public sealed class FilterTests
 		bool predicateResult,
 		int value)
 	{
-		DummyClass test = new(value + valueOffset);
-		Filter<DummyClass> sut = Filter.FromPredicate<DummyClass>(d => d.Value == value);
+		DummyFooClass test = new(value + valueOffset);
+		Filter<DummyFooClass> sut = Filter.FromPredicate<DummyFooClass>(d => d.Value == value);
 
 		bool result = sut.Applies(test);
 		result.Should().Be(predicateResult);
@@ -35,8 +35,8 @@ public sealed class FilterTests
 		string name,
 		int value)
 	{
-		DummyClass test = new(value);
-		Filter<DummyClass> sut = Filter.FromPredicate<DummyClass>(_ => predicateResult, name);
+		DummyFooClass test = new(value);
+		Filter<DummyFooClass> sut = Filter.FromPredicate<DummyFooClass>(_ => predicateResult, name);
 
 		bool result = sut.Applies(test);
 		result.Should().Be(predicateResult);
@@ -62,7 +62,7 @@ public sealed class FilterTests
 
 		OnConstructorMock sut = new(constructorFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetConstructors().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetConstructors().First()).Should().Be(predicateResult);
 	}
 
 	[Theory]
@@ -102,7 +102,7 @@ public sealed class FilterTests
 
 		OnEventMock sut = new(eventFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetEvents().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetEvents().First()).Should().Be(predicateResult);
 	}
 
 	[Theory]
@@ -142,7 +142,7 @@ public sealed class FilterTests
 
 		OnFieldMock sut = new(fieldFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetFields().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetFields().First()).Should().Be(predicateResult);
 	}
 
 	[Theory]
@@ -182,7 +182,7 @@ public sealed class FilterTests
 
 		OnMethodMock sut = new(methodFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetDeclaredMethods().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetDeclaredMethods().First()).Should().Be(predicateResult);
 	}
 
 	[Theory]
@@ -232,7 +232,7 @@ public sealed class FilterTests
 
 		OnPropertyMock sut = new(propertyFilter, _ => predicateResult);
 
-		sut.Applies(typeof(DummyClass).GetProperties().First()).Should().Be(predicateResult);
+		sut.Applies(typeof(DummyFooClass).GetProperties().First()).Should().Be(predicateResult);
 	}
 
 	[Theory]

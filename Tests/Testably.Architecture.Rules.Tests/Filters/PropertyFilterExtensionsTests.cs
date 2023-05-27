@@ -14,7 +14,7 @@ public sealed partial class PropertyFilterExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		PropertyInfo propertyInfo = typeof(DummyClass).GetProperties().First();
+		PropertyInfo propertyInfo = typeof(DummyFooClass).GetProperties().First();
 		IPropertyFilterResult sut = Have.Property
 			.Which(_ => predicateResult);
 
@@ -28,7 +28,7 @@ public sealed partial class PropertyFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		PropertyInfo propertyInfo = typeof(DummyClass).GetProperties().First();
+		PropertyInfo propertyInfo = typeof(DummyFooClass).GetProperties().First();
 		IPropertyFilterResult sut = Have.Property
 			.Which(_ => predicateResult, name);
 

@@ -14,7 +14,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
 		IConstructorFilterResult sut = Have.Constructor
 			.Which(_ => predicateResult);
 
@@ -28,7 +28,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
 		IConstructorFilterResult sut = Have.Constructor
 			.Which(_ => predicateResult, name);
 
