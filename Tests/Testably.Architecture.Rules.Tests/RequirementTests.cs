@@ -46,7 +46,7 @@ public sealed class RequirementTests
 
 		Requirement<int> sut = Requirement.Delegate<int, DummyFooClass>(
 			_ => Enumerable.Range(1, multiply).Select(x => new DummyFooClass(x)),
-			Requirement.Create<DummyFooClass>(_ => predicateResult, _ => testError));
+			_ => Requirement.Create<DummyFooClass>(_ => predicateResult, _ => testError));
 
 		sut.CollectErrors(5, errors);
 		errors.Count.Should().Be(expectedErrorCount * multiply);

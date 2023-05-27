@@ -19,9 +19,9 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, ConstructorInfo>(
 				type => type.GetConstructors(),
-				Requirement.ForConstructor(constructorFilter.Applies,
+				type => Requirement.ForConstructor(constructorFilter.Applies,
 					constructor => new ConstructorTestError(constructor,
-						$"The type should have a constructor whose {constructorFilter}"))));
+						$"The type '{type.FullName}' should have a constructor {constructorFilter}"))));
 	}
 
 	/// <summary>
@@ -34,9 +34,9 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, EventInfo>(
 				type => type.GetEvents(),
-				Requirement.ForEvent(eventFilter.Applies,
+				type => Requirement.ForEvent(eventFilter.Applies,
 					@event => new EventTestError(@event,
-						$"The type should have an event whose {eventFilter}"))));
+						$"The type '{type.FullName}' should have an event whose {eventFilter}"))));
 	}
 
 	/// <summary>
@@ -49,9 +49,9 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, FieldInfo>(
 				type => type.GetFields(),
-				Requirement.ForField(fieldFilter.Applies,
+				type => Requirement.ForField(fieldFilter.Applies,
 					field => new FieldTestError(field,
-						$"The type should have a field whose {fieldFilter}"))));
+						$"The type '{type.FullName}' should have a field {fieldFilter}"))));
 	}
 
 	/// <summary>
@@ -64,9 +64,9 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, MethodInfo>(
 				type => type.GetDeclaredMethods(),
-				Requirement.ForMethod(methodFilter.Applies,
+				type => Requirement.ForMethod(methodFilter.Applies,
 					method => new MethodTestError(method,
-						$"The type should have a method whose {methodFilter}"))));
+						$"The type '{type.FullName}' should have a method {methodFilter}"))));
 	}
 
 	/// <summary>
@@ -79,9 +79,9 @@ public static partial class RequirementOnTypeExtensions
 		return @this.ShouldSatisfy(
 			Requirement.Delegate<Type, PropertyInfo>(
 				type => type.GetProperties(),
-				Requirement.ForProperty(propertyFilter.Applies,
+				type => Requirement.ForProperty(propertyFilter.Applies,
 					property => new PropertyTestError(property,
-						$"The type should have a property whose {propertyFilter}"))));
+						$"The type '{type.FullName}' should have a property {propertyFilter}"))));
 	}
 
 	/// <summary>

@@ -26,7 +26,7 @@ public static class Requirement
 	/// </summary>
 	public static Requirement<TType> Delegate<TType, TDelegate>(
 		Func<TType, IEnumerable<TDelegate>> delegateGenerator,
-		Requirement<TDelegate> delegateRequirement)
+		Func<TType, Requirement<TDelegate>> delegateRequirement)
 		=> new DelegateRequirement<TType, TDelegate>(delegateGenerator, delegateRequirement);
 
 	/// <summary>
@@ -160,11 +160,11 @@ public static class Requirement
 	private sealed class DelegateRequirement<TType, TDelegate> : Requirement<TType>
 	{
 		private readonly Func<TType, IEnumerable<TDelegate>> _delegateGenerator;
-		private readonly Requirement<TDelegate> _delegateRequirement;
+		private readonly Func<TType, Requirement<TDelegate>> _delegateRequirement;
 
 		public DelegateRequirement(
 			Func<TType, IEnumerable<TDelegate>> delegateGenerator,
-			Requirement<TDelegate> delegateRequirement)
+			Func<TType, Requirement<TDelegate>> delegateRequirement)
 		{
 			_delegateGenerator = delegateGenerator;
 			_delegateRequirement = delegateRequirement;
@@ -175,7 +175,7 @@ public static class Requirement
 		{
 			foreach (TDelegate? @delegate in _delegateGenerator(type))
 			{
-				_delegateRequirement.CollectErrors(@delegate, errors);
+				_delegateRequirement(type).CollectErrors(@delegate, errors);
 			}
 		}
 	}
