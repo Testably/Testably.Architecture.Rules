@@ -6,6 +6,8 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Extensions;
 
+// ReSharper disable UnusedParameter.Local
+// ReSharper disable UnusedMember.Local
 public sealed class ConstructorInfoExtensionsTests
 {
 	[Fact]
@@ -52,8 +54,8 @@ public sealed class ConstructorInfoExtensionsTests
 		{
 			Value = value;
 		}
-	} // ReSharper disable UnusedParameter.Local
-	// ReSharper disable UnusedMember.Local
+	}
+
 	private class TestClass
 	{
 		[Dummy(1)]

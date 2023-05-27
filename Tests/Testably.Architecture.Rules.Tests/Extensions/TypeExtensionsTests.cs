@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Extensions;
 
+// ReSharper disable UnusedMember.Local
 public sealed class TypeExtensionsTests
 {
 	[Fact]
@@ -98,11 +99,9 @@ public sealed class TypeExtensionsTests
 	[Dummy(1)]
 	private class TestClassWithAttribute
 	{
-		// ReSharper disable once UnusedMember.Local
 		public void Method1WithoutAttribute()
 			=> throw new NotSupportedException();
 
-		// ReSharper disable once UnusedMember.Local
 		public void Method2WithoutAttribute()
 			=> throw new NotSupportedException();
 	}
@@ -114,12 +113,10 @@ public sealed class TypeExtensionsTests
 	private class TestClassWithoutAttribute
 	{
 		[Dummy(1)]
-		// ReSharper disable once UnusedMember.Local
 		public void Method1WithAttribute()
 			=> throw new NotSupportedException();
 
 		[Dummy(2)]
-		// ReSharper disable once UnusedMember.Local
 		public void Method2WithAttribute()
 			=> throw new NotSupportedException();
 	}

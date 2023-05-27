@@ -6,6 +6,8 @@ using Xunit.Abstractions;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
 public sealed partial class ConstructorFilterExtensionsTests
 {
 	public sealed class ParameterTests
@@ -80,9 +82,6 @@ public sealed partial class ConstructorFilterExtensionsTests
 			sut.ToString().Should().Contain("without parameter");
 		}
 
-		// ReSharper disable UnusedMember.Local
-		// ReSharper disable UnusedParameter.Local
-
 		[AttributeUsage(AttributeTargets.Constructor)]
 		public class ParameterCountAttribute : Attribute
 		{
@@ -93,6 +92,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 				Count = count;
 			}
 		}
+
 		private class TestClass
 		{
 			[ParameterCount(0)]

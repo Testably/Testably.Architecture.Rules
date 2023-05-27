@@ -5,6 +5,9 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable ClassNeverInstantiated.Local
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
 public sealed partial class ConstructorFilterExtensionsTests
 {
 	public sealed class WithAttributeTests
@@ -35,10 +38,6 @@ public sealed partial class ConstructorFilterExtensionsTests
 				.And.Contain("constructor")
 				.And.Contain(nameof(FooAttribute));
 		}
-
-		// ReSharper disable ClassNeverInstantiated.Local
-		// ReSharper disable UnusedMember.Local
-		// ReSharper disable UnusedParameter.Local
 
 		[AttributeUsage(AttributeTargets.Constructor)]
 		private class BarAttribute : Attribute

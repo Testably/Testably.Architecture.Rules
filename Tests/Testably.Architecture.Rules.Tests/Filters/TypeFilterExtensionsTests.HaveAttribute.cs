@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable UnusedType.Local
 public sealed partial class TypeFilterExtensionsTests
 {
 	public sealed class HaveAttributeTests
@@ -31,7 +32,6 @@ public sealed partial class TypeFilterExtensionsTests
 		}
 
 		[Bar]
-		// ReSharper disable once UnusedType.Local
 		private class BarClass
 		{
 		}
@@ -42,7 +42,6 @@ public sealed partial class TypeFilterExtensionsTests
 		}
 
 		[Foo]
-		// ReSharper disable once UnusedType.Local
 		private class FooClass
 		{
 		}
