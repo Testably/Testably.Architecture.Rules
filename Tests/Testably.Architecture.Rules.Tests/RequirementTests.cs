@@ -14,6 +14,48 @@ public sealed class RequirementTests
 	[Theory]
 	[InlineAutoData(true, 0)]
 	[InlineAutoData(false, 1)]
+	public void Create_WithErrorGenerator_CollectErrors_ShouldAddExpectedErrorCount(
+		bool predicateResult,
+		int expectedErrorCount,
+		TestError testError)
+	{
+		DummyClass element = new(1);
+		List<TestError> errors = new();
+
+		Requirement<DummyClass> sut =
+			Requirement.Create<DummyClass>(_ => predicateResult, _ => testError);
+
+		sut.CollectErrors(element, errors);
+		errors.Count.Should().Be(expectedErrorCount);
+		if (expectedErrorCount > 0)
+		{
+			errors[0].Should().Be(testError);
+		}
+	}
+
+	[Theory]
+	[InlineAutoData(true, 0)]
+	[InlineAutoData(false, 1)]
+	public void Delegate_WithErrorGenerator_CollectErrors_ShouldAddExpectedErrorCount(
+		bool predicateResult,
+		int expectedErrorCount,
+		int multiply,
+		TestError testError)
+	{
+		List<TestError> errors = new();
+
+		Requirement<int> sut = Requirement.Delegate<int, DummyClass>(
+			_ => Enumerable.Range(1, multiply).Select(x => new DummyClass(x)),
+			Requirement.Create<DummyClass>(_ => predicateResult, _ => testError));
+
+		sut.CollectErrors(5, errors);
+		errors.Count.Should().Be(expectedErrorCount * multiply);
+		errors.Should().AllBeEquivalentTo(testError);
+	}
+
+	[Theory]
+	[InlineAutoData(true, 0)]
+	[InlineAutoData(false, 1)]
 	public void ForAssembly_WithErrorGenerator_CollectErrors_ShouldAddExpectedErrorCount(
 		bool predicateResult,
 		int expectedErrorCount,
