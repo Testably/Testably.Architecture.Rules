@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable ClassNeverInstantiated.Local
 public sealed partial class FieldFilterExtensionsTests
 {
 	public sealed class WithAttributeTests
@@ -38,7 +39,7 @@ public sealed partial class FieldFilterExtensionsTests
 		[AttributeUsage(AttributeTargets.Field)]
 		private class BarAttribute : Attribute
 		{
-		} // ReSharper disable ClassNeverInstantiated.Local
+		}
 		#pragma warning disable CS0649
 		private class BarClass
 		{

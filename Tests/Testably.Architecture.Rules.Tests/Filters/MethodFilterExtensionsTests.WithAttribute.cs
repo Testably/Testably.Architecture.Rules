@@ -5,6 +5,8 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable ClassNeverInstantiated.Local
+// ReSharper disable UnusedMember.Local
 public sealed partial class MethodFilterExtensionsTests
 {
 	public sealed class WithAttributeTests
@@ -41,8 +43,6 @@ public sealed partial class MethodFilterExtensionsTests
 		}
 
 		#pragma warning disable CA1822
-		// ReSharper disable ClassNeverInstantiated.Local
-		// ReSharper disable UnusedMember.Local
 		private class BarClass
 		{
 			[Bar]

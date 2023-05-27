@@ -7,6 +7,8 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Internal;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
 public sealed class ParameterInOrderFilterTests
 {
 	[Theory]
@@ -82,11 +84,13 @@ public sealed class ParameterInOrderFilterTests
 		result.ToString().Should()
 			.Contain($"{filter1} and {filter2}");
 	}
-	
-	// ReSharper disable UnusedMember.Local
-	// ReSharper disable UnusedParameter.Local
+
+	#region Helpers
+
 	private static void DummyMethod(int v1, int v2, int v3, int v4, int v5)
 	{
 		// Do nothing
 	}
+
+	#endregion
 }

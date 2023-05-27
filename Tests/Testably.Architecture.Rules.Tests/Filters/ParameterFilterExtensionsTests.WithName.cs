@@ -4,6 +4,8 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
 public sealed partial class ParameterFilterExtensionsTests
 {
 	public sealed class WithNameTests
@@ -64,8 +66,6 @@ public sealed partial class ParameterFilterExtensionsTests
 		}
 
 		#pragma warning disable CA1822
-		// ReSharper disable UnusedMember.Local
-		// ReSharper disable UnusedParameter.Local
 		private class TestClass
 		{
 			public void DummyMethod(string testParameter)

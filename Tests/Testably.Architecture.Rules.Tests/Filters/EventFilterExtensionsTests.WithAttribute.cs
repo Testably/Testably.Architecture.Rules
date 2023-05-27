@@ -5,6 +5,8 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable ClassNeverInstantiated.Local
+// ReSharper disable EventNeverSubscribedTo.Local
 public sealed partial class EventFilterExtensionsTests
 {
 	public sealed class WithAttributeTests
@@ -40,8 +42,7 @@ public sealed partial class EventFilterExtensionsTests
 		{
 		}
 
-		public delegate void Dummy(); // ReSharper disable ClassNeverInstantiated.Local
-		// ReSharper disable EventNeverSubscribedTo.Local
+		public delegate void Dummy();
 		#pragma warning disable CS8618
 		#pragma warning disable CS0067
 		private class BarClass

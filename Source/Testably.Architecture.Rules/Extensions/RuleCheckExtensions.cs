@@ -15,7 +15,6 @@ public static class RuleCheckExtensions
 	/// </summary>
 	public static ITestResult In(this IRuleCheck @this, params Assembly[] assemblies)
 	{
-		// ReSharper disable once RedundantArgumentDefaultValue
 		return @this.In(new TestDataProvider(assemblies));
 	}
 

@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Extensions;
 
+// ReSharper disable UnusedMember.Local
 public sealed class MethodInfoExtensionsTests
 {
 	[Fact]
@@ -64,15 +65,12 @@ public sealed class MethodInfoExtensionsTests
 	private class TestClass : TestClassBase
 	{
 		[Dummy(1)]
-		// ReSharper disable once UnusedMember.Local
 		public void Method1WithAttribute()
 			=> throw new NotSupportedException();
 
-		// ReSharper disable once UnusedMember.Local
 		public void Method2WithoutAttribute()
 			=> throw new NotSupportedException();
 
-		// ReSharper disable once UnusedMember.Local
 		public override void MethodWithAttributeInBaseClass()
 			=> throw new NotSupportedException();
 	}
@@ -80,7 +78,6 @@ public sealed class MethodInfoExtensionsTests
 	private class TestClassBase
 	{
 		[Dummy(1)]
-		// ReSharper disable once UnusedMember.Local
 		public virtual void MethodWithAttributeInBaseClass()
 			=> throw new NotSupportedException();
 	}

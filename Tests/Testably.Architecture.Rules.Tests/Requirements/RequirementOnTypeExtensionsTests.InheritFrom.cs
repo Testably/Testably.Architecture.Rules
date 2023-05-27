@@ -5,6 +5,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Requirements;
 
+// ReSharper disable UnusedTypeParameter
 public sealed partial class RequirementOnTypeExtensionsTests
 {
 	public sealed class InheritFromTests
@@ -498,12 +499,10 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
 		private class GenericBarClass<T>
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
 		private class GenericFooClass<T>
 		{
 		}
@@ -525,7 +524,6 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
 		private interface IGenericFooInterface<T>
 		{
 		}
@@ -534,7 +532,6 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
 		private interface IOtherGenericFooInterface<T>
 		{
 		}

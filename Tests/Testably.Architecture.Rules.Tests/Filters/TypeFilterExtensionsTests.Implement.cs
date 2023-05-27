@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable UnusedTypeParameter
 public sealed partial class TypeFilterExtensionsTests
 {
 	public sealed class ImplementTests
@@ -214,7 +215,6 @@ public sealed partial class TypeFilterExtensionsTests
 		{
 		}
 
-		// ReSharper disable once UnusedTypeParameter
 		private interface IGenericFooInterface<T>
 		{
 		}
