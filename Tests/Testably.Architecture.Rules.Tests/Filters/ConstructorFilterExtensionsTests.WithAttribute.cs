@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -37,6 +38,38 @@ public sealed partial class ConstructorFilterExtensionsTests
 				.Contain($"type '{typeof(BarClass)}'")
 				.And.Contain("constructor")
 				.And.Contain(nameof(FooAttribute));
+		}
+
+		[Fact]
+		public void ShouldSatisfy_ShouldApplyOnFilteredResult()
+		{
+			IConstructorFilterResult sut = Have.Constructor
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<ConstructorInfo> rule = sut.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((ConstructorTestError)e).Constructor.DeclaringType == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((ConstructorTestError)e).Constructor.DeclaringType == typeof(BarClass));
+		}
+
+		[Fact]
+		public void Types_ShouldForwardToFilteredResult()
+		{
+			IConstructorFilterResult sut = Have.Constructor
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<Type> rule = sut.Types.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(BarClass));
 		}
 
 		[AttributeUsage(AttributeTargets.Constructor)]

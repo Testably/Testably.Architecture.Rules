@@ -3,6 +3,7 @@
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local
+[DummyFoo]
 internal class DummyFooClass
 {
 	public int? DummyFooProperty1 { get; set; }

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -35,6 +36,38 @@ public sealed partial class MethodFilterExtensionsTests
 				.Contain($"type '{typeof(BarClass)}'")
 				.And.Contain("method")
 				.And.Contain(nameof(FooAttribute));
+		}
+
+		[Fact]
+		public void ShouldSatisfy_ShouldApplyOnFilteredResult()
+		{
+			IMethodFilterResult sut = Have.Method
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<MethodInfo> rule = sut.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((MethodTestError)e).Method.DeclaringType == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((MethodTestError)e).Method.DeclaringType == typeof(BarClass));
+		}
+
+		[Fact]
+		public void Types_ShouldForwardToFilteredResult()
+		{
+			IMethodFilterResult sut = Have.Method
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<Type> rule = sut.Types.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(BarClass));
 		}
 
 		[AttributeUsage(AttributeTargets.Method)]

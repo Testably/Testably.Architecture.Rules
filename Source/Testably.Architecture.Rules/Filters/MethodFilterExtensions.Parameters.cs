@@ -44,7 +44,7 @@ public static partial class MethodFilterExtensions
 	}
 
 	/// <summary>
-	///     Filters for <see cref="MethodInfo" />s with (at least) <paramref name="minimumCount"/> parameters.
+	///     Filters for <see cref="MethodInfo" />s with (at least) <paramref name="minimumCount" /> parameters.
 	/// </summary>
 	public static IMethodFilterResult WithParameters(
 		this IMethodFilter @this,
@@ -52,6 +52,6 @@ public static partial class MethodFilterExtensions
 	{
 		return @this.Which(
 			method => method.GetParameters().Length >= minimumCount,
-			$"with at least {minimumCount} parameter{(minimumCount > 1 ? "s" : "")}");
+			$"with at least {minimumCount} {(minimumCount > 1 ? "parameters" : "parameter")}");
 	}
 }
