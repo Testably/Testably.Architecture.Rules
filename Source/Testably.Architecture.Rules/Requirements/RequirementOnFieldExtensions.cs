@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension fields for <see cref="IRequirement{FieldInfo}" />.
 /// </summary>
-public static class RequirementOnFieldExtensions
+public static partial class RequirementOnFieldExtensions
 {
 	/// <summary>
 	///     The <see cref="FieldInfo" /> should satisfy the given <paramref name="condition" />.
