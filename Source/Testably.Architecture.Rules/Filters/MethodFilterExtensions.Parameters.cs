@@ -52,6 +52,6 @@ public static partial class MethodFilterExtensions
 	{
 		return @this.Which(
 			method => method.GetParameters().Length >= minimumCount,
-			$"with at least {minimumCount} parameter{(minimumCount > 1 ? "s" : "")}");
+			$"with at least {minimumCount} {(minimumCount > 1 ? "parameters" : "parameter")}");
 	}
 }
