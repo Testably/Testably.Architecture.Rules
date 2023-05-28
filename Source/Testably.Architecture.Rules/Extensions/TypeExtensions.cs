@@ -176,6 +176,5 @@ public static class TypeExtensions
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
 	public static bool IsStatic(this Type type)
-		=> type.IsAbstract && type.IsSealed && !type.IsInterface &&
-		   !type.GetConstructors().Any(m => m.IsPublic);
+		=> !type.IsInterface && type.IsAbstract && type.IsSealed;
 }
