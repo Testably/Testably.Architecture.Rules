@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension methods for <see cref="IRequirement{MethodInfo}" />.
 /// </summary>
-public static class RequirementOnMethodExtensions
+public static partial class RequirementOnMethodExtensions
 {
 	/// <summary>
 	///     The <see cref="MethodInfo" /> should satisfy the given <paramref name="condition" />.

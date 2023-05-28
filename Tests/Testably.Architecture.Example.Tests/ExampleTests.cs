@@ -48,7 +48,7 @@ public sealed class ExampleTests
 	{
 		IRule rule = Expect.That.Methods
 			.WithAttribute<TheoryAttribute>()
-			.ShouldSatisfy(m => m.GetParameters().Length > 0);
+			.ShouldHaveParameters();
 
 		rule.Check
 			.InTestAssembly()
