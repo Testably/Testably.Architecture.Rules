@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Requirements;
 
-public sealed class RequirementOnMethodExtensionsTests
+public sealed partial class RequirementOnMethodExtensionsTests
 {
 	[Fact]
 	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
