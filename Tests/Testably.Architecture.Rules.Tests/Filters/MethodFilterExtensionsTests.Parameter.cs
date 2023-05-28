@@ -70,7 +70,7 @@ public sealed partial class MethodFilterExtensionsTests
 		[InlineData(nameof(TestClass.TestMethodWithoutParameters), false)]
 		[InlineData(nameof(TestClass.TestMethodWithStringParameter), true)]
 		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), true)]
-		public void WithParameter_ShouldBeFoundWhenMethodHasNoParameters(
+		public void WithParameter_ShouldBeFoundWhenMethodHasAtLeastOneParameter(
 			string methodName, bool expectFound)
 		{
 			ITypeFilter source = Expect.That.Types
@@ -94,8 +94,9 @@ public sealed partial class MethodFilterExtensionsTests
 		[InlineData(nameof(TestClass.TestMethodWithStringParameter), 2, false)]
 		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), 2, true)]
 		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), 3, false)]
-		public void WithParameter_ShouldBeFoundWhenMethodHasNoParameters(
-			string methodName, int minimumCount, bool expectFound)
+		public void
+			WithParameter_WithMinimumCount_ShouldBeFoundWhenMethodHaveAtLeastTheRequiredParameters(
+				string methodName, int minimumCount, bool expectFound)
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And;
