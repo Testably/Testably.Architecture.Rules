@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension events for <see cref="IRequirement{EventInfo}" />.
 /// </summary>
-public static class RequirementOnEventExtensions
+public static partial class RequirementOnEventExtensions
 {
 	/// <summary>
 	///     The <see cref="EventInfo" /> should satisfy the given <paramref name="condition" />.

@@ -6,7 +6,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 
 public sealed partial class TypeFilterExtensionsTests
 {
-	public sealed class MatchNameTests
+	public sealed class NameMatchTests
 	{
 		[Theory]
 		[InlineData("TESTClass", false)]
@@ -17,13 +17,13 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*s", true)]
 		[InlineData("*class", false)]
-		public void WhichDoNotMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameDoesNotMatch_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And;
 
-			ITypeFilterResult sut = source.WhichDoNotMatchName(pattern);
+			ITypeFilterResult sut = source.WhichNameDoesNotMatch(pattern);
 
 			ITestResult result = sut
 				.ShouldAlwaysFail()
@@ -42,13 +42,13 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*s", true)]
-		public void WhichDoNotMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameDoesNotMatch_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And;
 
-			ITypeFilterResult sut = source.WhichDoNotMatchName(pattern, true);
+			ITypeFilterResult sut = source.WhichNameDoesNotMatch(pattern, true);
 
 			ITestResult result = sut
 				.ShouldAlwaysFail()
@@ -68,13 +68,13 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*s", true)]
 		[InlineData("*class", false)]
-		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameMatches_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And;
 
-			ITypeFilterResult sut = source.WhichMatchName(pattern);
+			ITypeFilterResult sut = source.WhichNameMatches(pattern);
 
 			ITestResult result = sut
 				.ShouldAlwaysFail()
@@ -93,13 +93,13 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*s", true)]
-		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameMatches_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And;
 
-			ITypeFilterResult sut = source.WhichMatchName(pattern, true);
+			ITypeFilterResult sut = source.WhichNameMatches(pattern, true);
 
 			ITestResult result = sut
 				.ShouldAlwaysFail()

@@ -7,7 +7,7 @@ public static partial class TypeFilterExtensions
 	/// <summary>
 	///     Filter for types where the <see cref="MemberInfo.Name" /> does not match the given <paramref name="pattern" />.
 	/// </summary>
-	public static ITypeFilterResult WhichDoNotMatchName(this ITypeFilter @this,
+	public static ITypeFilterResult WhichNameDoesNotMatch(this ITypeFilter @this,
 		Match pattern,
 		bool ignoreCase = false)
 	{
@@ -18,7 +18,7 @@ public static partial class TypeFilterExtensions
 	/// <summary>
 	///     Filter for types where the <see cref="MemberInfo.Name" /> matches the given <paramref name="pattern" />.
 	/// </summary>
-	public static ITypeFilterResult WhichMatchName(this ITypeFilter @this,
+	public static ITypeFilterResult WhichNameMatches(this ITypeFilter @this,
 		Match pattern,
 		bool ignoreCase = false)
 	{

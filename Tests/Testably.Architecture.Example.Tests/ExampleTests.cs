@@ -1,4 +1,5 @@
-﻿using Testably.Architecture.Example.Tests.TestHelpers;
+﻿using System.Threading.Tasks;
+using Testably.Architecture.Example.Tests.TestHelpers;
 using Testably.Architecture.Rules;
 using Xunit;
 
@@ -6,6 +7,22 @@ namespace Testably.Architecture.Example.Tests;
 
 public sealed class ExampleTests
 {
+	/// <summary>
+	///     Methods that return Task should have Async suffix
+	/// </summary>
+	[Fact]
+	public void AsyncMethodsShouldHaveAsyncSuffix()
+	{
+		IRule rule = Expect.That.Methods
+			.WithReturnType<Task>().OrReturnType(typeof(Task<>))
+			.ShouldMatchName("*Async")
+			.AllowEmpty();
+
+		rule.Check
+			.InTestAssembly()
+			.ThrowIfViolated();
+	}
+
 	/// <summary>
 	///     All test classes should be named with 'Tests' as suffix.
 	///     <para />

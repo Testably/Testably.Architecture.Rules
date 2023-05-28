@@ -5,7 +5,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 
 public sealed partial class AssemblyFilterExtensionsTests
 {
-	public sealed class MatchNameTests
+	public sealed class NameMatchTests
 	{
 		[Theory]
 		[InlineData("TESTABLY.Architecture.RULES", false)]
@@ -16,11 +16,11 @@ public sealed partial class AssemblyFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*s", true)]
 		[InlineData("*rules", false)]
-		public void WhichDoNotMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameDoesNotMatch_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Assemblies
-				.WhichDoNotMatchName(pattern)
+				.WhichNameDoesNotMatch(pattern)
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAssemblyContaining<ArchitectureRuleViolatedException>();
@@ -36,11 +36,11 @@ public sealed partial class AssemblyFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*s", true)]
-		public void WhichDoNotMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameDoesNotMatch_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Assemblies
-				.WhichDoNotMatchName(pattern, true)
+				.WhichNameDoesNotMatch(pattern, true)
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAssemblyContaining<ArchitectureRuleViolatedException>();
@@ -57,11 +57,11 @@ public sealed partial class AssemblyFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*s", true)]
 		[InlineData("*rules", false)]
-		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameMatches_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Assemblies
-				.WhichMatchName(pattern)
+				.WhichNameMatches(pattern)
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAssemblyContaining<ArchitectureRuleViolatedException>();
@@ -77,11 +77,11 @@ public sealed partial class AssemblyFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*s", true)]
-		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameMatches_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Assemblies
-				.WhichMatchName(pattern, true)
+				.WhichNameMatches(pattern, true)
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAssemblyContaining<ArchitectureRuleViolatedException>();

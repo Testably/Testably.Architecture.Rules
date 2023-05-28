@@ -111,14 +111,12 @@ public static class TypeExtensions
 			return false;
 		}
 
-		Type currentType = type.IsGenericType
-			? type.GetGenericTypeDefinition()
-			: type;
+		Type currentType = type;
 
 		int level = 0;
 		while (currentType != typeof(object))
 		{
-			if (parentType == currentType)
+			if (parentType.IsEqualTo(currentType))
 			{
 				return true;
 			}
@@ -138,12 +136,51 @@ public static class TypeExtensions
 				break;
 			}
 
-			currentType = currentType.BaseType.IsGenericType
-				? currentType.BaseType.GetGenericTypeDefinition()
-				: currentType.BaseType;
+			currentType = currentType.BaseType;
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     Determines whether the current <see cref="Type" /> is the same type as the <paramref name="other" />.<br />
+	///     Generic types are considered equal, if either one or both are open generics or the generic argument types
+	///     themselves are equal.
+	/// </summary>
+	/// <param name="type">The <see cref="Type" />.</param>
+	/// <param name="other">The other <see cref="Type" />.</param>
+	public static bool IsEqualTo(
+		this Type type,
+		Type other)
+	{
+		if (type.IsGenericType != other.IsGenericType)
+		{
+			return false;
+		}
+
+		if (type.IsGenericType)
+		{
+			if (type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition())
+			{
+				if (!type.IsGenericTypeDefinition && !other.IsGenericTypeDefinition)
+				{
+					Type[]? typeArguments = type.GetGenericArguments();
+					Type[]? otherArguments = other.GetGenericArguments();
+					for (int i = 0; i < typeArguments.Length; i++)
+					{
+						if (otherArguments.Length >= i &&
+						    !typeArguments[i].IsEqualTo(otherArguments[i]))
+						{
+							return false;
+						}
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return type == other;
 	}
 
 	/// <summary>
@@ -162,7 +199,7 @@ public static class TypeExtensions
 		Type parentType,
 		bool forceDirect = false)
 	{
-		if (type == parentType)
+		if (type.IsEqualTo(parentType))
 		{
 			return true;
 		}

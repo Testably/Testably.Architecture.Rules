@@ -8,7 +8,7 @@ public static partial class AssemblyFilterExtensions
 	///     Filter for assemblies where the <see cref="AssemblyName.Name" /> does not match the given
 	///     <paramref name="pattern" />.
 	/// </summary>
-	public static IAssemblyFilterResult WhichDoNotMatchName(this IAssemblyFilter @this,
+	public static IAssemblyFilterResult WhichNameDoesNotMatch(this IAssemblyFilter @this,
 		Match pattern,
 		bool ignoreCase = false)
 	{
@@ -18,7 +18,7 @@ public static partial class AssemblyFilterExtensions
 	/// <summary>
 	///     Filter for assemblies where the <see cref="AssemblyName.Name" /> matches the given <paramref name="pattern" />.
 	/// </summary>
-	public static IAssemblyFilterResult WhichMatchName(this IAssemblyFilter @this,
+	public static IAssemblyFilterResult WhichNameMatches(this IAssemblyFilter @this,
 		Match pattern,
 		bool ignoreCase = false)
 	{

@@ -5,7 +5,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 
 public sealed partial class FieldFilterExtensionsTests
 {
-	public sealed class WithNameTests
+	public sealed class NameMatchTests
 	{
 		[Theory]
 		[InlineData("TESTField", false)]
@@ -16,12 +16,12 @@ public sealed partial class FieldFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*d", true)]
 		[InlineData("*field", false)]
-		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameMatches_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Field.WithName(pattern))
+				.Which(Have.Field.WhichNameMatches(pattern))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
@@ -37,12 +37,12 @@ public sealed partial class FieldFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*d", true)]
-		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameMatches_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Field.WithName(pattern, true))
+				.Which(Have.Field.WhichNameMatches(pattern, true))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();

@@ -8,7 +8,7 @@ public static partial class FieldFilterExtensions
 	///     Filter <see cref="FieldInfo" />s where the <see cref="MemberInfo.Name" /> matches the given
 	///     <paramref name="pattern" />.
 	/// </summary>
-	public static IFieldFilterResult WithName(
+	public static IFieldFilterResult WhichNameMatches(
 		this IFieldFilter @this,
 		Match pattern,
 		bool ignoreCase = false)

@@ -5,7 +5,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 
 public sealed partial class EventFilterExtensionsTests
 {
-	public sealed class WithNameTests
+	public sealed class NameMatchTests
 	{
 		[Theory]
 		[InlineData("TESTEvent", false)]
@@ -16,12 +16,12 @@ public sealed partial class EventFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*t", true)]
 		[InlineData("*event", false)]
-		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameMatches_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Event.WithName(pattern))
+				.Which(Have.Event.WhichNameMatches(pattern))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
@@ -37,12 +37,12 @@ public sealed partial class EventFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*t", true)]
-		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameMatches_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Event.WithName(pattern, true))
+				.Which(Have.Event.WhichNameMatches(pattern, true))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
