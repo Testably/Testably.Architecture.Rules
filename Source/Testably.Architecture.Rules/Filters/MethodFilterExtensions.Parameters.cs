@@ -42,4 +42,16 @@ public static partial class MethodFilterExtensions
 			method => method.GetParameters().Length == 0,
 			"without parameter");
 	}
+
+	/// <summary>
+	///     Filters for <see cref="MethodInfo" />s with (at least) <paramref name="minimumCount"/> parameters.
+	/// </summary>
+	public static IMethodFilterResult WithParameters(
+		this IMethodFilter @this,
+		int minimumCount = 1)
+	{
+		return @this.Which(
+			method => method.GetParameters().Length >= minimumCount,
+			$"with at least {minimumCount} parameter{(minimumCount > 1 ? "s" : "")}");
+	}
 }

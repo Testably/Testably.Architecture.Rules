@@ -11,8 +11,7 @@ namespace Testably.Architecture.Rules.Tests.Internal;
 // ReSharper disable UnusedParameter.Local
 public sealed class ParameterInOrderFilterTests
 {
-	[Theory]
-	[AutoData]
+	[Fact]
 	public void Apply_ShouldCheckEachFilterIndividually()
 	{
 		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();

@@ -39,4 +39,19 @@ public sealed class ExampleTests
 			.InTestAssembly()
 			.ThrowIfViolated();
 	}
+
+	/// <summary>
+	///     Theories should have at least one parameter.
+	/// </summary>
+	[Fact]
+	public void TheoriesShouldHaveParameters()
+	{
+		IRule rule = Expect.That.Methods
+			.WithAttribute<TheoryAttribute>()
+			.ShouldHaveParameters();
+
+		rule.Check
+			.InTestAssembly()
+			.ThrowIfViolated();
+	}
 }

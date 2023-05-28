@@ -18,7 +18,7 @@ public static partial class TypeFilterExtensions
 	///     <see langword="false" />.<br />
 	///     Defaults to <see langword="true" />
 	/// </param>
-	public static WithAttributeFilterResult WhichHaveAttribute<TAttribute>(
+	public static WithAttributeFilterResult WithAttribute<TAttribute>(
 		this ITypeFilter @this,
 		Func<TAttribute, bool>? predicate = null,
 		bool inherit = true)

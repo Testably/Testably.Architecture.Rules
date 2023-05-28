@@ -9,8 +9,7 @@ namespace Testably.Architecture.Rules.Tests.Internal;
 
 public sealed class ParameterAnyFilterTests
 {
-	[Theory]
-	[AutoData]
+	[Fact]
 	public void Apply_ShouldCheckEachFilterIndividually()
 	{
 		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();

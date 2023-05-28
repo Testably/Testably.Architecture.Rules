@@ -8,14 +8,14 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 // ReSharper disable UnusedType.Local
 public sealed partial class TypeFilterExtensionsTests
 {
-	public sealed class HaveAttributeTests
+	public sealed class WithAttributeTests
 	{
 		[Fact]
 		public void OrAttribute_ShouldReturnBothTypes()
 		{
 			ITypeFilter source = Expect.That.Types;
 
-			ITypeFilterResult sut = source.WhichHaveAttribute<FooAttribute>()
+			ITypeFilterResult sut = source.WithAttribute<FooAttribute>()
 				.OrAttribute<BarAttribute>();
 
 			ITestResult result = sut
