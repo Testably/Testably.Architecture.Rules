@@ -2,9 +2,9 @@
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
-// ReSharper disable UnusedTypeParameter
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable UnusedTypeParameter
 public sealed partial class TypeFilterExtensionsTests
 {
 	public sealed class InheritFromTests

@@ -3,6 +3,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Filters;
 
+// ReSharper disable UnusedMember.Local
 public sealed partial class MethodFilterExtensionsTests
 {
 	public sealed class WithNameTests
@@ -51,7 +52,6 @@ public sealed partial class MethodFilterExtensionsTests
 		}
 
 		#pragma warning disable CA1822
-		// ReSharper disable UnusedMember.Local
 		private class TestClass
 		{
 			public void TestMethod()
