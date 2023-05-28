@@ -7,7 +7,7 @@
 
 This library is used to define architecture rules as expectations that can be run and checked as part of the unit test execution.
 
-## Example
+## Examples
 
 - Test classes should have `Tests` as suffix:
   ```csharp
@@ -21,5 +21,21 @@ This library is used to define architecture rules as expectations that can be ru
     rule.Check
         .InAllLoadedAssemblies()
         .ThrowIfViolated();
+  }
+  ```
+  
+- Methods that return `Task` should have `Async` as suffix:
+  ```csharp
+  [Fact]
+  public void AsyncMethodsShouldHaveAsyncSuffix()
+  {
+    IRule rule = Expect.That.Methods
+      .WithReturnType<Task>().OrReturnType(typeof(Task<>))
+      .ShouldMatchName("*Async")
+      .AllowEmpty();
+
+    rule.Check
+      .InTestAssembly()
+      .ThrowIfViolated();
   }
   ```
