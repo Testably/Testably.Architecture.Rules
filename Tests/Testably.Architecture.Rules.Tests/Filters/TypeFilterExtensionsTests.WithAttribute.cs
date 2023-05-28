@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using System;
-using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 

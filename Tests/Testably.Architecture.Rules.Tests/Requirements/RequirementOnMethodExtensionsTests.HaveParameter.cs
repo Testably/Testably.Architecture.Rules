@@ -12,6 +12,59 @@ public sealed partial class RequirementOnMethodExtensionsTests
 	public sealed class HaveParameterTests
 	{
 		[Theory]
+		[InlineData(nameof(TestClass.TestMethodWithoutParameters), true)]
+		[InlineData(nameof(TestClass.TestMethodWithStringParameter), true)]
+		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), false)]
+		public void ShouldHave_WithAnyIntParameter_ShouldResultInExpectViolation(
+			string methodName, bool expectViolation)
+		{
+			MethodInfo method = typeof(TestClass)
+				.GetMethod(methodName)!;
+			IRule rule = Expect.That.Methods
+				.WhichAre(method)
+				.ShouldHave(Parameters.Any.OfType<int>());
+
+			ITestResult result = rule.Check
+				.InAllLoadedAssemblies();
+
+			result.ShouldBeViolatedIf(expectViolation);
+			if (expectViolation)
+			{
+				result.Errors[0].ToString().Should()
+					.Contain($"'{method.Name}'").And
+					.Contain($"should have a parameter which is of type {nameof(Int32)}");
+			}
+		}
+
+		[Theory]
+		[InlineData(nameof(TestClass.TestMethodWithoutParameters), true)]
+		[InlineData(nameof(TestClass.TestMethodWithStringParameter), true)]
+		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), false)]
+		public void ShouldHave_WithOrderedStringAndInt_ShouldResultInExpectViolation(
+			string methodName, bool expectViolation)
+		{
+			MethodInfo method = typeof(TestClass)
+				.GetMethod(methodName)!;
+			IRule rule = Expect.That.Methods
+				.WhichAre(method)
+				.ShouldHave(Parameters.InOrder
+					.OfType<string>().Then()
+					.OfType<int>());
+
+			ITestResult result = rule.Check
+				.InAllLoadedAssemblies();
+
+			result.ShouldBeViolatedIf(expectViolation);
+			if (expectViolation)
+			{
+				result.Errors[0].ToString().Should()
+					.Contain($"'{method.Name}'").And
+					.Contain(
+						$"should have parameters whose 1st parameter is of type {nameof(String)} and 2nd parameter is of type {nameof(Int32)}");
+			}
+		}
+
+		[Theory]
 		[InlineData(nameof(TestClass.TestMethodWithoutParameters), false)]
 		[InlineData(nameof(TestClass.TestMethodWithStringParameter), true)]
 		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), true)]
@@ -88,59 +141,7 @@ public sealed partial class RequirementOnMethodExtensionsTests
 			}
 		}
 
-		[Theory]
-		[InlineData(nameof(TestClass.TestMethodWithoutParameters), true)]
-		[InlineData(nameof(TestClass.TestMethodWithStringParameter), true)]
-		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), false)]
-		public void ShouldHave_WithAnyIntParameter_ShouldResultInExpectViolation(
-			string methodName, bool expectViolation)
-		{
-			MethodInfo method = typeof(TestClass)
-				.GetMethod(methodName)!;
-			IRule rule = Expect.That.Methods
-				.WhichAre(method)
-				.ShouldHave(Parameters.Any.OfType<int>());
-
-			ITestResult result = rule.Check
-				.InAllLoadedAssemblies();
-
-			result.ShouldBeViolatedIf(expectViolation);
-			if (expectViolation)
-			{
-				result.Errors[0].ToString().Should()
-					.Contain($"'{method.Name}'").And
-					.Contain($"should have a parameter which is of type {nameof(Int32)}");
-			}
-		}
-
-		[Theory]
-		[InlineData(nameof(TestClass.TestMethodWithoutParameters), true)]
-		[InlineData(nameof(TestClass.TestMethodWithStringParameter), true)]
-		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), false)]
-		public void ShouldHave_WithOrderedStringAndInt_ShouldResultInExpectViolation(
-			string methodName, bool expectViolation)
-		{
-			MethodInfo method = typeof(TestClass)
-				.GetMethod(methodName)!;
-			IRule rule = Expect.That.Methods
-				.WhichAre(method)
-				.ShouldHave(Parameters.InOrder
-					.OfType<string>().Then()
-					.OfType<int>());
-
-			ITestResult result = rule.Check
-				.InAllLoadedAssemblies();
-
-			result.ShouldBeViolatedIf(expectViolation);
-			if (expectViolation)
-			{
-				result.Errors[0].ToString().Should()
-					.Contain($"'{method.Name}'").And
-					.Contain($"should have parameters whose 1st parameter is of type {nameof(String)} and 2nd parameter is of type {nameof(Int32)}");
-			}
-		}
-
-#pragma warning disable CA1822
+		#pragma warning disable CA1822
 		private class TestClass
 		{
 			public void TestMethodWithoutParameters()
