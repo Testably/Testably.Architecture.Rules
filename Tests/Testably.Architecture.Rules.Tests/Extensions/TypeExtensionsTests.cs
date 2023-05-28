@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Extensions;
@@ -69,6 +71,36 @@ public sealed class TypeExtensionsTests
 		bool result = sut.InheritsFrom(typeof(TestClassWithAttribute));
 
 		result.Should().BeFalse();
+	}
+
+	[Fact]
+	public void IsEqualTo_DifferentClosedGenericType_ShouldReturnFalse()
+	{
+		Type sut = typeof(Dictionary<int, string>);
+
+		bool result = sut.IsEqualTo(typeof(Dictionary<int, int>));
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
+	public void IsEqualTo_SameGenericType_OtherOpen_ShouldReturnTrue()
+	{
+		Type sut = typeof(Task<>);
+
+		bool result = sut.IsEqualTo(typeof(Task<int>));
+
+		result.Should().BeTrue();
+	}
+
+	[Fact]
+	public void IsEqualTo_SameGenericType_TypeOpen_ShouldReturnTrue()
+	{
+		Type sut = typeof(Dictionary<int, string>);
+
+		bool result = sut.IsEqualTo(typeof(Dictionary<,>));
+
+		result.Should().BeTrue();
 	}
 
 	[Fact]
