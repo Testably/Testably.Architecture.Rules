@@ -8,7 +8,7 @@ public static partial class EventFilterExtensions
 	///     Filter <see cref="EventInfo" />s where the <see cref="MemberInfo.Name" /> matches the given
 	///     <paramref name="pattern" />.
 	/// </summary>
-	public static IEventFilterResult WithName(
+	public static IEventFilterResult WhichNameMatches(
 		this IEventFilter @this,
 		Match pattern,
 		bool ignoreCase = false)

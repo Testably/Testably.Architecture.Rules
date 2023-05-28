@@ -6,7 +6,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 // ReSharper disable UnusedMember.Local
 public sealed partial class MethodFilterExtensionsTests
 {
-	public sealed class WithNameTests
+	public sealed class NameMatchTests
 	{
 		[Theory]
 		[InlineData("TESTMethod", false)]
@@ -17,12 +17,12 @@ public sealed partial class MethodFilterExtensionsTests
 		[InlineData("test*", false)]
 		[InlineData("T*d", true)]
 		[InlineData("*method", false)]
-		public void WhichMatchName_CaseSensitive_ShouldReturnExpectedValue(
+		public void WhichNameMatches_CaseSensitive_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Method.WithName(pattern))
+				.Which(Have.Method.WhichNameMatches(pattern))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
@@ -38,12 +38,12 @@ public sealed partial class MethodFilterExtensionsTests
 		[InlineData("test*", true)]
 		[InlineData("test???", false)]
 		[InlineData("t*d", true)]
-		public void WhichMatchName_WithIgnoreCase_ShouldReturnExpectedValue(
+		public void WhichNameMatches_WithIgnoreCase_ShouldReturnExpectedValue(
 			string pattern, bool expectMatch)
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Method.WithName(pattern, true))
+				.Which(Have.Method.WhichNameMatches(pattern, true))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();

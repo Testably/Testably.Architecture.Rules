@@ -18,7 +18,7 @@ public sealed partial class MethodFilterExtensionsTests
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Method.WithName(methodName).And
+				.Which(Have.Method.WhichNameMatches(methodName).And
 					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
@@ -36,7 +36,7 @@ public sealed partial class MethodFilterExtensionsTests
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
-				.Which(Have.Method.WithName(methodName).And
+				.Which(Have.Method.WhichNameMatches(methodName).And
 					.With(Parameters.Any.WithName("value1")))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
@@ -56,7 +56,7 @@ public sealed partial class MethodFilterExtensionsTests
 				.WhichAre(typeof(TestClass)).And;
 
 			ITypeFilterResult sut = source
-				.Which(Have.Method.WithName(methodName).And
+				.Which(Have.Method.WhichNameMatches(methodName).And
 					.WithoutParameter());
 
 			ITestResult result = sut.ShouldAlwaysFail()
@@ -77,7 +77,7 @@ public sealed partial class MethodFilterExtensionsTests
 				.WhichAre(typeof(TestClass)).And;
 
 			ITypeFilterResult sut = source
-				.Which(Have.Method.WithName(methodName).And
+				.Which(Have.Method.WhichNameMatches(methodName).And
 					.WithParameters());
 
 			ITestResult result = sut.ShouldAlwaysFail()
@@ -102,7 +102,7 @@ public sealed partial class MethodFilterExtensionsTests
 				.WhichAre(typeof(TestClass)).And;
 
 			ITypeFilterResult sut = source
-				.Which(Have.Method.WithName(methodName).And
+				.Which(Have.Method.WhichNameMatches(methodName).And
 					.WithParameters(minimumCount));
 
 			ITestResult result = sut.ShouldAlwaysFail()

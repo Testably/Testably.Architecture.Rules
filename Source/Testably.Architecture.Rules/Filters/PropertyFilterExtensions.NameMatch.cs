@@ -8,7 +8,7 @@ public static partial class PropertyFilterExtensions
 	///     Filter <see cref="PropertyInfo" />s where the <see cref="MemberInfo.Name" /> matches the given
 	///     <paramref name="pattern" />.
 	/// </summary>
-	public static IPropertyFilterResult WithName(
+	public static IPropertyFilterResult WhichNameMatches(
 		this IPropertyFilter @this,
 		Match pattern,
 		bool ignoreCase = false)

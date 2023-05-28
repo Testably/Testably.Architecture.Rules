@@ -8,7 +8,7 @@ public static partial class MethodFilterExtensions
 	///     Filter <see cref="MethodInfo" />s where the <see cref="MemberInfo.Name" /> matches the given
 	///     <paramref name="pattern" />.
 	/// </summary>
-	public static IMethodFilterResult WithName(
+	public static IMethodFilterResult WhichNameMatches(
 		this IMethodFilter @this,
 		Match pattern,
 		bool ignoreCase = false)
