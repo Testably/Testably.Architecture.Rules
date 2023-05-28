@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -35,6 +36,38 @@ public sealed partial class EventFilterExtensionsTests
 				.Contain($"type '{typeof(BarClass)}'")
 				.And.Contain("event")
 				.And.Contain(nameof(FooAttribute));
+		}
+
+		[Fact]
+		public void ShouldSatisfy_ShouldApplyOnFilteredResult()
+		{
+			IEventFilterResult sut = Have.Event
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<EventInfo> rule = sut.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((EventTestError)e).Event.DeclaringType == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((EventTestError)e).Event.DeclaringType == typeof(BarClass));
+		}
+
+		[Fact]
+		public void Types_ShouldForwardToFilteredResult()
+		{
+			IEventFilterResult sut = Have.Event
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<Type> rule = sut.Types.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(BarClass));
 		}
 
 		[AttributeUsage(AttributeTargets.Event)]

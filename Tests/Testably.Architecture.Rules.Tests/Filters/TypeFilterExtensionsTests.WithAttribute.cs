@@ -26,6 +26,22 @@ public sealed partial class TypeFilterExtensionsTests
 			result.Errors.Length.Should().Be(2);
 		}
 
+		[Fact]
+		public void ShouldSatisfy_ShouldApplyOnFilteredResult()
+		{
+			IRequirement<Type> sut = Expect.That.Types
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<Type> rule = sut.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(BarClass));
+		}
+
 		[AttributeUsage(AttributeTargets.Class)]
 		private class BarAttribute : Attribute
 		{

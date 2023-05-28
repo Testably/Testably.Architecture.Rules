@@ -384,6 +384,86 @@ public sealed class FilterTests
 		result.ShouldBeViolated();
 	}
 
+	[Fact]
+	public void OnType_Constructors_ShouldForwardToFilteredResult()
+	{
+		ITypeFilterResult sut = Expect.That.Types
+			.WithAttribute<DummyFooAttribute>().OrAttribute<DummyBarAttribute>();
+
+		IRequirementResult<ConstructorInfo> rule = sut.Constructors.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check.InAllLoadedAssemblies();
+		result.Errors.Length.Should().Be(4);
+		result.Errors.Should().Contain(e
+			=> ((ConstructorTestError)e).Constructor.DeclaringType == typeof(DummyFooClass));
+		result.Errors.Should().Contain(e
+			=> ((ConstructorTestError)e).Constructor.DeclaringType == typeof(DummyBarClass));
+	}
+
+	[Fact]
+	public void OnType_Events_ShouldForwardToFilteredResult()
+	{
+		ITypeFilterResult sut = Expect.That.Types
+			.WithAttribute<DummyFooAttribute>().OrAttribute<DummyBarAttribute>();
+
+		IRequirementResult<EventInfo> rule = sut.Events.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check.InAllLoadedAssemblies();
+		result.Errors.Length.Should().Be(4);
+		result.Errors.Should().Contain(e
+			=> ((EventTestError)e).Event.DeclaringType == typeof(DummyFooClass));
+		result.Errors.Should().Contain(e
+			=> ((EventTestError)e).Event.DeclaringType == typeof(DummyBarClass));
+	}
+
+	[Fact]
+	public void OnType_Fields_ShouldForwardToFilteredResult()
+	{
+		ITypeFilterResult sut = Expect.That.Types
+			.WithAttribute<DummyFooAttribute>().OrAttribute<DummyBarAttribute>();
+
+		IRequirementResult<FieldInfo> rule = sut.Fields.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check.InAllLoadedAssemblies();
+		result.Errors.Length.Should().Be(4);
+		result.Errors.Should().Contain(e
+			=> ((FieldTestError)e).Field.DeclaringType == typeof(DummyFooClass));
+		result.Errors.Should().Contain(e
+			=> ((FieldTestError)e).Field.DeclaringType == typeof(DummyBarClass));
+	}
+
+	[Fact]
+	public void OnType_Methods_ShouldForwardToFilteredResult()
+	{
+		ITypeFilterResult sut = Expect.That.Types
+			.WithAttribute<DummyFooAttribute>().OrAttribute<DummyBarAttribute>();
+
+		IRequirementResult<MethodInfo> rule = sut.Methods.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check.InAllLoadedAssemblies();
+		result.Errors.Length.Should().Be(4);
+		result.Errors.Should().Contain(e
+			=> ((MethodTestError)e).Method.DeclaringType == typeof(DummyFooClass));
+		result.Errors.Should().Contain(e
+			=> ((MethodTestError)e).Method.DeclaringType == typeof(DummyBarClass));
+	}
+
+	[Fact]
+	public void OnType_Properties_ShouldForwardToFilteredResult()
+	{
+		ITypeFilterResult sut = Expect.That.Types
+			.WithAttribute<DummyFooAttribute>().OrAttribute<DummyBarAttribute>();
+
+		IRequirementResult<PropertyInfo> rule = sut.Properties.ShouldSatisfy(_ => false);
+
+		ITestResult result = rule.Check.InAllLoadedAssemblies();
+		result.Errors.Length.Should().Be(6);
+		result.Errors.Should().Contain(e
+			=> ((PropertyTestError)e).Property.DeclaringType == typeof(DummyFooClass));
+		result.Errors.Should().Contain(e
+			=> ((PropertyTestError)e).Property.DeclaringType == typeof(DummyBarClass));
+	}
+
 	private class OnConstructorMock : Filter.OnConstructor
 	{
 		public OnConstructorMock(IConstructorFilter constructorFilter)

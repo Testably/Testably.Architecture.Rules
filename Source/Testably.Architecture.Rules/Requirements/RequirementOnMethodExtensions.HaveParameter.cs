@@ -52,6 +52,6 @@ public static partial class RequirementOnMethodExtensions
 		return @this.ShouldSatisfy(Requirement.ForMethod(
 			method => method.GetParameters().Length >= minimumCount,
 			method => new MethodTestError(method,
-				$"The method '{method.Name}' should have at least {minimumCount} parameter{(minimumCount > 1 ? "s" : "")}.")));
+				$"The method '{method.Name}' should have at least {minimumCount} {(minimumCount > 1 ? "parameters" : "parameter")}.")));
 	}
 }
