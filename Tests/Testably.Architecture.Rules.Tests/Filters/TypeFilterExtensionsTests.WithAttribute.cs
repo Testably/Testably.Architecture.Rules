@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System;
+using System.Reflection;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -24,6 +25,22 @@ public sealed partial class TypeFilterExtensionsTests
 			sut.ToString().Should().Contain(
 				$"has attribute {nameof(FooAttribute)} or has attribute {nameof(BarAttribute)}");
 			result.Errors.Length.Should().Be(2);
+		}
+
+		[Fact]
+		public void ShouldSatisfy_ShouldApplyOnFilteredResult()
+		{
+			IRequirement<Type> sut = Expect.That.Types
+				.WithAttribute<FooAttribute>().OrAttribute<BarAttribute>();
+
+			IRequirementResult<Type> rule = sut.ShouldSatisfy(_ => false);
+
+			ITestResult result = rule.Check.InAllLoadedAssemblies();
+			result.Errors.Length.Should().Be(2);
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(FooClass));
+			result.Errors.Should().Contain(e
+				=> ((TypeTestError)e).Type == typeof(BarClass));
 		}
 
 		[AttributeUsage(AttributeTargets.Class)]
