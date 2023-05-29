@@ -9,7 +9,7 @@ public sealed partial class TypeFilterExtensionsTests
 	public sealed class AreAbstractTests
 	{
 		[Fact]
-		public void WhichAreAbstract_ShouldFilterForAbstracTEntitys()
+		public void WhichAreAbstract_ShouldFilterForAbstractTypes()
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(AbstractClass), typeof(NotAbstractClass)).And;
@@ -26,7 +26,7 @@ public sealed partial class TypeFilterExtensionsTests
 		}
 
 		[Fact]
-		public void WhichAreNotAbstract_ShouldFilterForNotAbstracTEntitys()
+		public void WhichAreNotAbstract_ShouldFilterForNotAbstractTypes()
 		{
 			ITypeFilter source = Expect.That.Types
 				.WhichAre(typeof(AbstractClass), typeof(NotAbstractClass)).And;

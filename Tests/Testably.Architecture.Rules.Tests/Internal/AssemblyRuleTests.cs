@@ -103,7 +103,7 @@ public sealed class AssemblyRuleTests
 	}
 
 	[Fact]
-	public void Types_ShouldFilterOuTEntitysFromAssemblies()
+	public void Types_ShouldFilterOutTypesFromAssemblies()
 	{
 		TestDataProvider provider = new(
 			AppDomain.CurrentDomain.GetAssemblies());
