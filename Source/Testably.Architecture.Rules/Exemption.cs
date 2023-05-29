@@ -4,14 +4,16 @@ using System.Linq.Expressions;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Exemption for <see cref="TestError" />.
+///     Exemptions for <see cref="TestError" />s.
 /// </summary>
 public abstract class Exemption
 {
 	/// <summary>
-	///     Specifies if the exemption applies to the given <see cref="TestError" />.
+	///     Specifies if the <see cref="TestError" /> should be exempt.
+	///     <para />
+	///     An exempt <paramref name="testError" /> is removed from the total error list.
 	/// </summary>
-	public abstract bool Exempt(TestError type);
+	public abstract bool Exempt(TestError testError);
 
 	/// <summary>
 	///     Creates a new <see cref="Exemption" /> from the given <paramref name="predicate" />.
@@ -26,7 +28,8 @@ public abstract class Exemption
 	}
 
 	/// <summary>
-	///     Creates a new <see cref="Exemption" /> from the given <paramref name="predicate" />.
+	///     Creates a new <see cref="Exemption" /> from the given <paramref name="predicate" /> expression,
+	///     using the expression as name.
 	/// </summary>
 	public static Exemption FromPredicate(Expression<Func<TestError, bool>> predicate)
 
@@ -53,8 +56,8 @@ public abstract class Exemption
 		}
 
 		/// <inheritdoc cref="Exemption.Exempt(TestError)" />
-		public override bool Exempt(TestError type)
-			=> _exemption(type);
+		public override bool Exempt(TestError testError)
+			=> _exemption(testError);
 
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()

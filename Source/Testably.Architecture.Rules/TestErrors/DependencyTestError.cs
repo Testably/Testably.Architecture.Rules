@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     A <see cref="AssemblyTestError" /> due to an incorrect dependency.
+///     An <see cref="AssemblyTestError" /> due to an incorrect dependency.
 /// </summary>
 public class DependencyTestError : AssemblyTestError
 {
