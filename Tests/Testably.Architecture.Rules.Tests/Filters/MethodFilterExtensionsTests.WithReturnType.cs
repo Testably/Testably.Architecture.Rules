@@ -46,6 +46,7 @@ public sealed partial class MethodFilterExtensionsTests
 			result.ShouldNotBeViolated();
 		}
 
+		#pragma warning disable CA1822
 		private class BarClass
 		{
 			public DummyBarClass BarMethod(int value)
@@ -57,5 +58,6 @@ public sealed partial class MethodFilterExtensionsTests
 			public DummyFooClass FooMethod(int value)
 				=> new(value);
 		}
+		#pragma warning restore CA1822
 	}
 }

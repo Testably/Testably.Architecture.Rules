@@ -158,26 +158,10 @@ public static class TypeExtensions
 			return false;
 		}
 
-		if (type.IsGenericType)
+		if (type.IsGenericType &&
+		    type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition())
 		{
-			if (type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition())
-			{
-				if (!type.IsGenericTypeDefinition && !other.IsGenericTypeDefinition)
-				{
-					Type[]? typeArguments = type.GetGenericArguments();
-					Type[]? otherArguments = other.GetGenericArguments();
-					for (int i = 0; i < typeArguments.Length; i++)
-					{
-						if (otherArguments.Length >= i &&
-						    !typeArguments[i].IsEqualTo(otherArguments[i]))
-						{
-							return false;
-						}
-					}
-				}
-
-				return true;
-			}
+			return AreGenericTypesCompatible(type, other);
 		}
 
 		return type == other;
@@ -214,4 +198,31 @@ public static class TypeExtensions
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
 	public static bool IsStatic(this Type type)
 		=> type.IsAbstract && type.IsSealed && !type.IsInterface;
+
+	/// <summary>
+	///     Check if the generic types are compatible.<br />
+	///     Generic types are considered compatible, if either one or both are open generics or the generic argument types
+	///     themselves are equal.
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="other"></param>
+	/// <returns></returns>
+	private static bool AreGenericTypesCompatible(Type type, Type other)
+	{
+		if (!type.IsGenericTypeDefinition && !other.IsGenericTypeDefinition)
+		{
+			Type[]? typeArguments = type.GetGenericArguments();
+			Type[]? otherArguments = other.GetGenericArguments();
+			for (int i = 0; i < typeArguments.Length; i++)
+			{
+				if (otherArguments.Length >= i &&
+				    !typeArguments[i].IsEqualTo(otherArguments[i]))
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
 }
