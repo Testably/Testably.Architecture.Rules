@@ -95,7 +95,7 @@ public sealed partial class MethodFilterExtensionsTests
 		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), 2, true)]
 		[InlineData(nameof(TestClass.TestMethodWithStringAndIntParameter), 3, false)]
 		public void
-			WithParameter_WithMinimumCount_ShouldBeFoundWhenMethodHaveAtLeastTheRequiredParameters(
+			WithParameter_WithMinimumCount_ShouldBeFoundWhenMethodHasAtLeastTheRequiredParameters(
 				string methodName, int minimumCount, bool expectFound)
 		{
 			ITypeFilter source = Expect.That.Types
@@ -121,7 +121,7 @@ public sealed partial class MethodFilterExtensionsTests
 				// Do nothing
 			}
 
-			public void TestMethodWithStringAndIntParameter(int value1, string value2)
+			public void TestMethodWithStringAndIntParameter(string value1, int value2)
 			{
 				// Do nothing
 			}
