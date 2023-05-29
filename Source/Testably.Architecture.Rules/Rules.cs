@@ -3,12 +3,12 @@
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Allows bundling of <see cref="IRule" />s.
+///     Bundle <see cref="IRule" />s together.
 /// </summary>
 public static class Rules
 {
 	/// <summary>
-	///     Bundles some <paramref name="rules" /> together under a <paramref name="name" />.
+	///     Bundles <paramref name="rules" /> together under a <paramref name="name" />.
 	/// </summary>
 	public static IRule Bundle(string name, params IRule[] rules)
 		=> new RuleBundle(name, rules);
