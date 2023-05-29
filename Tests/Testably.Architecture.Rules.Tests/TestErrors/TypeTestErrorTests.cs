@@ -8,7 +8,7 @@ namespace Testably.Architecture.Rules.Tests.TestErrors;
 public sealed class TypeTestErrorTests
 {
 	[Fact]
-	public void Constructor_ShouldSetEntity()
+	public void Constructor_ShouldSetType()
 	{
 		Type type = typeof(TypeTestErrorTests);
 
