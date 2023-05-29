@@ -23,6 +23,21 @@ public sealed partial class MethodFilterExtensionsTests
 					$"type '{typeof(BarClass)}' should have a method with return type {nameof(DummyFooClass)}");
 		}
 
+		[Theory]
+		[InlineData(true, false)]
+		[InlineData(false, true)]
+		public void OrReturnType_WithDerivedType_ShouldConsiderAllowDerivedTypeParameter(
+			bool allowDerivedType,
+			bool expectViolation)
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(FooClass))
+				.Should(Have.Method.WithReturnType<DummyFooBase>(allowDerivedType))
+				.Check.InAllLoadedAssemblies();
+
+			result.ShouldBeViolatedIf(expectViolation);
+		}
+
 		[Fact]
 		public void OrReturnType_WithGenericParameter_ShouldReturnBothTypes()
 		{
