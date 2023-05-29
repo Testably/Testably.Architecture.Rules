@@ -74,11 +74,21 @@ public sealed class TypeExtensionsTests
 	}
 
 	[Fact]
-	public void IsEqualTo_DifferentClosedGenericType_ShouldReturnFalse()
+	public void IsEqualTo_DifferentClosedGenericType_With2Parameters_ShouldReturnFalse()
 	{
 		Type sut = typeof(Dictionary<int, string>);
 
 		bool result = sut.IsEqualTo(typeof(Dictionary<int, int>));
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
+	public void IsEqualTo_DifferentClosedGenericTypeWith1Parameter_ShouldReturnFalse()
+	{
+		Type sut = typeof(List<string>);
+
+		bool result = sut.IsEqualTo(typeof(List<int>));
 
 		result.Should().BeFalse();
 	}
@@ -101,6 +111,26 @@ public sealed class TypeExtensionsTests
 		bool result = sut.IsEqualTo(typeof(Tuple<,,>));
 
 		result.Should().BeFalse();
+	}
+
+	[Fact]
+	public void IsEqualTo_SameClosedGenericTypeWith1Parameter_ShouldReturnTrue()
+	{
+		Type sut = typeof(List<string>);
+
+		bool result = sut.IsEqualTo(typeof(List<string>));
+
+		result.Should().BeTrue();
+	}
+
+	[Fact]
+	public void IsEqualTo_SameClosedGenericTypeWith2Parameters_ShouldReturnTrue()
+	{
+		Type sut = typeof(Dictionary<int, string>);
+
+		bool result = sut.IsEqualTo(typeof(Dictionary<int, string>));
+
+		result.Should().BeTrue();
 	}
 
 	[Fact]
