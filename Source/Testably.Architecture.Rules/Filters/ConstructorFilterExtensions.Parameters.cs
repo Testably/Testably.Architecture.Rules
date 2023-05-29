@@ -42,4 +42,16 @@ public static partial class ConstructorFilterExtensions
 			constructor => constructor.GetParameters().Length == 0,
 			"without parameter");
 	}
+
+	/// <summary>
+	///     Filters for <see cref="ConstructorInfo" />s with (at least) <paramref name="minimumCount" /> parameters.
+	/// </summary>
+	public static IConstructorFilterResult WithParameters(
+		this IConstructorFilter @this,
+		int minimumCount = 1)
+	{
+		return @this.Which(
+			method => method.GetParameters().Length >= minimumCount,
+			$"with at least {minimumCount} {(minimumCount > 1 ? "parameters" : "parameter")}");
+	}
 }

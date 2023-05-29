@@ -457,7 +457,7 @@ public sealed class FilterTests
 		IRequirementResult<PropertyInfo> rule = sut.Properties.ShouldSatisfy(_ => false);
 
 		ITestResult result = rule.Check.InAllLoadedAssemblies();
-		result.Errors.Length.Should().Be(6);
+		result.Errors.Length.Should().Be(4);
 		result.Errors.Should().Contain(e
 			=> ((PropertyTestError)e).Property.DeclaringType == typeof(DummyFooClass));
 		result.Errors.Should().Contain(e

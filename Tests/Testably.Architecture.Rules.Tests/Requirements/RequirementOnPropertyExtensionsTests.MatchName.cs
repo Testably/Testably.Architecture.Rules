@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Testably.Architecture.Rules.Tests.Requirements;
 
-public sealed class RequirementOnPropertyExtensionsTests
+public sealed partial class RequirementOnPropertyExtensionsTests
 {
 	public sealed class MatchNameTests
 	{

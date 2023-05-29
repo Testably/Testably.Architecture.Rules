@@ -353,7 +353,7 @@ public sealed class TypeRuleTests
 		ITestResult result = rule.Check
 			.InAllLoadedAssemblies();
 
-		result.Errors.Length.Should().Be(3);
+		result.Errors.Length.Should().Be(2);
 		result.Errors.Should().Contain(e => e.ToString().Contains(expectedPropertyName1));
 		result.Errors.Should().NotContain(e => e.ToString().Contains(expectedPropertyName2));
 	}

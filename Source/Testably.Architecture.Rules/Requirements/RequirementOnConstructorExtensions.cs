@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules;
 /// <summary>
 ///     Extension constructors for <see cref="IRequirement{ConstructorInfo}" />.
 /// </summary>
-public static class RequirementOnConstructorExtensions
+public static partial class RequirementOnConstructorExtensions
 {
 	/// <summary>
 	///     The <see cref="ConstructorInfo" /> should satisfy the given <paramref name="condition" />.

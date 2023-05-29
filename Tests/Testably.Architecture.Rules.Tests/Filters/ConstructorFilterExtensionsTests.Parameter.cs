@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using System;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 using Xunit.Abstractions;
@@ -82,15 +81,51 @@ public sealed partial class ConstructorFilterExtensionsTests
 			sut.ToString().Should().Contain("without parameter");
 		}
 
-		[AttributeUsage(AttributeTargets.Constructor)]
-		public class ParameterCountAttribute : Attribute
+		[Theory]
+		[InlineData(0, false)]
+		[InlineData(1, true)]
+		[InlineData(2, true)]
+		public void WithParameter_ShouldBeFoundWhenConstructorHasAtLeastOneParameter(
+			int parameterCount, bool expectFound)
 		{
-			public int Count { get; }
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
 
-			public ParameterCountAttribute(int count)
-			{
-				Count = count;
-			}
+			ITypeFilterResult sut = source.Which(Have.Constructor
+				.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
+				.WithParameters());
+
+			ITestResult result = sut.ShouldAlwaysFail()
+				.AllowEmpty()
+				.Check.InAllLoadedAssemblies();
+			result.ShouldBeViolatedIf(expectFound);
+			sut.ToString().Should()
+				.Contain("with at least 1 parameter").And
+				.NotContain("parameters");
+		}
+
+		[Theory]
+		[InlineData(0, 2, false)]
+		[InlineData(1, 2, false)]
+		[InlineData(2, 2, true)]
+		[InlineData(2, 3, false)]
+		public void
+			WithParameter_WithMinimumCount_ShouldBeFoundWhenConstructorHasAtLeastTheRequiredParameters(
+				int parameterCount, int minimumCount, bool expectFound)
+		{
+			ITypeFilter source = Expect.That.Types
+				.WhichAre(typeof(TestClass)).And;
+
+			ITypeFilterResult sut = source.Which(Have.Constructor
+				.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
+				.WithParameters(minimumCount));
+
+			ITestResult result = sut.ShouldAlwaysFail()
+				.AllowEmpty()
+				.Check.InAllLoadedAssemblies();
+			result.ShouldBeViolatedIf(expectFound);
+			sut.ToString().Should()
+				.Contain($"with at least {minimumCount} parameters");
 		}
 
 		private class TestClass
@@ -106,7 +141,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 			}
 
 			[ParameterCount(2)]
-			public TestClass(int value1, string value2)
+			public TestClass(string value1, int value2)
 			{
 			}
 		}

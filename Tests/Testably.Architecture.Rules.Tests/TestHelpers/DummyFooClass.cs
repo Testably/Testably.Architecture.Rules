@@ -4,11 +4,10 @@
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local
 [DummyFoo]
-internal class DummyFooClass
+internal class DummyFooClass : DummyFooBase
 {
 	public int? DummyFooProperty1 { get; set; }
 	public int? DummyFooProperty2 { get; set; }
-	public int Value { get; }
 
 	public delegate void DummyFoo();
 
@@ -29,13 +28,13 @@ internal class DummyFooClass
 
 	#pragma warning disable CS8618
 	public DummyFooClass(int value)
+		: base(value)
 	{
-		Value = value;
 	}
 
 	public DummyFooClass(string otherValue, int value)
+		: base(value)
 	{
-		Value = value;
 	}
 	#pragma warning restore CS8618
 

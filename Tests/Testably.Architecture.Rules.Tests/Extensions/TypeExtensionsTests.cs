@@ -84,6 +84,26 @@ public sealed class TypeExtensionsTests
 	}
 
 	[Fact]
+	public void IsEqualTo_DifferentNumberOfClosedGenericParameters_ShouldReturnFalse()
+	{
+		Type sut = typeof(Tuple<int, string>);
+
+		bool result = sut.IsEqualTo(typeof(Tuple<int, string, int>));
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
+	public void IsEqualTo_DifferentNumberOfOpenGenericParameters_ShouldReturnFalse()
+	{
+		Type sut = typeof(Tuple<,>);
+
+		bool result = sut.IsEqualTo(typeof(Tuple<,,>));
+
+		result.Should().BeFalse();
+	}
+
+	[Fact]
 	public void IsEqualTo_SameGenericType_OtherOpen_ShouldReturnTrue()
 	{
 		Type sut = typeof(Task<>);
