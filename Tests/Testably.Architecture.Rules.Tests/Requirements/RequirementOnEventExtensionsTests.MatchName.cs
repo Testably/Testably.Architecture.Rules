@@ -64,7 +64,8 @@ public sealed partial class RequirementOnEventExtensionsTests
 			result.Errors[0].Should().BeOfType<EventTestError>()
 				.Which.Event.Should().BeSameAs(@event);
 			result.Errors[0].Should().BeOfType<EventTestError>()
-				.Which.ToString().Should().Contain(@event.Name).And.Contain($"'{notMatchingPattern}'");
+				.Which.ToString().Should().Contain(@event.Name).And
+				.Contain($"'{notMatchingPattern}'");
 		}
 
 		[Theory]

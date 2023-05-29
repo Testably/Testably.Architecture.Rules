@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using System;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 using Xunit.Abstractions;
