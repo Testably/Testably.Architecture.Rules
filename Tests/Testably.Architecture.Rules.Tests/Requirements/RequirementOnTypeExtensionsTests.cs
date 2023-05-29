@@ -22,7 +22,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			.InAllLoadedAssemblies();
 
 		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<ConstructorTestError>()
+		result.Errors[0].Should().BeOfType<TypeTestError>()
 			.Which.ToString().Should()
 			.Contain($"type '{type}' should have a constructor").And.Contain(filterName);
 	}
@@ -40,7 +40,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			.InAllLoadedAssemblies();
 
 		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<EventTestError>()
+		result.Errors[0].Should().BeOfType<TypeTestError>()
 			.Which.ToString().Should()
 			.Contain($"type '{type}' should have an event").And.Contain(filterName);
 	}
@@ -58,7 +58,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			.InAllLoadedAssemblies();
 
 		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<FieldTestError>()
+		result.Errors[0].Should().BeOfType<TypeTestError>()
 			.Which.ToString().Should()
 			.Contain($"type '{type}' should have a field").And.Contain(filterName);
 	}
@@ -76,7 +76,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			.InAllLoadedAssemblies();
 
 		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<MethodTestError>()
+		result.Errors[0].Should().BeOfType<TypeTestError>()
 			.Which.ToString().Should()
 			.Contain($"type '{type}' should have a method").And.Contain(filterName);
 	}
@@ -94,7 +94,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			.InAllLoadedAssemblies();
 
 		result.ShouldBeViolated();
-		result.Errors[0].Should().BeOfType<PropertyTestError>()
+		result.Errors[0].Should().BeOfType<TypeTestError>()
 			.Which.ToString().Should()
 			.Contain($"type '{type}' should have a property").And.Contain(filterName);
 	}

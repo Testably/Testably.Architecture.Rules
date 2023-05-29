@@ -44,12 +44,13 @@ public sealed class RequirementTests
 	{
 		List<TestError> errors = new();
 
-		Requirement<int> sut = Requirement.Delegate<int, DummyFooClass>(
+		Requirement<int> sut = Requirement.DelegateAny<int, DummyFooClass>(
 			_ => Enumerable.Range(1, multiply).Select(x => new DummyFooClass(x)),
-			_ => Requirement.Create<DummyFooClass>(_ => predicateResult, _ => testError));
+			_ => predicateResult,
+			(_, _) => testError);
 
 		sut.CollectErrors(5, errors);
-		errors.Count.Should().Be(expectedErrorCount * multiply);
+		errors.Count.Should().Be(expectedErrorCount);
 		errors.Should().AllBeEquivalentTo(testError);
 	}
 

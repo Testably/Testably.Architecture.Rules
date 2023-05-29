@@ -7,7 +7,7 @@ namespace Testably.Architecture.Rules;
 public static partial class ParameterFilterExtensions
 {
 	/// <summary>
-	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <typeparamref name="TParameter" />.
+	///     Filter <see cref="ParameterInfo" />s that are of type <typeparamref name="TParameter" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
 	/// <param name="allowDerivedType">
@@ -22,7 +22,7 @@ public static partial class ParameterFilterExtensions
 	}
 
 	/// <summary>
-	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <paramref name="parameterType" />.
+	///     Filter <see cref="ParameterInfo" />s that are of type <paramref name="parameterType" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
 	/// <param name="parameterType">The type of the parameter.</param>
@@ -41,7 +41,7 @@ public static partial class ParameterFilterExtensions
 	}
 
 	/// <summary>
-	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <typeparamref name="TParameter" />.
+	///     Filter <see cref="ParameterInfo" />s that are of type <typeparamref name="TParameter" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
 	/// <param name="allowDerivedType">
@@ -56,7 +56,7 @@ public static partial class ParameterFilterExtensions
 	}
 
 	/// <summary>
-	///     Filter <see cref="ParameterInfo" />s that have an attribute of type <paramref name="parameterType" />.
+	///     Filter <see cref="ParameterInfo" />s that are of type <paramref name="parameterType" />.
 	/// </summary>
 	/// <param name="this">The <see cref="IParameterFilter{TResult}" />.</param>
 	/// <param name="parameterType">The type of the parameter.</param>
@@ -75,7 +75,7 @@ public static partial class ParameterFilterExtensions
 	}
 
 	/// <summary>
-	///     Add additional filters on a <see cref="ParameterInfo" /> which has an attribute.
+	///     Add additional filters on a <see cref="ParameterInfo" /> which are of type.
 	/// </summary>
 	public class OfTypeUnorderedFilterResult : Filter.OnParameter<IUnorderedParameterFilterResult>,
 		IUnorderedParameterFilterResult
@@ -105,7 +105,7 @@ public static partial class ParameterFilterExtensions
 			=> Predicates.Any(predicate => predicate.Applies(type));
 
 		/// <summary>
-		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <typeparamref name="TParameter" />.
+		///     Adds another filter <see cref="ParameterInfo" />s for a type <typeparamref name="TParameter" />.
 		/// </summary>
 		/// <param name="allowDerivedType">
 		///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
@@ -118,7 +118,7 @@ public static partial class ParameterFilterExtensions
 		}
 
 		/// <summary>
-		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <paramref name="parameterType" />.
+		///     Adds another filter <see cref="ParameterInfo" />s for a type <paramref name="parameterType" />.
 		/// </summary>
 		/// <param name="parameterType">The type of the parameter.</param>
 		/// <param name="allowDerivedType">
@@ -150,7 +150,7 @@ public static partial class ParameterFilterExtensions
 	}
 
 	/// <summary>
-	///     Add additional filters on a <see cref="ParameterInfo" /> which has an attribute.
+	///     Add additional filters on a <see cref="ParameterInfo" /> which are of type.
 	/// </summary>
 	public class OfTypeOrderedFilterResult : Filter.OnParameter<IOrderedParameterFilterResult>,
 		IOrderedParameterFilterResult
@@ -184,7 +184,7 @@ public static partial class ParameterFilterExtensions
 			=> Predicates.Any(predicate => predicate.Applies(type));
 
 		/// <summary>
-		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <typeparamref name="TParameter" />.
+		///     Adds another filter <see cref="ParameterInfo" />s for a type <typeparamref name="TParameter" />.
 		/// </summary>
 		/// <param name="allowDerivedType">
 		///     <see langword="true" /> to also allow derived types; otherwise, <see langword="false" />.<br />
@@ -197,7 +197,7 @@ public static partial class ParameterFilterExtensions
 		}
 
 		/// <summary>
-		///     Adds another filter <see cref="ParameterInfo" />s for an attribute of type <paramref name="parameterType" />.
+		///     Adds another filter <see cref="ParameterInfo" />s for a type <paramref name="parameterType" />.
 		/// </summary>
 		/// <param name="parameterType">The type of the parameter.</param>
 		/// <param name="allowDerivedType">

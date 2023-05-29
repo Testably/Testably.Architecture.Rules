@@ -17,11 +17,11 @@ public static partial class RequirementOnTypeExtensions
 		IConstructorFilterResult constructorFilter)
 	{
 		return @this.ShouldSatisfy(
-			Requirement.Delegate<Type, ConstructorInfo>(
+			Requirement.DelegateAny<Type, ConstructorInfo>(
 				type => type.GetConstructors(),
-				type => Requirement.ForConstructor(constructorFilter.Applies,
-					constructor => new ConstructorTestError(constructor,
-						$"The type '{type.FullName}' should have a constructor {constructorFilter}"))));
+				constructorFilter.Applies,
+				(type, _) => new TypeTestError(type,
+					$"The type '{type.FullName}' should have a constructor {constructorFilter}")));
 	}
 
 	/// <summary>
@@ -32,11 +32,11 @@ public static partial class RequirementOnTypeExtensions
 		IEventFilterResult eventFilter)
 	{
 		return @this.ShouldSatisfy(
-			Requirement.Delegate<Type, EventInfo>(
+			Requirement.DelegateAny<Type, EventInfo>(
 				type => type.GetEvents(),
-				type => Requirement.ForEvent(eventFilter.Applies,
-					@event => new EventTestError(@event,
-						$"The type '{type.FullName}' should have an event whose {eventFilter}"))));
+				eventFilter.Applies,
+				(type, _) => new TypeTestError(type,
+					$"The type '{type.FullName}' should have an event whose {eventFilter}")));
 	}
 
 	/// <summary>
@@ -47,11 +47,11 @@ public static partial class RequirementOnTypeExtensions
 		IFieldFilterResult fieldFilter)
 	{
 		return @this.ShouldSatisfy(
-			Requirement.Delegate<Type, FieldInfo>(
+			Requirement.DelegateAny<Type, FieldInfo>(
 				type => type.GetFields(),
-				type => Requirement.ForField(fieldFilter.Applies,
-					field => new FieldTestError(field,
-						$"The type '{type.FullName}' should have a field {fieldFilter}"))));
+				fieldFilter.Applies,
+				(type, _) => new TypeTestError(type,
+					$"The type '{type.FullName}' should have a field {fieldFilter}")));
 	}
 
 	/// <summary>
@@ -62,11 +62,11 @@ public static partial class RequirementOnTypeExtensions
 		IMethodFilterResult methodFilter)
 	{
 		return @this.ShouldSatisfy(
-			Requirement.Delegate<Type, MethodInfo>(
+			Requirement.DelegateAny<Type, MethodInfo>(
 				type => type.GetDeclaredMethods(),
-				type => Requirement.ForMethod(methodFilter.Applies,
-					method => new MethodTestError(method,
-						$"The type '{type.FullName}' should have a method {methodFilter}"))));
+				methodFilter.Applies,
+				(type, _) => new TypeTestError(type,
+					$"The type '{type.FullName}' should have a method {methodFilter}")));
 	}
 
 	/// <summary>
@@ -77,11 +77,11 @@ public static partial class RequirementOnTypeExtensions
 		IPropertyFilterResult propertyFilter)
 	{
 		return @this.ShouldSatisfy(
-			Requirement.Delegate<Type, PropertyInfo>(
+			Requirement.DelegateAny<Type, PropertyInfo>(
 				type => type.GetProperties(),
-				type => Requirement.ForProperty(propertyFilter.Applies,
-					property => new PropertyTestError(property,
-						$"The type '{type.FullName}' should have a property {propertyFilter}"))));
+				propertyFilter.Applies,
+				(type, _) => new TypeTestError(type,
+					$"The type '{type.FullName}' should have a property {propertyFilter}")));
 	}
 
 	/// <summary>
