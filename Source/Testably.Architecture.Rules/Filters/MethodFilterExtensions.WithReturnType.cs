@@ -6,13 +6,14 @@ namespace Testably.Architecture.Rules;
 public static partial class MethodFilterExtensions
 {
 	/// <summary>
-	///     Filter <see cref="MethodInfo" />s that have a return type of <typeparamref name="TReturnType" />.
+	///     Filter for <see cref="MethodInfo" /> that has a return type of <typeparamref name="TReturnType" />.<br />
+	///     If <paramref name="allowDerivedType" /> is set to <see langword="true" />, also derived types are supported.
 	/// </summary>
 	/// <param name="this">The <see cref="IMethodFilter" />.</param>
 	/// <param name="allowDerivedType">
-	///     <see langword="true" /> to search the inheritance chain to find the attributes; otherwise,
-	///     <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />
+	///     <see langword="true" /> to also allow derived types of <typeparamref name="TReturnType" />;
+	///     otherwise <see langword="false" />.<br />
+	///     Defaults to <see langword="false" />.
 	/// </param>
 	public static WithReturnTypeFilterResult WithReturnType<TReturnType>(
 		this IMethodFilter @this,
@@ -22,14 +23,15 @@ public static partial class MethodFilterExtensions
 	}
 
 	/// <summary>
-	///     Filter <see cref="MethodInfo" />s that have a return type of <paramref name="returnType" />.
+	///     Filter for <see cref="MethodInfo" /> that has a return type of <paramref name="returnType" />.<br />
+	///     If <paramref name="allowDerivedType" /> is set to <see langword="true" />, also derived types are supported.
 	/// </summary>
 	/// <param name="this">The <see cref="IMethodFilter" />.</param>
 	/// <param name="returnType">The <see cref="Type" /> of the return value.</param>
 	/// <param name="allowDerivedType">
 	///     <see langword="true" /> to also allow derived types of <paramref name="returnType" />;
 	///     otherwise <see langword="false" />.<br />
-	///     Defaults to <see langword="true" />.
+	///     Defaults to <see langword="false" />.
 	/// </param>
 	public static WithReturnTypeFilterResult WithReturnType(
 		this IMethodFilter @this,
@@ -43,7 +45,7 @@ public static partial class MethodFilterExtensions
 	}
 
 	/// <summary>
-	///     Add additional filters on a <see cref="MethodInfo" /> which has an attribute.
+	///     Add additional filters on a <see cref="MethodInfo" /> with return type.
 	/// </summary>
 	public class WithReturnTypeFilterResult : Filter.OnMethod
 	{
@@ -53,12 +55,13 @@ public static partial class MethodFilterExtensions
 		}
 
 		/// <summary>
-		///     Adds another filter <see cref="MethodInfo" />s for an attribute of type <typeparamref name="TReturnType" />.
+		///     Adds another possible <typeparamref name="TReturnType" /> for the <see cref="MethodInfo" />.<br />
+		///     If <paramref name="allowDerivedType" /> is set to <see langword="true" />, also derived types are supported.
 		/// </summary>
 		/// <param name="allowDerivedType">
 		///     <see langword="true" /> to also allow derived types of <typeparamref name="TReturnType" />;
 		///     otherwise <see langword="false" />.<br />
-		///     Defaults to <see langword="true" />.
+		///     Defaults to <see langword="false" />.
 		/// </param>
 		public WithReturnTypeFilterResult OrReturnType<TReturnType>(
 			bool allowDerivedType = false)
@@ -67,13 +70,14 @@ public static partial class MethodFilterExtensions
 		}
 
 		/// <summary>
-		///     Adds another filter <see cref="MethodInfo" />s for an attribute of type <paramref name="returnType" />.
+		///     Adds another possible <paramref name="returnType" /> for the <see cref="MethodInfo" />.<br />
+		///     If <paramref name="allowDerivedType" /> is set to <see langword="true" />, also derived types are supported.
 		/// </summary>
 		/// <param name="returnType">The <see cref="Type" /> of the return value.</param>
 		/// <param name="allowDerivedType">
 		///     <see langword="true" /> to also allow derived types of <paramref name="returnType" />;
 		///     otherwise <see langword="false" />.<br />
-		///     Defaults to <see langword="true" />.
+		///     Defaults to <see langword="false" />.
 		/// </param>
 		public WithReturnTypeFilterResult OrReturnType(
 			Type returnType,
