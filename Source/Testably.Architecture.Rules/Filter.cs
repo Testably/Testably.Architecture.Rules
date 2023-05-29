@@ -186,10 +186,10 @@ public static class Filter
 		/// <summary>
 		///     Initializes a new instance of <see cref="OnField" />.
 		/// </summary>
-		protected OnField(IFieldFilter typeFilter)
+		protected OnField(IFieldFilter fieldFilter)
 		{
-			_filtered = typeFilter.Which(this);
-			And = typeFilter;
+			_filtered = fieldFilter.Which(this);
+			And = fieldFilter;
 		}
 
 		#region IFieldFilterResult Members

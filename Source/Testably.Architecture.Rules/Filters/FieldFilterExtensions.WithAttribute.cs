@@ -30,8 +30,8 @@ public static partial class FieldFilterExtensions
 	/// </summary>
 	public class WithAttributeFilterResult : Filter.OnField
 	{
-		internal WithAttributeFilterResult(
-			IFieldFilter typeFilter) : base(typeFilter)
+		internal WithAttributeFilterResult(IFieldFilter fieldFilter)
+			: base(fieldFilter)
 		{
 		}
 
