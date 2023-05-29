@@ -462,7 +462,7 @@ public sealed class TypeRuleTests
 	}
 
 	[Fact]
-	public void Which_ShouldFilterOutTypes()
+	public void Which_ShouldFilterOuTEntitys()
 	{
 		Type type = typeof(DummyFooClass);
 		int allTypesCount = type.Assembly.GetTypes().Length;

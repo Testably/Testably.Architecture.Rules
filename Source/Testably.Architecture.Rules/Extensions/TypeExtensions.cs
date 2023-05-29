@@ -92,31 +92,31 @@ public static class TypeExtensions
 	}
 
 	/// <summary>
-	///     Determines whether the current <see cref="Type" /> inherits from the <paramref name="parentType" />.
+	///     Determines whether the current <see cref="Type" /> inherits from the <paramref name="parenTEntity" />.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
-	/// <param name="parentType">The parent <see cref="Type" />.</param>
+	/// <param name="parenTEntity">The parent <see cref="Type" />.</param>
 	/// <param name="forceDirect">
-	///     If set to <see langword="false" /> (default value), the <paramref name="parentType" />
+	///     If set to <see langword="false" /> (default value), the <paramref name="parenTEntity" />
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
-	///     <paramref name="parentType" /> to be the direct parent.
+	///     <paramref name="parenTEntity" /> to be the direct parent.
 	/// </param>
 	public static bool InheritsFrom(
 		this Type type,
-		Type parentType,
+		Type parenTEntity,
 		bool forceDirect = false)
 	{
-		if (type == parentType)
+		if (type == parenTEntity)
 		{
 			return false;
 		}
 
-		Type currentType = type;
+		Type currenTEntity = type;
 
 		int level = 0;
-		while (currentType != typeof(object))
+		while (currenTEntity != typeof(object))
 		{
-			if (parentType.IsEqualTo(currentType))
+			if (parenTEntity.IsEqualTo(currenTEntity))
 			{
 				return true;
 			}
@@ -126,17 +126,17 @@ public static class TypeExtensions
 				return false;
 			}
 
-			if (currentType.Implements(parentType, forceDirect))
+			if (currenTEntity.Implements(parenTEntity, forceDirect))
 			{
 				return true;
 			}
 
-			if (currentType.BaseType == null)
+			if (currenTEntity.BaseType == null)
 			{
 				break;
 			}
 
-			currentType = currentType.BaseType;
+			currenTEntity = currenTEntity.BaseType;
 		}
 
 		return false;
@@ -168,26 +168,26 @@ public static class TypeExtensions
 
 	/// <summary>
 	///     Determines whether the current <see cref="Type" /> is the same type or inherits from the
-	///     <paramref name="parentType" />.
+	///     <paramref name="parenTEntity" />.
 	/// </summary>
 	/// <param name="type">The <see cref="Type" />.</param>
-	/// <param name="parentType">The parent <see cref="Type" />.</param>
+	/// <param name="parenTEntity">The parent <see cref="Type" />.</param>
 	/// <param name="forceDirect">
-	///     If set to <see langword="false" /> (default value), the <paramref name="parentType" />
+	///     If set to <see langword="false" /> (default value), the <paramref name="parenTEntity" />
 	///     can be anywhere in the inheritance tree, otherwise if set to <see langword="true" /> requires the
-	///     <paramref name="parentType" /> to be the direct parent.
+	///     <paramref name="parenTEntity" /> to be the direct parent.
 	/// </param>
 	public static bool IsOrInheritsFrom(
 		this Type type,
-		Type parentType,
+		Type parenTEntity,
 		bool forceDirect = false)
 	{
-		if (type.IsEqualTo(parentType))
+		if (type.IsEqualTo(parenTEntity))
 		{
 			return true;
 		}
 
-		return !forceDirect && type.InheritsFrom(parentType);
+		return !forceDirect && type.InheritsFrom(parenTEntity);
 	}
 
 	/// <summary>

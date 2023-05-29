@@ -35,7 +35,7 @@ internal class EventRule : Rule<EventInfo>, IEventExpectation, IEventFilterResul
 
 	/// <inheritdoc cref="IEventFilterResult.Types" />
 	public ITypeExpectation Types
-		=> new TypeRule(new EventTypeFilter(Filters));
+		=> new TypeRule(new EvenTEntityFilter(Filters));
 
 	/// <inheritdoc cref="IFilter{EventInfo}.Applies(EventInfo)" />
 	public bool Applies(EventInfo type)
@@ -47,11 +47,11 @@ internal class EventRule : Rule<EventInfo>, IEventExpectation, IEventFilterResul
 	public override string ToString()
 		=> string.Join(" and ", Filters);
 
-	private sealed class EventTypeFilter : Filter<Type>
+	private sealed class EvenTEntityFilter : Filter<Type>
 	{
 		private readonly List<Filter<EventInfo>> _eventFilters;
 
-		public EventTypeFilter(List<Filter<EventInfo>> eventFilters)
+		public EvenTEntityFilter(List<Filter<EventInfo>> eventFilters)
 		{
 			_eventFilters = eventFilters;
 		}

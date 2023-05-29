@@ -4,14 +4,14 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Extension methods for <see cref="IExemption{TType}" />.
+///     Extension methods for <see cref="IExemption{TEntity}" />.
 /// </summary>
 public static class ExemptionOnAssemblyExtensions
 {
 	/// <summary>
 	///     Defines an exception to rules by allowing dependencies that match the <paramref name="pattern" />.
 	/// </summary>
-	/// <param name="this">The <see cref="IExemption{TType}" />.</param>
+	/// <param name="this">The <see cref="IExemption{TEntity}" />.</param>
 	/// <param name="pattern">
 	///     The wildcard condition.
 	///     <para />
@@ -28,7 +28,7 @@ public static class ExemptionOnAssemblyExtensions
 	/// <summary>
 	///     Defines an exception to rules by allowing dependencies that match the <paramref name="predicate" />.
 	/// </summary>
-	/// <param name="this">The <see cref="IExemption{TType}" />.</param>
+	/// <param name="this">The <see cref="IExemption{TEntity}" />.</param>
 	/// <param name="predicate"><see cref="DependencyTestError" />s that match the <paramref name="predicate" /> are allowed.</param>
 	public static IExemptionResult<Assembly> ExceptDependencyOn(
 		this IExemption<Assembly> @this,

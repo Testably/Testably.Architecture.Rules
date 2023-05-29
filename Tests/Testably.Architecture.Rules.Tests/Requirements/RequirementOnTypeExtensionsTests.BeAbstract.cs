@@ -10,9 +10,9 @@ public sealed partial class RequirementOnTypeExtensionsTests
 	public sealed class BeAbstractTests
 	{
 		[Fact]
-		public void ShouldBeAbstract_AbstractType_ShouldNotBeViolated()
+		public void ShouldBeAbstract_AbstracTEntity_ShouldNotBeViolated()
 		{
-			Type type = typeof(AbstractType);
+			Type type = typeof(AbstracTEntity);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldBeAbstract();
@@ -41,9 +41,9 @@ public sealed partial class RequirementOnTypeExtensionsTests
 		}
 
 		[Fact]
-		public void ShouldNotBeAbstract_AbstractType_ShouldNotBeSatisfied()
+		public void ShouldNotBeAbstract_AbstracTEntity_ShouldNotBeSatisfied()
 		{
-			Type type = typeof(AbstractType);
+			Type type = typeof(AbstracTEntity);
 			IRule rule = Expect.That.Types
 				.WhichAre(type)
 				.ShouldNotBeAbstract();
@@ -71,7 +71,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 			result.ShouldNotBeViolated();
 		}
 
-		private abstract class AbstractType
+		private abstract class AbstracTEntity
 		{
 		}
 

@@ -72,7 +72,7 @@ public sealed class RuleTests
 
 	internal class DummyRule : Rule<int>
 	{
-		/// <inheritdoc cref="Rule{TType}.Check" />
+		/// <inheritdoc cref="Rule{TEntity}.Check" />
 		public override IRuleCheck Check
 			=> throw new NotSupportedException();
 
