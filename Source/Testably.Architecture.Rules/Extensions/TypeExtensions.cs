@@ -158,8 +158,7 @@ public static class TypeExtensions
 			return false;
 		}
 
-		if (type.IsGenericType &&
-		    type.GetGenericTypeDefinition() == other.GetGenericTypeDefinition())
+		if (type.IsGenericType)
 		{
 			return AreGenericTypesCompatible(type, other);
 		}
@@ -209,14 +208,20 @@ public static class TypeExtensions
 	/// <returns></returns>
 	private static bool AreGenericTypesCompatible(Type type, Type other)
 	{
+		if (type.GetGenericTypeDefinition() != other.GetGenericTypeDefinition())
+		{
+			return false;
+		}
+
 		if (!type.IsGenericTypeDefinition && !other.IsGenericTypeDefinition)
 		{
 			Type[]? typeArguments = type.GetGenericArguments();
 			Type[]? otherArguments = other.GetGenericArguments();
+			// `type` and `other` have the same number of arguments,
+			// because otherwise the GetGenericTypeDefinition() check would be different for both!
 			for (int i = 0; i < typeArguments.Length; i++)
 			{
-				if (otherArguments.Length >= i &&
-				    !typeArguments[i].IsEqualTo(otherArguments[i]))
+				if (!typeArguments[i].IsEqualTo(otherArguments[i]))
 				{
 					return false;
 				}
