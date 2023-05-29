@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Filters to apply in the architecture rule.
+///     Filters specify which entities must satisfy the requirements.
 /// </summary>
 public static class Filter
 {
@@ -15,34 +15,35 @@ public static class Filter
 	///     Creates a new delegate filter that applies the <paramref name="delegateFilter" /> on all
 	///     <typeparamref name="TDelegate" /> from the <paramref name="delegateGenerator" />.
 	/// </summary>
-	public static Filter<TType> Delegate<TType, TDelegate>(
-		Func<TType, IEnumerable<TDelegate>> delegateGenerator,
+	public static Filter<TEntity> Delegate<TEntity, TDelegate>(
+		Func<TEntity, IEnumerable<TDelegate>> delegateGenerator,
 		IFilter<TDelegate> delegateFilter,
 		string name)
-		=> new DelegateFilter<TType, TDelegate>(delegateGenerator, delegateFilter, name);
+		=> new DelegateFilter<TEntity, TDelegate>(delegateGenerator, delegateFilter, name);
 
 	/// <summary>
-	///     Creates a new <see cref="Filter{TType}" /> from the given <paramref name="predicate" />.
+	///     Creates a new <see cref="Filter{TEntity}" /> from the given <paramref name="predicate" /> and
+	///     uses the expression as name.
 	/// </summary>
-	public static Filter<TType> FromPredicate<TType>(Expression<Func<TType, bool>> predicate)
+	public static Filter<TEntity> FromPredicate<TEntity>(Expression<Func<TEntity, bool>> predicate)
 	{
-		Func<TType, bool> compiledPredicate = predicate.Compile();
-		return new GenericFilter<TType>(compiledPredicate, predicate.ToString());
+		Func<TEntity, bool> compiledPredicate = predicate.Compile();
+		return new GenericFilter<TEntity>(compiledPredicate, predicate.ToString());
 	}
 
 	/// <summary>
-	///     Creates a new <see cref="Filter{TType}" /> from the given <paramref name="predicate" />.
+	///     Creates a new <see cref="Filter{TEntity}" /> from the given <paramref name="predicate" />.
 	/// </summary>
-	public static Filter<TType> FromPredicate<TType>(Func<TType, bool> predicate, string name)
-		=> new GenericFilter<TType>(predicate, name);
+	public static Filter<TEntity> FromPredicate<TEntity>(Func<TEntity, bool> predicate, string name)
+		=> new GenericFilter<TEntity>(predicate, name);
 
-	private sealed class DelegateFilter<TType, TDelegate> : Filter<TType>
+	private sealed class DelegateFilter<TEntity, TDelegate> : Filter<TEntity>
 	{
 		private readonly IFilter<TDelegate> _delegateFilter;
-		private readonly Func<TType, IEnumerable<TDelegate>> _delegateGenerator;
+		private readonly Func<TEntity, IEnumerable<TDelegate>> _delegateGenerator;
 		private readonly string _name;
 
-		public DelegateFilter(Func<TType, IEnumerable<TDelegate>> delegateGenerator,
+		public DelegateFilter(Func<TEntity, IEnumerable<TDelegate>> delegateGenerator,
 			IFilter<TDelegate> delegateFilter, string name)
 		{
 			_delegateGenerator = delegateGenerator;
@@ -50,8 +51,8 @@ public static class Filter
 			_name = name;
 		}
 
-		/// <inheritdoc cref="Filter{TType}.Applies(TType)" />
-		public override bool Applies(TType type)
+		/// <inheritdoc cref="Filter{TEntity}.Applies(TEntity)" />
+		public override bool Applies(TEntity type)
 			=> _delegateGenerator(type).Any(_delegateFilter.Applies);
 
 		/// <inheritdoc cref="object.ToString()" />
@@ -59,19 +60,19 @@ public static class Filter
 			=> _name;
 	}
 
-	private sealed class GenericFilter<TType> : Filter<TType>
+	private sealed class GenericFilter<TEntity> : Filter<TEntity>
 	{
-		private readonly Func<TType, bool> _filter;
+		private readonly Func<TEntity, bool> _filter;
 		private readonly string _name;
 
-		public GenericFilter(Func<TType, bool> filter, string name)
+		public GenericFilter(Func<TEntity, bool> filter, string name)
 		{
 			_filter = filter;
 			_name = name;
 		}
 
-		/// <inheritdoc cref="Filter{TType}.Applies(TType)" />
-		public override bool Applies(TType type)
+		/// <inheritdoc cref="Filter{TEntity}.Applies(TEntity)" />
+		public override bool Applies(TEntity type)
 			=> _filter(type);
 
 		/// <inheritdoc cref="object.ToString()" />
@@ -80,12 +81,12 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="ConstructorInfo" />.
+	///     An OR combination of filters on <see cref="ConstructorInfo" />.
 	/// </summary>
 	public abstract class OnConstructor : Filter<ConstructorInfo>, IConstructorFilterResult
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<ConstructorInfo>> Predicates = new();
 
@@ -126,12 +127,12 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="EventInfo" />.
+	///     An OR combination of filters on <see cref="EventInfo" />.
 	/// </summary>
 	public abstract class OnEvent : Filter<EventInfo>, IEventFilterResult
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<EventInfo>> Predicates = new();
 
@@ -171,12 +172,12 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="FieldInfo" />.
+	///     An OR combination of filters on <see cref="FieldInfo" />.
 	/// </summary>
 	public abstract class OnField : Filter<FieldInfo>, IFieldFilterResult
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<FieldInfo>> Predicates = new();
 
@@ -216,12 +217,12 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="MethodInfo" />.
+	///     An OR combination of filters on <see cref="MethodInfo" />.
 	/// </summary>
 	public abstract class OnMethod : Filter<MethodInfo>, IMethodFilterResult
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<MethodInfo>> Predicates = new();
 
@@ -261,14 +262,14 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="ParameterInfo" />.
+	///     An OR combination of filters on <see cref="ParameterInfo" />.
 	/// </summary>
 	public abstract class OnParameter<TResult> : Filter<ParameterInfo>,
 		IParameterFilterResult<TResult>
 		where TResult : IParameterFilterResult<TResult>
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<ParameterInfo>> Predicates = new();
 
@@ -301,12 +302,12 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="PropertyInfo" />.
+	///     An OR combination of filters on <see cref="PropertyInfo" />.
 	/// </summary>
 	public abstract class OnProperty : Filter<PropertyInfo>, IPropertyFilterResult
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<PropertyInfo>> Predicates = new();
 
@@ -346,12 +347,12 @@ public static class Filter
 	}
 
 	/// <summary>
-	///     Base class for additional filters on <see cref="Type" />.
+	///     An OR combination of filters on <see cref="Type" />.
 	/// </summary>
 	public abstract class OnType : Filter<Type>, ITypeFilterResult
 	{
 		/// <summary>
-		///     The list of predicates.
+		///     The list of predicates that are OR combined.
 		/// </summary>
 		protected readonly List<Filter<Type>> Predicates = new();
 
@@ -412,16 +413,16 @@ public static class Filter
 }
 
 /// <summary>
-///     Filter for <typeparamref name="TType" />.
+///     Filter for <typeparamref name="TEntity" />.
 /// </summary>
-public abstract class Filter<TType> : IFilter<TType>
+public abstract class Filter<TEntity> : IFilter<TEntity>
 {
-	#region IFilter<TType> Members
+	#region IFilter<TEntity> Members
 
 	/// <summary>
-	///     Specifies if the filter applies to the given <typeparamref name="TType" />.
+	///     Checks if the filter applies to the given <typeparamref name="TEntity" />.
 	/// </summary>
-	public abstract bool Applies(TType type);
+	public abstract bool Applies(TEntity type);
 
 	#endregion
 }

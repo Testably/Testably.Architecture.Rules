@@ -1,12 +1,12 @@
 ﻿namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     The result of a condition on <typeparamref name="TType" />.
+///     The result of a condition on <typeparamref name="TEntity" />.
 /// </summary>
-public interface IRequirementResult<TType> : IRule, IExemption<TType>
+public interface IRequirementResult<TEntity> : IRule, IExemption<TEntity>
 {
 	/// <summary>
-	///     Add additional conditions for the architecture expectation on <typeparamref name="TType" />.
+	///     Add additional conditions for the architecture expectation on <typeparamref name="TEntity" />.
 	/// </summary>
-	IRequirement<TType> And { get; }
+	IRequirement<TEntity> And { get; }
 }

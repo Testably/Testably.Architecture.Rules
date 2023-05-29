@@ -5,19 +5,19 @@ using System.Reflection;
 
 namespace Testably.Architecture.Rules.Internal;
 
-internal class RuleCheck<TType> : IRuleCheck
+internal class RuleCheck<TEntity> : IRuleCheck
 {
 	private readonly List<Exemption> _exemptions;
-	private readonly List<Filter<TType>> _filters;
+	private readonly List<Filter<TEntity>> _filters;
 	private Action<string>? _logAction;
-	private readonly List<Requirement<TType>> _requirements;
-	private readonly Func<IEnumerable<Assembly>, IEnumerable<TType>> _transformer;
+	private readonly List<Requirement<TEntity>> _requirements;
+	private readonly Func<IEnumerable<Assembly>, IEnumerable<TEntity>> _transformer;
 
 	public RuleCheck(
-		List<Filter<TType>> filters,
-		List<Requirement<TType>> requirements,
+		List<Filter<TEntity>> filters,
+		List<Requirement<TEntity>> requirements,
 		List<Exemption> exemptions,
-		Func<IEnumerable<Assembly>, IEnumerable<TType>> transformer)
+		Func<IEnumerable<Assembly>, IEnumerable<TEntity>> transformer)
 	{
 		_filters = filters;
 		_requirements = requirements;
@@ -32,48 +32,48 @@ internal class RuleCheck<TType> : IRuleCheck
 	{
 		List<TestError> errors = new();
 		IEnumerable<Assembly> assemblies = testDataProvider.GetAssemblies();
-		IEnumerable<TType> transformedSource = _transformer(assemblies);
-		if (testDataProvider is IDataFilter<TType> dataFilter)
+		IEnumerable<TEntity> transformedSource = _transformer(assemblies);
+		if (testDataProvider is IDataFilter<TEntity> dataFilter)
 		{
 			transformedSource = dataFilter.Filter(transformedSource);
 		}
 
-		List<TType> transformedSourceList = transformedSource.ToList();
+		List<TEntity> transformedSourceList = transformedSource.ToList();
 		_logAction.Log(
-			$"Found {transformedSourceList.Count} {typeof(TType).Name}s before applying {_filters.Count} filters:");
-		foreach (Filter<TType> filter in _filters)
+			$"Found {transformedSourceList.Count} {typeof(TEntity).Name}s before applying {_filters.Count} filters:");
+		foreach (Filter<TEntity> filter in _filters)
 		{
 			_logAction.Log($"  Apply filter {filter}");
 		}
 
-		List<TType> filteredSource = transformedSourceList
+		List<TEntity> filteredSource = transformedSourceList
 			.Where(assembly => _filters.All(filter => filter.Applies(assembly)))
 			.ToList();
 		_logAction.Log(
-			$"Found {filteredSource.Count} {typeof(TType).Name}s after applying {_filters.Count} filters.");
+			$"Found {filteredSource.Count} {typeof(TEntity).Name}s after applying {_filters.Count} filters.");
 		if (filteredSource.Count == 0)
 		{
 			if (_filters.Count == 1)
 			{
 				errors.Add(new EmptySourceTestError(
-					$"No {typeof(TType).Name} was found that matches the filter: {_filters[0]}"));
+					$"No {typeof(TEntity).Name} was found that matches the filter: {_filters[0]}"));
 			}
 			else
 			{
 				errors.Add(new EmptySourceTestError(
-					$"No {typeof(TType).Name} was found that matches the {_filters.Count} filters:{Environment.NewLine} - {string.Join($"{Environment.NewLine} - ", _filters)}"));
+					$"No {typeof(TEntity).Name} was found that matches the {_filters.Count} filters:{Environment.NewLine} - {string.Join($"{Environment.NewLine} - ", _filters)}"));
 			}
 		}
 
-		foreach (TType item in filteredSource)
+		foreach (TEntity item in filteredSource)
 		{
 			List<TestError> newErrors = new();
-			foreach (Requirement<TType> requirement in _requirements)
+			foreach (Requirement<TEntity> requirement in _requirements)
 			{
 				requirement.CollectErrors(item, newErrors);
 			}
 
-			_logAction.Log($"Found {newErrors.Count} errors in {typeof(TType).Name} {item}.");
+			_logAction.Log($"Found {newErrors.Count} errors in {typeof(TEntity).Name} {item}.");
 			foreach (TestError error in newErrors)
 			{
 				_logAction.Log(

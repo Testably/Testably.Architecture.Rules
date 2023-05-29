@@ -1,12 +1,12 @@
 ﻿namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Defines requirements on <typeparamref name="TType" />.
+///     Defines requirements on <typeparamref name="TEntity" />.
 /// </summary>
-public interface IRequirement<TType>
+public interface IRequirement<TEntity>
 {
 	/// <summary>
-	///     The <typeparamref name="TType" /> should satisfy the given <paramref name="requirement" />.
+	///     The <typeparamref name="TEntity" /> should satisfy the given <paramref name="requirement" />.
 	/// </summary>
-	IRequirementResult<TType> ShouldSatisfy(Requirement<TType> requirement);
+	IRequirementResult<TEntity> ShouldSatisfy(Requirement<TEntity> requirement);
 }

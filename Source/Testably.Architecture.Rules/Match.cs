@@ -3,7 +3,7 @@
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     Options to match a <see langword="string" /> against a pattern.
+///     Match a <see langword="string" /> against a pattern.
 /// </summary>
 public abstract class Match
 {
@@ -19,7 +19,7 @@ public abstract class Match
 	public abstract bool Matches(string? value, bool ignoreCase);
 
 	/// <summary>
-	///     Implicitly converts the <see langword="string" /> to a <see cref="Wildcard" />.<br />
+	///     Implicitly converts the <see langword="string" /> to a <see cref="Wildcard" /> pattern.<br />
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
 	public static implicit operator Match(string pattern) => Wildcard(pattern);
@@ -39,7 +39,7 @@ public abstract class Match
 		internal WildcardMatch(string pattern)
 		{
 			_originalPattern = pattern;
-			_pattern = WildcardToRegular(pattern);
+			_pattern = WildcardToRegularExpression(pattern);
 		}
 
 		/// <inheritdoc cref="Match.Matches(string, bool)" />
@@ -63,9 +63,11 @@ public abstract class Match
 		/// <remarks>
 		///     <see href="https://stackoverflow.com/a/30300521" />
 		/// </remarks>
-		private static string WildcardToRegular(string value)
+		private static string WildcardToRegularExpression(string value)
 		{
-			string regex = Regex.Escape(value).Replace("\\?", ".").Replace("\\*", ".*");
+			string regex = Regex.Escape(value)
+				.Replace("\\?", ".")
+				.Replace("\\*", ".*");
 			return $"^{regex}$";
 		}
 	}

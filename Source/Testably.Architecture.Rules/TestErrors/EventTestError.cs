@@ -3,12 +3,12 @@
 namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     A <see cref="EventInfo" /> for an expectation on an <see cref="TestError" />.
+///     A <see cref="TestError" /> for a violated rule on an <see cref="EventInfo" />.
 /// </summary>
 public class EventTestError : TestError
 {
 	/// <summary>
-	///     The <see cref="EventInfo" /> which does not satisfy all architecture expectations.
+	///     The <see cref="EventInfo" /> which does not satisfy all architecture rules.
 	/// </summary>
 	public EventInfo Event { get; }
 
@@ -16,7 +16,7 @@ public class EventTestError : TestError
 	///     Initializes a new instance of <see cref="EventTestError" />.
 	/// </summary>
 	/// <param name="event">
-	///     The <see cref="EventInfo" /> which does not satisfy all architecture expectations.
+	///     The <see cref="EventInfo" /> which does not satisfy all architecture rules.
 	/// </param>
 	/// <param name="errorMessage">The error message for the <see cref="TestError" />.</param>
 	public EventTestError(EventInfo @event, string errorMessage)

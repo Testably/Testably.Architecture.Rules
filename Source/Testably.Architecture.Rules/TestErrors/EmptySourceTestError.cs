@@ -1,7 +1,8 @@
 ﻿namespace Testably.Architecture.Rules;
 
 /// <summary>
-///     This test error is added when the filtered source collection is empty.
+///     This test error is added when the filtered source collection is empty, unless
+///     <see cref="ExemptionExtensions.AllowEmpty{TEntity}(IExemption{TEntity})" /> is called.
 /// </summary>
 public class EmptySourceTestError : TestError
 {
