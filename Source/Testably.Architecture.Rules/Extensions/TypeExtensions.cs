@@ -37,27 +37,12 @@ public static class TypeExtensions
 		this Type type,
 		AccessModifiers accessModifiers)
 	{
-		if (type.IsNestedAssembly)
+		if (type.IsNested)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Internal);
+			return HasAccessModifierForNestedClass(type, accessModifiers);
 		}
 
-		if (type.IsNestedFamily)
-		{
-			return accessModifiers.HasFlag(AccessModifiers.Protected);
-		}
-
-		if (type.IsNotPublic || (type.IsNested && type.IsNestedPrivate))
-		{
-			return accessModifiers.HasFlag(AccessModifiers.Private);
-		}
-
-		if (type.IsPublic || (type.IsNested && type.IsNestedPublic))
-		{
-			return accessModifiers.HasFlag(AccessModifiers.Public);
-		}
-
-		return false;
+		return HasAccessModifierForNotNestedClass(type, accessModifiers);
 	}
 
 	/// <summary>
@@ -83,9 +68,9 @@ public static class TypeExtensions
 	{
 		object? attribute = type.GetCustomAttributes(typeof(TAttribute), inherit)
 			.FirstOrDefault();
-		if (attribute is TAttribute castedAttribute)
+		if (attribute is TAttribute attributeValue)
 		{
-			return predicate?.Invoke(castedAttribute) ?? true;
+			return predicate?.Invoke(attributeValue) ?? true;
 		}
 
 		return false;
@@ -235,7 +220,7 @@ public static class TypeExtensions
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
 	public static bool IsStatic(this Type type)
-		=> type.IsAbstract && type.IsSealed && !type.IsInterface;
+		=> type is { IsAbstract: true, IsSealed: true, IsInterface: false };
 
 	/// <summary>
 	///     Check if the generic types are compatible.<br />
@@ -254,8 +239,8 @@ public static class TypeExtensions
 
 		if (!type.IsGenericTypeDefinition && !other.IsGenericTypeDefinition)
 		{
-			Type[]? typeArguments = type.GetGenericArguments();
-			Type[]? otherArguments = other.GetGenericArguments();
+			Type[] typeArguments = type.GetGenericArguments();
+			Type[] otherArguments = other.GetGenericArguments();
 			// `type` and `other` have the same number of arguments,
 			// because otherwise the GetGenericTypeDefinition() check would be different for both!
 			for (int i = 0; i < typeArguments.Length; i++)
@@ -268,5 +253,51 @@ public static class TypeExtensions
 		}
 
 		return true;
+	}
+
+	private static bool HasAccessModifierForNestedClass(Type type, AccessModifiers accessModifiers)
+	{
+		if (type.IsNestedAssembly)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Internal);
+		}
+
+		if (type.IsNestedFamily)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Protected);
+		}
+
+		if (type.IsNestedPrivate)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Private);
+		}
+
+		if (type.IsNestedPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Public);
+		}
+
+		return false;
+	}
+
+	private static bool HasAccessModifierForNotNestedClass(Type type,
+		AccessModifiers accessModifiers)
+	{
+		if (!type.IsVisible)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Internal);
+		}
+
+		if (type.IsNotPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Private);
+		}
+
+		if (type.IsPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Public);
+		}
+
+		return false;
 	}
 }

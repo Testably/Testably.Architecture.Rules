@@ -7,7 +7,7 @@ public static partial class TypeFilterExtensions
 	/// <summary>
 	///     Filters for <see cref="Type" />s with the correct <paramref name="accessModifiers" />.
 	/// </summary>
-	public static ITypeFilterResult With(
+	public static ITypeFilterResult WhichAre(
 		this ITypeFilter @this,
 		AccessModifiers accessModifiers)
 	{

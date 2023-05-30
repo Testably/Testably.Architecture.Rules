@@ -30,7 +30,7 @@ public sealed partial class RequirementOnTypeExtensionsTests
 				};
 				yield return new object[]
 				{
-					typeof(UnnestedPrivateType)
+					typeof(UnnestedInternalType)
 				};
 			}
 		}
