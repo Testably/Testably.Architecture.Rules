@@ -49,7 +49,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 				.First(p => p.GetParameters().Length == parameterCount);
 			IRule rule = Expect.That.Constructors
 				.WhichAre(constructor)
-				.ShouldHave(Parameters.InOrder
+				.ShouldHave(Parameters.First
 					.OfType<string>().Then()
 					.OfType<int>());
 

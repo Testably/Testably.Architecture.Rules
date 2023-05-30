@@ -47,7 +47,7 @@ public sealed partial class RequirementOnMethodExtensionsTests
 				.GetMethod(methodName)!;
 			IRule rule = Expect.That.Methods
 				.WhichAre(method)
-				.ShouldHave(Parameters.InOrder
+				.ShouldHave(Parameters.First
 					.OfType<string>().Then()
 					.OfType<int>());
 

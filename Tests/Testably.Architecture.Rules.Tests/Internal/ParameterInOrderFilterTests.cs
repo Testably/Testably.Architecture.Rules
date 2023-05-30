@@ -15,7 +15,7 @@ public sealed class ParameterInOrderFilterTests
 	public void Apply_ShouldCheckEachFilterIndividually()
 	{
 		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();
-		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 		IOrderedParameterFilterResult filter = sut
 			.Which(p => p == parameters.First()).And
@@ -35,7 +35,7 @@ public sealed class ParameterInOrderFilterTests
 		bool filter1Result, bool filter2Result, bool expectedResult)
 	{
 		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();
-		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 		IOrderedParameterFilterResult filter = sut
 			.Which(_ => filter1Result).And
@@ -54,7 +54,7 @@ public sealed class ParameterInOrderFilterTests
 	[InlineData(4, "5th")]
 	public void FriendlyName_ShouldIncludeExpectedValue(int numberOfThen, string expectedValue)
 	{
-		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 		for (int i = 0; i < numberOfThen; i++)
 		{
@@ -72,7 +72,7 @@ public sealed class ParameterInOrderFilterTests
 	[AutoData]
 	public void FriendlyName_ShouldJoinAllFilters(string filter1, string filter2)
 	{
-		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 		IOrderedParameterFilterResult result = sut
 			.Which(_ => false, filter1).And

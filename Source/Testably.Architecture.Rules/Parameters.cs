@@ -16,8 +16,8 @@ public static class Parameters
 		=> new ParameterAnyFilter();
 
 	/// <summary>
-	///     Specifies a series of filters that must be satisfied by the <see cref="ParameterInfo" />s in the correct order.
+	///     Specifies a series of filters starting at the first parameter that must be satisfied by the <see cref="ParameterInfo" />s in the correct order.
 	/// </summary>
-	public static IParameterFilter<IOrderedParameterFilterResult> InOrder
+	public static IParameterFilter<IOrderedParameterFilterResult> First
 		=> new ParameterInOrderFilter();
 }
