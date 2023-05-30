@@ -19,14 +19,28 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 	public bool Apply(ParameterInfo[] parameterInfos)
 	{
 		return _filters.All(
-			item => parameterInfos.Length > item.Key &&
-			        item.Value.All(f => f.Applies(parameterInfos[item.Key])));
+			item => ApplyFilter(item.Key, item.Value, parameterInfos));
 	}
 
-	/// <inheritdoc cref="IOrderedParameterFilterResult.Then" />
+	/// <inheritdoc cref="IOrderedParameterFilterResult.At(int)" />
+	public IParameterFilter<IOrderedParameterFilterResult> At(int position)
+	{
+		_currentIndex = position;
+		return this;
+	}
+
+	/// <inheritdoc cref="IOrderedParameterFilterResult.Then()" />
 	public IParameterFilter<IOrderedParameterFilterResult> Then()
 	{
-		_currentIndex++;
+		if (_currentIndex < 0)
+		{
+			_currentIndex--;
+		}
+		else
+		{
+			_currentIndex++;
+		}
+
 		return this;
 	}
 
@@ -60,8 +74,27 @@ internal class ParameterInOrderFilter : IParameterFilter<IOrderedParameterFilter
 	public override string ToString()
 		=> FriendlyName();
 
+	private static bool ApplyFilter(int index, List<Filter<ParameterInfo>> filters,
+		ParameterInfo[] parameterInfos)
+	{
+		if (index < 0)
+		{
+			index = parameterInfos.Length + index;
+		}
+
+		return index >= 0 && index < parameterInfos.Length &&
+		       filters.All(f => f.Applies(parameterInfos[index]));
+	}
+
 	private static string IndexToString(int index)
 	{
+		if (index < 0)
+		{
+			return index == -1
+				? "last"
+				: $"{IndexToString(-1 * (index + 1))} to last";
+		}
+
 		if (index == 0)
 		{
 			return "1st";
