@@ -59,25 +59,33 @@ public sealed partial class ConstructorFilterExtensionsTests
 		#pragma warning disable CA1822
 		private class TestClassWithPublicConstructor
 		{
+			public TestClassWithPublicConstructor(int value)
+			{
+				_ = value;
+			}
 		}
 
 		private class TestClassWithInternalConstructor
 		{
+			internal TestClassWithInternalConstructor(int value)
+			{
+				_ = value;
+			}
 		}
 
 		private class TestClassWithProtectedConstructor
 		{
-			protected TestClassWithProtectedConstructor()
+			protected TestClassWithProtectedConstructor(int value)
 			{
-				// Do nothing
+				_ = value;
 			}
 		}
 
 		private class TestClassWithPrivateConstructor
 		{
-			private TestClassWithPrivateConstructor()
+			private TestClassWithPrivateConstructor(int value)
 			{
-				// Do nothing
+				_ = value;
 			}
 		}
 		#pragma warning restore CA1822
