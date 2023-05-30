@@ -20,7 +20,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 		public void ShouldHave_WithAnyIntParameter_ShouldResultInExpectViolation(
 			int parameterCount, bool expectViolation)
 		{
-			ConstructorInfo constructor = typeof(TestClass).GetConstructors()
+			ConstructorInfo constructor = typeof(TestClass).GetDeclaredConstructors()
 				.First(p => p.GetParameters().Length == parameterCount);
 			IRule rule = Expect.That.Constructors
 				.WhichAre(constructor)
@@ -45,7 +45,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 		public void ShouldHave_WithOrderedStringAndInt_ShouldResultInExpectViolation(
 			int parameterCount, bool expectViolation)
 		{
-			ConstructorInfo constructor = typeof(TestClass).GetConstructors()
+			ConstructorInfo constructor = typeof(TestClass).GetDeclaredConstructors()
 				.First(p => p.GetParameters().Length == parameterCount);
 			IRule rule = Expect.That.Constructors
 				.WhichAre(constructor)
@@ -73,7 +73,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 		public void ShouldHaveNoParameters_WithConstructorName_ShouldResultInExpectViolation(
 			int parameterCount, bool expectViolation)
 		{
-			ConstructorInfo constructor = typeof(TestClass).GetConstructors()
+			ConstructorInfo constructor = typeof(TestClass).GetDeclaredConstructors()
 				.First(p => p.GetParameters().Length == parameterCount);
 			IRule rule = Expect.That.Constructors
 				.WhichAre(constructor)
@@ -98,7 +98,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 		public void ShouldHaveParameters_WithConstructorName_ShouldResultInExpectViolation(
 			int parameterCount, bool expectViolation)
 		{
-			ConstructorInfo constructor = typeof(TestClass).GetConstructors()
+			ConstructorInfo constructor = typeof(TestClass).GetDeclaredConstructors()
 				.First(p => p.GetParameters().Length == parameterCount);
 			IRule rule = Expect.That.Constructors
 				.WhichAre(constructor)
@@ -125,7 +125,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 		public void ShouldHaveParameters_WithMinimumCount_ShouldResultInExpectViolation(
 			int parameterCount, int minimumCount, bool expectViolation)
 		{
-			ConstructorInfo constructor = typeof(TestClass).GetConstructors()
+			ConstructorInfo constructor = typeof(TestClass).GetDeclaredConstructors()
 				.First(p => p.GetParameters().Length == parameterCount);
 			IRule rule = Expect.That.Constructors
 				.WhichAre(constructor)

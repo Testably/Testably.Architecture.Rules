@@ -118,7 +118,7 @@ public sealed class RuleCheckTests
 		Exception? exception = Record.Exception(() =>
 		{
 			Expect.That.Types
-				.WhichArePublic().And
+				.WhichAre(AccessModifiers.Public).And
 				.Which(Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>())
 				.ShouldBeSealed()
 				.Check.WithLog(null).InAllLoadedAssemblies();
@@ -207,7 +207,7 @@ public sealed class RuleCheckTests
 		List<string> logs = new();
 		DateTime begin = DateTime.Now;
 		Expect.That.Types
-			.WhichArePublic().And
+			.WhichAre(AccessModifiers.Public).And
 			.Which(Have.Method.WithAttribute<FactAttribute>().OrAttribute<TheoryAttribute>())
 			.ShouldBeSealed()
 			.Check.WithLog(logs.Add).InAllLoadedAssemblies();

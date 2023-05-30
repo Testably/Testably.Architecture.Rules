@@ -12,7 +12,7 @@ public sealed class ConstructorTestErrorTests
 	[Fact]
 	public void Constructor_ShouldSetConstructor()
 	{
-		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetDeclaredConstructors().First();
 
 		ConstructorTestError sut = new(constructorInfo, "foo");
 
@@ -23,7 +23,7 @@ public sealed class ConstructorTestErrorTests
 	[AutoData]
 	public void ToString_ShouldReturnMessage(string message)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetDeclaredConstructors().First();
 
 		ConstructorTestError sut = new(constructorInfo, message);
 		string result = sut.ToString();

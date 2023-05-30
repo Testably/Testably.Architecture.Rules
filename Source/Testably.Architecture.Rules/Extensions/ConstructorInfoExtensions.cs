@@ -10,6 +10,42 @@ namespace Testably.Architecture.Rules;
 public static class ConstructorInfoExtensions
 {
 	/// <summary>
+	///     Checks if the <paramref name="constructorInfo" /> has the specified <paramref name="accessModifiers" />.
+	/// </summary>
+	/// <param name="constructorInfo">The <see cref="ConstructorInfo" /> which is checked to have the attribute.</param>
+	/// <param name="accessModifiers">
+	///     The <see cref="AccessModifiers" />.
+	///     <para />
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
+	/// </param>
+	public static bool HasAccessModifier(
+		this ConstructorInfo constructorInfo,
+		AccessModifiers accessModifiers)
+	{
+		if (constructorInfo.IsAssembly)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Internal);
+		}
+
+		if (constructorInfo.IsFamily)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Protected);
+		}
+
+		if (constructorInfo.IsPrivate)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Private);
+		}
+
+		if (constructorInfo.IsPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Public);
+		}
+
+		return false;
+	}
+
+	/// <summary>
 	///     Checks if the <paramref name="constructorInfo" /> has an attribute which satisfies the
 	///     <paramref name="predicate" />.
 	/// </summary>

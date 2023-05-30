@@ -12,7 +12,7 @@ public sealed class FieldTestErrorTests
 	[Fact]
 	public void Field_ShouldSetField()
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 
 		FieldTestError sut = new(fieldInfo, "foo");
 
@@ -23,7 +23,7 @@ public sealed class FieldTestErrorTests
 	[AutoData]
 	public void ToString_ShouldReturnMessage(string message)
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 
 		FieldTestError sut = new(fieldInfo, message);
 		string result = sut.ToString();

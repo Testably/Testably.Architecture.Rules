@@ -13,7 +13,7 @@ public sealed partial class RequirementOnConstructorExtensionsTests
 	[Fact]
 	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
 	{
-		ConstructorInfo constructor = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructor = typeof(DummyFooClass).GetDeclaredConstructors().First();
 		Expression<Func<ConstructorInfo, bool>> expression = _ => false;
 		IRule rule = Expect.That.Constructors
 			.WhichAre(constructor)

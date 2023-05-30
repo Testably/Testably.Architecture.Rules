@@ -10,15 +10,69 @@ namespace Testably.Architecture.Rules;
 public static class TypeExtensions
 {
 	/// <summary>
+	///     Searches for constructors in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static ConstructorInfo[] GetDeclaredConstructors(
+		this Type type)
+	{
+		return type
+			.GetConstructors(BindingFlags.DeclaredOnly |
+			                 BindingFlags.NonPublic |
+			                 BindingFlags.Public |
+			                 BindingFlags.Instance)
+			.ToArray();
+	}
+
+	/// <summary>
+	///     Searches for fields in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static FieldInfo[] GetDeclaredFields(
+		this Type type)
+	{
+		return type
+			.GetFields(BindingFlags.DeclaredOnly |
+			           BindingFlags.NonPublic |
+			           BindingFlags.Public |
+			           BindingFlags.Instance)
+			.Where(m => !m.IsSpecialName)
+			.Where(m => !m.Name.EndsWith("__BackingField"))
+			.ToArray();
+	}
+
+	/// <summary>
 	///     Searches for methods in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static MethodInfo[] GetDeclaredMethods(
 		this Type type)
 	{
 		return type
-			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+			.GetMethods(BindingFlags.DeclaredOnly |
+			            BindingFlags.NonPublic |
+			            BindingFlags.Public |
+			            BindingFlags.Instance)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
+	}
+
+	/// <summary>
+	///     Checks if the <paramref name="type" /> has the specified <paramref name="accessModifiers" />.
+	/// </summary>
+	/// <param name="type">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
+	/// <param name="accessModifiers">
+	///     The <see cref="AccessModifiers" />.
+	///     <para />
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
+	/// </param>
+	public static bool HasAccessModifier(
+		this Type type,
+		AccessModifiers accessModifiers)
+	{
+		if (type.IsNested)
+		{
+			return HasAccessModifierForNestedClass(type, accessModifiers);
+		}
+
+		return HasAccessModifierForNotNestedClass(type, accessModifiers);
 	}
 
 	/// <summary>
@@ -44,9 +98,9 @@ public static class TypeExtensions
 	{
 		object? attribute = type.GetCustomAttributes(typeof(TAttribute), inherit)
 			.FirstOrDefault();
-		if (attribute is TAttribute castedAttribute)
+		if (attribute is TAttribute attributeValue)
 		{
-			return predicate?.Invoke(castedAttribute) ?? true;
+			return predicate?.Invoke(attributeValue) ?? true;
 		}
 
 		return false;
@@ -196,7 +250,7 @@ public static class TypeExtensions
 	/// <param name="type">The <see cref="Type" />.</param>
 	/// <remarks>https://stackoverflow.com/a/1175901</remarks>
 	public static bool IsStatic(this Type type)
-		=> type.IsAbstract && type.IsSealed && !type.IsInterface;
+		=> type is { IsAbstract: true, IsSealed: true, IsInterface: false };
 
 	/// <summary>
 	///     Check if the generic types are compatible.<br />
@@ -215,8 +269,8 @@ public static class TypeExtensions
 
 		if (!type.IsGenericTypeDefinition && !other.IsGenericTypeDefinition)
 		{
-			Type[]? typeArguments = type.GetGenericArguments();
-			Type[]? otherArguments = other.GetGenericArguments();
+			Type[] typeArguments = type.GetGenericArguments();
+			Type[] otherArguments = other.GetGenericArguments();
 			// `type` and `other` have the same number of arguments,
 			// because otherwise the GetGenericTypeDefinition() check would be different for both!
 			for (int i = 0; i < typeArguments.Length; i++)
@@ -229,5 +283,51 @@ public static class TypeExtensions
 		}
 
 		return true;
+	}
+
+	private static bool HasAccessModifierForNestedClass(Type type, AccessModifiers accessModifiers)
+	{
+		if (type.IsNestedAssembly)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Internal);
+		}
+
+		if (type.IsNestedFamily)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Protected);
+		}
+
+		if (type.IsNestedPrivate)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Private);
+		}
+
+		if (type.IsNestedPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Public);
+		}
+
+		return false;
+	}
+
+	private static bool HasAccessModifierForNotNestedClass(Type type,
+		AccessModifiers accessModifiers)
+	{
+		if (!type.IsVisible)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Internal);
+		}
+
+		if (type.IsNotPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Private);
+		}
+
+		if (type.IsPublic)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Public);
+		}
+
+		return false;
 	}
 }

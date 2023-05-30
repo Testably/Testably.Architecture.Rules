@@ -18,7 +18,7 @@ public static partial class RequirementOnTypeExtensions
 	{
 		return @this.ShouldSatisfy(
 			Requirement.DelegateAny<Type, ConstructorInfo>(
-				type => type.GetConstructors(),
+				type => type.GetDeclaredConstructors(),
 				constructorFilter.Applies,
 				(type, _) => new TypeTestError(type,
 					$"The type '{type.FullName}' should have a constructor {constructorFilter}")));
@@ -48,7 +48,7 @@ public static partial class RequirementOnTypeExtensions
 	{
 		return @this.ShouldSatisfy(
 			Requirement.DelegateAny<Type, FieldInfo>(
-				type => type.GetFields(),
+				type => type.GetDeclaredFields(),
 				fieldFilter.Applies,
 				(type, _) => new TypeTestError(type,
 					$"The type '{type.FullName}' should have a field {fieldFilter}")));

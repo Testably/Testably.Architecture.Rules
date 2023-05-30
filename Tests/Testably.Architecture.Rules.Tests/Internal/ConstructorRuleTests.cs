@@ -17,7 +17,7 @@ public sealed class ConstructorRuleTests
 	[InlineData(false, false, false)]
 	public void Applies_ShouldApplyAllFilters(bool result1, bool result2, bool expectedResult)
 	{
-		ConstructorInfo element = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo element = typeof(DummyFooClass).GetDeclaredConstructors().First();
 
 		ConstructorRule sut = new(
 			Filter.FromPredicate<ConstructorInfo>(_ => result1),
@@ -31,7 +31,7 @@ public sealed class ConstructorRuleTests
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeConstructorInfoName()
 	{
-		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetDeclaredConstructors().First();
 		string expectedConstructorInfoName = $"'{constructorInfo.Name}'";
 		IRule rule = Expect.That.Constructors
 			.Which(t => t == constructorInfo)
@@ -48,7 +48,7 @@ public sealed class ConstructorRuleTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetDeclaredConstructors().First();
 		IRule rule = Expect.That.Constructors
 			.Which(t => t == constructorInfo)
 			.ShouldSatisfy(Requirement.ForConstructor(_ => false, _ => error));
@@ -64,7 +64,7 @@ public sealed class ConstructorRuleTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructorInfo = typeof(DummyFooClass).GetDeclaredConstructors().First();
 		IRule rule = Expect.That.Constructors
 			.Which(t => t == constructorInfo)
 			.ShouldSatisfy(Requirement.ForConstructor(_ => true, _ => error));
@@ -91,7 +91,7 @@ public sealed class ConstructorRuleTests
 	[AutoData]
 	public void Types_ShouldApplyConstructorFilter(string filter1, string filter2)
 	{
-		ConstructorInfo origin = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo origin = typeof(DummyFooClass).GetDeclaredConstructors().First();
 
 		IRule rule = Expect.That.Constructors
 			.Which(c => c == origin, filter1).And
@@ -112,8 +112,8 @@ public sealed class ConstructorRuleTests
 	[Fact]
 	public void Types_ShouldRequireAllConstructors()
 	{
-		ConstructorInfo constructor1 = typeof(DummyFooClass).GetConstructors().First();
-		ConstructorInfo constructor2 = typeof(DummyFooClass).GetConstructors().Last();
+		ConstructorInfo constructor1 = typeof(DummyFooClass).GetDeclaredConstructors().First();
+		ConstructorInfo constructor2 = typeof(DummyFooClass).GetDeclaredConstructors().Last();
 
 		IRule rule = Expect.That.Constructors
 			.Which(p => p == constructor1).And
@@ -131,8 +131,9 @@ public sealed class ConstructorRuleTests
 	[Fact]
 	public void Which_ShouldFilterOutConstructorInfos()
 	{
-		ConstructorInfo excludedConstructor = typeof(DummyFooClass).GetConstructors().First();
-		int allConstructorsCount = typeof(DummyFooClass).GetConstructors().Length;
+		ConstructorInfo excludedConstructor =
+			typeof(DummyFooClass).GetDeclaredConstructors().First();
+		int allConstructorsCount = typeof(DummyFooClass).GetDeclaredConstructors().Length;
 
 		IRule rule = Expect.That.Constructors
 			.Which(t => t.DeclaringType == typeof(DummyFooClass)).And

@@ -223,7 +223,7 @@ public sealed class TypeRuleTests
 		ITestResult result = rule.Check
 			.InAllLoadedAssemblies();
 
-		result.Errors.Length.Should().Be(2);
+		result.Errors.Length.Should().Be(4);
 		result.Errors.Should().Contain(e => e.ToString().Contains(expectedFieldName1));
 		result.Errors.Should().NotContain(e => e.ToString().Contains(expectedFieldName2));
 	}

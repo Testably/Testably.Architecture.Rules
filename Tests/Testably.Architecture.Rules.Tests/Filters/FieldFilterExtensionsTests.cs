@@ -14,7 +14,7 @@ public sealed partial class FieldFilterExtensionsTests
 	[InlineData(true)]
 	public void Which_WithExpression_ShouldConsiderPredicateResult(bool predicateResult)
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 		IFieldFilterResult sut = Have.Field
 			.Which(_ => predicateResult);
 
@@ -28,7 +28,7 @@ public sealed partial class FieldFilterExtensionsTests
 	[InlineAutoData(true)]
 	public void Which_WithName_ShouldConsiderPredicateResult(bool predicateResult, string name)
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 		IFieldFilterResult sut = Have.Field
 			.Which(_ => predicateResult, name);
 
