@@ -68,7 +68,8 @@ public sealed class FilterTests
 			Filter.FromPredicate<ConstructorInfo>(_ => result1),
 			Filter.FromPredicate<ConstructorInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetDeclaredConstructors().First()).Should().Be(expectedResult);
+		sut.Applies(typeof(DummyFooClass).GetDeclaredConstructors().First()).Should()
+			.Be(expectedResult);
 	}
 
 	[Theory]

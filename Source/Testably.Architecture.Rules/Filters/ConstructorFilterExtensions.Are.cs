@@ -5,7 +5,7 @@ namespace Testably.Architecture.Rules;
 public static partial class ConstructorFilterExtensions
 {
 	/// <summary>
-	///     Filters for <see cref="ConstructorInfo" />s with the correct <paramref name="accessModifiers"/>.
+	///     Filters for <see cref="ConstructorInfo" />s with the correct <paramref name="accessModifiers" />.
 	/// </summary>
 	public static IConstructorFilterResult WhichAre(
 		this IConstructorFilter @this,

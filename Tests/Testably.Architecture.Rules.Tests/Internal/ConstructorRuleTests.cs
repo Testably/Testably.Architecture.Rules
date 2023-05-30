@@ -131,7 +131,8 @@ public sealed class ConstructorRuleTests
 	[Fact]
 	public void Which_ShouldFilterOutConstructorInfos()
 	{
-		ConstructorInfo excludedConstructor = typeof(DummyFooClass).GetDeclaredConstructors().First();
+		ConstructorInfo excludedConstructor =
+			typeof(DummyFooClass).GetDeclaredConstructors().First();
 		int allConstructorsCount = typeof(DummyFooClass).GetDeclaredConstructors().Length;
 
 		IRule rule = Expect.That.Constructors

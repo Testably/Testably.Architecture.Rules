@@ -5,7 +5,7 @@ namespace Testably.Architecture.Rules;
 public static partial class FieldFilterExtensions
 {
 	/// <summary>
-	///     Filters for <see cref="FieldInfo" />s with the correct <paramref name="accessModifiers"/>.
+	///     Filters for <see cref="FieldInfo" />s with the correct <paramref name="accessModifiers" />.
 	/// </summary>
 	public static IFieldFilterResult WhichAre(
 		this IFieldFilter @this,
