@@ -16,9 +16,48 @@ public static class TypeExtensions
 		this Type type)
 	{
 		return type
-			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+			.GetMethods(BindingFlags.DeclaredOnly |
+			            BindingFlags.NonPublic |
+			            BindingFlags.Public |
+			            BindingFlags.Instance)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
+	}
+
+	/// <summary>
+	///     Checks if the <paramref name="type" /> has the specified <paramref name="accessModifiers" />.
+	/// </summary>
+	/// <param name="type">The <see cref="MethodInfo" /> which is checked to have the attribute.</param>
+	/// <param name="accessModifiers">
+	///     The <see cref="AccessModifiers" />.
+	///     <para />
+	///     Supports specifying multiple <see cref="AccessModifiers" />.
+	/// </param>
+	public static bool HasAccessModifier(
+		this Type type,
+		AccessModifiers accessModifiers)
+	{
+		if (type.IsNestedAssembly)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Internal);
+		}
+
+		if (type.IsNestedFamily)
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Protected);
+		}
+
+		if (type.IsNotPublic || (type.IsNested && type.IsNestedPrivate))
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Private);
+		}
+
+		if (type.IsPublic || (type.IsNested && type.IsNestedPublic))
+		{
+			return accessModifiers.HasFlag(AccessModifiers.Public);
+		}
+
+		return false;
 	}
 
 	/// <summary>
