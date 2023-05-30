@@ -16,7 +16,7 @@ public static class TypeExtensions
 		this Type type)
 	{
 		return type
-			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance)
+			.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
 	}
