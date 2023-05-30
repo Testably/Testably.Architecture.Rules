@@ -16,8 +16,16 @@ public static class Parameters
 		=> new ParameterAnyFilter();
 
 	/// <summary>
-	///     Specifies a series of filters that must be satisfied by the <see cref="ParameterInfo" />s in the correct order.
+	///     Specifies an incrementing series of parameter filters starting at the first parameter that must be satisfied by the
+	///     <see cref="ParameterInfo" />s in the correct order.
 	/// </summary>
-	public static IParameterFilter<IOrderedParameterFilterResult> InOrder
+	public static IParameterFilter<IOrderedParameterFilterResult> First
 		=> new ParameterInOrderFilter();
+
+	/// <summary>
+	///     Specifies a decrementing series of parameter filters starting at the last parameter that must be satisfied by the
+	///     <see cref="ParameterInfo" />s in the correct order.
+	/// </summary>
+	public static IParameterFilter<IOrderedParameterFilterResult> Last
+		=> new ParameterInOrderFilter().At(-1);
 }

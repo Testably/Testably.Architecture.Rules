@@ -33,7 +33,7 @@ public sealed partial class ConstructorFilterExtensionsTests
 				.WhichAre(typeof(TestClass)).And
 				.Which(Have.Constructor
 					.WithAttribute<ParameterCountAttribute>(p => p.Count == parameterCount).And
-					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
+					.With(Parameters.First.WithName("value1").Then().WithName("value2")))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();

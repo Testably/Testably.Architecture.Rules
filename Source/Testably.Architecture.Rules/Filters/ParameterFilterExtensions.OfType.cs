@@ -165,15 +165,19 @@ public static partial class ParameterFilterExtensions
 
 		#region IOrderedParameterFilterResult Members
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="IOrderedParameterFilterResult.Apply(ParameterInfo[])" />
 		public bool Apply(ParameterInfo[] parameterInfos)
 			=> _filterResult.Apply(parameterInfos);
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="IOrderedParameterFilterResult.At(int)" />
+		public IParameterFilter<IOrderedParameterFilterResult> At(int position)
+			=> _filterResult.At(position);
+
+		/// <inheritdoc cref="IOrderedParameterFilterResult.Then()" />
 		public IParameterFilter<IOrderedParameterFilterResult> Then()
 			=> _filterResult.Then();
 
-		/// <inheritdoc />
+		/// <inheritdoc cref="IParameterFilterResult{TResult}.FriendlyName()" />
 		public override string FriendlyName()
 			=> _filterResult.FriendlyName();
 

@@ -14,7 +14,18 @@ public interface IOrderedParameterFilterResult
 	bool Apply(ParameterInfo[] parameterInfos);
 
 	/// <summary>
-	///     Specifies filters on the next <see cref="ParameterInfo" />.
+	///     Specifies an explicit position of the parameter.
+	///     <para />
+	///     Positive values are zero-based index from the start.<br />
+	///     Negative values count from the last parameter back (e.g. `-1` indicates the last parameter).
+	/// </summary>
+	IParameterFilter<IOrderedParameterFilterResult> At(int position);
+
+	/// <summary>
+	///     Specifies filters on the next or previous <see cref="ParameterInfo" />.
+	///     <para />
+	///     In ascending order (when using <see cref="Parameters.First" /> the next parameter is used.<br />
+	///     In descending order (when using <see cref="Parameters.Last" /> the previous parameter is used.
 	/// </summary>
 	IParameterFilter<IOrderedParameterFilterResult> Then();
 }

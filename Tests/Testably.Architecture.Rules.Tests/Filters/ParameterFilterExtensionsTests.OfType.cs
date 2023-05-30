@@ -17,7 +17,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		public void OfType_Ordered_FooBase_ShouldReturnExpectedValue(bool allowDerivedType,
 			bool expectedValue)
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			bool result = Have.Method
 				.With(
@@ -30,7 +30,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		[Fact]
 		public void OfType_Ordered_NotMatchingType_ShouldReturnFalse()
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			bool result = Have.Method
 				.With(
@@ -43,7 +43,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		[Fact]
 		public void OfType_Ordered_OrOfType_NotMatchingAndMatchingType_ShouldReturnTrue()
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			bool result = Have.Method
 				.With(
@@ -56,7 +56,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		[Fact]
 		public void OfType_Ordered_OrOfType_ToString_ShouldCombineBothTypes()
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			string result = sut.OfType<Foo>().OrOfType<Bar>().ToString();
 
@@ -68,7 +68,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		[InlineData(typeof(Bar), false)]
 		public void OfType_Ordered_ShouldReturnExpectedValue(Type type, bool expectedValue)
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			bool result = Have.Method
 				.With(
@@ -84,7 +84,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		public void OfType_Ordered_Then_ShouldGoToNextParameter(Type type1, Type type2,
 			bool expectedValue)
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			bool result = Have.Method
 				.With(sut
@@ -99,7 +99,7 @@ public sealed partial class ParameterFilterExtensionsTests
 		[Fact]
 		public void OfType_Ordered_ToString_ShouldCombineBothTypes()
 		{
-			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.InOrder;
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 			string result = sut.OfType<Foo>().ToString();
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Testably.Architecture.Example.Tests.TestHelpers;
 using Testably.Architecture.Rules;
 using Xunit;
@@ -16,6 +17,22 @@ public sealed class ExampleTests
 		IRule rule = Expect.That.Methods
 			.WithReturnType<Task>().OrReturnType(typeof(Task<>))
 			.ShouldMatchName("*Async")
+			.AllowEmpty();
+
+		rule.Check
+			.InTestAssembly()
+			.ThrowIfViolated();
+	}
+
+	/// <summary>
+	///     Methods that return Task should have <see cref="CancellationToken" /> as last parameter.
+	/// </summary>
+	[Fact]
+	public void AsyncMethodsShouldHaveCancellationTokenAsLastParameter()
+	{
+		IRule rule = Expect.That.Methods
+			.WithReturnType<Task>().OrReturnType(typeof(Task<>))
+			.ShouldHave(Parameters.Last.OfType<CancellationToken>())
 			.AllowEmpty();
 
 		rule.Check

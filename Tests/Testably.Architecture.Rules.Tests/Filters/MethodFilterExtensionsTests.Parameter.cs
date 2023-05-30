@@ -19,7 +19,7 @@ public sealed partial class MethodFilterExtensionsTests
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(TestClass)).And
 				.Which(Have.Method.WhichNameMatches(methodName).And
-					.With(Parameters.InOrder.WithName("value1").Then().WithName("value2")))
+					.With(Parameters.First.WithName("value1").Then().WithName("value2")))
 				.ShouldAlwaysFail()
 				.AllowEmpty()
 				.Check.InAllLoadedAssemblies();
