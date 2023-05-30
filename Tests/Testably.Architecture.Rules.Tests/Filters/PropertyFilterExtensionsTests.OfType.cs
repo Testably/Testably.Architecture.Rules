@@ -11,12 +11,41 @@ public sealed partial class PropertyFilterExtensionsTests
 {
 	public sealed class OfTypeTests
 	{
+		[Theory]
+		[InlineData(true, false)]
+		[InlineData(false, true)]
+		public void DerivedType_ShouldBeViolatedIfNotAllowDerivedType(
+			bool allowDerivedType,
+			bool expectViolation)
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(FooClass))
+				.Should(Have.Property.OfType<DummyFooBase>(allowDerivedType))
+				.Check.InAllLoadedAssemblies();
+
+			result.ShouldBeViolatedIf(expectViolation);
+		}
+
+		[Fact]
+		public void OfType_ShouldUseCorrectErrorMessage()
+		{
+			ITestResult result = Expect.That.Types
+				.WhichAre(typeof(FooClass))
+				.Should(Have.Property.OfType<int>())
+				.Check.InAllLoadedAssemblies();
+
+			result.Errors.Length.Should().Be(1);
+			result.Errors[0].ToString().Should()
+				.Contain(
+					$"type '{typeof(FooClass)}' should have a property of type {nameof(Int32)}");
+		}
+
 		[Fact]
 		public void OrAttribute_ShouldReturnBothTypes()
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(typeof(BarClass), typeof(FooClass))
-				.Should(Have.Property.OfType<FooClass>().OrOfType<BarClass>())
+				.Should(Have.Property.OfType<DummyFooClass>().OrOfType<DummyBarClass>())
 				.Check.InAllLoadedAssemblies();
 
 			result.ShouldNotBeViolated();
@@ -26,22 +55,21 @@ public sealed partial class PropertyFilterExtensionsTests
 		public void OrAttribute_ShouldUseCorrectErrorMessage()
 		{
 			ITestResult result = Expect.That.Types
-				.WhichAre(typeof(BarClass))
-				.Should(Have.Property.OfType<int>())
+				.WhichAre(typeof(FooClass))
+				.Should(Have.Property.OfType<int>().OrOfType<long>())
 				.Check.InAllLoadedAssemblies();
 
 			result.Errors.Length.Should().Be(1);
 			result.Errors[0].ToString().Should()
-				.Contain($"type '{typeof(BarClass)}'")
-				.And.Contain("property")
-				.And.Contain(nameof(Int32));
+				.Contain(
+					$"type '{typeof(FooClass)}' should have a property (of type {nameof(Int32)} or of type {nameof(Int64)})");
 		}
 
 		[Fact]
 		public void ShouldSatisfy_ShouldApplyOnFilteredResult()
 		{
 			IPropertyFilterResult sut = Have.Property
-				.OfType<FooClass>().OrOfType<BarClass>();
+				.OfType<DummyFooClass>().OrOfType<DummyBarClass>();
 
 			IRequirementResult<PropertyInfo> rule = sut.ShouldSatisfy(_ => false);
 
@@ -57,7 +85,7 @@ public sealed partial class PropertyFilterExtensionsTests
 		public void Types_ShouldForwardToFilteredResult()
 		{
 			IPropertyFilterResult sut = Have.Property
-				.OfType<FooClass>().OrOfType<BarClass>();
+				.OfType<DummyFooClass>().OrOfType<DummyBarClass>();
 
 			IRequirementResult<Type> rule = sut.Types.ShouldSatisfy(_ => false);
 
@@ -72,13 +100,13 @@ public sealed partial class PropertyFilterExtensionsTests
 		#pragma warning disable CS8618
 		private class BarClass
 		{
-			public FooClass FooProperty { get; set; }
+			public DummyBarClass FooProperty { get; set; }
 			public string StringProperty { get; set; }
 		}
 
 		private class FooClass
 		{
-			public BarClass BarProperty { get; set; }
+			public DummyFooClass BarProperty { get; set; }
 			public string StringProperty { get; set; }
 		}
 		#pragma warning restore CS8618
