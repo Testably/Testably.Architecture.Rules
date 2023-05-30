@@ -68,7 +68,7 @@ public sealed class FilterTests
 			Filter.FromPredicate<ConstructorInfo>(_ => result1),
 			Filter.FromPredicate<ConstructorInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetConstructors().First()).Should().Be(expectedResult);
+		sut.Applies(typeof(DummyFooClass).GetDeclaredConstructors().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -160,7 +160,7 @@ public sealed class FilterTests
 			Filter.FromPredicate<FieldInfo>(_ => result1),
 			Filter.FromPredicate<FieldInfo>(_ => result2));
 
-		sut.Applies(typeof(DummyFooClass).GetFields().First()).Should().Be(expectedResult);
+		sut.Applies(typeof(DummyFooClass).GetDeclaredFields().First()).Should().Be(expectedResult);
 	}
 
 	[Theory]
@@ -246,7 +246,7 @@ public sealed class FilterTests
 		bool expectedResult)
 	{
 		ParameterInfo parameter =
-			typeof(DummyFooClass).GetConstructors().First().GetParameters()[0];
+			typeof(DummyFooClass).GetDeclaredConstructors().First().GetParameters()[0];
 		IParameterFilter<IUnorderedParameterFilterResult> parameterFilter = Parameters.Any;
 
 		OnParameterMock sut = new(parameterFilter);
@@ -425,7 +425,7 @@ public sealed class FilterTests
 		IRequirementResult<FieldInfo> rule = sut.Fields.ShouldSatisfy(_ => false);
 
 		ITestResult result = rule.Check.InAllLoadedAssemblies();
-		result.Errors.Length.Should().Be(4);
+		result.Errors.Length.Should().Be(8);
 		result.Errors.Should().Contain(e
 			=> ((FieldTestError)e).Field.DeclaringType == typeof(DummyFooClass));
 		result.Errors.Should().Contain(e

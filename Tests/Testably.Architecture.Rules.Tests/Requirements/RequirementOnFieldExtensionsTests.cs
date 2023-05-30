@@ -13,7 +13,7 @@ public sealed partial class RequirementOnFieldExtensionsTests
 	[Fact]
 	public void ShouldSatisfy_Expression_ShouldContainExpressionString()
 	{
-		FieldInfo field = typeof(DummyFooClass).GetFields().First();
+		FieldInfo field = typeof(DummyFooClass).GetDeclaredFields().First();
 		Expression<Func<FieldInfo, bool>> expression = _ => false;
 		IRule rule = Expect.That.Fields
 			.WhichAre(field)

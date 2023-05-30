@@ -44,7 +44,7 @@ public static partial class TypeFilterExtensions
 		IConstructorFilterResult constructorFilter)
 	{
 		return @this.Which(Filter.Delegate<Type, ConstructorInfo>(
-			type => type.GetConstructors(),
+			type => type.GetDeclaredConstructors(),
 			constructorFilter,
 			$"has constructors whose {constructorFilter}"));
 	}
@@ -76,7 +76,7 @@ public static partial class TypeFilterExtensions
 		IFieldFilterResult fieldFilter)
 	{
 		return @this.Which(Filter.Delegate<Type, FieldInfo>(
-			type => type.GetFields(),
+			type => type.GetDeclaredFields(),
 			fieldFilter,
 			$"has fields whose {fieldFilter}"));
 	}

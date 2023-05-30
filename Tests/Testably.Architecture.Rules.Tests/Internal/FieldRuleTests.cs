@@ -17,7 +17,7 @@ public sealed class FieldRuleTests
 	[InlineData(false, false, false)]
 	public void Applies_ShouldApplyAllFilters(bool result1, bool result2, bool expectedResult)
 	{
-		FieldInfo element = typeof(DummyFooClass).GetFields().First();
+		FieldInfo element = typeof(DummyFooClass).GetDeclaredFields().First();
 
 		FieldRule sut = new(
 			Filter.FromPredicate<FieldInfo>(_ => result1),
@@ -31,7 +31,7 @@ public sealed class FieldRuleTests
 	[Fact]
 	public void ShouldSatisfy_DefaultError_ShouldIncludeFieldInfoName()
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 		string expectedFieldInfoName = $"'{fieldInfo.Name}'";
 		IRule rule = Expect.That.Fields
 			.Which(t => t == fieldInfo)
@@ -48,7 +48,7 @@ public sealed class FieldRuleTests
 	[AutoData]
 	public void ShouldSatisfy_False_ShouldIncludeError(TestError error)
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 		IRule rule = Expect.That.Fields
 			.Which(t => t == fieldInfo)
 			.ShouldSatisfy(Requirement.ForField(_ => false, _ => error));
@@ -64,7 +64,7 @@ public sealed class FieldRuleTests
 	[AutoData]
 	public void ShouldSatisfy_True_ShouldNotIncludeError(TestError error)
 	{
-		FieldInfo fieldInfo = typeof(DummyFooClass).GetFields().First();
+		FieldInfo fieldInfo = typeof(DummyFooClass).GetDeclaredFields().First();
 		IRule rule = Expect.That.Fields
 			.Which(t => t == fieldInfo)
 			.ShouldSatisfy(Requirement.ForField(_ => true, _ => error));
@@ -91,7 +91,7 @@ public sealed class FieldRuleTests
 	[AutoData]
 	public void Types_ShouldApplyFieldFilter(string filter1, string filter2)
 	{
-		FieldInfo origin = typeof(DummyFooClass).GetFields().First();
+		FieldInfo origin = typeof(DummyFooClass).GetDeclaredFields().First();
 
 		IRule rule = Expect.That.Fields
 			.Which(c => c == origin, filter1).And
@@ -112,8 +112,8 @@ public sealed class FieldRuleTests
 	[Fact]
 	public void Types_ShouldRequireAllFields()
 	{
-		FieldInfo field1 = typeof(DummyFooClass).GetFields().First();
-		FieldInfo field2 = typeof(DummyFooClass).GetFields().Last();
+		FieldInfo field1 = typeof(DummyFooClass).GetDeclaredFields().First();
+		FieldInfo field2 = typeof(DummyFooClass).GetDeclaredFields().Last();
 
 		IRule rule = Expect.That.Fields
 			.Which(p => p == field1).And
@@ -131,7 +131,7 @@ public sealed class FieldRuleTests
 	[Fact]
 	public void Which_ShouldFilterOutFieldInfos()
 	{
-		int allFieldsCount = typeof(DummyFooClass).GetFields().Length;
+		int allFieldsCount = typeof(DummyFooClass).GetDeclaredFields().Length;
 
 		IRule rule = Expect.That.Fields
 			.Which(t => t.DeclaringType == typeof(DummyFooClass)).And

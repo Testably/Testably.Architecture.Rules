@@ -13,7 +13,7 @@ public sealed class ConstructorInfoExtensionsTests
 	[Fact]
 	public void HasAttribute_WithAttribute_ShouldReturnTrue()
 	{
-		ConstructorInfo type = typeof(TestClass).GetConstructors()
+		ConstructorInfo type = typeof(TestClass).GetDeclaredConstructors()
 			.Single(c => c.GetParameters().Length == 2);
 
 		bool result = type.HasAttribute<DummyAttribute>();
@@ -24,7 +24,7 @@ public sealed class ConstructorInfoExtensionsTests
 	[Fact]
 	public void HasAttribute_WithoutAttribute_ShouldReturnFalse()
 	{
-		ConstructorInfo type = typeof(TestClass).GetConstructors()
+		ConstructorInfo type = typeof(TestClass).GetDeclaredConstructors()
 			.Single(c => c.GetParameters().Length == 3);
 
 		bool result = type.HasAttribute<DummyAttribute>();
@@ -35,7 +35,7 @@ public sealed class ConstructorInfoExtensionsTests
 	[Fact]
 	public void HasAttribute_WithPredicate_ShouldReturnPredicateResult()
 	{
-		ConstructorInfo type = typeof(TestClass).GetConstructors()
+		ConstructorInfo type = typeof(TestClass).GetDeclaredConstructors()
 			.Single(c => c.GetParameters().Length == 2);
 
 		bool result1 = type.HasAttribute<DummyAttribute>(d => d.Value == 1);

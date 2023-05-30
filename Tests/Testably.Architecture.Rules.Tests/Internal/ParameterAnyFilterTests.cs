@@ -12,7 +12,7 @@ public sealed class ParameterAnyFilterTests
 	[Fact]
 	public void Apply_ShouldCheckEachFilterIndividually()
 	{
-		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();
+		ParameterInfo[] parameters = typeof(DummyFooClass).GetDeclaredConstructors()[0].GetParameters();
 		IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
 
 		IUnorderedParameterFilterResult filter = sut
@@ -32,7 +32,7 @@ public sealed class ParameterAnyFilterTests
 	public void Apply_ShouldRequireAllFilters(
 		bool filter1Result, bool filter2Result, bool expectedResult)
 	{
-		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();
+		ParameterInfo[] parameters = typeof(DummyFooClass).GetDeclaredConstructors()[0].GetParameters();
 		IParameterFilter<IUnorderedParameterFilterResult> sut = Parameters.Any;
 
 		IUnorderedParameterFilterResult filter = sut

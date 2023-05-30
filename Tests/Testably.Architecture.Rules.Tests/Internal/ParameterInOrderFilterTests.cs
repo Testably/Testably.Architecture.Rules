@@ -54,7 +54,7 @@ public sealed class ParameterInOrderFilterTests
 	[Fact]
 	public void Apply_ShouldCheckEachFilterIndividually()
 	{
-		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();
+		ParameterInfo[] parameters = typeof(DummyFooClass).GetDeclaredConstructors()[0].GetParameters();
 		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 		IOrderedParameterFilterResult filter = sut
@@ -74,7 +74,7 @@ public sealed class ParameterInOrderFilterTests
 	public void Apply_ShouldRequireAllFilters(
 		bool filter1Result, bool filter2Result, bool expectedResult)
 	{
-		ParameterInfo[] parameters = typeof(DummyFooClass).GetConstructors()[0].GetParameters();
+		ParameterInfo[] parameters = typeof(DummyFooClass).GetDeclaredConstructors()[0].GetParameters();
 		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
 		IOrderedParameterFilterResult filter = sut

@@ -11,7 +11,7 @@ internal class ConstructorRule : Rule<ConstructorInfo>, IConstructorExpectation,
 	/// <inheritdoc cref="IRule.Check" />
 	public override IRuleCheck Check
 		=> new RuleCheck<ConstructorInfo>(Filters, Requirements, Exemptions,
-			_ => _.SelectMany(a => a.GetTypes().SelectMany(t => t.GetConstructors())));
+			_ => _.SelectMany(a => a.GetTypes().SelectMany(t => t.GetDeclaredConstructors())));
 
 	public ConstructorRule(params Filter<ConstructorInfo>[] filters)
 	{
@@ -60,7 +60,7 @@ internal class ConstructorRule : Rule<ConstructorInfo>, IConstructorExpectation,
 		/// <inheritdoc cref="Filter{Type}.Applies(Type)" />
 		public override bool Applies(Type type)
 		{
-			return type.GetConstructors().Any(
+			return type.GetDeclaredConstructors().Any(
 				constructor => _constructorFilters.All(
 					filter => filter.Applies(constructor)));
 		}

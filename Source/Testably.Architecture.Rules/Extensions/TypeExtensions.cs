@@ -10,6 +10,36 @@ namespace Testably.Architecture.Rules;
 public static class TypeExtensions
 {
 	/// <summary>
+	///     Searches for constructors in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static ConstructorInfo[] GetDeclaredConstructors(
+		this Type type)
+	{
+		return type
+			.GetConstructors(BindingFlags.DeclaredOnly |
+			                 BindingFlags.NonPublic |
+			                 BindingFlags.Public |
+			                 BindingFlags.Instance)
+			.ToArray();
+	}
+
+	/// <summary>
+	///     Searches for fields in the <paramref name="type" /> that were directly declared there.
+	/// </summary>
+	public static FieldInfo[] GetDeclaredFields(
+		this Type type)
+	{
+		return type
+			.GetFields(BindingFlags.DeclaredOnly |
+			           BindingFlags.NonPublic |
+			           BindingFlags.Public |
+			           BindingFlags.Instance)
+			.Where(m => !m.IsSpecialName)
+			.Where(m => !m.Name.EndsWith("__BackingField"))
+			.ToArray();
+	}
+
+	/// <summary>
 	///     Searches for methods in the <paramref name="type" /> that were directly declared there.
 	/// </summary>
 	public static MethodInfo[] GetDeclaredMethods(

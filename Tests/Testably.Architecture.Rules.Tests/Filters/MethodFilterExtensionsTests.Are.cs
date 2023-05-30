@@ -8,7 +8,7 @@ namespace Testably.Architecture.Rules.Tests.Filters;
 // ReSharper disable UnusedMember.Local
 public sealed partial class MethodFilterExtensionsTests
 {
-	public sealed class WithAccessModifierTests
+	public sealed class AreTests
 	{
 		[Theory]
 		[InlineData(typeof(TestClassWithInternalMethod), AccessModifiers.Internal)]
@@ -20,7 +20,7 @@ public sealed partial class MethodFilterExtensionsTests
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(type)
-				.Should(Have.Method.With(accessModifiers))
+				.Should(Have.Method.WhichAre(accessModifiers))
 				.Check.InAllLoadedAssemblies();
 
 			result.ShouldNotBeViolated();
@@ -47,7 +47,7 @@ public sealed partial class MethodFilterExtensionsTests
 		{
 			ITestResult result = Expect.That.Types
 				.WhichAre(type)
-				.Should(Have.Method.With(accessModifiers))
+				.Should(Have.Method.WhichAre(accessModifiers))
 				.Check.InAllLoadedAssemblies();
 
 			result.ShouldBeViolated();

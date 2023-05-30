@@ -7,7 +7,7 @@ public static partial class MethodFilterExtensions
 	/// <summary>
 	///     Filters for <see cref="MethodInfo" />s with the correct <paramref name="accessModifiers"/>.
 	/// </summary>
-	public static IMethodFilterResult With(
+	public static IMethodFilterResult WhichAre(
 		this IMethodFilter @this,
 		AccessModifiers accessModifiers)
 	{

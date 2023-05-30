@@ -99,7 +99,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		ConstructorInfo constructor = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructor = typeof(DummyFooClass).GetDeclaredConstructors().First();
 		List<TestError> errors = new();
 
 		Requirement<ConstructorInfo> sut =
@@ -120,7 +120,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		ConstructorInfo constructor = typeof(DummyFooClass).GetConstructors().First();
+		ConstructorInfo constructor = typeof(DummyFooClass).GetDeclaredConstructors().First();
 		List<TestError> errors = new();
 
 		Requirement<ConstructorInfo> sut = Requirement.ForConstructor(_ => predicateResult);
@@ -174,7 +174,7 @@ public sealed class RequirementTests
 		int expectedErrorCount,
 		TestError testError)
 	{
-		FieldInfo field = typeof(DummyFooClass).GetFields().First();
+		FieldInfo field = typeof(DummyFooClass).GetDeclaredFields().First();
 		List<TestError> errors = new();
 
 		Requirement<FieldInfo> sut = Requirement.ForField(_ => predicateResult, _ => testError);
@@ -194,7 +194,7 @@ public sealed class RequirementTests
 		bool predicateResult,
 		int expectedErrorCount)
 	{
-		FieldInfo field = typeof(DummyFooClass).GetFields().First();
+		FieldInfo field = typeof(DummyFooClass).GetDeclaredFields().First();
 		List<TestError> errors = new();
 
 		Requirement<FieldInfo> sut = Requirement.ForField(_ => predicateResult);

@@ -10,7 +10,7 @@ internal class FieldRule : Rule<FieldInfo>, IFieldExpectation, IFieldFilterResul
 	/// <inheritdoc cref="IRule.Check" />
 	public override IRuleCheck Check
 		=> new RuleCheck<FieldInfo>(Filters, Requirements, Exemptions,
-			_ => _.SelectMany(a => a.GetTypes().SelectMany(t => t.GetFields())));
+			_ => _.SelectMany(a => a.GetTypes().SelectMany(t => t.GetDeclaredFields())));
 
 	public FieldRule(params Filter<FieldInfo>[] filters)
 	{
@@ -59,7 +59,7 @@ internal class FieldRule : Rule<FieldInfo>, IFieldExpectation, IFieldFilterResul
 		/// <inheritdoc cref="Filter{Type}.Applies(Type)" />
 		public override bool Applies(Type type)
 		{
-			return type.GetFields().Any(
+			return type.GetDeclaredFields().Any(
 				field => _fieldFilters.All(
 					filter => filter.Applies(field)));
 		}
