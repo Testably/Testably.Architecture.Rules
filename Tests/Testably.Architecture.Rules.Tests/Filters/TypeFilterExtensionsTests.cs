@@ -11,7 +11,7 @@ public sealed partial class TypeFilterExtensionsTests
 	public void And_WithContraryConditions_ShouldReturnEmptyArray()
 	{
 		IRule rule = Expect.That.Types
-			.WhichArePublic().And.WhichAreNotPublic()
+			.WhichAreSealed().And.WhichAreNotSealed()
 			.ShouldAlwaysFail()
 			.AllowEmpty();
 
