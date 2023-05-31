@@ -49,6 +49,7 @@ public static class TypeExtensions
 			.GetMethods(BindingFlags.DeclaredOnly |
 			            BindingFlags.NonPublic |
 			            BindingFlags.Public |
+			            BindingFlags.Static |
 			            BindingFlags.Instance)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
@@ -287,24 +288,28 @@ public static class TypeExtensions
 
 	private static bool HasAccessModifierForNestedClass(Type type, AccessModifiers accessModifiers)
 	{
-		if (type.IsNestedAssembly)
+		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		    type.IsNestedAssembly)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Internal);
+			return true;
 		}
 
-		if (type.IsNestedFamily)
+		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		    type.IsNestedFamily)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Protected);
+			return true;
 		}
 
-		if (type.IsNestedPrivate)
+		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		    type.IsNestedPrivate)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Private);
+			return true;
 		}
 
-		if (type.IsNestedPublic)
+		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		    type.IsNestedPublic)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Public);
+			return true;
 		}
 
 		return false;
@@ -313,21 +318,19 @@ public static class TypeExtensions
 	private static bool HasAccessModifierForNotNestedClass(Type type,
 		AccessModifiers accessModifiers)
 	{
-		if (!type.IsVisible)
+		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		    !type.IsVisible)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Internal);
+			return true;
 		}
 
-		if (type.IsNotPublic)
+		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		    type.IsPublic)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Private);
+			return true;
 		}
 
-		if (type.IsPublic)
-		{
-			return accessModifiers.HasFlag(AccessModifiers.Public);
-		}
-
-		return false;
+		return accessModifiers.HasFlag(AccessModifiers.Private) &&
+		       type.IsNotPublic;
 	}
 }

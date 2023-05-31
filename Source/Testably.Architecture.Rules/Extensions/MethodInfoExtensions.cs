@@ -22,24 +22,28 @@ public static class MethodInfoExtensions
 		this MethodInfo methodInfo,
 		AccessModifiers accessModifiers)
 	{
-		if (methodInfo.IsAssembly)
+		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		    methodInfo.IsAssembly)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Internal);
+			return true;
 		}
 
-		if (methodInfo.IsFamily)
+		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		    methodInfo.IsFamily)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Protected);
+			return true;
 		}
 
-		if (methodInfo.IsPrivate)
+		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		    methodInfo.IsPrivate)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Private);
+			return true;
 		}
 
-		if (methodInfo.IsPublic)
+		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		    methodInfo.IsPublic)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Public);
+			return true;
 		}
 
 		return false;

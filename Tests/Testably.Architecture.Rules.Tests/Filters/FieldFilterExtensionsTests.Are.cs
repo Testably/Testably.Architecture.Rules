@@ -74,7 +74,7 @@ public sealed partial class FieldFilterExtensionsTests
 		private class TestClassWithPrivateField
 		{
 			// ReSharper disable once InconsistentNaming
-			private int PrivateTestField = 1;
+			private readonly int PrivateTestField = 1;
 		}
 		#pragma warning restore CS0414
 	}

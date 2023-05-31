@@ -15,7 +15,8 @@ public sealed class ParameterInOrderFilterTests
 	public void Apply_First_Then_ShouldIncrementIndex()
 	{
 		ParameterInfo[] parameters = typeof(ParameterInOrderFilterTests)
-			.GetMethod(nameof(DummyMethod))!
+			.GetDeclaredMethods()
+			.First(m => m.Name == nameof(DummyMethod))
 			.GetParameters();
 		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.First;
 
@@ -35,7 +36,8 @@ public sealed class ParameterInOrderFilterTests
 	public void Apply_Last_Then_ShouldDecrementIndex()
 	{
 		ParameterInfo[] parameters = typeof(ParameterInOrderFilterTests)
-			.GetMethod(nameof(DummyMethod))!
+			.GetDeclaredMethods()
+			.First(m => m.Name == nameof(DummyMethod))
 			.GetParameters();
 		IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.Last;
 
@@ -162,7 +164,7 @@ public sealed class ParameterInOrderFilterTests
 
 	#region Helpers
 
-	public void DummyMethod(int v1, int v2, int v3, int v4, int v5)
+	private static void DummyMethod(int v1, int v2, int v3, int v4, int v5)
 	{
 		// Do nothing
 	}

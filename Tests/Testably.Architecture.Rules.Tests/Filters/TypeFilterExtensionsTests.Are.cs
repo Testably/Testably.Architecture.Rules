@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using Testably.Architecture.Rules.Tests.TestHelpers;
 using Xunit;
 
@@ -16,18 +17,22 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData(typeof(PublicTestClass), AccessModifiers.Public)]
 		[InlineData(typeof(UnnestedPublicType), AccessModifiers.Public)]
 		[InlineData(typeof(UnnestedInternalType), AccessModifiers.Internal)]
-		public void With_AccessModifiers_Matching_ShouldBeChecked(
+		public void WhichAre_AccessModifiers_Matching_ShouldBeChecked(
 			Type type,
 			AccessModifiers accessModifiers)
 		{
-			ITestResult result = Expect.That.Types
+			ITypeFilterResult sut = Expect.That.Types
 				.WhichAre(type).And
-				.WhichAre(accessModifiers)
-				.ShouldAlwaysFail()
-				.AllowEmpty()
-				.Check.InAllLoadedAssemblies();
+				.WhichAre(accessModifiers);
+
+			ITestResult result =
+				sut.ShouldSatisfy(_ => false)
+					.AllowEmpty()
+					.Check.InAllLoadedAssemblies();
 
 			result.ShouldBeViolated();
+			sut.ToString().Should()
+				.Contain($"with {accessModifiers} access modifier");
 		}
 
 		[Theory]
@@ -46,7 +51,7 @@ public sealed partial class TypeFilterExtensionsTests
 		[InlineData(typeof(PublicTestClass),
 			AccessModifiers.Protected | AccessModifiers.Internal)]
 		[InlineData(typeof(PublicTestClass), AccessModifiers.Private)]
-		public void With_AccessModifiers_NotMatching_ShouldNotBeChecked(
+		public void WhichAre_AccessModifiers_NotMatching_ShouldNotBeChecked(
 			Type type,
 			AccessModifiers accessModifiers)
 		{

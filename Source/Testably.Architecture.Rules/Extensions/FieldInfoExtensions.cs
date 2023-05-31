@@ -22,24 +22,28 @@ public static class FieldInfoExtensions
 		this FieldInfo fieldInfo,
 		AccessModifiers accessModifiers)
 	{
-		if (fieldInfo.IsAssembly)
+		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		    fieldInfo.IsAssembly)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Internal);
+			return true;
 		}
 
-		if (fieldInfo.IsFamily)
+		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		    fieldInfo.IsFamily)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Protected);
+			return true;
 		}
 
-		if (fieldInfo.IsPrivate)
+		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		    fieldInfo.IsPrivate)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Private);
+			return true;
 		}
 
-		if (fieldInfo.IsPublic)
+		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		    fieldInfo.IsPublic)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Public);
+			return true;
 		}
 
 		return false;

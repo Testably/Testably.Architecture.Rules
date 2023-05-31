@@ -12,6 +12,24 @@ public sealed partial class ParameterFilterExtensionsTests
 	public sealed class OfTypeTests
 	{
 		[Theory]
+		[InlineData(typeof(Foo), typeof(Bar), true)]
+		[InlineData(typeof(Bar), typeof(Foo), false)]
+		public void OfType_Ordered_At_ShouldGoToNextParameter(Type type1, Type type2,
+			bool expectedValue)
+		{
+			IParameterFilter<IOrderedParameterFilterResult> sut = Parameters.At(1);
+
+			bool result = Have.Method
+				.With(sut
+					.OfType(type2)
+					.At(0)
+					.OfType(type1))
+				.Applies(typeof(TestClassWithMultipleParameters).GetDeclaredMethods().First());
+
+			result.Should().Be(expectedValue);
+		}
+
+		[Theory]
 		[InlineData(true, true)]
 		[InlineData(false, false)]
 		public void OfType_Ordered_FooBase_ShouldReturnExpectedValue(bool allowDerivedType,

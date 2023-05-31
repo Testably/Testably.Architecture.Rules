@@ -22,24 +22,28 @@ public static class ConstructorInfoExtensions
 		this ConstructorInfo constructorInfo,
 		AccessModifiers accessModifiers)
 	{
-		if (constructorInfo.IsAssembly)
+		if (accessModifiers.HasFlag(AccessModifiers.Internal) &&
+		    constructorInfo.IsAssembly)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Internal);
+			return true;
 		}
 
-		if (constructorInfo.IsFamily)
+		if (accessModifiers.HasFlag(AccessModifiers.Protected) &&
+		    constructorInfo.IsFamily)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Protected);
+			return true;
 		}
 
-		if (constructorInfo.IsPrivate)
+		if (accessModifiers.HasFlag(AccessModifiers.Private) &&
+		    constructorInfo.IsPrivate)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Private);
+			return true;
 		}
 
-		if (constructorInfo.IsPublic)
+		if (accessModifiers.HasFlag(AccessModifiers.Public) &&
+		    constructorInfo.IsPublic)
 		{
-			return accessModifiers.HasFlag(AccessModifiers.Public);
+			return true;
 		}
 
 		return false;
