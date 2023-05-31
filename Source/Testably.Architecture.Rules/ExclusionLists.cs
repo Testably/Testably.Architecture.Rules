@@ -20,6 +20,7 @@ public static class ExclusionLists
 		{
 			"mscorlib",
 			"System",
+			"Microsoft",
 			"xunit"
 		};
 
