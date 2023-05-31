@@ -49,7 +49,8 @@ public static class TypeExtensions
 			.GetMethods(BindingFlags.DeclaredOnly |
 			            BindingFlags.NonPublic |
 			            BindingFlags.Public |
-			            BindingFlags.Instance)
+			            BindingFlags.Static |
+						BindingFlags.Instance)
 			.Where(m => !m.IsSpecialName)
 			.ToArray();
 	}
