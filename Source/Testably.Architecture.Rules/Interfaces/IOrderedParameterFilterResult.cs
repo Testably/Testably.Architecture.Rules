@@ -16,7 +16,7 @@ public interface IOrderedParameterFilterResult
 	/// <summary>
 	///     Specifies an explicit position of the parameter.
 	///     <para />
-	///     Positive values are zero-based index from the start.<br />
+	///     Non-negative values are zero-based index from the start.<br />
 	///     Negative values count from the last parameter back (e.g. `-1` indicates the last parameter).
 	/// </summary>
 	IParameterFilter<IOrderedParameterFilterResult> At(int position);
