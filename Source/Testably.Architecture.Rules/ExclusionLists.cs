@@ -21,7 +21,9 @@ public static class ExclusionLists
 			"mscorlib",
 			"System",
 			"Microsoft",
-			"xunit"
+			"xunit",
+			"Castle",
+			"DynamicProxyGenAssembly2"
 		};
 
 	/// <summary>
