@@ -25,12 +25,12 @@ jobs:
         run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory "TestResults"
       - name: Upload test results (MacOS)
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Test results (MacOS)
           path: TestResults
       - name: Upload coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Code coverage (MacOS)
           path: "**/coverage.cobertura.xml"
@@ -54,12 +54,12 @@ jobs:
         run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory "TestResults"
       - name: Upload test results (Ubuntu)
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Test results (Ubuntu)
           path: TestResults
       - name: Upload coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Code coverage (Ubuntu)
           path: "**/coverage.cobertura.xml"
@@ -83,12 +83,12 @@ jobs:
         run: dotnet test --no-build --collect:"XPlat Code Coverage" --logger trx --results-directory "TestResults"
       - name: Upload test results (Windows)
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Test results (Windows)
           path: TestResults
       - name: Upload coverage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Code coverage (Windows)
           path: "**/coverage.cobertura.xml"
@@ -113,7 +113,7 @@ jobs:
         run: vstest.console.exe .\Build\Tests\Testably.Architecture.Rules.Tests\net48\Testably.Architecture.Rules.Tests.dll /Logger:trx /ResultsDirectory:TestResults
       - name: Upload test results (.NET Framework)
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Test results (.NET Framework)
           path: TestResults
