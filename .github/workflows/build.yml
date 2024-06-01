@@ -178,7 +178,7 @@ jobs:
           name: Code coverage (Windows)
           path: Coverage/Windows
       - name: Generate coverage report
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.4
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.3.5
         with:
           reports: "Coverage/**/coverage.cobertura.xml"
           targetdir: "coverage-report"
