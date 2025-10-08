@@ -1,3 +1,10 @@
+# DISCONTINUED!
+
+**This project is no longer maintained!**
+
+*Consider using [aweXpect.Reflections](https://awexpect.com/aweXpect.Reflection/) instead...*
+
+
 ![Testably.Architecture.Rules](https://raw.githubusercontent.com/Testably/Testably.Architecture.Rules/main/Docs/Images/social-preview.png)  
 [![Nuget](https://img.shields.io/nuget/v/Testably.Architecture.Rules)](https://www.nuget.org/packages/Testably.Architecture.Rules)
 [![Build](https://github.com/Testably/Testably.Architecture.Rules/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/Testably.Architecture.Rules/actions/workflows/build.yml)
