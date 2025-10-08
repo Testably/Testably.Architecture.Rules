@@ -8,7 +8,7 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
-    - uses: dorny/test-reporter@v1
+    - uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         artifact: Test results (MacOS)
@@ -16,7 +16,7 @@ jobs:
         path: '*.trx'
         reporter: dotnet-trx
         fail-on-error: 'false'
-    - uses: dorny/test-reporter@v1
+    - uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         artifact: Test results (Ubuntu)
@@ -24,7 +24,7 @@ jobs:
         path: '*.trx'
         reporter: dotnet-trx
         fail-on-error: 'false'
-    - uses: dorny/test-reporter@v1
+    - uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         artifact: Test results (Windows)
@@ -32,7 +32,7 @@ jobs:
         path: '*.trx'
         reporter: dotnet-trx
         fail-on-error: 'false'
-    - uses: dorny/test-reporter@v1
+    - uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         artifact: Test results (.NET Framework)
